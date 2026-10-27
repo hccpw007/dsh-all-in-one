@@ -6,7 +6,7 @@
  */
 import type { HostPluginContext } from '../../types/host'
 
-import { disposePackPresets } from './host/presets'
+import { disposePackPresets, restoreComposedPresets } from './host/presets'
 import { installPromptOverlay } from './host/prompt-overlay'
 import { installPowerPackRoutes } from './host/routes'
 
@@ -36,6 +36,16 @@ export function apply(ctx: HostPluginContext): void {
   ctx.effect(() => () => {
     void disposePackPresets()
   }, 'power-pack: presets')
+
+  // 组合预设只活在宿主内存里：启动时按记录重建，旧会话的预设 id 才不会失效。
+  // 重建出的预设同样由上面那条 effect 统一注销，这里不需要额外的清理动作。
+  ctx.effect(() => {
+    void restoreComposedPresets(api, ctx.tools, profileDir).catch((error: unknown) => {
+      console.error('[power-pack] 启动重建组合预设失败:', error)
+    })
+
+    return () => undefined
+  }, 'power-pack: restore')
 
   ctx.inject(['webServer'], (host) => {
     host.effect(

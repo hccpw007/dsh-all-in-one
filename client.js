@@ -316,10 +316,12 @@ window.__ModuleLoader__.load({
           }
           let packs = [];
           let defaultPackId = "";
+          let recent;
           try {
             const payload = await loadPowerPacks();
             packs = payload.packs.map(({ id, name, description }) => ({ id, name, description }));
             defaultPackId = payload.defaultPackId;
+            recent = payload.recentComposed[0];
           } catch (error) {
             console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u5305\u5217\u8868\u5931\u8D25:", error);
           }
@@ -329,8 +331,9 @@ window.__ModuleLoader__.load({
           const fallbackMode = modes.find((preset) => preset.isDefault)?.id ?? modes[0]?.id ?? "";
           const fromSession = parsePresetId(sessionPreset(ctx, sessionId) ?? "");
           const sessionBlank = sessionId === void 0 || ctx.sessions?.list.getSnapshot().byId[sessionId]?.blank !== false;
-          const fallbackPack = sessionBlank ? defaultPackId : "";
-          const mode = staged?.mode || fromSession.mode || fallbackMode;
+          const fallbackPack = sessionBlank ? recent?.pack || defaultPackId : "";
+          const recentMode = sessionBlank ? recent?.mode ?? "" : "";
+          const mode = staged?.mode || fromSession.mode || recentMode || fallbackMode;
           const pack = staged ? staged.pack : fromSession.pack || fallbackPack;
           store.set({ status: "ready", modes, packs, mode, pack, error: null });
           if (staged === void 0 && fromSession.pack === "" && fallbackPack !== "" && mode !== "") {

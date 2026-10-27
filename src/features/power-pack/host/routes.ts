@@ -10,6 +10,7 @@ import type { AgentPresetApi, ToolsApi, WebServerApi } from '../../../types/host
 import type { PowerPack, PowerPackComposeResponse, PowerPackWriteRequest, PowerPacksPayload } from '../types'
 
 import { listPluginItems } from './catalog'
+import { forgetComposedPack, readComposeState, rememberComposed } from './compose-state'
 import { collectGlobalToolNames, listGlobalToolGroups } from './global-catalog'
 import { planIsolation } from './isolation'
 import { ensureComposedPreset, invalidateComposedPreset } from './presets'
@@ -96,10 +97,12 @@ async function buildPayload(host: HostContext): Promise<PowerPacksPayload> {
   const skills = await listSkillEntries()
   const plugins = await listPluginItems(host.profileDir)
   const globalGroups = await listGlobalToolGroups(host.tools, host.profileDir)
+  const recentComposed = await readComposeState()
 
   return {
     packs: document.packs,
     defaultPackId: document.defaultPackId,
+    recentComposed,
     catalog: {
       skills: skills.map(({ name, description }) => ({ name, description })),
       plugins,
@@ -224,7 +227,11 @@ async function handleWrite(
 
     const groups = await listGlobalToolGroups(host.tools, host.profileDir)
 
-    return { presetId: await ensureComposedPreset(api, request.mode, pack, groups) }
+    // 记录这次选择：宿主重启后要按它重建预设，旧会话才能重新恢复
+    const presetId = await ensureComposedPreset(api, request.mode, pack, groups)
+    await rememberComposed(pack.id, request.mode)
+
+    return { presetId }
   }
 
   if (request.action === 'delete') {
@@ -232,6 +239,7 @@ async function handleWrite(
 
     const payload = await deletePack(request.id, host)
     await invalidateComposedPreset(request.id)
+    await forgetComposedPack(request.id)
     return payload
   }
 

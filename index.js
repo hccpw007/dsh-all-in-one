@@ -511,6 +511,381 @@ function composePackRows(modeRows, pack, groups) {
   return rows;
 }
 
+// src/features/power-pack/host/compose-state.ts
+import { mkdir as mkdir3, readFile as readFile3, rename as rename2, writeFile as writeFile2 } from "node:fs/promises";
+import { dirname as dirname2, join as join4 } from "node:path";
+
+// src/features/power-pack/host/store.ts
+import { mkdir as mkdir2, readFile as readFile2, rename, writeFile } from "node:fs/promises";
+import { dirname, join as join3 } from "node:path";
+var RULE_MODES = ["all", "include", "exclude"];
+var LEGACY_FILE_NAMES = ["skill-packs.json", "chat-styles.json"];
+var PACK_ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
+function powerPacksFile() {
+  return join3(resolveDshHome(), "all-in-one", "power-packs.json");
+}
+function isValidPackId(id) {
+  return PACK_ID_PATTERN.test(id);
+}
+function stringList(value) {
+  return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
+}
+function stringDict(value) {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return {};
+  const result = {};
+  for (const [key, item] of Object.entries(value)) {
+    if (typeof item === "string") result[key] = item;
+  }
+  return result;
+}
+function normalizeRule(value) {
+  if (typeof value !== "object" || value === null) return { mode: "all", items: [] };
+  const candidate = value;
+  const mode = RULE_MODES.find((item) => item === candidate.mode) ?? "all";
+  return { mode, items: stringList(candidate.items) };
+}
+function normalizeMcpServer(value) {
+  if (typeof value !== "object" || value === null) return void 0;
+  const candidate = value;
+  const id = typeof candidate.id === "string" ? candidate.id.trim() : "";
+  if (!/^[A-Za-z0-9_-]{1,32}$/.test(id)) return void 0;
+  const transport = candidate.transport === "streamable-http" ? "streamable-http" : "stdio";
+  const command = typeof candidate.command === "string" ? candidate.command : "";
+  const url = typeof candidate.url === "string" ? candidate.url : "";
+  if (transport === "stdio" && command.trim() === "") return void 0;
+  if (transport === "streamable-http" && url.trim() === "") return void 0;
+  return {
+    id,
+    label: typeof candidate.label === "string" ? candidate.label : id,
+    transport,
+    command,
+    args: stringList(candidate.args),
+    env: stringDict(candidate.env),
+    url,
+    headers: stringDict(candidate.headers)
+  };
+}
+function normalizePack(value) {
+  if (typeof value !== "object" || value === null) return void 0;
+  const candidate = value;
+  const id = typeof candidate.id === "string" ? candidate.id.trim() : "";
+  const name = typeof candidate.name === "string" ? candidate.name.trim() : "";
+  if (!PACK_ID_PATTERN.test(id) || name === "") return void 0;
+  const seenServers = /* @__PURE__ */ new Set();
+  const mcpServers = Array.isArray(candidate.mcpServers) ? candidate.mcpServers.map(normalizeMcpServer).filter((server) => {
+    if (server === void 0 || seenServers.has(server.id)) return false;
+    seenServers.add(server.id);
+    return true;
+  }) : [];
+  return {
+    id,
+    name,
+    description: typeof candidate.description === "string" ? candidate.description : "",
+    systemPrompt: typeof candidate.systemPrompt === "string" ? candidate.systemPrompt : "",
+    skills: normalizeRule(candidate.skills),
+    plugins: normalizeRule(candidate.plugins),
+    mcp: normalizeRule(candidate.mcp),
+    mcpServers
+  };
+}
+async function parsePackFile(file) {
+  try {
+    const raw = await readFile2(file, "utf8");
+    const parsed = JSON.parse(raw);
+    const list = Array.isArray(parsed.packs) ? parsed.packs : parsed.styles;
+    const packs = Array.isArray(list) ? list.map(normalizePack).filter((pack) => pack !== void 0) : [];
+    const defaultPackId = typeof parsed.defaultPackId === "string" && packs.some((pack) => pack.id === parsed.defaultPackId) ? parsed.defaultPackId : "";
+    return { version: 1, packs, defaultPackId };
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u5305\u914D\u7F6E\u5931\u8D25:", file, error);
+    }
+    return void 0;
+  }
+}
+async function readPacks() {
+  const current = await parsePackFile(powerPacksFile());
+  if (current !== void 0) return current;
+  for (const name of LEGACY_FILE_NAMES) {
+    const migrated = await parsePackFile(join3(resolveDshHome(), "all-in-one", name));
+    if (migrated === void 0) continue;
+    await writePacks(migrated);
+    return migrated;
+  }
+  return { version: 1, packs: [], defaultPackId: "" };
+}
+async function writePacks(document) {
+  const file = powerPacksFile();
+  const temp = `${file}.tmp`;
+  try {
+    await mkdir2(dirname(file), { recursive: true });
+    await writeFile(temp, `${JSON.stringify(document, null, 2)}
+`, "utf8");
+    await rename(temp, file);
+  } catch (error) {
+    console.error("[power-pack] \u5199\u5165\u6280\u80FD\u5305\u914D\u7F6E\u5931\u8D25:", file, error);
+    throw error;
+  }
+}
+
+// src/features/power-pack/host/compose-state.ts
+var STATE_VERSION = 1;
+var MAX_RECENT = 24;
+function composeStateFile() {
+  return join4(resolveDshHome(), "all-in-one", "compose-state.json");
+}
+function normalizeSelection(value) {
+  if (typeof value !== "object" || value === null) return void 0;
+  const candidate = value;
+  const pack = typeof candidate.pack === "string" ? candidate.pack.trim() : "";
+  const mode = typeof candidate.mode === "string" ? candidate.mode.trim() : "";
+  if (!isValidPackId(pack) || mode === "") return void 0;
+  return { pack, mode };
+}
+async function readComposeState() {
+  const file = composeStateFile();
+  try {
+    const raw = await readFile3(file, "utf8");
+    const parsed = JSON.parse(raw);
+    const list = Array.isArray(parsed.recent) ? parsed.recent : [];
+    const seen = /* @__PURE__ */ new Set();
+    const result = [];
+    for (const item of list) {
+      const selection = normalizeSelection(item);
+      if (selection === void 0) continue;
+      const key = `${selection.pack}@${selection.mode}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      result.push(selection);
+    }
+    return result;
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.error("[power-pack] \u8BFB\u53D6\u7EC4\u5408\u8BB0\u5F55\u5931\u8D25:", file, error);
+    }
+    return [];
+  }
+}
+async function writeComposeState(recent) {
+  const file = composeStateFile();
+  const temp = `${file}.tmp`;
+  const document = { version: STATE_VERSION, recent: recent.slice(0, MAX_RECENT) };
+  try {
+    await mkdir3(dirname2(file), { recursive: true });
+    await writeFile2(temp, `${JSON.stringify(document, null, 2)}
+`, "utf8");
+    await rename2(temp, file);
+  } catch (error) {
+    console.error("[power-pack] \u5199\u5165\u7EC4\u5408\u8BB0\u5F55\u5931\u8D25:", file, error);
+  }
+}
+async function rememberComposed(packId, modeId) {
+  const recent = await readComposeState();
+  const key = `${packId}@${modeId}`;
+  const rest = recent.filter((item) => `${item.pack}@${item.mode}` !== key);
+  await writeComposeState([{ pack: packId, mode: modeId }, ...rest]);
+}
+async function forgetComposedPack(packId) {
+  const recent = await readComposeState();
+  const kept = recent.filter((item) => item.pack !== packId);
+  if (kept.length === recent.length) return;
+  await writeComposeState(kept);
+}
+
+// src/features/power-pack/host/catalog.ts
+import { readdir as readdir2, readFile as readFile4 } from "node:fs/promises";
+import { join as join5 } from "node:path";
+var SELF_PACKAGE = "dsh-all-in-one";
+async function collectProfilePlugins(dir, names) {
+  const manifestPath = join5(dir, "package.json");
+  try {
+    const manifest = JSON.parse(await readFile4(manifestPath, "utf8"));
+    const enabled = Array.isArray(manifest.dsh?.profile?.bundles) ? new Set(manifest.dsh.profile.bundles) : /* @__PURE__ */ new Set();
+    for (const name of Object.keys(manifest.dependencies ?? {})) {
+      if (name.startsWith("@deepseek-ai/") || name === SELF_PACKAGE) continue;
+      if (enabled.has(name)) names.add(name);
+    }
+  } catch (error) {
+    console.error("[power-pack] \u8BFB\u53D6 profile \u4F9D\u8D56\u5931\u8D25:", manifestPath, error);
+  }
+}
+async function resolveProfileDirs(currentProfileDir2) {
+  if (currentProfileDir2 !== void 0 && currentProfileDir2 !== "") return [currentProfileDir2];
+  const profilesRoot = join5(resolveDshHome(), "profiles");
+  try {
+    const profiles = await readdir2(profilesRoot, { withFileTypes: true });
+    return profiles.filter((profile) => profile.isDirectory() && profile.name !== "node_modules").map((profile) => join5(profilesRoot, profile.name));
+  } catch (error) {
+    if (error.code === "ENOENT") return [];
+    console.error("[power-pack] \u8BFB\u53D6 profile \u76EE\u5F55\u5931\u8D25:", profilesRoot, error);
+    return [];
+  }
+}
+async function findInstalledPlugins(currentProfileDir2) {
+  const names = /* @__PURE__ */ new Set();
+  for (const dir of await resolveProfileDirs(currentProfileDir2)) {
+    await collectProfilePlugins(dir, names);
+  }
+  return [...names].sort((left, right) => left.localeCompare(right));
+}
+async function listPluginCatalog(currentProfileDir2) {
+  const installed = (await findInstalledPlugins(currentProfileDir2)).map(
+    (packageName) => ({
+      id: `pkg:${packageName}`,
+      label: packageName,
+      description: "\u5DF2\u5728 profile \u4E2D\u5168\u5C40\u52A0\u8F7D\u3002\u52FE\u9009\u8868\u793A\u4FDD\u7559\u5728\u6280\u80FD\u5305\u4F1A\u8BDD\u91CC\uFF0C\u53D6\u6D88\u52FE\u9009\u4F1A\u5C4F\u853D\u5B83\u7684\u5DE5\u5177\u4E0E\u63D0\u793A\u8BCD\u6CE8\u5165\u3002",
+      kind: "installed",
+      packageName
+    })
+  );
+  return { standard: STANDARD_PLUGIN_ITEMS, installed };
+}
+async function listPluginItems(currentProfileDir2) {
+  const { standard, installed } = await listPluginCatalog(currentProfileDir2);
+  return [
+    ...standard.map(({ id, label, description, kind }) => ({ id, label, description, kind })),
+    ...installed.map(({ id, label, description, kind }) => ({ id, label, description, kind }))
+  ];
+}
+
+// src/features/power-pack/host/package-scan.ts
+import { readFile as readFile5, readdir as readdir3 } from "node:fs/promises";
+import { join as join6 } from "node:path";
+var SCAN_MAX_FILES = 120;
+var SCAN_MAX_BYTES = 4 * 1024 * 1024;
+var SCAN_MAX_FILE_BYTES = 512 * 1024;
+var SCAN_SUFFIXES = [".js", ".mjs", ".cjs"];
+function toolPrefixes(packageName) {
+  const short = packageName.replace(/^dsh-plugin-/, "").replace(/^dsh-/, "");
+  const candidates = [packageName, short, short.replace(/-/g, "_"), short.replace(/_/g, "-")];
+  return [...new Set(candidates.filter((item) => item !== ""))];
+}
+function hasPrefix(name, prefixes) {
+  return prefixes.some(
+    (prefix) => name === prefix || name.startsWith(`${prefix}_`) || name.startsWith(`${prefix}-`) || name.startsWith(`${prefix}.`)
+  );
+}
+async function resolveScanRoots(dir, packageName) {
+  const roots = /* @__PURE__ */ new Set([join6(dir, "lib"), join6(dir, "dist")]);
+  try {
+    const manifest = JSON.parse(await readFile5(join6(dir, "package.json"), "utf8"));
+    if (typeof manifest.main === "string" && manifest.main !== "") {
+      roots.add(join6(dir, manifest.main.replace(/\/[^/]+$/, "")));
+    }
+  } catch (error) {
+    console.error("[power-pack] \u8BFB\u53D6\u63D2\u4EF6\u6E05\u5355\u5931\u8D25:", packageName, error);
+  }
+  const existing = [];
+  for (const root of roots) {
+    try {
+      await readdir3(root);
+      existing.push(root);
+    } catch (error) {
+      if (error.code !== "ENOENT") {
+        console.error("[power-pack] \u8BFB\u53D6\u63D2\u4EF6\u4EA7\u7269\u76EE\u5F55\u5931\u8D25:", root, error);
+      }
+    }
+  }
+  return existing;
+}
+async function scanOwnedTools(roots, candidates) {
+  if (roots.length === 0 || candidates.length === 0) return [];
+  const owned = /* @__PURE__ */ new Set();
+  let files = 0;
+  let bytes = 0;
+  for (const root of roots) {
+    let entries;
+    try {
+      entries = await readdir3(root, { recursive: true, withFileTypes: true });
+    } catch (error) {
+      console.error("[power-pack] \u9012\u5F52\u8BFB\u53D6\u63D2\u4EF6\u4EA7\u7269\u5931\u8D25:", root, error);
+      continue;
+    }
+    for (const entry of entries) {
+      if (files >= SCAN_MAX_FILES || bytes >= SCAN_MAX_BYTES) break;
+      if (!entry.isFile()) continue;
+      if (!SCAN_SUFFIXES.some((suffix) => entry.name.endsWith(suffix))) continue;
+      const file = join6(entry.parentPath ?? root, entry.name);
+      try {
+        const text = await readFile5(file, { encoding: "utf8" });
+        files += 1;
+        bytes += text.length;
+        if (text.length > SCAN_MAX_FILE_BYTES) continue;
+        for (const name of candidates) {
+          if (!owned.has(name) && text.includes(name)) owned.add(name);
+        }
+      } catch (error) {
+        console.error("[power-pack] \u8BFB\u53D6\u63D2\u4EF6\u4EA7\u7269\u5931\u8D25:", file, error);
+      }
+    }
+  }
+  return [...owned];
+}
+async function ownedTools(packageName, globalNames, profileDir) {
+  const prefixes = toolPrefixes(packageName);
+  const byPrefix = globalNames.filter((name) => hasPrefix(name, prefixes));
+  const remaining = globalNames.filter((name) => !byPrefix.includes(name));
+  const roots = [];
+  for (const dir of await resolveProfileDirs(profileDir)) {
+    roots.push(...await resolveScanRoots(join6(dir, "node_modules", packageName), packageName));
+  }
+  const scanned = await scanOwnedTools(roots, remaining);
+  return [.../* @__PURE__ */ new Set([...byPrefix, ...scanned])].sort((left, right) => left.localeCompare(right));
+}
+
+// src/features/power-pack/host/global-catalog.ts
+var MCP_TOOL_NAME = /^mcp__([A-Za-z0-9_-]{1,32})__/;
+function collectGlobalToolNames(tools) {
+  if (tools === void 0) return [];
+  try {
+    const schemas = tools.schemas();
+    const names = /* @__PURE__ */ new Set();
+    for (const schema of schemas) {
+      if (typeof schema?.name === "string" && schema.name !== "") names.add(schema.name);
+    }
+    return [...names];
+  } catch (error) {
+    console.error("[power-pack] \u8BFB\u53D6\u5168\u5C40\u5DE5\u5177\u6E05\u5355\u5931\u8D25:", error);
+    return [];
+  }
+}
+async function listGlobalToolGroups(tools, profileDir) {
+  const names = collectGlobalToolNames(tools);
+  const mcpTools = /* @__PURE__ */ new Map();
+  const localTools = [];
+  for (const name of names) {
+    const match = MCP_TOOL_NAME.exec(name);
+    if (match) {
+      const server = match[1];
+      const list = mcpTools.get(server) ?? [];
+      list.push(name);
+      mcpTools.set(server, list);
+    } else {
+      localTools.push(name);
+    }
+  }
+  const groups = [];
+  for (const packageName of await findInstalledPlugins(profileDir)) {
+    const owned = await ownedTools(packageName, localTools, profileDir);
+    if (owned.length === 0) continue;
+    groups.push({
+      id: `pkg:${packageName}`,
+      label: packageName,
+      kind: "installed",
+      tools: owned
+    });
+  }
+  for (const [server, serverTools] of [...mcpTools].sort(([left], [right]) => left.localeCompare(right))) {
+    groups.push({
+      id: `mcp:${server}`,
+      label: `MCP \xB7 ${server}`,
+      kind: "global-mcp",
+      tools: serverTools.sort((left, right) => left.localeCompare(right))
+    });
+  }
+  return groups;
+}
+
 // src/features/power-pack/host/preset-source.ts
 function readPresetRows(api, presetId) {
   const internals = api;
@@ -522,29 +897,41 @@ function readPresetRows(api, presetId) {
 // src/features/power-pack/host/presets.ts
 var PRESET_ID_PREFIX = "power-pack-";
 var PRESET_ORDER = 200;
-var composed;
+var RESTORE_ATTEMPTS = 12;
+var RESTORE_INTERVAL_MS = 250;
+var composed = /* @__PURE__ */ new Map();
 function composedPresetId(packId, modeId) {
   return `${PRESET_ID_PREFIX}${packId}@${modeId}`;
 }
-async function disposeComposed() {
-  const current = composed;
-  if (current === void 0) return;
-  composed = void 0;
+function delay(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+async function waitPresetRows(api, modeId) {
+  for (let attempt = 0; attempt < RESTORE_ATTEMPTS; attempt += 1) {
+    if (readPresetRows(api, modeId) !== void 0) return true;
+    await delay(RESTORE_INTERVAL_MS);
+  }
+  return false;
+}
+async function disposeOne(preset) {
+  composed.delete(preset.key);
   try {
-    await current.dispose();
+    await preset.dispose();
   } catch (error) {
-    console.error("[power-pack] \u6CE8\u9500\u7EC4\u5408\u9884\u8BBE\u5931\u8D25:", current.id, error);
+    console.error("[power-pack] \u6CE8\u9500\u7EC4\u5408\u9884\u8BBE\u5931\u8D25:", preset.id, error);
   }
 }
 async function ensureComposedPreset(api, modeId, pack, groups) {
   const key = `${pack.id}@${modeId}`;
-  if (composed?.key === key) return composed.id;
+  const existing = composed.get(key);
+  if (existing !== void 0) return existing.id;
   const modeRows = readPresetRows(api, modeId);
   if (modeRows === void 0) {
     throw new Error(`\u65E0\u6CD5\u8BFB\u53D6\u6A21\u5F0F ${modeId} \u7684\u7EC4\u5408\u884C`);
   }
   const rows = composePackRows(modeRows, pack, groups);
-  await disposeComposed();
   const id = composedPresetId(pack.id, modeId);
   const dispose = await api.register({
     id,
@@ -553,16 +940,49 @@ async function ensureComposedPreset(api, modeId, pack, groups) {
     order: PRESET_ORDER,
     plugins: rows
   });
-  composed = { key, id, dispose };
+  composed.set(key, { key, id, dispose });
   return id;
 }
 async function invalidateComposedPreset(packId) {
-  if (composed === void 0) return;
-  if (!composed.key.startsWith(`${packId}@`)) return;
-  await disposeComposed();
+  const prefix = `${packId}@`;
+  for (const preset of [...composed.values()]) {
+    if (!preset.key.startsWith(prefix)) continue;
+    await disposeOne(preset);
+  }
 }
 async function disposePackPresets() {
-  await disposeComposed();
+  for (const preset of [...composed.values()]) {
+    await disposeOne(preset);
+  }
+}
+async function restoreComposedPresets(api, tools, profileDir) {
+  const selections = await readComposeState();
+  if (selections.length === 0) return;
+  const document = await readPacks();
+  const packs = new Map(document.packs.map((pack) => [pack.id, pack]));
+  const known = selections.filter((selection) => packs.has(selection.pack));
+  if (known.length !== selections.length) await writeComposeState(known);
+  if (known.length === 0) return;
+  const groups = await listGlobalToolGroups(tools, profileDir);
+  const failed = /* @__PURE__ */ new Set();
+  for (const selection of known) {
+    const pack = packs.get(selection.pack);
+    if (pack === void 0) continue;
+    const ready = await waitPresetRows(api, selection.mode);
+    if (!ready) {
+      console.warn("[power-pack] \u542F\u52A8\u91CD\u5EFA\u7EC4\u5408\u9884\u8BBE\u65F6\u6A21\u5F0F\u4E0D\u53EF\u7528:", selection.mode);
+      continue;
+    }
+    try {
+      await ensureComposedPreset(api, selection.mode, pack, groups);
+    } catch (error) {
+      console.error("[power-pack] \u542F\u52A8\u91CD\u5EFA\u7EC4\u5408\u9884\u8BBE\u5931\u8D25:", selection.pack, selection.mode, error);
+      failed.add(`${selection.pack}@${selection.mode}`);
+    }
+  }
+  if (failed.size > 0) {
+    console.warn("[power-pack] \u672A\u91CD\u5EFA\u7684\u7EC4\u5408\u9884\u8BBE:", [...failed].join(", "));
+  }
 }
 
 // src/features/power-pack/host/prompt-overlay.ts
@@ -659,313 +1079,6 @@ function installPromptOverlay(ctx) {
   }, "power-pack: prompt overlay");
 }
 
-// src/features/power-pack/host/catalog.ts
-import { readdir as readdir2, readFile as readFile2 } from "node:fs/promises";
-import { join as join3 } from "node:path";
-var SELF_PACKAGE = "dsh-all-in-one";
-async function collectProfilePlugins(dir, names) {
-  const manifestPath = join3(dir, "package.json");
-  try {
-    const manifest = JSON.parse(await readFile2(manifestPath, "utf8"));
-    const enabled = Array.isArray(manifest.dsh?.profile?.bundles) ? new Set(manifest.dsh.profile.bundles) : /* @__PURE__ */ new Set();
-    for (const name of Object.keys(manifest.dependencies ?? {})) {
-      if (name.startsWith("@deepseek-ai/") || name === SELF_PACKAGE) continue;
-      if (enabled.has(name)) names.add(name);
-    }
-  } catch (error) {
-    console.error("[power-pack] \u8BFB\u53D6 profile \u4F9D\u8D56\u5931\u8D25:", manifestPath, error);
-  }
-}
-async function resolveProfileDirs(currentProfileDir2) {
-  if (currentProfileDir2 !== void 0 && currentProfileDir2 !== "") return [currentProfileDir2];
-  const profilesRoot = join3(resolveDshHome(), "profiles");
-  try {
-    const profiles = await readdir2(profilesRoot, { withFileTypes: true });
-    return profiles.filter((profile) => profile.isDirectory() && profile.name !== "node_modules").map((profile) => join3(profilesRoot, profile.name));
-  } catch (error) {
-    if (error.code === "ENOENT") return [];
-    console.error("[power-pack] \u8BFB\u53D6 profile \u76EE\u5F55\u5931\u8D25:", profilesRoot, error);
-    return [];
-  }
-}
-async function findInstalledPlugins(currentProfileDir2) {
-  const names = /* @__PURE__ */ new Set();
-  for (const dir of await resolveProfileDirs(currentProfileDir2)) {
-    await collectProfilePlugins(dir, names);
-  }
-  return [...names].sort((left, right) => left.localeCompare(right));
-}
-async function listPluginCatalog(currentProfileDir2) {
-  const installed = (await findInstalledPlugins(currentProfileDir2)).map(
-    (packageName) => ({
-      id: `pkg:${packageName}`,
-      label: packageName,
-      description: "\u5DF2\u5728 profile \u4E2D\u5168\u5C40\u52A0\u8F7D\u3002\u52FE\u9009\u8868\u793A\u4FDD\u7559\u5728\u6280\u80FD\u5305\u4F1A\u8BDD\u91CC\uFF0C\u53D6\u6D88\u52FE\u9009\u4F1A\u5C4F\u853D\u5B83\u7684\u5DE5\u5177\u4E0E\u63D0\u793A\u8BCD\u6CE8\u5165\u3002",
-      kind: "installed",
-      packageName
-    })
-  );
-  return { standard: STANDARD_PLUGIN_ITEMS, installed };
-}
-async function listPluginItems(currentProfileDir2) {
-  const { standard, installed } = await listPluginCatalog(currentProfileDir2);
-  return [
-    ...standard.map(({ id, label, description, kind }) => ({ id, label, description, kind })),
-    ...installed.map(({ id, label, description, kind }) => ({ id, label, description, kind }))
-  ];
-}
-
-// src/features/power-pack/host/package-scan.ts
-import { readFile as readFile3, readdir as readdir3 } from "node:fs/promises";
-import { join as join4 } from "node:path";
-var SCAN_MAX_FILES = 120;
-var SCAN_MAX_BYTES = 4 * 1024 * 1024;
-var SCAN_MAX_FILE_BYTES = 512 * 1024;
-var SCAN_SUFFIXES = [".js", ".mjs", ".cjs"];
-function toolPrefixes(packageName) {
-  const short = packageName.replace(/^dsh-plugin-/, "").replace(/^dsh-/, "");
-  const candidates = [packageName, short, short.replace(/-/g, "_"), short.replace(/_/g, "-")];
-  return [...new Set(candidates.filter((item) => item !== ""))];
-}
-function hasPrefix(name, prefixes) {
-  return prefixes.some(
-    (prefix) => name === prefix || name.startsWith(`${prefix}_`) || name.startsWith(`${prefix}-`) || name.startsWith(`${prefix}.`)
-  );
-}
-async function resolveScanRoots(dir, packageName) {
-  const roots = /* @__PURE__ */ new Set([join4(dir, "lib"), join4(dir, "dist")]);
-  try {
-    const manifest = JSON.parse(await readFile3(join4(dir, "package.json"), "utf8"));
-    if (typeof manifest.main === "string" && manifest.main !== "") {
-      roots.add(join4(dir, manifest.main.replace(/\/[^/]+$/, "")));
-    }
-  } catch (error) {
-    console.error("[power-pack] \u8BFB\u53D6\u63D2\u4EF6\u6E05\u5355\u5931\u8D25:", packageName, error);
-  }
-  const existing = [];
-  for (const root of roots) {
-    try {
-      await readdir3(root);
-      existing.push(root);
-    } catch (error) {
-      if (error.code !== "ENOENT") {
-        console.error("[power-pack] \u8BFB\u53D6\u63D2\u4EF6\u4EA7\u7269\u76EE\u5F55\u5931\u8D25:", root, error);
-      }
-    }
-  }
-  return existing;
-}
-async function scanOwnedTools(roots, candidates) {
-  if (roots.length === 0 || candidates.length === 0) return [];
-  const owned = /* @__PURE__ */ new Set();
-  let files = 0;
-  let bytes = 0;
-  for (const root of roots) {
-    let entries;
-    try {
-      entries = await readdir3(root, { recursive: true, withFileTypes: true });
-    } catch (error) {
-      console.error("[power-pack] \u9012\u5F52\u8BFB\u53D6\u63D2\u4EF6\u4EA7\u7269\u5931\u8D25:", root, error);
-      continue;
-    }
-    for (const entry of entries) {
-      if (files >= SCAN_MAX_FILES || bytes >= SCAN_MAX_BYTES) break;
-      if (!entry.isFile()) continue;
-      if (!SCAN_SUFFIXES.some((suffix) => entry.name.endsWith(suffix))) continue;
-      const file = join4(entry.parentPath ?? root, entry.name);
-      try {
-        const text = await readFile3(file, { encoding: "utf8" });
-        files += 1;
-        bytes += text.length;
-        if (text.length > SCAN_MAX_FILE_BYTES) continue;
-        for (const name of candidates) {
-          if (!owned.has(name) && text.includes(name)) owned.add(name);
-        }
-      } catch (error) {
-        console.error("[power-pack] \u8BFB\u53D6\u63D2\u4EF6\u4EA7\u7269\u5931\u8D25:", file, error);
-      }
-    }
-  }
-  return [...owned];
-}
-async function ownedTools(packageName, globalNames, profileDir) {
-  const prefixes = toolPrefixes(packageName);
-  const byPrefix = globalNames.filter((name) => hasPrefix(name, prefixes));
-  const remaining = globalNames.filter((name) => !byPrefix.includes(name));
-  const roots = [];
-  for (const dir of await resolveProfileDirs(profileDir)) {
-    roots.push(...await resolveScanRoots(join4(dir, "node_modules", packageName), packageName));
-  }
-  const scanned = await scanOwnedTools(roots, remaining);
-  return [.../* @__PURE__ */ new Set([...byPrefix, ...scanned])].sort((left, right) => left.localeCompare(right));
-}
-
-// src/features/power-pack/host/global-catalog.ts
-var MCP_TOOL_NAME = /^mcp__([A-Za-z0-9_-]{1,32})__/;
-function collectGlobalToolNames(tools) {
-  if (tools === void 0) return [];
-  try {
-    const schemas = tools.schemas();
-    const names = /* @__PURE__ */ new Set();
-    for (const schema of schemas) {
-      if (typeof schema?.name === "string" && schema.name !== "") names.add(schema.name);
-    }
-    return [...names];
-  } catch (error) {
-    console.error("[power-pack] \u8BFB\u53D6\u5168\u5C40\u5DE5\u5177\u6E05\u5355\u5931\u8D25:", error);
-    return [];
-  }
-}
-async function listGlobalToolGroups(tools, profileDir) {
-  const names = collectGlobalToolNames(tools);
-  const mcpTools = /* @__PURE__ */ new Map();
-  const localTools = [];
-  for (const name of names) {
-    const match = MCP_TOOL_NAME.exec(name);
-    if (match) {
-      const server = match[1];
-      const list = mcpTools.get(server) ?? [];
-      list.push(name);
-      mcpTools.set(server, list);
-    } else {
-      localTools.push(name);
-    }
-  }
-  const groups = [];
-  for (const packageName of await findInstalledPlugins(profileDir)) {
-    const owned = await ownedTools(packageName, localTools, profileDir);
-    if (owned.length === 0) continue;
-    groups.push({
-      id: `pkg:${packageName}`,
-      label: packageName,
-      kind: "installed",
-      tools: owned
-    });
-  }
-  for (const [server, serverTools] of [...mcpTools].sort(([left], [right]) => left.localeCompare(right))) {
-    groups.push({
-      id: `mcp:${server}`,
-      label: `MCP \xB7 ${server}`,
-      kind: "global-mcp",
-      tools: serverTools.sort((left, right) => left.localeCompare(right))
-    });
-  }
-  return groups;
-}
-
-// src/features/power-pack/host/store.ts
-import { mkdir as mkdir2, readFile as readFile4, rename, writeFile } from "node:fs/promises";
-import { dirname, join as join5 } from "node:path";
-var RULE_MODES = ["all", "include", "exclude"];
-var LEGACY_FILE_NAMES = ["skill-packs.json", "chat-styles.json"];
-var PACK_ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
-function powerPacksFile() {
-  return join5(resolveDshHome(), "all-in-one", "power-packs.json");
-}
-function isValidPackId(id) {
-  return PACK_ID_PATTERN.test(id);
-}
-function stringList(value) {
-  return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
-}
-function stringDict(value) {
-  if (typeof value !== "object" || value === null || Array.isArray(value)) return {};
-  const result = {};
-  for (const [key, item] of Object.entries(value)) {
-    if (typeof item === "string") result[key] = item;
-  }
-  return result;
-}
-function normalizeRule(value) {
-  if (typeof value !== "object" || value === null) return { mode: "all", items: [] };
-  const candidate = value;
-  const mode = RULE_MODES.find((item) => item === candidate.mode) ?? "all";
-  return { mode, items: stringList(candidate.items) };
-}
-function normalizeMcpServer(value) {
-  if (typeof value !== "object" || value === null) return void 0;
-  const candidate = value;
-  const id = typeof candidate.id === "string" ? candidate.id.trim() : "";
-  if (!/^[A-Za-z0-9_-]{1,32}$/.test(id)) return void 0;
-  const transport = candidate.transport === "streamable-http" ? "streamable-http" : "stdio";
-  const command = typeof candidate.command === "string" ? candidate.command : "";
-  const url = typeof candidate.url === "string" ? candidate.url : "";
-  if (transport === "stdio" && command.trim() === "") return void 0;
-  if (transport === "streamable-http" && url.trim() === "") return void 0;
-  return {
-    id,
-    label: typeof candidate.label === "string" ? candidate.label : id,
-    transport,
-    command,
-    args: stringList(candidate.args),
-    env: stringDict(candidate.env),
-    url,
-    headers: stringDict(candidate.headers)
-  };
-}
-function normalizePack(value) {
-  if (typeof value !== "object" || value === null) return void 0;
-  const candidate = value;
-  const id = typeof candidate.id === "string" ? candidate.id.trim() : "";
-  const name = typeof candidate.name === "string" ? candidate.name.trim() : "";
-  if (!PACK_ID_PATTERN.test(id) || name === "") return void 0;
-  const seenServers = /* @__PURE__ */ new Set();
-  const mcpServers = Array.isArray(candidate.mcpServers) ? candidate.mcpServers.map(normalizeMcpServer).filter((server) => {
-    if (server === void 0 || seenServers.has(server.id)) return false;
-    seenServers.add(server.id);
-    return true;
-  }) : [];
-  return {
-    id,
-    name,
-    description: typeof candidate.description === "string" ? candidate.description : "",
-    systemPrompt: typeof candidate.systemPrompt === "string" ? candidate.systemPrompt : "",
-    skills: normalizeRule(candidate.skills),
-    plugins: normalizeRule(candidate.plugins),
-    mcp: normalizeRule(candidate.mcp),
-    mcpServers
-  };
-}
-async function parsePackFile(file) {
-  try {
-    const raw = await readFile4(file, "utf8");
-    const parsed = JSON.parse(raw);
-    const list = Array.isArray(parsed.packs) ? parsed.packs : parsed.styles;
-    const packs = Array.isArray(list) ? list.map(normalizePack).filter((pack) => pack !== void 0) : [];
-    const defaultPackId = typeof parsed.defaultPackId === "string" && packs.some((pack) => pack.id === parsed.defaultPackId) ? parsed.defaultPackId : "";
-    return { version: 1, packs, defaultPackId };
-  } catch (error) {
-    if (error.code !== "ENOENT") {
-      console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u5305\u914D\u7F6E\u5931\u8D25:", file, error);
-    }
-    return void 0;
-  }
-}
-async function readPacks() {
-  const current = await parsePackFile(powerPacksFile());
-  if (current !== void 0) return current;
-  for (const name of LEGACY_FILE_NAMES) {
-    const migrated = await parsePackFile(join5(resolveDshHome(), "all-in-one", name));
-    if (migrated === void 0) continue;
-    await writePacks(migrated);
-    return migrated;
-  }
-  return { version: 1, packs: [], defaultPackId: "" };
-}
-async function writePacks(document) {
-  const file = powerPacksFile();
-  const temp = `${file}.tmp`;
-  try {
-    await mkdir2(dirname(file), { recursive: true });
-    await writeFile(temp, `${JSON.stringify(document, null, 2)}
-`, "utf8");
-    await rename(temp, file);
-  } catch (error) {
-    console.error("[power-pack] \u5199\u5165\u6280\u80FD\u5305\u914D\u7F6E\u5931\u8D25:", file, error);
-    throw error;
-  }
-}
-
 // src/features/power-pack/host/routes.ts
 var ROUTE_PATH = "/dsh-all-in-one/power-packs";
 var MAX_BODY_BYTES = 1024 * 1024;
@@ -1004,9 +1117,11 @@ async function buildPayload(host) {
   const skills = await listSkillEntries();
   const plugins = await listPluginItems(host.profileDir);
   const globalGroups = await listGlobalToolGroups(host.tools, host.profileDir);
+  const recentComposed = await readComposeState();
   return {
     packs: document.packs,
     defaultPackId: document.defaultPackId,
+    recentComposed,
     catalog: {
       skills: skills.map(({ name, description }) => ({ name, description })),
       plugins,
@@ -1070,12 +1185,15 @@ async function handleWrite(request, api, host) {
     if (!pack2) throw new Error("\u6280\u80FD\u5305\u4E0D\u5B58\u5728");
     if (request.mode.trim() === "") throw new Error("\u672A\u6307\u5B9A\u6A21\u5F0F");
     const groups = await listGlobalToolGroups(host.tools, host.profileDir);
-    return { presetId: await ensureComposedPreset(api, request.mode, pack2, groups) };
+    const presetId = await ensureComposedPreset(api, request.mode, pack2, groups);
+    await rememberComposed(pack2.id, request.mode);
+    return { presetId };
   }
   if (request.action === "delete") {
     if (!isValidPackId(request.id)) throw new Error("\u6280\u80FD\u5305\u6807\u8BC6\u65E0\u6548");
     const payload2 = await deletePack(request.id, host);
     await invalidateComposedPreset(request.id);
+    await forgetComposedPack(request.id);
     return payload2;
   }
   if (request.action === "setDefault") {
@@ -1146,6 +1264,12 @@ function apply(ctx) {
   ctx.effect(() => () => {
     void disposePackPresets();
   }, "power-pack: presets");
+  ctx.effect(() => {
+    void restoreComposedPresets(api, ctx.tools, profileDir).catch((error) => {
+      console.error("[power-pack] \u542F\u52A8\u91CD\u5EFA\u7EC4\u5408\u9884\u8BBE\u5931\u8D25:", error);
+    });
+    return () => void 0;
+  }, "power-pack: restore");
   ctx.inject(["webServer"], (host) => {
     host.effect(
       () => installPowerPackRoutes(resolveWebServer(host), api, { profileDir, tools: host.tools }),

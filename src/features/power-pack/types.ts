@@ -100,11 +100,24 @@ export interface PowerPackCatalog {
   globalGroups: GlobalToolGroup[]
 }
 
+/** 生成过的「技能包 + 模式」组合，最近使用的在前。 */
+export interface ComposedSelection {
+  /** 技能包标识。 */
+  pack: string
+  /** 模式预设标识。 */
+  mode: string
+}
+
 /** GET / POST 共用的响应负载。 */
 export interface PowerPacksPayload {
   packs: PowerPack[]
   /** 新建会话默认预选的技能包 id；空字符串表示没有默认。 */
   defaultPackId: string
+  /**
+   * 记录过的组合，最近使用的在前。
+   * 插件启动时按它重建组合预设，因此它同时决定新会话界面回填哪一个组合。
+   */
+  recentComposed: ComposedSelection[]
   catalog: PowerPackCatalog
   /** 存储文件路径，便于用户定位与备份。 */
   storagePath: string

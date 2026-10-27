@@ -8,6 +8,7 @@
  */
 import type { AgentPresetSummary, PluginContext } from '../../types/plugin'
 import { composePowerPack, loadPowerPacks } from './api'
+import type { ComposedSelection } from './types'
 
 /** 组合预设 id 的前缀，与宿主内置模式区分。 */
 const PRESET_ID_PREFIX = 'power-pack-'
@@ -145,10 +146,13 @@ export function createSeatController(ctx: PluginContext): SeatController {
       // 技能包名单来自插件自己的路由；它失败只影响技能包下拉，模式仍可用
       let packs: SeatPackOption[] = []
       let defaultPackId = ''
+      let recent: ComposedSelection | undefined
       try {
         const payload = await loadPowerPacks()
         packs = payload.packs.map(({ id, name, description }) => ({ id, name, description }))
         defaultPackId = payload.defaultPackId
+        // 最近一次组合决定重启后新会话界面的回填值
+        recent = payload.recentComposed[0]
       } catch (error) {
         console.error('[power-pack] 读取技能包列表失败:', error)
       }
@@ -164,9 +168,11 @@ export function createSeatController(ctx: PluginContext): SeatController {
       const sessionBlank =
         sessionId === undefined ||
         ctx.sessions?.list.getSnapshot().byId[sessionId]?.blank !== false
-      const fallbackPack = sessionBlank ? defaultPackId : ''
+      // 新会话优先回填上次用过的组合，其次才是默认技能包
+      const fallbackPack = sessionBlank ? (recent?.pack || defaultPackId) : ''
+      const recentMode = sessionBlank ? (recent?.mode ?? '') : ''
       // 模式为空说明会话用的是旧版独立技能包预设，回退到宿主默认模式
-      const mode = staged?.mode || fromSession.mode || fallbackMode
+      const mode = staged?.mode || fromSession.mode || recentMode || fallbackMode
       const pack = staged ? staged.pack : (fromSession.pack || fallbackPack)
 
       store.set({ status: 'ready', modes, packs, mode, pack, error: null })
