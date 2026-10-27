@@ -1,91 +1,107 @@
 /**
- * 把对话风格注册为宿主的 Agent 预设。
+ * 组合预设的注册与失效。
  *
- * 宿主新建会话时读取预设列表，因此风格注册后会自动出现在新建任务的
- * 预设选择器里；选择后宿主按该预设挂载工具、技能与 MCP，实现按会话隔离。
+ * 「模式 × 风格」由插件合成一个预设后交给宿主挂载：宿主一次只认一个预设，
+ * 组合是让两个维度同时生效的唯一途径。同一时间只保留一个组合，避免每换一次
+ * 选择就多出一套常驻工具树。
  */
 import type { AgentPresetApi } from '../../../types/host'
 import type { ChatStyle } from '../types'
 
-import { buildPresetRows } from './composition'
+import { listPluginCatalog } from './catalog'
+import { composeStyleRows } from './compose'
+import { readPresetRows } from './preset-source'
 
-/** 风格预设 id 的前缀，避免与内置预设或用户自建预设重名。 */
+/** 组合预设 id 的前缀，与宿主内置预设区分。 */
 const PRESET_ID_PREFIX = 'style-'
 
-/** 风格预设的排序起点，排在标准、PTC、极简等内置预设之后。 */
-const PRESET_ORDER_BASE = 200
+/** 组合预设的排序，排在标准、PTC、极简等内置模式之后。 */
+const PRESET_ORDER = 200
 
-/** 已注册风格的注销函数；保存或删除风格时先撤销旧定义。 */
-const disposers = new Map<string, () => Promise<void>>()
+/** 当前存在的组合预设。 */
+interface ComposedPreset {
+  /** 风格 id 与模式 id 拼成的键，用于判断能否复用。 */
+  key: string
+  id: string
+  dispose: () => Promise<void>
+}
+
+let composed: ComposedPreset | undefined
 
 /**
- * 注销一个风格的预设。
+ * 生成组合预设 id；风格与模式都参与，界面可以据此反解两个维度的选择。
+ * @param styleId 风格标识
+ * @param modeId 模式预设标识
+ * @returns 组合预设 id
+ */
+function composedPresetId(styleId: string, modeId: string): string {
+  return `${PRESET_ID_PREFIX}${styleId}@${modeId}`
+}
+
+/** 注销当前组合预设。 */
+async function disposeComposed(): Promise<void> {
+  const current = composed
+  if (current === undefined) return
+
+  composed = undefined
+
+  try {
+    await current.dispose()
+  } catch (error) {
+    console.error('[chat-style] 注销组合预设失败:', current.id, error)
+  }
+}
+
+/**
+ * 确保「模式 + 风格」的组合预设已注册。
+ * @param api 宿主的 Agent 预设服务
+ * @param modeId 模式预设标识
+ * @param style 风格定义
+ * @returns 组合预设 id
+ */
+export async function ensureComposedPreset(
+  api: AgentPresetApi,
+  modeId: string,
+  style: ChatStyle,
+): Promise<string> {
+  const key = `${style.id}@${modeId}`
+  if (composed?.key === key) return composed.id
+
+  const modeRows = readPresetRows(api, modeId)
+  if (modeRows === undefined) {
+    throw new Error(`无法读取模式 ${modeId} 的组合行`)
+  }
+
+  const { installed } = await listPluginCatalog()
+  const rows = composeStyleRows(modeRows, style, installed)
+
+  await disposeComposed()
+
+  const id = composedPresetId(style.id, modeId)
+  const dispose = await api.register({
+    id,
+    name: style.name,
+    description: style.description,
+    order: PRESET_ORDER,
+    plugins: rows as unknown as Record<string, unknown>[],
+  })
+
+  composed = { key, id, dispose }
+  return id
+}
+
+/**
+ * 风格被修改或删除后让组合失效，下次选择会按新定义重新合成。
  * @param styleId 风格标识
  */
-export async function unregisterStylePreset(styleId: string): Promise<void> {
-  const dispose = disposers.get(styleId)
-  if (!dispose) return
+export async function invalidateComposedPreset(styleId: string): Promise<void> {
+  if (composed === undefined) return
+  if (!composed.key.startsWith(`${styleId}@`)) return
 
-  disposers.delete(styleId)
-
-  try {
-    await dispose()
-  } catch (error) {
-    console.error('[chat-style] 注销预设失败:', styleId, error)
-  }
+  await disposeComposed()
 }
 
-/**
- * 注册或更新一个风格的预设。
- *
- * 组合里的包名解析失败、行配置非法时，宿主会把该预设标记为 broken；
- * 这里只记录日志，保留其它风格可用。
- * @param api 宿主的 Agent 预设服务
- * @param style 风格定义
- * @param order 该风格在预设列表中的排序
- */
-export async function registerStylePreset(
-  api: AgentPresetApi,
-  style: ChatStyle,
-  order: number,
-): Promise<void> {
-  await unregisterStylePreset(style.id)
-
-  try {
-    const plugins = await buildPresetRows(style)
-    const dispose = await api.register({
-      id: `${PRESET_ID_PREFIX}${style.id}`,
-      name: style.name,
-      description: style.description,
-      order: PRESET_ORDER_BASE + order,
-      plugins: plugins as unknown as Record<string, unknown>[],
-    })
-
-    disposers.set(style.id, dispose)
-  } catch (error) {
-    console.error('[chat-style] 注册预设失败:', style.id, error)
-  }
-}
-
-/**
- * 按当前风格列表重建全部预设：先撤销所有旧定义，再按顺序注册。
- * @param api 宿主的 Agent 预设服务
- * @param styles 全部风格
- */
-export async function registerAllStylePresets(
-  api: AgentPresetApi,
-  styles: ChatStyle[],
-): Promise<void> {
-  for (const styleId of [...disposers.keys()]) await unregisterStylePreset(styleId)
-
-  for (const [index, style] of styles.entries()) {
-    await registerStylePreset(api, style, index)
-  }
-}
-
-/**
- * 插件卸载时撤销本插件注册的全部预设。
- */
+/** 插件卸载时注销组合预设。 */
 export async function disposeStylePresets(): Promise<void> {
-  for (const styleId of [...disposers.keys()]) await unregisterStylePreset(styleId)
+  await disposeComposed()
 }

@@ -6,6 +6,7 @@
  */
 import type {
   ChatStyle,
+  ChatStyleComposeResponse,
   ChatStylesPayload,
   ChatStyleWriteRequest,
 } from './types'
@@ -21,7 +22,7 @@ const REQUEST_TIMEOUT_MS = 20000
  * @param init fetch 配置
  * @returns 解析后的负载
  */
-async function request(init: RequestInit = {}): Promise<ChatStylesPayload> {
+async function request<T>(init: RequestInit = {}): Promise<T> {
   const controller = new AbortController()
   const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
 
@@ -47,7 +48,7 @@ async function request(init: RequestInit = {}): Promise<ChatStylesPayload> {
       throw new Error(message || `HTTP ${response.status}`)
     }
 
-    return (await response.json()) as ChatStylesPayload
+    return (await response.json()) as T
   } catch (error) {
     console.error('[chat-style] 请求风格接口失败:', error)
     throw error
@@ -61,7 +62,23 @@ async function request(init: RequestInit = {}): Promise<ChatStylesPayload> {
  * @returns 当前负载
  */
 export function loadChatStyles(): Promise<ChatStylesPayload> {
-  return request()
+  return request<ChatStylesPayload>()
+}
+
+/**
+ * 让宿主侧把「模式 + 风格」合成为一个组合预设。
+ * @param style 风格标识
+ * @param mode 模式预设标识
+ * @returns 已注册的组合预设 id
+ */
+export function composeChatStyle(style: string, mode: string): Promise<ChatStyleComposeResponse> {
+  const body: ChatStyleWriteRequest = { action: 'compose', style, mode }
+
+  return request<ChatStyleComposeResponse>({
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(body),
+  })
 }
 
 /**
@@ -72,7 +89,7 @@ export function loadChatStyles(): Promise<ChatStylesPayload> {
 export function saveChatStyle(style: ChatStyle): Promise<ChatStylesPayload> {
   const body: ChatStyleWriteRequest = { action: 'save', style }
 
-  return request({
+  return request<ChatStylesPayload>({
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(body),
@@ -87,7 +104,7 @@ export function saveChatStyle(style: ChatStyle): Promise<ChatStylesPayload> {
 export function deleteChatStyle(id: string): Promise<ChatStylesPayload> {
   const body: ChatStyleWriteRequest = { action: 'delete', id }
 
-  return request({
+  return request<ChatStylesPayload>({
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(body),

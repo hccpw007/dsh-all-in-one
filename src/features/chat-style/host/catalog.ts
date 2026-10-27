@@ -1,23 +1,22 @@
 /**
- * 插件/工具行清单与选择。
+ * 插件/工具行清单。
  *
  * 可选项来自两处：标准预设的功能项，以及 profile 中已安装的 `dsh-plugin-*`。
- * 已安装插件可能已经在全局组合里加载，重复放进预设会造成重复注册，因此
- * 「全部使用」只覆盖标准项，已装插件必须显式勾选。
+ * 已装插件可能已经在全局组合里加载，因此在风格规则里必须显式勾选才会追加。
  */
 import { readdir, readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
-import type { PluginCatalogItem, ResourceRule } from '../types'
+import type { PluginCatalogItem } from '../types'
 
 import { resolveDshHome } from './skill-catalog'
-import { STANDARD_PLUGIN_ITEMS, type PresetRow, type StandardPluginItem } from './standard-rows'
+import { STANDARD_PLUGIN_ITEMS, type StandardPluginItem } from './standard-rows'
 
 /** 本插件自身不进入可选插件清单，避免预设重复加载设置页。 */
 const SELF_PACKAGE = 'dsh-all-in-one'
 
 /** 已安装插件项，id 用 `pkg:` 前缀与标准项区分。 */
-interface InstalledPluginItem extends PluginCatalogItem {
+export interface InstalledPluginItem extends PluginCatalogItem {
   packageName: string
 }
 
@@ -77,7 +76,7 @@ async function findInstalledPlugins(): Promise<string[]> {
  * @param packageName 插件包名
  * @returns 只含字母数字与短横线的行 id
  */
-function installedRowId(packageName: string): string {
+export function installedRowId(packageName: string): string {
   return `pkg-${packageName.replace(/[^A-Za-z0-9_-]/g, '-')}`
 }
 
@@ -111,54 +110,4 @@ export async function listPluginItems(): Promise<PluginCatalogItem[]> {
     ...standard.map(({ id, label, description, kind }) => ({ id, label, description, kind })),
     ...installed.map(({ id, label, description, kind }) => ({ id, label, description, kind })),
   ]
-}
-
-/**
- * 按规则选择预设组合行。
- *
- * `all` 只包含标准项：已装插件默认全局加载，自动加入会把「全部使用」变成
- * 高风险操作。`include` 允许显式选择标准项或已装插件；`exclude` 从标准项
- * 全集里剔除勾选项。
- * @param rule 插件规则
- * @param installed 已安装插件清单
- * @returns 去重后的组合行，保持清单顺序
- */
-export function selectPluginRows(
-  rule: ResourceRule,
-  installed: InstalledPluginItem[],
-): PresetRow[] {
-  const selected = new Set(rule.items)
-  const rows: PresetRow[] = []
-
-  const push = (item: StandardPluginItem): void => {
-    for (const row of item.rows) {
-      if (rows.some((existing) => existing.id === row.id)) continue
-      rows.push(row)
-    }
-  }
-
-  switch (rule.mode) {
-    case 'all':
-      for (const item of STANDARD_PLUGIN_ITEMS) push(item)
-      break
-    case 'exclude':
-      for (const item of STANDARD_PLUGIN_ITEMS) {
-        if (!selected.has(item.id)) push(item)
-      }
-      break
-    case 'include':
-      for (const item of STANDARD_PLUGIN_ITEMS) {
-        if (selected.has(item.id)) push(item)
-      }
-      for (const item of installed) {
-        if (!selected.has(item.id)) continue
-        rows.push({ id: installedRowId(item.packageName), name: item.packageName })
-      }
-      break
-    default:
-      // 未知模式按不提供任何工具处理，避免静默启用用户未选择的插件
-      break
-  }
-
-  return rows
 }

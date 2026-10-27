@@ -84,10 +84,180 @@ window.__ModuleLoader__.load({
     // src/features/chat-style/seat.tsx
     var import_react = __toESM(require("react"), 1);
     var import_dsh_client_ui_primitives = require("@deepseek-ai/dsh-client-ui-primitives");
+    var BUILTIN_NAME_KEYS = {
+      standard: "presetStandardName",
+      ptc: "presetPtcName",
+      minimal: "presetMinimalName",
+      cordis: "presetCordisName"
+    };
+    var BUILTIN_DESCRIPTION_KEYS = {
+      standard: "presetStandardDescription",
+      ptc: "presetPtcDescription",
+      minimal: "presetMinimalDescription",
+      cordis: "presetCordisDescription"
+    };
+    function presetName(preset, t) {
+      if (preset.name) return preset.name;
+      const key = BUILTIN_NAME_KEYS[preset.id];
+      return key === void 0 ? preset.id : t(key);
+    }
+    function presetDescription(preset, t) {
+      if (preset.description) return preset.description;
+      const key = BUILTIN_DESCRIPTION_KEYS[preset.id];
+      return key === void 0 ? void 0 : t(key);
+    }
+    function PresetDropdown({ current, options, placeholder, disabled, onPick }) {
+      const [open, setOpen] = (0, import_react.useState)(false);
+      const selected = options.find((option) => option.id === current);
+      const canOpen = !disabled && options.length > 0;
+      const items = options.map((option) => ({
+        id: option.id,
+        label: /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_item" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_itemName" }, option.name), option.description ? (
+          // 选项说明
+          /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_itemDesc" }, option.description)
+        ) : null)
+      }));
+      return /* @__PURE__ */ import_react.default.createElement(
+        import_dsh_client_ui_primitives.Menu,
+        {
+          open: open && canOpen,
+          onClose: () => setOpen(false),
+          items,
+          selectedId: current,
+          onSelect: (id) => {
+            setOpen(false);
+            onPick(id);
+          },
+          align: "start",
+          portal: true,
+          className: "ufIuna_menuAnchor",
+          anchor: (
+            // 触发按钮的结构与类名同宿主预设选择器
+            /* @__PURE__ */ import_react.default.createElement(
+              "button",
+              {
+                type: "button",
+                className: "ufIuna_seat",
+                "aria-haspopup": "menu",
+                "aria-expanded": open && canOpen,
+                disabled: !canOpen,
+                onClick: () => setOpen((value) => !value)
+              },
+              /* @__PURE__ */ import_react.default.createElement(import_dsh_client_ui_primitives.IconAgentPresetOutlineRegular, { className: "ufIuna_seatIcon" }),
+              /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_seatLabel" }, selected === void 0 ? placeholder : selected.name),
+              /* @__PURE__ */ import_react.default.createElement(import_dsh_client_ui_primitives.IconChevronDownOutlineRegular, { className: "ufIuna_chevron" })
+            )
+          )
+        }
+      );
+    }
+    function ChatStyleSeat({
+      sessionId,
+      useChatStyleSeat,
+      load,
+      selectMode,
+      selectStyle,
+      applyStaged,
+      t
+    }) {
+      const snapshot = useChatStyleSeat((state) => state);
+      const actionsRef = (0, import_react.useRef)({ load, applyStaged });
+      actionsRef.current = { load, applyStaged };
+      (0, import_react.useEffect)(() => {
+        void actionsRef.current.load();
+        if (sessionId !== void 0) void actionsRef.current.applyStaged();
+      }, [sessionId]);
+      const modes = snapshot.modes.map((preset) => ({
+        id: preset.id,
+        name: presetName(preset, t),
+        description: presetDescription(preset, t)
+      }));
+      const disabled = snapshot.status === "loading";
+      return /* @__PURE__ */ import_react.default.createElement("div", null, /* @__PURE__ */ import_react.default.createElement("div", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react.default.createElement(
+        PresetDropdown,
+        {
+          current: snapshot.mode,
+          options: modes,
+          placeholder: t("modeLabel"),
+          disabled,
+          onPick: (id) => void selectMode(id)
+        }
+      ), /* @__PURE__ */ import_react.default.createElement(
+        PresetDropdown,
+        {
+          current: snapshot.style,
+          options: snapshot.styles,
+          placeholder: t("seatLabel"),
+          disabled,
+          onPick: (id) => void selectStyle(id)
+        }
+      )), snapshot.error ? /* @__PURE__ */ import_react.default.createElement("p", { className: "mt-1 text-[12px] leading-4 text-danger", role: "alert" }, snapshot.error === "session already started" ? t("seatSessionStarted") : `${t("seatSelectFailed")}\uFF1A${snapshot.error}`) : null);
+    }
+
+    // src/features/chat-style/api.ts
+    var ENDPOINT = "/dsh-all-in-one/chat-styles";
+    var REQUEST_TIMEOUT_MS = 2e4;
+    async function request(init = {}) {
+      const controller = new AbortController();
+      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+      try {
+        const response = await fetch(new URL(ENDPOINT, window.location.origin).toString(), {
+          credentials: "same-origin",
+          cache: "no-store",
+          ...init,
+          signal: controller.signal
+        });
+        if (!response.ok) {
+          const text = await response.text();
+          let message = text;
+          try {
+            const parsed = JSON.parse(text);
+            if (typeof parsed.error === "string") message = parsed.error;
+          } catch (error) {
+            console.error("[chat-style] \u89E3\u6790\u9519\u8BEF\u54CD\u5E94\u5931\u8D25:", error);
+          }
+          throw new Error(message || `HTTP ${response.status}`);
+        }
+        return await response.json();
+      } catch (error) {
+        console.error("[chat-style] \u8BF7\u6C42\u98CE\u683C\u63A5\u53E3\u5931\u8D25:", error);
+        throw error;
+      } finally {
+        window.clearTimeout(timer);
+      }
+    }
+    function loadChatStyles() {
+      return request();
+    }
+    function composeChatStyle(style, mode) {
+      const body = { action: "compose", style, mode };
+      return request({
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(body)
+      });
+    }
+    function saveChatStyle(style) {
+      const body = { action: "save", style };
+      return request({
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(body)
+      });
+    }
+    function deleteChatStyle(id) {
+      const body = { action: "delete", id };
+      return request({
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(body)
+      });
+    }
 
     // src/features/chat-style/seat-store.ts
+    var PRESET_ID_PREFIX = "style-";
     function initialState() {
-      return { status: "idle", options: [], current: "", error: null };
+      return { status: "idle", modes: [], styles: [], mode: "", style: "", error: null };
     }
     function createSeatStore() {
       let snapshot = initialState();
@@ -106,8 +276,12 @@ window.__ModuleLoader__.load({
         }
       };
     }
-    function isStylePreset(preset) {
-      return preset.id.startsWith("style-");
+    function parsePresetId(presetId) {
+      if (!presetId.startsWith(PRESET_ID_PREFIX)) return { mode: presetId, style: "" };
+      const body = presetId.slice(PRESET_ID_PREFIX.length);
+      const separator = body.indexOf("@");
+      if (separator < 0) return { mode: "", style: body };
+      return { mode: body.slice(separator + 1), style: body.slice(0, separator) };
     }
     function sessionPreset(ctx, sessionId) {
       if (sessionId === void 0) return void 0;
@@ -132,19 +306,40 @@ window.__ModuleLoader__.load({
             store.set({ status: "error", error: result.error?.message ?? "list failed" });
             return;
           }
-          const presets = result.value.presets.filter((preset) => preset.broken === void 0);
-          const fallback = presets.find((preset) => preset.isDefault)?.id ?? presets[0]?.id ?? "";
-          const current = staged ?? sessionPreset(ctx, sessionId) ?? fallback;
-          store.set({ status: "ready", options: presets, current, error: null });
+          let styles = [];
+          try {
+            const payload = await loadChatStyles();
+            styles = payload.styles.map(({ id, name, description }) => ({ id, name, description }));
+          } catch (error) {
+            console.error("[chat-style] \u8BFB\u53D6\u98CE\u683C\u5217\u8868\u5931\u8D25:", error);
+          }
+          const modes = result.value.presets.filter(
+            (preset) => preset.broken === void 0 && !preset.id.startsWith(PRESET_ID_PREFIX)
+          );
+          const fallbackMode = modes.find((preset) => preset.isDefault)?.id ?? modes[0]?.id ?? "";
+          const fromSession = parsePresetId(sessionPreset(ctx, sessionId) ?? "");
+          store.set({
+            status: "ready",
+            modes,
+            styles,
+            // 模式为空说明会话用的是旧版独立风格预设，回退到宿主默认模式
+            mode: staged?.mode || fromSession.mode || fallbackMode,
+            style: staged?.style ?? fromSession.style,
+            error: null
+          });
         } catch (error) {
-          console.error("[chat-style] \u8BFB\u53D6 Agent \u9884\u8BBE\u5931\u8D25:", error);
+          console.error("[chat-style] \u8BFB\u53D6\u6A21\u5F0F\u4E0E\u98CE\u683C\u5931\u8D25:", error);
           store.set({
             status: "error",
             error: error instanceof Error ? error.message : String(error)
           });
         }
       };
-      const submit = async (sessionId, presetId) => {
+      const commit = async (sessionId, mode, style) => {
+        if (sessionId === void 0) {
+          staged = { mode, style };
+          return;
+        }
         const api = ctx.remote?.agentPresets;
         if (!api) {
           store.set({ error: "agentPresets remote unavailable" });
@@ -153,11 +348,12 @@ window.__ModuleLoader__.load({
         }
         const summary = ctx.sessions?.list.getSnapshot().byId[sessionId];
         if (summary && summary.blank === false) {
-          store.set({ error: "session already started", current: sessionPreset(ctx, sessionId) ?? "" });
+          store.set({ error: "session already started" });
           staged = void 0;
           return;
         }
         try {
+          const presetId = style === "" ? mode : (await composeChatStyle(style, mode)).presetId;
           const result = await api.select(sessionId, presetId);
           if (!result.ok) {
             store.set({ error: result.error?.message ?? "select failed" });
@@ -165,21 +361,38 @@ window.__ModuleLoader__.load({
             return;
           }
           staged = void 0;
-          store.set({ current: result.value ?? presetId, error: null });
+          store.set({ error: null });
         } catch (error) {
-          console.error("[chat-style] \u5E94\u7528\u5BF9\u8BDD\u98CE\u683C\u5931\u8D25:", error);
+          console.error("[chat-style] \u5E94\u7528\u6A21\u5F0F\u4E0E\u98CE\u683C\u5931\u8D25:", error);
           store.set({ error: error instanceof Error ? error.message : String(error) });
           staged = void 0;
         }
       };
-      const select = async (sessionId, presetId) => {
+      const selectMode = async (sessionId, modeId) => {
         if (busy) return;
-        staged = presetId;
-        store.set({ current: presetId, error: null });
-        if (sessionId === void 0) return;
+        store.set({ mode: modeId, error: null });
+        if (sessionId === void 0) {
+          await commit(void 0, modeId, store.getSnapshot().style);
+          return;
+        }
         busy = true;
         try {
-          await submit(sessionId, presetId);
+          await commit(sessionId, modeId, store.getSnapshot().style);
+        } finally {
+          busy = false;
+        }
+      };
+      const selectStyle = async (sessionId, styleId) => {
+        if (busy) return;
+        const next = styleId === store.getSnapshot().style ? "" : styleId;
+        store.set({ style: next, error: null });
+        if (sessionId === void 0) {
+          await commit(void 0, store.getSnapshot().mode, next);
+          return;
+        }
+        busy = true;
+        try {
+          await commit(sessionId, store.getSnapshot().mode, next);
         } finally {
           busy = false;
         }
@@ -188,127 +401,12 @@ window.__ModuleLoader__.load({
         if (staged === void 0 || busy) return;
         busy = true;
         try {
-          await submit(sessionId, staged);
+          await commit(sessionId, staged.mode, staged.style);
         } finally {
           busy = false;
         }
       };
-      return { store, load, select, applyStaged };
-    }
-
-    // src/features/chat-style/seat.tsx
-    var BUILTIN_NAME_KEYS = {
-      standard: "presetStandardName",
-      ptc: "presetPtcName",
-      minimal: "presetMinimalName",
-      cordis: "presetCordisName"
-    };
-    var BUILTIN_DESCRIPTION_KEYS = {
-      standard: "presetStandardDescription",
-      ptc: "presetPtcDescription",
-      minimal: "presetMinimalDescription",
-      cordis: "presetCordisDescription"
-    };
-    function presetName(preset, t) {
-      if (preset.name) return preset.name;
-      const key = BUILTIN_NAME_KEYS[preset.id];
-      return key === void 0 ? preset.id : t(key);
-    }
-    function presetDescription(preset, t) {
-      if (preset.description) return preset.description;
-      const key = BUILTIN_DESCRIPTION_KEYS[preset.id];
-      return key === void 0 ? void 0 : t(key);
-    }
-    function PresetDropdown({ current, options, placeholder, disabled, onPick, t }) {
-      const [open, setOpen] = (0, import_react.useState)(false);
-      const selected = options.find((preset) => preset.id === current);
-      const canOpen = !disabled && options.length > 0;
-      const items = options.map((preset) => {
-        const description = presetDescription(preset, t);
-        return {
-          id: preset.id,
-          label: /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_item" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_itemName" }, presetName(preset, t)), description ? (
-            // 预设说明
-            /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_itemDesc" }, description)
-          ) : null)
-        };
-      });
-      return /* @__PURE__ */ import_react.default.createElement(
-        import_dsh_client_ui_primitives.Menu,
-        {
-          open: open && canOpen,
-          onClose: () => setOpen(false),
-          items,
-          selectedId: current,
-          onSelect: (id) => {
-            setOpen(false);
-            if (id !== current) onPick(id);
-          },
-          align: "start",
-          portal: true,
-          className: "ufIuna_menuAnchor",
-          anchor: (
-            // 触发按钮的结构与类名同宿主预设选择器
-            /* @__PURE__ */ import_react.default.createElement(
-              "button",
-              {
-                type: "button",
-                className: "ufIuna_seat",
-                "aria-haspopup": "menu",
-                "aria-expanded": open && canOpen,
-                disabled: !canOpen,
-                onClick: () => setOpen((value) => !value)
-              },
-              /* @__PURE__ */ import_react.default.createElement(import_dsh_client_ui_primitives.IconAgentPresetOutlineRegular, { className: "ufIuna_seatIcon" }),
-              /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_seatLabel" }, selected === void 0 ? placeholder : presetName(selected, t)),
-              /* @__PURE__ */ import_react.default.createElement(import_dsh_client_ui_primitives.IconChevronDownOutlineRegular, { className: "ufIuna_chevron" })
-            )
-          )
-        }
-      );
-    }
-    function ChatStyleSeat({
-      sessionId,
-      useChatStyleSeat,
-      load,
-      select,
-      applyStaged,
-      t
-    }) {
-      const snapshot = useChatStyleSeat((state) => state);
-      const actionsRef = (0, import_react.useRef)({ load, applyStaged });
-      actionsRef.current = { load, applyStaged };
-      (0, import_react.useEffect)(() => {
-        void actionsRef.current.load();
-        if (sessionId !== void 0) void actionsRef.current.applyStaged();
-      }, [sessionId]);
-      const styles = snapshot.options.filter(isStylePreset);
-      const modes = snapshot.options.filter((preset) => !isStylePreset(preset));
-      const disabled = snapshot.status === "loading" || snapshot.options.length === 0;
-      const pick = (id) => {
-        void select(id);
-      };
-      return /* @__PURE__ */ import_react.default.createElement("div", null, /* @__PURE__ */ import_react.default.createElement("div", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react.default.createElement(
-        PresetDropdown,
-        {
-          current: snapshot.current,
-          options: modes,
-          placeholder: t("modeLabel"),
-          disabled,
-          onPick: pick,
-          t
-        }
-      ), /* @__PURE__ */ import_react.default.createElement(
-        PresetDropdown,
-        {
-          current: snapshot.current,
-          options: styles,
-          placeholder: t("seatLabel"),
-          disabled,
-          onPick: pick,
-          t
-        }
-      )), snapshot.error ? /* @__PURE__ */ import_react.default.createElement("p", { className: "mt-1 text-[12px] leading-4 text-danger", role: "alert" }, snapshot.error === "session already started" ? t("seatSessionStarted") : `${t("seatSelectFailed")}\uFF1A${snapshot.error}`) : null);
+      return { store, load, selectMode, selectStyle, applyStaged };
     }
 
     // src/features/chat-style/client.tsx
@@ -325,7 +423,8 @@ window.__ModuleLoader__.load({
               inject: (sessionId) => ({
                 hooks: { chatStyleSeat: controller.store },
                 load: () => controller.load(sessionId),
-                select: (presetId) => controller.select(sessionId, presetId),
+                selectMode: (presetId) => controller.selectMode(sessionId, presetId),
+                selectStyle: (styleId) => controller.selectStyle(sessionId, styleId),
                 applyStaged: async () => {
                   if (sessionId !== void 0) await controller.applyStaged(sessionId);
                 }
@@ -490,13 +589,13 @@ window.__ModuleLoader__.load({
         // 移除 MCP 服务器按钮
         remove: "\u79FB\u9664",
         // 保存成功提示
-        saved: "\u5DF2\u4FDD\u5B58\uFF0C\u65B0\u5EFA\u4EFB\u52A1\u65F6\u53EF\u5728\u9884\u8BBE\u5217\u8868\u4E2D\u9009\u62E9\u8BE5\u98CE\u683C\u3002",
+        saved: "\u5DF2\u4FDD\u5B58\uFF0C\u65B0\u5EFA\u4EFB\u52A1\u65F6\u53EF\u5728\u300C\u5BF9\u8BDD\u98CE\u683C\u300D\u4E0B\u62C9\u4E2D\u9009\u62E9\u8BE5\u98CE\u683C\u3002",
         // 必填校验提示
         nameRequired: "\u8BF7\u586B\u5199\u98CE\u683C\u540D\u79F0\u3002",
         // 存储位置说明
         storageHint: "\u914D\u7F6E\u6587\u4EF6\u4F4D\u7F6E",
         // 预设选择提示
-        presetHint: "\u98CE\u683C\u4EE5 Agent \u9884\u8BBE\u7684\u5F62\u5F0F\u6CE8\u518C\u3002\u65B0\u5EFA\u4EFB\u52A1\u65F6\u5728\u300C\u6807\u51C6\u6A21\u5F0F\u300D\u65C1\u7684\u9884\u8BBE\u9009\u62E9\u5668\u91CC\u9009\u62E9\u5B83\u3002",
+        presetHint: "\u98CE\u683C\u53E0\u52A0\u5728\u65B0\u5EFA\u4EFB\u52A1\u65F6\u6240\u9009\u7684\u6A21\u5F0F\u4E4B\u4E0A\uFF1A\u6A21\u5F0F\u63D0\u4F9B\u57FA\u7840\u5DE5\u5177\uFF0C\u98CE\u683C\u518D\u7B5B\u9009\u6280\u80FD\u4E0E\u5DE5\u5177\u3001\u8FFD\u52A0 MCP \u4E0E\u7CFB\u7EDF\u63D0\u793A\u8BCD\u3002",
         // 新会话选择器的模式下拉占位文案
         modeLabel: "\u6A21\u5F0F",
         // 新会话选择器的风格下拉占位文案
@@ -638,13 +737,13 @@ window.__ModuleLoader__.load({
         // Remove MCP server
         remove: "Remove",
         // Saved notice
-        saved: "Saved. Pick this style from the preset list when starting a new task.",
+        saved: "Saved. Pick this style from the Chat style dropdown when starting a new task.",
         // Required name message
         nameRequired: "Enter a style name.",
         // Storage location hint
         storageHint: "Config file",
         // Preset picker hint
-        presetHint: "Styles register as agent presets. Choose one in the preset picker next to Standard mode when starting a new task.",
+        presetHint: "A style layers on top of the mode chosen for a new task: the mode supplies base tools, and the style filters skills and tools, then adds MCP servers and a system prompt.",
         // Placeholder for the mode dropdown
         modeLabel: "Mode",
         // Placeholder for the style dropdown
@@ -701,58 +800,6 @@ window.__ModuleLoader__.load({
           ...rest
         }
       );
-    }
-
-    // src/features/chat-style/api.ts
-    var ENDPOINT = "/dsh-all-in-one/chat-styles";
-    var REQUEST_TIMEOUT_MS = 2e4;
-    async function request(init = {}) {
-      const controller = new AbortController();
-      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-      try {
-        const response = await fetch(new URL(ENDPOINT, window.location.origin).toString(), {
-          credentials: "same-origin",
-          cache: "no-store",
-          ...init,
-          signal: controller.signal
-        });
-        if (!response.ok) {
-          const text = await response.text();
-          let message = text;
-          try {
-            const parsed = JSON.parse(text);
-            if (typeof parsed.error === "string") message = parsed.error;
-          } catch (error) {
-            console.error("[chat-style] \u89E3\u6790\u9519\u8BEF\u54CD\u5E94\u5931\u8D25:", error);
-          }
-          throw new Error(message || `HTTP ${response.status}`);
-        }
-        return await response.json();
-      } catch (error) {
-        console.error("[chat-style] \u8BF7\u6C42\u98CE\u683C\u63A5\u53E3\u5931\u8D25:", error);
-        throw error;
-      } finally {
-        window.clearTimeout(timer);
-      }
-    }
-    function loadChatStyles() {
-      return request();
-    }
-    function saveChatStyle(style) {
-      const body = { action: "save", style };
-      return request({
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(body)
-      });
-    }
-    function deleteChatStyle(id) {
-      const body = { action: "delete", id };
-      return request({
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify(body)
-      });
     }
 
     // src/features/chat-style/StyleEditor.tsx

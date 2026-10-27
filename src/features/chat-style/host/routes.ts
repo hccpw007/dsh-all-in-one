@@ -7,10 +7,10 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
 
 import type { AgentPresetApi, WebServerApi } from '../../../types/host'
-import type { ChatStyle, ChatStyleWriteRequest, ChatStylesPayload } from '../types'
+import type { ChatStyle, ChatStyleComposeResponse, ChatStyleWriteRequest, ChatStylesPayload } from '../types'
 
 import { listPluginItems } from './catalog'
-import { registerStylePreset, unregisterStylePreset } from './presets'
+import { ensureComposedPreset, invalidateComposedPreset } from './presets'
 import { listSkillEntries, type SkillEntry } from './skill-catalog'
 import {
   removeStyleSkillDir,
@@ -148,20 +148,29 @@ async function deleteStyle(styleId: string): Promise<ChatStylesPayload> {
 let writeChain: Promise<unknown> = Promise.resolve()
 
 /**
- * 处理一次写入请求。
+ * 处理一次写入请求：保存或删除风格，或为「模式 + 风格」合成组合预设。
  * @param request 写请求体
  * @param api 宿主预设服务
- * @returns 响应负载
+ * @returns 风格负载，或合成结果的预设 id
  */
 async function handleWrite(
   request: ChatStyleWriteRequest,
   api: AgentPresetApi,
-): Promise<ChatStylesPayload> {
+): Promise<ChatStylesPayload | ChatStyleComposeResponse> {
+  if (request.action === 'compose') {
+    const document = await readStyles()
+    const style = document.styles.find((item) => item.id === request.style)
+    if (!style) throw new Error('风格不存在')
+    if (request.mode.trim() === '') throw new Error('未指定模式')
+
+    return { presetId: await ensureComposedPreset(api, request.mode, style) }
+  }
+
   if (request.action === 'delete') {
     if (!isValidStyleId(request.id)) throw new Error('风格标识无效')
 
     const payload = await deleteStyle(request.id)
-    await unregisterStylePreset(request.id)
+    await invalidateComposedPreset(request.id)
     return payload
   }
 
@@ -169,8 +178,7 @@ async function handleWrite(
   if (!style) throw new Error('风格定义无效')
 
   const payload = await saveStyle(style)
-  const order = payload.styles.findIndex((item) => item.id === style.id)
-  await registerStylePreset(api, style, Math.max(order, 0))
+  await invalidateComposedPreset(style.id)
 
   return payload
 }

@@ -1,13 +1,11 @@
 /**
- * 把一个对话风格翻译成宿主的预设组合。
+ * 把一个对话风格翻译成叠加在模式之上的组合行。
  *
- * 组合按「风格系统提示词 → 插件/工具行 → 技能提供者 → MCP 服务器」排列。
- * 技能提供者与 `tool-skill` 是固定行：没有它们，风格里勾选的技能既不会进入
- * 系统提示词，也没有加载工具可用。
+ * 风格只提供自己的部分：系统提示词、技能提供者与 MCP 服务器。工具行不在这里
+ * 生成——它们由风格的三态规则从模式自身的行里筛选，见 `compose.ts`。
  */
 import type { ChatStyle, McpServerConfig } from '../types'
 
-import { listPluginCatalog, selectPluginRows } from './catalog'
 import { styleSkillDir } from './skill-links'
 import type { PresetRow } from './standard-rows'
 
@@ -15,10 +13,10 @@ import type { PresetRow } from './standard-rows'
 const PROMPT_ROW_NAME = 'dsh-all-in-one/preset-style'
 
 /** 技能提供者行，按规则扫描用户根或风格专属目录。 */
-const SKILL_FILESYSTEM_ROW = '@deepseek-ai/dsh-skill-filesystem'
+export const SKILL_FILESYSTEM_ROW = '@deepseek-ai/dsh-skill-filesystem'
 
 /** 模型侧的技能目录与加载工具行。 */
-const TOOL_SKILL_ROW = '@deepseek-ai/dsh-tool-skill'
+export const TOOL_SKILL_ROW = '@deepseek-ai/dsh-tool-skill'
 
 /** MCP 客户端行。 */
 const MCP_CLIENT_ROW = '@deepseek-ai/dsh-mcp-client'
@@ -66,14 +64,14 @@ function selectMcpServers(style: ChatStyle): McpServerConfig[] {
 }
 
 /**
- * 组装一个风格的完整预设行列表。
+ * 组装风格自己追加的行：提示词、技能提供者与 MCP 服务器。
  * @param style 风格定义
- * @returns 可直接注册为 Agent 预设的 plugins
+ * @returns 要接在模式行之后的组合行
  */
-export async function buildPresetRows(style: ChatStyle): Promise<PresetRow[]> {
+export function buildStyleRows(style: ChatStyle): PresetRow[] {
   const rows: PresetRow[] = []
 
-  // 风格提示词追加在系统提示词末尾；为空时不注册，保持继承部署人设
+  // 风格提示词追加在系统提示词末尾；为空时不注册，保持模式的提示词不变
   if (style.systemPrompt.trim() !== '') {
     rows.push({
       id: 'chat-style-prompt',
@@ -81,9 +79,6 @@ export async function buildPresetRows(style: ChatStyle): Promise<PresetRow[]> {
       config: { text: style.systemPrompt },
     })
   }
-
-  const { installed } = await listPluginCatalog()
-  rows.push(...selectPluginRows(style.plugins, installed))
 
   // 技能规则为「全部」时直接扫描用户根，其余模式只扫描风格专属链接目录
   const skillConfig =

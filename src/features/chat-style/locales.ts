@@ -119,14 +119,14 @@ export const chatStyleLocales: FeatureLocales = {
     // 移除 MCP 服务器按钮
     remove: '移除',
     // 保存成功提示
-    saved: '已保存，新建任务时可在预设列表中选择该风格。',
+    saved: '已保存，新建任务时可在「对话风格」下拉中选择该风格。',
     // 必填校验提示
     nameRequired: '请填写风格名称。',
     // 存储位置说明
     storageHint: '配置文件位置',
     // 预设选择提示
     presetHint:
-      '风格以 Agent 预设的形式注册。新建任务时在「标准模式」旁的预设选择器里选择它。',
+      '风格叠加在新建任务时所选的模式之上：模式提供基础工具，风格再筛选技能与工具、追加 MCP 与系统提示词。',
     // 新会话选择器的模式下拉占位文案
     modeLabel: '模式',
     // 新会话选择器的风格下拉占位文案
@@ -273,14 +273,14 @@ export const chatStyleLocales: FeatureLocales = {
     // Remove MCP server
     remove: 'Remove',
     // Saved notice
-    saved: 'Saved. Pick this style from the preset list when starting a new task.',
+    saved: 'Saved. Pick this style from the Chat style dropdown when starting a new task.',
     // Required name message
     nameRequired: 'Enter a style name.',
     // Storage location hint
     storageHint: 'Config file',
     // Preset picker hint
     presetHint:
-      'Styles register as agent presets. Choose one in the preset picker next to Standard mode when starting a new task.',
+      'A style layers on top of the mode chosen for a new task: the mode supplies base tools, and the style filters skills and tools, then adds MCP servers and a system prompt.',
     // Placeholder for the mode dropdown
     modeLabel: 'Mode',
     // Placeholder for the style dropdown

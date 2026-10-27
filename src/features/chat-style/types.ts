@@ -82,7 +82,14 @@ export interface ChatStylesPayload {
   storagePath: string
 }
 
-/** 保存或删除风格的请求体。 */
+/** 保存、删除或合成组合预设的请求体。 */
 export type ChatStyleWriteRequest =
   | { action: 'save'; style: ChatStyle }
   | { action: 'delete'; id: string }
+  | { action: 'compose'; style: string; mode: string }
+
+/** 合成组合预设的响应体。 */
+export interface ChatStyleComposeResponse {
+  /** 已注册的组合预设 id，客户端直接用它选择会话预设。 */
+  presetId: string
+}

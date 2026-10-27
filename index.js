@@ -387,38 +387,6 @@ async function listPluginItems() {
     ...installed.map(({ id, label, description, kind }) => ({ id, label, description, kind }))
   ];
 }
-function selectPluginRows(rule, installed) {
-  const selected = new Set(rule.items);
-  const rows = [];
-  const push = (item) => {
-    for (const row of item.rows) {
-      if (rows.some((existing) => existing.id === row.id)) continue;
-      rows.push(row);
-    }
-  };
-  switch (rule.mode) {
-    case "all":
-      for (const item of STANDARD_PLUGIN_ITEMS) push(item);
-      break;
-    case "exclude":
-      for (const item of STANDARD_PLUGIN_ITEMS) {
-        if (!selected.has(item.id)) push(item);
-      }
-      break;
-    case "include":
-      for (const item of STANDARD_PLUGIN_ITEMS) {
-        if (selected.has(item.id)) push(item);
-      }
-      for (const item of installed) {
-        if (!selected.has(item.id)) continue;
-        rows.push({ id: installedRowId(item.packageName), name: item.packageName });
-      }
-      break;
-    default:
-      break;
-  }
-  return rows;
-}
 
 // src/features/chat-style/host/skill-links.ts
 import { mkdir, rm, symlink } from "node:fs/promises";
@@ -502,7 +470,7 @@ function selectMcpServers(style) {
       return [];
   }
 }
-async function buildPresetRows(style) {
+function buildStyleRows(style) {
   const rows = [];
   if (style.systemPrompt.trim() !== "") {
     rows.push({
@@ -511,8 +479,6 @@ async function buildPresetRows(style) {
       config: { text: style.systemPrompt }
     });
   }
-  const { installed } = await listPluginCatalog();
-  rows.push(...selectPluginRows(style.plugins, installed));
   const skillConfig = style.skills.mode === "all" ? { includeDefaultRoots: true } : { includeDefaultRoots: false, customSkillDirs: [styleSkillDir(style.id)] };
   rows.push({ id: "skill-filesystem", name: SKILL_FILESYSTEM_ROW, config: skillConfig });
   rows.push({ id: "tool-skill", name: TOOL_SKILL_ROW });
@@ -522,44 +488,106 @@ async function buildPresetRows(style) {
   return rows;
 }
 
+// src/features/chat-style/host/compose.ts
+var SKILL_ROW_NAMES = /* @__PURE__ */ new Set([SKILL_FILESYSTEM_ROW, TOOL_SKILL_ROW]);
+function collectKeys(rows) {
+  const keys = { ids: /* @__PURE__ */ new Set(), names: /* @__PURE__ */ new Set() };
+  for (const row of rows) {
+    keys.ids.add(row.id);
+    keys.names.add(row.name);
+  }
+  return keys;
+}
+var ITEM_KEYS = new Map(
+  STANDARD_PLUGIN_ITEMS.map((item) => [item.id, collectKeys(item.rows)])
+);
+var ALL_KEYS = collectKeys(STANDARD_PLUGIN_ITEMS.flatMap((item) => item.rows));
+function isStandardRow(row) {
+  return ALL_KEYS.ids.has(row.id) || ALL_KEYS.names.has(row.name);
+}
+function isSelectedRow(row, selected) {
+  for (const itemId of selected) {
+    const keys = ITEM_KEYS.get(itemId);
+    if (keys === void 0) continue;
+    if (keys.ids.has(row.id) || keys.names.has(row.name)) return true;
+  }
+  return false;
+}
+function filterByPluginRule(rows, rule, installed) {
+  if (rule.mode === "all") return rows;
+  const selected = new Set(rule.items);
+  if (rule.mode === "include") {
+    const kept = rows.filter((row) => !isStandardRow(row) || isSelectedRow(row, selected));
+    for (const item of installed) {
+      if (selected.has(item.id)) kept.push({ id: installedRowId(item.packageName), name: item.packageName });
+    }
+    return kept;
+  }
+  return rows.filter((row) => !isStandardRow(row) || !isSelectedRow(row, selected));
+}
+function composeStyleRows(modeRows, style, installed) {
+  const base = modeRows.filter((row) => !SKILL_ROW_NAMES.has(row.name));
+  const rows = filterByPluginRule(base, style.plugins, installed);
+  for (const row of buildStyleRows(style)) {
+    if (rows.some((existing) => existing.id === row.id)) continue;
+    rows.push(row);
+  }
+  return rows;
+}
+
+// src/features/chat-style/host/preset-source.ts
+function readPresetRows(api, presetId) {
+  const internals = api;
+  const rows = internals.definitions?.get(presetId)?.config?.plugins;
+  if (!Array.isArray(rows)) return void 0;
+  return rows;
+}
+
 // src/features/chat-style/host/presets.ts
 var PRESET_ID_PREFIX = "style-";
-var PRESET_ORDER_BASE = 200;
-var disposers = /* @__PURE__ */ new Map();
-async function unregisterStylePreset(styleId) {
-  const dispose = disposers.get(styleId);
-  if (!dispose) return;
-  disposers.delete(styleId);
+var PRESET_ORDER = 200;
+var composed;
+function composedPresetId(styleId, modeId) {
+  return `${PRESET_ID_PREFIX}${styleId}@${modeId}`;
+}
+async function disposeComposed() {
+  const current = composed;
+  if (current === void 0) return;
+  composed = void 0;
   try {
-    await dispose();
+    await current.dispose();
   } catch (error) {
-    console.error("[chat-style] \u6CE8\u9500\u9884\u8BBE\u5931\u8D25:", styleId, error);
+    console.error("[chat-style] \u6CE8\u9500\u7EC4\u5408\u9884\u8BBE\u5931\u8D25:", current.id, error);
   }
 }
-async function registerStylePreset(api, style, order) {
-  await unregisterStylePreset(style.id);
-  try {
-    const plugins = await buildPresetRows(style);
-    const dispose = await api.register({
-      id: `${PRESET_ID_PREFIX}${style.id}`,
-      name: style.name,
-      description: style.description,
-      order: PRESET_ORDER_BASE + order,
-      plugins
-    });
-    disposers.set(style.id, dispose);
-  } catch (error) {
-    console.error("[chat-style] \u6CE8\u518C\u9884\u8BBE\u5931\u8D25:", style.id, error);
+async function ensureComposedPreset(api, modeId, style) {
+  const key = `${style.id}@${modeId}`;
+  if (composed?.key === key) return composed.id;
+  const modeRows = readPresetRows(api, modeId);
+  if (modeRows === void 0) {
+    throw new Error(`\u65E0\u6CD5\u8BFB\u53D6\u6A21\u5F0F ${modeId} \u7684\u7EC4\u5408\u884C`);
   }
+  const { installed } = await listPluginCatalog();
+  const rows = composeStyleRows(modeRows, style, installed);
+  await disposeComposed();
+  const id = composedPresetId(style.id, modeId);
+  const dispose = await api.register({
+    id,
+    name: style.name,
+    description: style.description,
+    order: PRESET_ORDER,
+    plugins: rows
+  });
+  composed = { key, id, dispose };
+  return id;
 }
-async function registerAllStylePresets(api, styles) {
-  for (const styleId of [...disposers.keys()]) await unregisterStylePreset(styleId);
-  for (const [index, style] of styles.entries()) {
-    await registerStylePreset(api, style, index);
-  }
+async function invalidateComposedPreset(styleId) {
+  if (composed === void 0) return;
+  if (!composed.key.startsWith(`${styleId}@`)) return;
+  await disposeComposed();
 }
 async function disposeStylePresets() {
-  for (const styleId of [...disposers.keys()]) await unregisterStylePreset(styleId);
+  await disposeComposed();
 }
 
 // src/features/chat-style/host/store.ts
@@ -734,17 +762,23 @@ async function deleteStyle(styleId) {
 }
 var writeChain = Promise.resolve();
 async function handleWrite(request, api) {
+  if (request.action === "compose") {
+    const document = await readStyles();
+    const style2 = document.styles.find((item) => item.id === request.style);
+    if (!style2) throw new Error("\u98CE\u683C\u4E0D\u5B58\u5728");
+    if (request.mode.trim() === "") throw new Error("\u672A\u6307\u5B9A\u6A21\u5F0F");
+    return { presetId: await ensureComposedPreset(api, request.mode, style2) };
+  }
   if (request.action === "delete") {
     if (!isValidStyleId(request.id)) throw new Error("\u98CE\u683C\u6807\u8BC6\u65E0\u6548");
     const payload2 = await deleteStyle(request.id);
-    await unregisterStylePreset(request.id);
+    await invalidateComposedPreset(request.id);
     return payload2;
   }
   const style = normalizeStyle(request.style);
   if (!style) throw new Error("\u98CE\u683C\u5B9A\u4E49\u65E0\u6548");
   const payload = await saveStyle(style);
-  const order = payload.styles.findIndex((item) => item.id === style.id);
-  await registerStylePreset(api, style, Math.max(order, 0));
+  await invalidateComposedPreset(style.id);
   return payload;
 }
 function installChatStyleRoutes(webServer, api) {
@@ -793,20 +827,11 @@ var inject = ["agentPresets"];
 function apply(ctx) {
   const api = ctx.agentPresets;
   if (!api) {
-    console.error("[chat-style] \u672A\u53D6\u5F97 agentPresets \u670D\u52A1\uFF0C\u98CE\u683C\u9884\u8BBE\u4E0D\u4F1A\u6CE8\u518C");
+    console.error("[chat-style] \u672A\u53D6\u5F97 agentPresets \u670D\u52A1\uFF0C\u98CE\u683C\u7EC4\u5408\u4E0D\u4F1A\u6CE8\u518C");
     return;
   }
-  ctx.effect(() => {
-    let disposed = false;
-    void (async () => {
-      const document = await readStyles();
-      if (disposed) return;
-      await registerAllStylePresets(api, document.styles);
-    })();
-    return () => {
-      disposed = true;
-      void disposeStylePresets();
-    };
+  ctx.effect(() => () => {
+    void disposeStylePresets();
   }, "chat-style: presets");
   ctx.inject(["webServer"], (host) => {
     host.effect(() => installChatStyleRoutes(resolveWebServer(host), api), "chat-style: routes");
