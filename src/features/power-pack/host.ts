@@ -9,8 +9,11 @@ import type { HostPluginContext } from '../../types/host'
 import { disposePackPresets } from './host/presets'
 import { installPowerPackRoutes } from './host/routes'
 
-/** 预设注册依赖宿主的 Agent 预设服务。 */
-export const inject = ['agentPresets']
+/**
+ * 预设注册依赖宿主的 Agent 预设服务；工具注册表用于枚举全局能力，
+ * 技能包要靠它把「排除的全局插件 / 全局 MCP」落到会话级的工具掩码上。
+ */
+export const inject = ['agentPresets', 'tools']
 
 /**
  * 注册宿主能力。
@@ -31,7 +34,7 @@ export function apply(ctx: HostPluginContext): void {
 
   ctx.inject(['webServer'], (host) => {
     host.effect(
-      () => installPowerPackRoutes(resolveWebServer(host), api, profileDir),
+      () => installPowerPackRoutes(resolveWebServer(host), api, { profileDir, tools: host.tools }),
       'power-pack: routes',
     )
   })

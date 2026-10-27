@@ -80,14 +80,17 @@ async function buildHostEntry(): Promise<void> {
 }
 
 /**
- * 步骤二之二：打包 preset 内的提示词行，产出 preset-pack.js。
+ * 步骤二之二：打包 preset 内的行插件，产出根目录下的同名产物。
  *
- * 该入口由「技能包」feature 提供，被组合预设作为一行加载，必须是宿主可解析的
- * 独立模块；它不能并进宿主入口，否则会随插件整体加载而不是只在预设作用域生效。
+ * 这些入口由「技能包」feature 提供，被组合预设作为单独一行加载，必须是宿主可
+ * 解析的独立模块；它们不能并进宿主入口，否则会随插件整体加载，而不是只在预设
+ * 作用域生效。
+ * @param entry 源码入口的相对路径
+ * @param output 产物文件名
  */
-async function buildPresetPackEntry(): Promise<void> {
+async function buildPresetEntry(entry: string, output: string): Promise<void> {
   const result = await build({
-    entryPoints: [join(ROOT, 'src/features/power-pack/preset-entry.ts')],
+    entryPoints: [join(ROOT, entry)],
     bundle: true,
     write: false,
     format: 'esm',
@@ -97,7 +100,7 @@ async function buildPresetPackEntry(): Promise<void> {
     logLevel: 'warning',
   })
 
-  writeFileSync(join(ROOT, 'preset-pack.js'), firstOutputText(result))
+  writeFileSync(join(ROOT, output), firstOutputText(result))
 }
 
 /**
@@ -150,10 +153,11 @@ async function main(): Promise<void> {
     mkdirSync(BUILD_DIR, { recursive: true })
     buildStyles()
     await buildHostEntry()
-    await buildPresetPackEntry()
+    await buildPresetEntry('src/features/power-pack/preset-entry.ts', 'preset-pack.js')
+    await buildPresetEntry('src/features/power-pack/host/isolate-entry.ts', 'preset-isolate.js')
     const code = await buildScript()
     writeClient(code)
-    console.log('[build] 已生成 index.js、preset-pack.js 与 client.js')
+    console.log('[build] 已生成 index.js、preset-pack.js、preset-isolate.js 与 client.js')
   } catch (error) { // 构建失败必须以非零码退出，避免带着旧产物继续
     console.error('[build] 构建失败:', error)
     process.exitCode = 1

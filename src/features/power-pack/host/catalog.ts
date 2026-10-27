@@ -1,8 +1,9 @@
 /**
  * 插件/工具行清单。
  *
- * 可选项来自两处：标准预设的功能项，以及 profile 中已安装的 `dsh-plugin-*`。
- * 已装插件可能已经在全局组合里加载，因此在技能包规则里必须显式勾选才会追加。
+ * 可选项来自两处：标准预设的功能行项，以及 profile 中已安装的插件包。
+ * 已装插件在宿主启动时加载到全局层，预设里不能再挂一份；技能包对它只有
+ * 「保留 / 屏蔽」两种选择，屏蔽由隔离行的工具掩码实现（见 global-catalog）。
  */
 import { readdir, readFile } from 'node:fs/promises'
 import { join } from 'node:path'
@@ -54,7 +55,7 @@ async function collectProfilePlugins(dir: string, names: Set<string>): Promise<v
  * @param currentProfileDir 宿主报告的当前 profile 目录
  * @returns 待扫描目录
  */
-async function resolveProfileDirs(currentProfileDir?: string): Promise<string[]> {
+export async function resolveProfileDirs(currentProfileDir?: string): Promise<string[]> {
   if (currentProfileDir !== undefined && currentProfileDir !== '') return [currentProfileDir]
 
   const profilesRoot = join(resolveDshHome(), 'profiles')
@@ -78,7 +79,7 @@ async function resolveProfileDirs(currentProfileDir?: string): Promise<string[]>
  * @param currentProfileDir 宿主报告的当前 profile 目录；缺省时扫描全部 profile
  * @returns 去重后的插件包名，按字母排序
  */
-async function findInstalledPlugins(currentProfileDir?: string): Promise<string[]> {
+export async function findInstalledPlugins(currentProfileDir?: string): Promise<string[]> {
   const names = new Set<string>()
 
   for (const dir of await resolveProfileDirs(currentProfileDir)) {
@@ -86,15 +87,6 @@ async function findInstalledPlugins(currentProfileDir?: string): Promise<string[
   }
 
   return [...names].sort((left, right) => left.localeCompare(right))
-}
-
-/**
- * 把包名转成合法的组合行 id。
- * @param packageName 插件包名
- * @returns 只含字母数字与短横线的行 id
- */
-export function installedRowId(packageName: string): string {
-  return `pkg-${packageName.replace(/[^A-Za-z0-9_-]/g, '-')}`
 }
 
 /**
@@ -110,7 +102,7 @@ export async function listPluginCatalog(currentProfileDir?: string): Promise<{
     (packageName) => ({
       id: `pkg:${packageName}`,
       label: packageName,
-      description: '已在 profile 中启用。它已在全局组合里加载，重复挂载会冲突，请谨慎勾选。',
+      description: '已在 profile 中全局加载。勾选表示保留在技能包会话里，取消勾选会屏蔽它的工具与提示词注入。',
       kind: 'installed',
       packageName,
     }),

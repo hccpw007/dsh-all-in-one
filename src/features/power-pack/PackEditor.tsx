@@ -61,8 +61,18 @@ export function PackEditor({ initial, catalog, saving, error, onSave, t }: PackE
     label: plugin.label,
     description: plugin.description,
     ...plugin.kind === 'installed' ? { badge: t('installedBadge') } : {},
-    ...plugin.kind === 'installed' ? { warning: t('installedWarning') } : {},
   }))
+
+  // 全局 MCP 也出现在 MCP 规则里：它已在宿主启动时连接，勾选表示保留在会话中。
+  // 宿主进程可能仍是未重载的旧版本，此时清单字段缺失，按「没有全局 MCP」处理。
+  const globalMcpOptions: RuleOption[] = (catalog.globalGroups ?? [])
+    .filter((group) => group.kind === 'global-mcp')
+    .map((group) => ({
+      id: group.id,
+      label: group.label,
+      description: t('globalMcpTools').replace('{count}', String(group.tools.length)),
+      badge: t('globalMcpBadge'),
+    }))
 
   // 三处规则编辑共用同一组模式文案，只取一次避免重复调用翻译函数
   const modeLabels = {
@@ -161,6 +171,8 @@ export function PackEditor({ initial, catalog, saving, error, onSave, t }: PackE
             emptyText={t('noSkills')}
             onChange={(rule) => patchRule('plugins', rule)}
           />
+          {/* 「仅应用」会隐式屏蔽未勾选的已装插件，这里说明全局条目的取舍方式 */}
+          <p className="text-[12px] leading-[18px] text-secondary">{t('pluginsGlobalHint')}</p>
         </div>
 
         <div className={`flex flex-col gap-3 ${GROUP_CLASS}`}>
@@ -173,10 +185,13 @@ export function PackEditor({ initial, catalog, saving, error, onSave, t }: PackE
           />
           <ResourceRuleField
             rule={draft.mcp}
-            options={draft.mcpServers.map((server) => ({
-              id: server.id,
-              label: server.label || server.id,
-            }))}
+            options={[
+              ...draft.mcpServers.map((server) => ({
+                id: server.id,
+                label: server.label || server.id,
+              })),
+              ...globalMcpOptions,
+            ]}
             modeLabels={modeLabels}
             emptyText={t('mcpEmpty')}
             onChange={(rule) => patchRule('mcp', rule)}

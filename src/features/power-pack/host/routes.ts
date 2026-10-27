@@ -6,10 +6,11 @@
  */
 import type { IncomingMessage, ServerResponse } from 'node:http'
 
-import type { AgentPresetApi, WebServerApi } from '../../../types/host'
+import type { AgentPresetApi, ToolsApi, WebServerApi } from '../../../types/host'
 import type { PowerPack, PowerPackComposeResponse, PowerPackWriteRequest, PowerPacksPayload } from '../types'
 
 import { listPluginItems } from './catalog'
+import { listGlobalToolGroups } from './global-catalog'
 import { ensureComposedPreset, invalidateComposedPreset } from './presets'
 import { listSkillEntries, type SkillEntry } from './skill-catalog'
 import {
@@ -78,11 +79,22 @@ async function readJsonBody(request: IncomingMessage): Promise<unknown> {
   }
 }
 
+/**
+ * 宿主侧共用的读取上下文：profile 决定插件清单范围，工具注册表用于枚举全局能力。
+ */
+interface HostContext {
+  /** 当前 profile 目录；缺失时扫描全部 profile。 */
+  profileDir?: string
+  /** 宿主工具注册表。 */
+  tools?: ToolsApi
+}
+
 /** 组装客户端需要的完整负载。 */
-async function buildPayload(profileDir?: string): Promise<PowerPacksPayload> {
+async function buildPayload(host: HostContext): Promise<PowerPacksPayload> {
   const document = await readPacks()
   const skills = await listSkillEntries()
-  const plugins = await listPluginItems(profileDir)
+  const plugins = await listPluginItems(host.profileDir)
+  const globalGroups = await listGlobalToolGroups(host.tools, host.profileDir)
 
   return {
     packs: document.packs,
@@ -90,6 +102,7 @@ async function buildPayload(profileDir?: string): Promise<PowerPacksPayload> {
     catalog: {
       skills: skills.map(({ name, description }) => ({ name, description })),
       plugins,
+      globalGroups,
     },
     storagePath: powerPacksFile(),
   }
@@ -113,10 +126,10 @@ async function syncSkills(pack: PowerPack, allSkills: SkillEntry[]): Promise<voi
 /**
  * 保存一个技能包：落盘、同步技能目录、重建预设。
  * @param pack 待保存技能包
- * @param profileDir 当前 profile 目录，用于解析已启用插件
+ * @param host 宿主读取上下文
  * @returns 保存后的完整负载
  */
-async function savePack(pack: PowerPack, profileDir?: string): Promise<PowerPacksPayload> {
+async function savePack(pack: PowerPack, host: HostContext): Promise<PowerPacksPayload> {
   const allSkills = await listSkillEntries()
   await syncSkills(pack, allSkills)
 
@@ -128,16 +141,16 @@ async function savePack(pack: PowerPack, profileDir?: string): Promise<PowerPack
 
   await writePacks(document)
 
-  return buildPayload(profileDir)
+  return buildPayload(host)
 }
 
 /**
  * 删除一个技能包：落盘、撤销预设、清理技能目录。
  * @param packId 技能包标识
- * @param profileDir 当前 profile 目录，用于解析已启用插件
+ * @param host 宿主读取上下文
  * @returns 删除后的完整负载
  */
-async function deletePack(packId: string, profileDir?: string): Promise<PowerPacksPayload> {
+async function deletePack(packId: string, host: HostContext): Promise<PowerPacksPayload> {
   const document = await readPacks()
   document.packs = document.packs.filter((pack) => pack.id !== packId)
   // 删除的正是默认技能包时一并清空，避免默认指向不存在的包
@@ -146,23 +159,23 @@ async function deletePack(packId: string, profileDir?: string): Promise<PowerPac
 
   await removePackSkillDir(packId)
 
-  return buildPayload(profileDir)
+  return buildPayload(host)
 }
 
 /**
  * 设置新建会话默认预选的技能包。
  * @param packId 技能包标识
- * @param profileDir 当前 profile 目录，用于解析已启用插件
+ * @param host 宿主读取上下文
  * @returns 设置后的完整负载
  */
-async function setDefaultPack(packId: string, profileDir?: string): Promise<PowerPacksPayload> {
+async function setDefaultPack(packId: string, host: HostContext): Promise<PowerPacksPayload> {
   const document = await readPacks()
   if (!document.packs.some((pack) => pack.id === packId)) throw new Error('技能包不存在')
 
   document.defaultPackId = packId
   await writePacks(document)
 
-  return buildPayload(profileDir)
+  return buildPayload(host)
 }
 
 /** 串行化写入，避免并发保存互相覆盖同一份文档。 */
@@ -172,13 +185,13 @@ let writeChain: Promise<unknown> = Promise.resolve()
  * 处理一次写入请求：保存或删除技能包、设置默认技能包，或为「模式 + 技能包」合成组合预设。
  * @param request 写请求体
  * @param api 宿主预设服务
- * @param profileDir 当前 profile 目录，用于解析已启用插件
+ * @param host 宿主读取上下文
  * @returns 技能包负载，或合成结果的预设 id
  */
 async function handleWrite(
   request: PowerPackWriteRequest,
   api: AgentPresetApi,
-  profileDir?: string,
+  host: HostContext,
 ): Promise<PowerPacksPayload | PowerPackComposeResponse> {
   if (request.action === 'compose') {
     const document = await readPacks()
@@ -186,13 +199,15 @@ async function handleWrite(
     if (!pack) throw new Error('技能包不存在')
     if (request.mode.trim() === '') throw new Error('未指定模式')
 
-    return { presetId: await ensureComposedPreset(api, request.mode, pack, profileDir) }
+    const groups = await listGlobalToolGroups(host.tools, host.profileDir)
+
+    return { presetId: await ensureComposedPreset(api, request.mode, pack, groups) }
   }
 
   if (request.action === 'delete') {
     if (!isValidPackId(request.id)) throw new Error('技能包标识无效')
 
-    const payload = await deletePack(request.id, profileDir)
+    const payload = await deletePack(request.id, host)
     await invalidateComposedPreset(request.id)
     return payload
   }
@@ -200,13 +215,13 @@ async function handleWrite(
   if (request.action === 'setDefault') {
     if (!isValidPackId(request.id)) throw new Error('技能包标识无效')
 
-    return setDefaultPack(request.id, profileDir)
+    return setDefaultPack(request.id, host)
   }
 
   const pack = normalizePack(request.pack)
   if (!pack) throw new Error('技能包定义无效')
 
-  const payload = await savePack(pack, profileDir)
+  const payload = await savePack(pack, host)
   await invalidateComposedPreset(pack.id)
 
   return payload
@@ -216,13 +231,13 @@ async function handleWrite(
  * 注册技能包路由。
  * @param webServer 宿主 Web 服务器
  * @param api 宿主 Agent 预设服务
- * @param profileDir 当前 profile 目录，用于把插件清单限定在本 profile
+ * @param host 宿主读取上下文
  * @returns 注销函数
  */
 export function installPowerPackRoutes(
   webServer: WebServerApi,
   api: AgentPresetApi,
-  profileDir?: string,
+  host: HostContext,
 ): () => void {
   return webServer.register({
     kind: 'prefix',
@@ -235,7 +250,7 @@ export function installPowerPackRoutes(
 
       try {
         if (request.method === 'GET') {
-          sendJson(response, 200, await buildPayload(profileDir))
+          sendJson(response, 200, await buildPayload(host))
           return
         }
 
@@ -248,7 +263,7 @@ export function installPowerPackRoutes(
 
           // 写入串行执行，读取操作仍可并发
           const task = writeChain.then(() =>
-            handleWrite(body as PowerPackWriteRequest, api, profileDir),
+            handleWrite(body as PowerPackWriteRequest, api, host),
           )
           writeChain = task.catch((error: unknown) => {
             console.error('[power-pack] 写入技能包失败:', error)

@@ -4,11 +4,13 @@
  * 「模式 × 技能包」由插件合成一个预设后交给宿主挂载：宿主一次只认一个预设，
  * 组合是让两个维度同时生效的唯一途径。同一时间只保留一个组合，避免每换一次
  * 选择就多出一套常驻工具树。
+ *
+ * 预设的全部行都挂在该预设的作用域下，因此仅对绑定它的会话生效；全局组合里
+ * 的插件与 MCP 由隔离行负责屏蔽，不需要也不允许在这里重复挂载。
  */
 import type { AgentPresetApi } from '../../../types/host'
-import type { PowerPack } from '../types'
+import type { GlobalToolGroup, PowerPack } from '../types'
 
-import { listPluginCatalog } from './catalog'
 import { composePackRows } from './compose'
 import { readPresetRows } from './preset-source'
 
@@ -57,14 +59,14 @@ async function disposeComposed(): Promise<void> {
  * @param api 宿主的 Agent 预设服务
  * @param modeId 模式预设标识
  * @param pack 技能包定义
- * @param profileDir 当前 profile 目录，用于解析已启用插件
+ * @param groups 宿主枚举出的全局能力组，用于生成隔离行
  * @returns 组合预设 id
  */
 export async function ensureComposedPreset(
   api: AgentPresetApi,
   modeId: string,
   pack: PowerPack,
-  profileDir?: string,
+  groups: GlobalToolGroup[],
 ): Promise<string> {
   const key = `${pack.id}@${modeId}`
   if (composed?.key === key) return composed.id
@@ -74,8 +76,7 @@ export async function ensureComposedPreset(
     throw new Error(`无法读取模式 ${modeId} 的组合行`)
   }
 
-  const { installed } = await listPluginCatalog(profileDir)
-  const rows = composePackRows(modeRows, pack, installed)
+  const rows = composePackRows(modeRows, pack, groups)
 
   await disposeComposed()
 

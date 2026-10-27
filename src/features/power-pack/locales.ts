@@ -74,8 +74,12 @@ export const powerPackLocales: FeatureLocales = {
     noSkills: '没有匹配的技能。',
     // 已装插件标记
     installedBadge: '已安装插件',
-    // 已装插件风险提示
-    installedWarning: '该插件已在 profile 中全局加载，重复挂载会冲突，仅在必要时勾选。',
+    // 插件分组下的全局插件说明
+    pluginsGlobalHint: '标记「已安装插件」的条目在宿主启动时就已加载：勾选表示保留在会话里，未勾选表示在该技能包的会话里屏蔽它的工具与提示词注入。',
+    // 全局 MCP 组标记
+    globalMcpBadge: '全局 MCP',
+    // 全局 MCP 的工具数量说明；{count} 由界面替换成实际个数
+    globalMcpTools: '已在宿主启动时连接，共 {count} 个工具；勾选保留在会话中，取消勾选按会话屏蔽。',
     // 添加 MCP 服务器按钮
     addMcp: '添加 MCP 服务器',
     // 尚未配置 MCP 时的提示
@@ -207,8 +211,12 @@ export const powerPackLocales: FeatureLocales = {
     noSkills: 'No matching skills.',
     // Installed plugin badge
     installedBadge: 'Installed plugin',
-    // Installed plugin warning
-    installedWarning: 'This plugin is already loaded globally in the profile; mounting it again conflicts. Select only when needed.',
+    // Global plugin hint under the plugin group
+    pluginsGlobalHint: 'Entries marked "Installed plugin" load at host startup: checked keeps them in the session, unchecked masks their tools and prompt injection inside this power pack session.',
+    // Global MCP group badge
+    globalMcpBadge: 'Global MCP',
+    // Global MCP tool-count hint; {count} is replaced with the actual number
+    globalMcpTools: 'Connected at host startup with {count} tools; keep it checked to retain it in this session, clear it to mask it per session.',
     // Add MCP server button
     addMcp: 'Add MCP server',
     // Empty MCP hint

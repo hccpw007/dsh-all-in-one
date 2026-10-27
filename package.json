@@ -9,12 +9,14 @@
     "./client": "./client.js",
     "./preset-pack": "./preset-pack.js",
     "./locale/*.json": "./locale/*.json",
-    "./icon": "./icon.svg"
+    "./icon": "./icon.svg",
+    "./preset-isolate": "./preset-isolate.js"
   },
   "files": [
     "index.js",
     "client.js",
     "preset-pack.js",
+    "preset-isolate.js",
     "cordis.patch.yml",
     "locale/*.json",
     "icon.svg"

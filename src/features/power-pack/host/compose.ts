@@ -1,14 +1,17 @@
 /**
  * 把「模式」与「技能包」合成一份组合行。
  *
- * 模式提供基础工具与提示词，技能包在此基础上做三件事：接管技能提供者行、
- * 按三态规则筛选模式里的标准工具行、追加自己的提示词与 MCP 服务器。
+ * 模式提供基础工具与提示词，技能包在此基础上做四件事：接管技能提供者行、
+ * 按三态规则筛选模式里的标准工具行、追加自己的提示词与 MCP 服务器、登记隔离行。
  * 两个维度因此相互独立：换技能包不会改变所选模式，换模式也不会丢掉技能包。
+ *
+ * 已在全局组合里的插件不在模式行中，预设无法卸载，因此它们的取舍交给隔离行
+ * 的掩码与提示词过滤，不进入这里的行筛选。
  */
-import type { PowerPack, ResourceRule } from '../types'
+import type { GlobalToolGroup, PowerPack, ResourceRule } from '../types'
 
-import { installedRowId, type InstalledPluginItem } from './catalog'
 import { buildPackRows, SKILL_FILESYSTEM_ROW, TOOL_SKILL_ROW } from './composition'
+import { planIsolation } from './isolation'
 import { STANDARD_PLUGIN_ITEMS, type PresetRow } from './standard-rows'
 
 /** 技能相关行由技能包接管，先于插件规则从模式里剔除，避免重复挂载。 */
@@ -69,29 +72,20 @@ function isSelectedRow(row: PresetRow, selected: Set<string>): boolean {
 
 /**
  * 按三态规则筛选模式提供的工具行。
+ *
+ * 只管模式自己的行：已装插件在全局层，预设里不重复挂载（会冲突），它们的
+ * 取舍由隔离行的工具掩码负责。
  * @param rows 去掉技能行后的模式行
  * @param rule 技能包的插件规则
- * @param installed 已安装插件清单
  * @returns 筛选后的行
  */
-function filterByPluginRule(
-  rows: PresetRow[],
-  rule: ResourceRule,
-  installed: InstalledPluginItem[],
-): PresetRow[] {
+function filterByPluginRule(rows: PresetRow[], rule: ResourceRule): PresetRow[] {
   if (rule.mode === 'all') return rows
 
   const selected = new Set(rule.items)
 
   if (rule.mode === 'include') {
-    const kept = rows.filter((row) => !isStandardRow(row) || isSelectedRow(row, selected))
-
-    // 已装插件不在模式的行里，显式勾选时追加到组合末尾
-    for (const item of installed) {
-      if (selected.has(item.id)) kept.push({ id: installedRowId(item.packageName), name: item.packageName })
-    }
-
-    return kept
+    return rows.filter((row) => !isStandardRow(row) || isSelectedRow(row, selected))
   }
 
   return rows.filter((row) => !isStandardRow(row) || !isSelectedRow(row, selected))
@@ -101,18 +95,19 @@ function filterByPluginRule(
  * 合成模式的组合行与技能包追加行。
  * @param modeRows 模式预设的组合行
  * @param pack 技能包定义
- * @param installed 已安装插件清单
+ * @param groups 宿主枚举出的全局能力组，用于生成隔离行
  * @returns 可直接注册为预设的完整行列表
  */
 export function composePackRows(
   modeRows: PresetRow[],
   pack: PowerPack,
-  installed: InstalledPluginItem[],
+  groups: GlobalToolGroup[],
 ): PresetRow[] {
   const base = modeRows.filter((row) => !SKILL_ROW_NAMES.has(row.name))
-  const rows = filterByPluginRule(base, pack.plugins, installed)
+  const rows = filterByPluginRule(base, pack.plugins)
+  const isolate = planIsolation(pack, groups)
 
-  for (const row of buildPackRows(pack)) {
+  for (const row of buildPackRows(pack, isolate)) {
     if (rows.some((existing) => existing.id === row.id)) continue
     rows.push(row)
   }

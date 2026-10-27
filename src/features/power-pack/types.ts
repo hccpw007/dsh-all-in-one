@@ -40,9 +40,31 @@ export interface PowerPack {
   /** 追加到系统提示词末尾的技能包要求。 */
   systemPrompt: string
   skills: ResourceRule
+  /**
+   * 标准工具行与已装插件的取舍，勾选项同时包含两类标识：
+   * 标准项 id（如 `tool-bash`）与已装插件 `pkg:<包名>`。
+   *
+   * 标准项决定预设行是否挂载；已装插件已在全局层加载，预设不重复挂载，
+   * 取消勾选时由隔离行在会话内屏蔽它的工具与提示词注入。
+   */
   plugins: ResourceRule
+  /**
+   * MCP 服务器的取舍，勾选项同时包含技能包自有服务器 id 与全局 MCP `mcp:<服务器名>`。
+   * 自有服务器决定是否挂载 mcp-client 行；全局 MCP 只能按会话屏蔽其工具。
+   */
   mcp: ResourceRule
   mcpServers: McpServerConfig[]
+}
+
+/** 一组全局能力：一个已装插件的工具集合，或一台全局 MCP 服务器。 */
+export interface GlobalToolGroup {
+  /** 组标识：`pkg:<包名>` 或 `mcp:<服务器名>`。 */
+  id: string
+  /** 界面展示名。 */
+  label: string
+  kind: 'installed' | 'global-mcp'
+  /** 该组在全局工具表里实际注册的工具名。 */
+  tools: string[]
 }
 
 /** 存储文件的内容结构。 */
@@ -74,6 +96,8 @@ export interface SkillCatalogItem {
 export interface PowerPackCatalog {
   skills: SkillCatalogItem[]
   plugins: PluginCatalogItem[]
+  /** 已在宿主全局组合里加载、只能靠掩码隔离的能力组。 */
+  globalGroups: GlobalToolGroup[]
 }
 
 /** GET / POST 共用的响应负载。 */

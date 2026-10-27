@@ -554,8 +554,12 @@ window.__ModuleLoader__.load({
         noSkills: "\u6CA1\u6709\u5339\u914D\u7684\u6280\u80FD\u3002",
         // 已装插件标记
         installedBadge: "\u5DF2\u5B89\u88C5\u63D2\u4EF6",
-        // 已装插件风险提示
-        installedWarning: "\u8BE5\u63D2\u4EF6\u5DF2\u5728 profile \u4E2D\u5168\u5C40\u52A0\u8F7D\uFF0C\u91CD\u590D\u6302\u8F7D\u4F1A\u51B2\u7A81\uFF0C\u4EC5\u5728\u5FC5\u8981\u65F6\u52FE\u9009\u3002",
+        // 插件分组下的全局插件说明
+        pluginsGlobalHint: "\u6807\u8BB0\u300C\u5DF2\u5B89\u88C5\u63D2\u4EF6\u300D\u7684\u6761\u76EE\u5728\u5BBF\u4E3B\u542F\u52A8\u65F6\u5C31\u5DF2\u52A0\u8F7D\uFF1A\u52FE\u9009\u8868\u793A\u4FDD\u7559\u5728\u4F1A\u8BDD\u91CC\uFF0C\u672A\u52FE\u9009\u8868\u793A\u5728\u8BE5\u6280\u80FD\u5305\u7684\u4F1A\u8BDD\u91CC\u5C4F\u853D\u5B83\u7684\u5DE5\u5177\u4E0E\u63D0\u793A\u8BCD\u6CE8\u5165\u3002",
+        // 全局 MCP 组标记
+        globalMcpBadge: "\u5168\u5C40 MCP",
+        // 全局 MCP 的工具数量说明；{count} 由界面替换成实际个数
+        globalMcpTools: "\u5DF2\u5728\u5BBF\u4E3B\u542F\u52A8\u65F6\u8FDE\u63A5\uFF0C\u5171 {count} \u4E2A\u5DE5\u5177\uFF1B\u52FE\u9009\u4FDD\u7559\u5728\u4F1A\u8BDD\u4E2D\uFF0C\u53D6\u6D88\u52FE\u9009\u6309\u4F1A\u8BDD\u5C4F\u853D\u3002",
         // 添加 MCP 服务器按钮
         addMcp: "\u6DFB\u52A0 MCP \u670D\u52A1\u5668",
         // 尚未配置 MCP 时的提示
@@ -682,8 +686,12 @@ window.__ModuleLoader__.load({
         noSkills: "No matching skills.",
         // Installed plugin badge
         installedBadge: "Installed plugin",
-        // Installed plugin warning
-        installedWarning: "This plugin is already loaded globally in the profile; mounting it again conflicts. Select only when needed.",
+        // Global plugin hint under the plugin group
+        pluginsGlobalHint: 'Entries marked "Installed plugin" load at host startup: checked keeps them in the session, unchecked masks their tools and prompt injection inside this power pack session.',
+        // Global MCP group badge
+        globalMcpBadge: "Global MCP",
+        // Global MCP tool-count hint; {count} is replaced with the actual number
+        globalMcpTools: "Connected at host startup with {count} tools; keep it checked to retain it in this session, clear it to mask it per session.",
         // Add MCP server button
         addMcp: "Add MCP server",
         // Empty MCP hint
@@ -1025,8 +1033,13 @@ window.__ModuleLoader__.load({
         id: plugin2.id,
         label: plugin2.label,
         description: plugin2.description,
-        ...plugin2.kind === "installed" ? { badge: t("installedBadge") } : {},
-        ...plugin2.kind === "installed" ? { warning: t("installedWarning") } : {}
+        ...plugin2.kind === "installed" ? { badge: t("installedBadge") } : {}
+      }));
+      const globalMcpOptions = (catalog.globalGroups ?? []).filter((group) => group.kind === "global-mcp").map((group) => ({
+        id: group.id,
+        label: group.label,
+        description: t("globalMcpTools").replace("{count}", String(group.tools.length)),
+        badge: t("globalMcpBadge")
       }));
       const modeLabels = {
         all: t("modeAll"),
@@ -1098,7 +1111,7 @@ window.__ModuleLoader__.load({
           emptyText: t("noSkills"),
           onChange: (rule) => patchRule("plugins", rule)
         }
-      )), /* @__PURE__ */ import_react8.default.createElement("div", { className: `flex flex-col gap-3 ${GROUP_CLASS}` }, /* @__PURE__ */ import_react8.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, t("mcpTitle")), /* @__PURE__ */ import_react8.default.createElement(
+      ), /* @__PURE__ */ import_react8.default.createElement("p", { className: "text-[12px] leading-[18px] text-secondary" }, t("pluginsGlobalHint"))), /* @__PURE__ */ import_react8.default.createElement("div", { className: `flex flex-col gap-3 ${GROUP_CLASS}` }, /* @__PURE__ */ import_react8.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, t("mcpTitle")), /* @__PURE__ */ import_react8.default.createElement(
         McpServerEditor,
         {
           servers: draft.mcpServers,
@@ -1109,10 +1122,13 @@ window.__ModuleLoader__.load({
         ResourceRuleField,
         {
           rule: draft.mcp,
-          options: draft.mcpServers.map((server) => ({
-            id: server.id,
-            label: server.label || server.id
-          })),
+          options: [
+            ...draft.mcpServers.map((server) => ({
+              id: server.id,
+              label: server.label || server.id
+            })),
+            ...globalMcpOptions
+          ],
           modeLabels,
           emptyText: t("mcpEmpty"),
           onChange: (rule) => patchRule("mcp", rule)

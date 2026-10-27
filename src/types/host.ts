@@ -16,6 +16,16 @@ export interface IndexInjectRow {
 /** `webserver/index-inject` 的事件负载：按顺序写入 index.html 的行表。 */
 export type IndexInjectTable = IndexInjectRow[]
 
+/** 工具注册表的宿主侧投影：只声明本插件实际用到的能力。 */
+export interface ToolsApi {
+  /** 一个作用域可见的工具 schema（模型侧投影，不含执行函数）；省略作用域时读取全局层。 */
+  schemas(scope?: unknown): { name: string; description?: string }[]
+  /** 一个作用域可见的工具定义；省略作用域时按全局层解析。 */
+  get(name: string, scope?: unknown): unknown
+  /** 对当前作用域的继承工具施加允许/拒绝掩码，返回解除函数。 */
+  restrict(filter: { allow?: string[]; deny?: string[] }): () => void
+}
+
 /** 宿主侧插件上下文：只声明本插件实际依赖的能力。 */
 export interface HostPluginContext {
   /** 注册随插件生命周期自动清理的副作用，回调返回清理函数。 */
@@ -28,6 +38,8 @@ export interface HostPluginContext {
   agentPresets?: AgentPresetApi
   /** Web 服务器服务；通过 inject 取得后可用。 */
   webServer?: WebServerApi
+  /** 工具注册表；插件声明依赖后可用，用于枚举全局工具。 */
+  tools?: ToolsApi
   /** 启动本进程的 profile；缺失时相关功能回退为扫描全部 profile。 */
   profileContext?: ProfileContext
 }
@@ -89,6 +101,47 @@ export interface SystemPromptApi {
 export interface PresetPromptContext {
   effect(effect: () => () => void, label?: string): void
   systemPrompt: SystemPromptApi
+}
+
+/** preset 隔离行用到的工具注册表能力。 */
+export interface PresetToolsApi {
+  /** 一个作用域可见的工具定义；省略作用域时按全局层解析。 */
+  get(name: string, scope?: unknown): unknown
+  /** 对当前作用域的继承工具施加允许/拒绝掩码，返回解除函数。 */
+  restrict(filter: { allow?: string[]; deny?: string[] }): () => void
+}
+
+/** 装配 waterfall 的一段：section 与 context 均为已求值文本。 */
+export interface AssemblySection {
+  name: string
+  text: string
+  interpolate?: boolean
+}
+
+/** `system-prompt/assemble` 事件里流转的装配结果。 */
+export interface PromptAssembly {
+  sections: AssemblySection[]
+  contexts: AssemblySection[]
+  tools: unknown[]
+  variables: Record<string, string>
+}
+
+/** `system-prompt/assemble` 的回调上下文；`scope` 是触发装配的 Agent 作用域。 */
+export interface PromptAssemblyContext {
+  scope?: unknown
+  [key: string]: unknown
+}
+
+/** preset 隔离行收到的宿主上下文：工具注册表加装配 waterfall。 */
+export interface PresetIsolateContext {
+  effect(effect: () => () => void, label?: string): void
+  /** 订阅装配 waterfall 或工具变更事件。 */
+  on(
+    event: string,
+    listener: (...args: unknown[]) => unknown,
+    options?: { prepend?: boolean; global?: boolean },
+  ): () => void
+  tools: PresetToolsApi
 }
 
 
