@@ -1,0 +1,39 @@
+{
+  "name": "@local/dsh-custom-features",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "定制功能：把独立小工具收拢到设置页的 all-in-one 外壳。",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg"
+  ],
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-settings"
+      ]
+    }
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.9",
+    "tailwindcss": "^3.4.17"
+  }
+}

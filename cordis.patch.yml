@@ -1,0 +1,4 @@
+- insert:
+    - id: custom-features
+      name: '@local/dsh-custom-features'
+      config: {}
