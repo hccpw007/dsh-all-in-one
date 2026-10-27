@@ -86,9 +86,13 @@ export function ResourceRuleField({
           <span className="text-[12px] font-semibold text-primary">{title}</span>
         ) : null}
 
-        <div className="flex items-center gap-2">
-          {/* 规则模式切换：三态共用一个描边容器，避免三个按钮各占一份边框 */}
-          <div className="flex items-center rounded-lg border border-line4 p-0.5">
+        {/* 模式切换靠右对齐，与左侧标签形成左右分布 */}
+        <div className="ml-auto flex items-center gap-2">
+          {/* 规则模式切换：分段控件，容器铺浅底，选中项以白底凸起 */}
+          <div
+            className="flex items-center rounded-lg border border-line4 bg-layer2 p-0.5"
+            role="group"
+          >
             {MODE_ORDER.map((mode) => {
               const active = rule.mode === mode
 
@@ -99,10 +103,11 @@ export function ResourceRuleField({
                   aria-pressed={active}
                   onClick={() => onChange({ mode, items: rule.items })}
                   className={cn(
-                    'rounded-md px-2 py-1 text-[12px] transition',
+                    'rounded-md px-2.5 py-1 text-[12px] leading-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand',
                     active
-                      ? 'bg-layer2 font-medium text-primary'
-                      : 'text-secondary hover:text-primary',
+                      ? 'bg-base font-medium text-primary shadow-sm'
+                      : // 未选中项必须显式透明：preflight 关闭后按钮会带浏览器原生灰底
+                        'bg-transparent text-secondary hover:text-primary',
                   )}
                 >
                   {modeLabels[mode]}
