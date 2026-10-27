@@ -565,6 +565,78 @@ async function disposePackPresets() {
   await disposeComposed();
 }
 
+// src/features/power-pack/host/prompt-overlay.ts
+var SHARED_KEY = Symbol.for("dsh-all-in-one.prompt-isolation");
+var CHECK_INTERVAL_MS = 3e3;
+function isolationState() {
+  const holder = globalThis;
+  const existing = holder[SHARED_KEY];
+  if (existing !== void 0) return existing;
+  const created = { snapshots: /* @__PURE__ */ new WeakMap() };
+  holder[SHARED_KEY] = created;
+  return created;
+}
+function isAssembly(value) {
+  return typeof value === "object" && value !== null && Array.isArray(value.sections);
+}
+function markAsWrapped(fn) {
+  const target = fn;
+  target._dshPurgeWrapped = true;
+  target._dshPurgeSlot ??= { rewrite: () => void 0 };
+}
+function installPromptOverlay(ctx) {
+  const prompt = ctx.systemPrompt;
+  if (prompt === void 0) return;
+  ctx.effect(() => {
+    let inner;
+    let wrapped;
+    const rebuild = (next) => {
+      if (typeof next !== "function") return;
+      inner = next;
+      const current = async (context) => {
+        const result = await inner(context);
+        if (!isAssembly(result)) return result;
+        const scope = context?.scope;
+        if (typeof scope !== "object" || scope === null) return result;
+        const { snapshots } = isolationState();
+        const clean = snapshots.get(scope);
+        if (clean === void 0) return result;
+        snapshots.delete(scope);
+        return { ...result, sections: clean };
+      };
+      markAsWrapped(current);
+      wrapped = current;
+      try {
+        Object.defineProperty(prompt, "assemble", {
+          configurable: true,
+          enumerable: true,
+          get: () => wrapped,
+          // 外部替换 assemble 时以新函数为下层重新包装，保持最外层不变
+          set: (nextValue) => {
+            if (typeof nextValue === "function" && nextValue !== wrapped) rebuild(nextValue);
+          }
+        });
+      } catch (error) {
+        console.error("[power-pack] \u5B89\u88C5\u63D0\u793A\u8BCD\u5916\u5C42\u5305\u88C5\u5931\u8D25:", error);
+      }
+    };
+    const sync = () => {
+      try {
+        if (wrapped !== void 0 && prompt.assemble === wrapped) return;
+        rebuild(prompt.assemble);
+      } catch (error) {
+        console.error("[power-pack] \u68C0\u67E5\u63D0\u793A\u8BCD\u5916\u5C42\u5305\u88C5\u5931\u8D25:", error);
+      }
+    };
+    sync();
+    const timer = setInterval(sync, CHECK_INTERVAL_MS);
+    if (typeof timer.unref === "function") timer.unref();
+    return () => {
+      clearInterval(timer);
+    };
+  }, "power-pack: prompt overlay");
+}
+
 // src/features/power-pack/host/catalog.ts
 import { readdir as readdir2, readFile as readFile2 } from "node:fs/promises";
 import { join as join3 } from "node:path";
@@ -953,6 +1025,21 @@ async function setDefaultPack(packId, host) {
   await writePacks(document);
   return buildPayload(host);
 }
+async function buildDiagnostics(host) {
+  const document = await readPacks();
+  const groups = await listGlobalToolGroups(host.tools, host.profileDir);
+  return {
+    globalTools: collectGlobalToolNames(host.tools),
+    groups,
+    packs: document.packs.map((pack) => ({
+      id: pack.id,
+      name: pack.name,
+      plugins: pack.plugins,
+      mcp: pack.mcp,
+      isolate: planIsolation(pack, groups) ?? null
+    }))
+  };
+}
 var writeChain = Promise.resolve();
 async function handleWrite(request, api, host) {
   if (request.action === "compose") {
@@ -990,6 +1077,10 @@ function installPowerPackRoutes(webServer, api, host) {
       }
       try {
         if (request.method === "GET") {
+          if ((request.url ?? "").includes("/diagnose")) {
+            sendJson(response, 200, await buildDiagnostics(host));
+            return;
+          }
           sendJson(response, 200, await buildPayload(host));
           return;
         }
@@ -1021,7 +1112,7 @@ function installPowerPackRoutes(webServer, api, host) {
 }
 
 // src/features/power-pack/host.ts
-var inject = ["agentPresets", "tools"];
+var inject = ["agentPresets", "tools", "systemPrompt"];
 function apply(ctx) {
   const api = ctx.agentPresets;
   if (!api) {
@@ -1029,6 +1120,7 @@ function apply(ctx) {
     return;
   }
   const profileDir = currentProfileDir(ctx);
+  installPromptOverlay(ctx);
   ctx.effect(() => () => {
     void disposePackPresets();
   }, "power-pack: presets");

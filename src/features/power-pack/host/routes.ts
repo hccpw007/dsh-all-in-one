@@ -10,7 +10,8 @@ import type { AgentPresetApi, ToolsApi, WebServerApi } from '../../../types/host
 import type { PowerPack, PowerPackComposeResponse, PowerPackWriteRequest, PowerPacksPayload } from '../types'
 
 import { listPluginItems } from './catalog'
-import { listGlobalToolGroups } from './global-catalog'
+import { collectGlobalToolNames, listGlobalToolGroups } from './global-catalog'
+import { planIsolation } from './isolation'
 import { ensureComposedPreset, invalidateComposedPreset } from './presets'
 import { listSkillEntries, type SkillEntry } from './skill-catalog'
 import {
@@ -178,6 +179,28 @@ async function setDefaultPack(packId: string, host: HostContext): Promise<PowerP
   return buildPayload(host)
 }
 
+/**
+ * 组装隔离诊断：服务端按当前配置算出的屏蔽计划，用于排查「勾了但没生效」。
+ * @param host 宿主读取上下文
+ * @returns 全局工具名、能力分组与每个技能包的隔离计划
+ */
+async function buildDiagnostics(host: HostContext): Promise<unknown> {
+  const document = await readPacks()
+  const groups = await listGlobalToolGroups(host.tools, host.profileDir)
+
+  return {
+    globalTools: collectGlobalToolNames(host.tools),
+    groups,
+    packs: document.packs.map((pack) => ({
+      id: pack.id,
+      name: pack.name,
+      plugins: pack.plugins,
+      mcp: pack.mcp,
+      isolate: planIsolation(pack, groups) ?? null,
+    })),
+  }
+}
+
 /** 串行化写入，避免并发保存互相覆盖同一份文档。 */
 let writeChain: Promise<unknown> = Promise.resolve()
 
@@ -250,6 +273,12 @@ export function installPowerPackRoutes(
 
       try {
         if (request.method === 'GET') {
+          // 子路径 /diagnose 只读回隔离计划，不改任何状态
+          if ((request.url ?? '').includes('/diagnose')) {
+            sendJson(response, 200, await buildDiagnostics(host))
+            return
+          }
+
           sendJson(response, 200, await buildPayload(host))
           return
         }

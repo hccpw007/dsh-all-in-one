@@ -7,13 +7,15 @@
 import type { HostPluginContext } from '../../types/host'
 
 import { disposePackPresets } from './host/presets'
+import { installPromptOverlay } from './host/prompt-overlay'
 import { installPowerPackRoutes } from './host/routes'
 
 /**
  * 预设注册依赖宿主的 Agent 预设服务；工具注册表用于枚举全局能力，
  * 技能包要靠它把「排除的全局插件 / 全局 MCP」落到会话级的工具掩码上。
+ * 系统提示词服务用于安装最外层包装，挡住绕过 waterfall 的提示词改写。
  */
-export const inject = ['agentPresets', 'tools']
+export const inject = ['agentPresets', 'tools', 'systemPrompt']
 
 /**
  * 注册宿主能力。
@@ -27,6 +29,9 @@ export function apply(ctx: HostPluginContext): void {
   }
 
   const profileDir = currentProfileDir(ctx)
+
+  // 最外层包装要在全局插件（如 dsh-purge）包装 assemble 之后仍保持生效
+  installPromptOverlay(ctx)
 
   ctx.effect(() => () => {
     void disposePackPresets()

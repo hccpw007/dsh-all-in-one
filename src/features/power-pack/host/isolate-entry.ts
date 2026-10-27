@@ -11,6 +11,10 @@
  *
  * 两个动作都绑定预设作用域，因此只影响该预设下的会话。
  */
+import { appendFileSync, mkdirSync, statSync, writeFileSync } from 'node:fs'
+import { homedir } from 'node:os'
+import { join } from 'node:path'
+
 import type {
   AssemblySection,
   PresetIsolateContext,
@@ -18,11 +22,42 @@ import type {
   PromptAssemblyContext,
 } from '../../../types/host'
 
+import { isolationState } from './prompt-overlay'
+
 /** 装配 waterfall 的事件名，与宿主 `dsh-system-prompt` 一致。 */
 const ASSEMBLE_EVENT = 'system-prompt/assemble'
 
 /** 隔离行依赖工具注册表才能施加掩码。 */
 export const inject = ['tools']
+
+/** 诊断日志的上限：只用于确认隔离是否执行，超出后重写清空。 */
+const LOG_MAX_BYTES = 256 * 1024
+
+/**
+ * 把一行诊断写进 `$DSH_HOME/all-in-one/isolate.log`。
+ *
+ * 隔离行运行在预设作用域里，控制台输出会被宿主日志淹没；写文件让用户能直接确认
+ * 「这一行有没有加载、掩码命中了几个工具」。写失败不能影响隔离本身。
+ * @param message 诊断内容
+ */
+function writeDiagnostic(message: string): void {
+  try {
+    const home = process.env.DSH_HOME?.trim() || join(homedir(), '.dsh')
+    const dir = join(home, 'all-in-one')
+    mkdirSync(dir, { recursive: true })
+
+    const file = join(dir, 'isolate.log')
+    try {
+      if (statSync(file).size > LOG_MAX_BYTES) writeFileSync(file, '', 'utf8')
+    } catch {
+      // 文件不存在是首次写入的正常情况
+    }
+
+    appendFileSync(file, `${new Date().toISOString()} ${message}\n`, 'utf8')
+  } catch (error) {
+    console.error('[power-pack] 写入隔离日志失败:', error)
+  }
+}
 
 /** 预设行配置，由宿主侧按技能包规则计算后写入。 */
 export interface IsolateRowConfig {
@@ -170,6 +205,9 @@ function installPromptIsolation(
   strict: boolean,
   hidePrefixes: string[],
 ): void {
+  // 装配每个步骤都会跑，只在首次记录，避免日志被刷满
+  let firstAssembly = false
+
   ctx.effect(
     () =>
       ctx.on(
@@ -182,6 +220,16 @@ function installPromptIsolation(
           if (context?.scope === undefined) return next
 
           const snapshot = captureSnapshot(assembly)
+          if (!firstAssembly) {
+            firstAssembly = true
+            writeDiagnostic(`prompt isolated: strict=${strict} hide=${hidePrefixes.join(',') || '(none)'}`)
+          }
+
+          // 全局插件可能在方法层再改写一次（不经过 waterfall），把干净段落交给
+          // 宿主侧的最外层包装，由它在装配返回后替换回来
+          if (strict && typeof context.scope === 'object' && context.scope !== null) {
+            isolationState().snapshots.set(context.scope, hideByPrefix(snapshot.sections, hidePrefixes))
+          }
 
           let result: unknown = assembly
           if (typeof next === 'function') {
@@ -222,6 +270,10 @@ export function apply(ctx: PresetIsolateContext, config: IsolateRowConfig = {}):
   const deny = stringList(config.denyTools)
   const hide = stringList(config.hideSections).map((prefix) => prefix.toLowerCase())
   const strict = config.strict === true
+
+  writeDiagnostic(
+    `apply deny=${deny.length} hide=${hide.join(',') || '(none)'} strict=${strict}`,
+  )
 
   if (deny.length > 0) installToolIsolation(ctx, deny)
   if (strict || hide.length > 0) installPromptIsolation(ctx, strict, hide)

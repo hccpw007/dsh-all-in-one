@@ -23,7 +23,7 @@ const MCP_TOOL_NAME = /^mcp__([A-Za-z0-9_-]{1,32})__/
  * @param tools 宿主工具注册表
  * @returns 全局工具名，已去重
  */
-function collectGlobalToolNames(tools?: ToolsApi): string[] {
+export function collectGlobalToolNames(tools?: ToolsApi): string[] {
   if (tools === undefined) return []
 
   try {

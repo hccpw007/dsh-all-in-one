@@ -40,6 +40,8 @@ export interface HostPluginContext {
   webServer?: WebServerApi
   /** 工具注册表；插件声明依赖后可用，用于枚举全局工具。 */
   tools?: ToolsApi
+  /** 系统提示词服务；插件声明依赖后可用，用于安装最外层包装。 */
+  systemPrompt?: { assemble?: unknown }
   /** 启动本进程的 profile；缺失时相关功能回退为扫描全部 profile。 */
   profileContext?: ProfileContext
 }

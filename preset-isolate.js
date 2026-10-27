@@ -1,6 +1,39 @@
 // src/features/power-pack/host/isolate-entry.ts
+import { appendFileSync, mkdirSync, statSync, writeFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { join } from "node:path";
+
+// src/features/power-pack/host/prompt-overlay.ts
+var SHARED_KEY = Symbol.for("dsh-all-in-one.prompt-isolation");
+function isolationState() {
+  const holder = globalThis;
+  const existing = holder[SHARED_KEY];
+  if (existing !== void 0) return existing;
+  const created = { snapshots: /* @__PURE__ */ new WeakMap() };
+  holder[SHARED_KEY] = created;
+  return created;
+}
+
+// src/features/power-pack/host/isolate-entry.ts
 var ASSEMBLE_EVENT = "system-prompt/assemble";
 var inject = ["tools"];
+var LOG_MAX_BYTES = 256 * 1024;
+function writeDiagnostic(message) {
+  try {
+    const home = process.env.DSH_HOME?.trim() || join(homedir(), ".dsh");
+    const dir = join(home, "all-in-one");
+    mkdirSync(dir, { recursive: true });
+    const file = join(dir, "isolate.log");
+    try {
+      if (statSync(file).size > LOG_MAX_BYTES) writeFileSync(file, "", "utf8");
+    } catch {
+    }
+    appendFileSync(file, `${(/* @__PURE__ */ new Date()).toISOString()} ${message}
+`, "utf8");
+  } catch (error) {
+    console.error("[power-pack] \u5199\u5165\u9694\u79BB\u65E5\u5FD7\u5931\u8D25:", error);
+  }
+}
 function stringList(value) {
   return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
 }
@@ -72,6 +105,7 @@ function installToolIsolation(ctx, deny) {
   }, "power-pack: \u5DE5\u5177\u9694\u79BB");
 }
 function installPromptIsolation(ctx, strict, hidePrefixes) {
+  let firstAssembly = false;
   ctx.effect(
     () => ctx.on(
       ASSEMBLE_EVENT,
@@ -82,6 +116,13 @@ function installPromptIsolation(ctx, strict, hidePrefixes) {
         if (!isAssembly(assembly)) return next;
         if (context?.scope === void 0) return next;
         const snapshot = captureSnapshot(assembly);
+        if (!firstAssembly) {
+          firstAssembly = true;
+          writeDiagnostic(`prompt isolated: strict=${strict} hide=${hidePrefixes.join(",") || "(none)"}`);
+        }
+        if (strict && typeof context.scope === "object" && context.scope !== null) {
+          isolationState().snapshots.set(context.scope, hideByPrefix(snapshot.sections, hidePrefixes));
+        }
         let result = assembly;
         if (typeof next === "function") {
           try {
@@ -111,6 +152,9 @@ function apply(ctx, config = {}) {
   const deny = stringList(config.denyTools);
   const hide = stringList(config.hideSections).map((prefix) => prefix.toLowerCase());
   const strict = config.strict === true;
+  writeDiagnostic(
+    `apply deny=${deny.length} hide=${hide.join(",") || "(none)"} strict=${strict}`
+  );
   if (deny.length > 0) installToolIsolation(ctx, deny);
   if (strict || hide.length > 0) installPromptIsolation(ctx, strict, hide);
 }
