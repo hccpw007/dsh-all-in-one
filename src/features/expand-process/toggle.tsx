@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 
 import { cn } from '../../common/cn'
-import { readExpandProcessEnabled, writeExpandProcessEnabled } from '../../common/expand-process'
 import type { FeatureSwitchProps } from '../../shell/registry'
+import { readExpandProcessEnabled, writeExpandProcessEnabled } from './expand-process'
 
 /** 开关入口图标：上下双向箭头，表达展开与收起。 */
 function ExpandIcon() {

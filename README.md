@@ -13,27 +13,41 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → 定制功能」中用�
 ├── tailwind.config.ts       # Tailwind 配置，颜色映射宿主主题令牌
 ├── locale/{zh,en}.json      # 插件标题与描述
 ├── src/
-│   ├── index.ts             # 宿主侧插件源码：向 index.html 注入「展开过程」引导脚本
+│   ├── index.ts             # 宿主侧入口：只聚合各 feature 的 host 扩展并注册
 │   ├── entry.tsx            # 注册 settings.section，合并外壳与各功能语言包
 │   ├── styles/input.css     # Tailwind 入口
 │   ├── types/               # 宿主 API（客户端与宿主侧）与资源模块的类型声明
-│   ├── common/              # 跨功能复用的纯逻辑与工具（kebab-case 文件）
-│   ├── components/          # 跨功能复用的 UI 组件（PascalCase 文件）
+│   ├── common/              # 被多个 feature 或壳子共用的纯逻辑与工具（kebab-case 文件）
+│   ├── components/          # 被多个 feature 或壳子共用的 UI 组件（PascalCase 文件）
 │   ├── shell/               # 外壳：feature 契约与注册表 + 网格页面
 │   └── features/
-│       ├── index.ts         # featureList：登记所有功能
+│       ├── index.ts         # featureList：登记所有功能（装配清单）
+│       ├── host.ts          # featureHosts：登记各功能的宿主侧扩展（装配清单）
 │       ├── registry.ts      # 校验后的共享注册表，外壳与入口共用
 │       ├── demo/            # 页面型示例功能，可作为模板复制
 │       │   ├── index.tsx    # 注册定义：id、入口、页面与文案的装配
 │       │   ├── entry.tsx    # 功能在网格中的入口，外观由功能自己设计
 │       │   ├── page.tsx     # 功能页面内容与页头标题
+│       │   ├── Card.tsx     # 本功能专属面板，随 demo 一起复制
 │       │   └── locales.ts   # 本功能的中英文文案
 │       └── expand-process/  # 开关型示例功能：展开过程
 │           ├── index.tsx    # 注册定义：只提供 switch，没有独立页面
 │           ├── toggle.tsx   # 网格中的开关入口
+│           ├── expand-process.ts # 引导脚本与开关状态读写，本功能专属
+│           ├── host.ts      # 宿主侧扩展：向 index.html 注入引导脚本
 │           └── locales.ts   # 本功能的中英文文案
 └── build.ts                 # 构建脚本，由 tsx 直接执行
 ```
+
+## 功能自包含，壳子零功能
+
+每个 feature 在自己的目录内包含完整实现：入口、页面、语言包、专属组件与逻辑、
+宿主侧扩展。外壳（`src/shell/`、`src/index.ts`、`src/features/index.ts`、
+`src/features/host.ts`）只做网格布局、功能切换、返回导航与装配注册，不承载具体功能。
+
+- 只被单个 feature 使用的代码必须留在该 feature 目录内，不放进 `src/common/` 或 `src/components/`。
+- 需要宿主能力时，在 feature 目录内新增 `host.ts`（导出 `inject` 与 `apply`），
+  再到 `src/features/host.ts` 登记；`src/index.ts` 只负责合并依赖并遍历调用。
 
 ## 新增一个功能
 
@@ -50,6 +64,8 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → 定制功能」中用�
 2. 修改 `index.tsx` 里的 `id`，重写 `toggle.tsx` 与 `locales.ts`
 3. 同样在 `featureList` 中登记并构建
 
+两种形态需要宿主侧能力时，都在各自目录内新增 `host.ts`，再到 `src/features/host.ts` 登记。
+
 `feature` 定义的字段契约见 `src/shell/registry.ts`。入口组件拿到 `t` 与 `open`，
 可自行设计任意展现形式（卡片、按钮、横幅等），外壳只负责网格布局与打开动作；
 开关型 feature 提供 `switch` 组件，外壳把它放进网格并占满整行。
@@ -58,7 +74,7 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → 定制功能」中用�
 
 `expand-process` 让会话里的「思考」与「运行命令」默认展开。它的实现与普通页面型功能不同：
 
-- 宿主侧 `src/index.ts` 把一段引导脚本注入 `index.html` 的 `<head>` 最前面，
+- 宿主侧 `src/features/expand-process/host.ts` 把一段引导脚本注入 `index.html` 的 `<head>` 最前面，
   在客户端模块系统启动前接管 `window.__ModuleLoader__`，替换两个 UI 包 factory 的源码；
 - 开关状态存在 localStorage 的 `dsh-all-in-one:expand-process` 键里，默认关闭；
 - 切换开关后页面会自动刷新，让已渲染的会话内容也按新状态展示。
@@ -76,9 +92,9 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → 定制功能」中用�
 
 ## 公共代码放在哪里
 
-- 被多个功能复用的 UI（按钮、面板等）→ `src/components/`
-- 被多个功能复用的纯逻辑与工具函数 → `src/common/`
-- 只被单个功能使用的代码 → 留在该功能自己的文件夹内，不提前抽象
+- 被多个 feature 或壳子与 feature 共用的 UI（按钮等）→ `src/components/`
+- 被多个 feature 或壳子与 feature 共用的纯逻辑与工具函数 → `src/common/`
+- 只被单个 feature 使用的代码 → 留在该 feature 目录内，不提前抽象
 
 新增公共能力时按上述目录落位，文件名遵循 kebab-case（工具）/ PascalCase（组件）。
 

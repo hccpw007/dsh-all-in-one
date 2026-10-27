@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { cn } from '../common/cn'
+import { cn } from '../../common/cn'
 
 export interface CardProps {
   className?: string

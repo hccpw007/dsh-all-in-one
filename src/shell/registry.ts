@@ -48,7 +48,7 @@ export interface FeatureSwitchDefinition extends FeatureCommon {
 }
 
 /**
- * Feature 定义契约，新增功能的模板结构见 src/features/demo/：
+ * Feature 定义契约，新增功能的模板结构见 src/features/ 下的示例目录：
  *   id       string   唯一标识，同时作为语言 key 前缀与渲染 key
  *   locales  object   本功能的中英文文案，外壳统一注册，新增功能无需改外壳
  *   order    number   可选，网格排序权重，越小越靠前，默认 100

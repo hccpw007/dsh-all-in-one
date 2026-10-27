@@ -185,7 +185,7 @@ window.__ModuleLoader__.load({
       );
     }
 
-    // src/components/Card.tsx
+    // src/features/demo/Card.tsx
     var import_react3 = __toESM(require("react"), 1);
     function Card({ className, children }) {
       return /* @__PURE__ */ import_react3.default.createElement("div", { className: cn("rounded-xl border border-line1 bg-layer1", className) }, children);
@@ -230,7 +230,7 @@ window.__ModuleLoader__.load({
     // src/features/expand-process/toggle.tsx
     var import_react5 = __toESM(require("react"), 1);
 
-    // src/common/expand-process.ts
+    // src/features/expand-process/expand-process.ts
     var EXPAND_PROCESS_STORAGE_KEY = "dsh-all-in-one:expand-process";
     function bootExpandProcess(storageKey) {
       const win = window;

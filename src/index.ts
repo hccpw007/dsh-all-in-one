@@ -1,30 +1,22 @@
 /**
- * 定制功能的宿主侧实现。
+ * 定制功能的宿主侧入口。
  *
- * 设置页与各功能都在浏览器端，宿主侧只做一件事：向 index.html 的 <head>
- * 最前面注入「展开过程」的引导脚本。脚本在客户端模块系统启动前接管
- * `window.__ModuleLoader__`，按开关状态决定「思考」与「运行命令」是否默认展开。
+ * 壳子只负责装配：合并各 feature 的宿主服务依赖，并依次调用它们的 apply。
+ * 具体能力（如「展开过程」的 index.html 注入）由 feature 目录内的 host.ts 实现。
  *
  * 宿主按 package.json 的 exports 直接加载根目录 index.js（JS），
  * 源码放在这里，由 build.ts 产出同名产物。
  */
-import { EXPAND_PROCESS_SCRIPT } from './common/expand-process'
-import type { HostPluginContext, IndexInjectTable } from './types/host'
+import { featureHosts } from './features/host'
+import type { HostPluginContext } from './types/host'
 
-/** 需要 Web 服务器的 index.html 注入通道；服务缺失时插件不加载。 */
-export const inject = ['webServer']
+/** 合并全部 feature 的宿主服务依赖，去重后作为插件的 inject。 */
+export const inject = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])))
 
 /**
- * 注册 index.html 注入行。
- *
- * 订阅者按激活顺序追加行；这里用 unshift 顶到最前，保证脚本先于客户端
- * 模块系统的队列脚本执行。
+ * 宿主加载插件时调用：逐个执行 feature 的宿主扩展。
  * @param ctx 宿主插件上下文
  */
 export function apply(ctx: HostPluginContext): void {
-  ctx.effect(() =>
-    ctx.on('webserver/index-inject', (table: IndexInjectTable) => {
-      table.unshift({ kind: 'script', placement: 'head', text: EXPAND_PROCESS_SCRIPT })
-    }),
-  )
+  for (const feature of featureHosts) feature.apply(ctx)
 }

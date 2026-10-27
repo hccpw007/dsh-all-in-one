@@ -1,4 +1,17 @@
-// src/common/expand-process.ts
+var __defProp = Object.defineProperty;
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+
+// src/features/expand-process/host.ts
+var host_exports = {};
+__export(host_exports, {
+  apply: () => apply,
+  inject: () => inject
+});
+
+// src/features/expand-process/expand-process.ts
 var EXPAND_PROCESS_STORAGE_KEY = "dsh-all-in-one:expand-process";
 function bootExpandProcess(storageKey) {
   const win = window;
@@ -104,7 +117,7 @@ function bootExpandProcess(storageKey) {
 }
 var EXPAND_PROCESS_SCRIPT = `(${bootExpandProcess.toString()})(${JSON.stringify(EXPAND_PROCESS_STORAGE_KEY)});`;
 
-// src/index.ts
+// src/features/expand-process/host.ts
 var inject = ["webServer"];
 function apply(ctx) {
   ctx.effect(
@@ -113,7 +126,16 @@ function apply(ctx) {
     })
   );
 }
+
+// src/features/host.ts
+var featureHosts = [host_exports];
+
+// src/index.ts
+var inject2 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
+function apply2(ctx) {
+  for (const feature of featureHosts) feature.apply(ctx);
+}
 export {
-  apply,
-  inject
+  apply2 as apply,
+  inject2 as inject
 };

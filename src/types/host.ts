@@ -22,3 +22,16 @@ export interface HostPluginContext {
   /** 订阅 index.html 注入事件，返回取消订阅函数。 */
   on(event: 'webserver/index-inject', listener: (table: IndexInjectTable) => void): () => void
 }
+
+/**
+ * feature 提供的宿主侧扩展。
+ *
+ * 由 src/features/host.ts 聚合，src/index.ts 只做统一注册，
+ * 壳子不承载任何具体功能实现。
+ */
+export interface FeatureHostExtension {
+  /** 本扩展依赖的宿主服务，壳子合并去重后作为插件的 inject。 */
+  inject?: string[]
+  /** 注册本扩展的宿主能力。 */
+  apply(ctx: HostPluginContext): void
+}
