@@ -237,7 +237,22 @@ export function PowerPackPage({ t }: FeaturePageProps) {
                 <div className="flex shrink-0 items-center gap-2">
                   {/* 默认技能包：已是默认只显示标识，否则提供设置入口 */}
                   {payload?.defaultPackId === pack.id ? (
-                    <span className="rounded-lg border border-line4 px-3 py-1.5 text-[12px] text-secondary">
+                    // 默认技能包标识：绿色描边与打钩，和可点击的「设为默认」按钮区分开
+                    <span className="inline-flex items-center gap-1 rounded-lg border border-success px-3 py-1.5 text-[12px] text-success">
+                      {/* 打钩图标，表示该技能包已设为默认 */}
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="12"
+                        height="12"
+                        aria-hidden="true"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg>
                       {t('defaultBadge')}
                     </span>
                   ) : (
@@ -261,7 +276,7 @@ export function PowerPackPage({ t }: FeaturePageProps) {
                     {t('edit')}
                   </Button>
                   {/* 删除该技能包 */}
-                  <Button variant="ghost" onClick={() => void handleDelete(pack.id)}>
+                  <Button variant="danger" onClick={() => void handleDelete(pack.id)}>
                     {t('delete')}
                   </Button>
                 </div>
