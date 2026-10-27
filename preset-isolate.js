@@ -5,6 +5,7 @@ import { join } from "node:path";
 
 // src/features/power-pack/host/prompt-overlay.ts
 var SHARED_KEY = Symbol.for("dsh-all-in-one.prompt-isolation");
+var OVERLAY_INNER = Symbol.for("dsh-all-in-one.prompt-overlay.inner");
 function isolationState() {
   const holder = globalThis;
   const existing = holder[SHARED_KEY];

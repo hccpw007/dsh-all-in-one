@@ -20,6 +20,9 @@ const SHARED_KEY = Symbol.for('dsh-all-in-one.prompt-isolation')
 /** 抢占检查间隔：全局插件会周期性重挂自己的包装，这里要能抢回来。 */
 const CHECK_INTERVAL_MS = 3000
 
+/** 装配方法形态：宿主实现依赖 `this`，调用时必须带上服务对象。 */
+type PromptAssemble = (this: unknown, context: unknown) => Promise<unknown>
+
 /** 共享的隔离状态。 */
 interface IsolationState {
   /** 每个装配作用域的干净段落快照；只有严格隔离的会话会写入。 */
@@ -30,6 +33,14 @@ interface IsolationState {
 interface PurgeAware {
   _dshPurgeWrapped?: boolean
   _dshPurgeSlot?: { rewrite: () => undefined }
+}
+
+/** 记在本模块包装函数上的下层实现，用于穿透自产包装、避免自引用递归。 */
+const OVERLAY_INNER = Symbol.for('dsh-all-in-one.prompt-overlay.inner')
+
+/** 记录了下层实现的包装函数。 */
+interface OverlayAware {
+  [OVERLAY_INNER]?: PromptAssemble
 }
 
 /**
@@ -71,6 +82,37 @@ function markAsWrapped(fn: object): void {
 }
 
 /**
+ * 记下包装函数对应的下层实现。
+ * @param fn 本模块生成的包装函数
+ * @param inner 它包裹的实现
+ */
+function markOverlay(fn: PromptAssemble, inner: PromptAssemble): void {
+  ;(fn as OverlayAware)[OVERLAY_INNER] = inner
+}
+
+/**
+ * 把一个读到的 `assemble` 递归剥掉本模块的包装。
+ *
+ * 全局插件会把自己的包装存起来并在之后重新赋值，读回来的 `assemble` 可能就是我们
+ * 自己的某一层。若直接把它当作下层实现重新包装，会得到调用自身的循环，直接栈溢出。
+ * @param value 从服务对象读到的 `assemble`
+ * @returns 最底层的实现
+ */
+function unwrapOverlay(value: PromptAssemble): PromptAssemble {
+  let current = value
+  const seen = new Set<PromptAssemble>()
+
+  while (seen.size < 32 && !seen.has(current)) {
+    seen.add(current)
+    const inner = (current as OverlayAware)[OVERLAY_INNER]
+    if (typeof inner !== 'function') break
+    current = inner
+  }
+
+  return current
+}
+
+/**
  * 安装最外层包装，并在生命周期内保持它是外层的。
  * @param ctx 宿主上下文，需要 systemPrompt 服务与 effect
  */
@@ -79,18 +121,20 @@ export function installPromptOverlay(ctx: HostPluginContext): void {
   if (prompt === undefined) return
 
   ctx.effect(() => {
-    /** 当前被包裹的下层实现。 */
-    let inner: unknown
     /** 当前最外层包装。 */
-    let wrapped: ((context: unknown) => Promise<unknown>) | undefined
+    let wrapped: PromptAssemble | undefined
+    /** 本模块挂在 `assemble` 上的 getter，用于判断 accessor 是否仍归本模块所有。 */
+    let getter: (() => PromptAssemble | undefined) | undefined
 
     /** 用 `next` 作为下层实现重新生成最外层包装。 */
-    const rebuild = (next: unknown): void => {
-      if (typeof next !== 'function') return
-      inner = next
+    const rebuild = (next: PromptAssemble): void => {
+      // 必须捕获成常量：若包装体读的是可变的 `inner`，重建后旧包装又会读到新值，
+      // 形成「包装调用自己」的无限递归，一次检查就能把调用栈压爆。
+      // 同时剥掉自己的旧包装——全局插件常把读到的 assemble 原样存回去。
+      const base = unwrapOverlay(next)
 
       const current = async (context: unknown): Promise<unknown> => {
-        const result = await (inner as (context: unknown) => Promise<unknown>)(context)
+        const result = await base.call(prompt, context)
         if (!isAssembly(result)) return result
 
         const scope = (context as { scope?: unknown } | undefined)?.scope
@@ -107,35 +151,55 @@ export function installPromptOverlay(ctx: HostPluginContext): void {
       }
 
       markAsWrapped(current)
+      markOverlay(current, base)
       wrapped = current
+    }
+
+    getter = () => wrapped
+
+    /**
+     * 判断 `assemble` 当前是否已是本模块的 accessor。
+     *
+     * 宿主每次读服务方法都返回新的 traceable 代理，因此不能用
+     * `prompt.assemble === wrapped` 判断——那样每次都判定为「被替换」，
+     * 每轮检查都会再包一层，最终把调用栈压爆。
+     */
+    const isInstalled = (): boolean => {
+      if (getter === undefined) return false
+      const descriptor = Object.getOwnPropertyDescriptor(prompt, 'assemble')
+
+      return descriptor?.get === getter
+    }
+
+    /** 把 accessor 挂到服务对象上；外部赋值时重建包装。 */
+    const attach = (): void => {
+      Object.defineProperty(prompt, 'assemble', {
+        configurable: true,
+        enumerable: true,
+        get: getter,
+        set: (nextValue: unknown) => {
+          if (typeof nextValue === 'function') rebuild(nextValue as PromptAssemble)
+        },
+      })
+    }
+
+    /** 检查最外层是否仍属于本模块，必要时重新抢占。 */
+    const sync = (): void => {
+      if (isInstalled()) return
 
       try {
-        Object.defineProperty(prompt, 'assemble', {
-          configurable: true,
-          enumerable: true,
-          get: () => wrapped,
-          // 外部替换 assemble 时以新函数为下层重新包装，保持最外层不变
-          set: (nextValue: unknown) => {
-            if (typeof nextValue === 'function' && nextValue !== wrapped) rebuild(nextValue)
-          },
-        })
+        const current = prompt.assemble
+        if (typeof current !== 'function') return
+
+        rebuild(current as PromptAssemble)
+        attach()
       } catch (error) {
         // 服务对象不可配置时放弃兜底，隔离行的事件路径仍然生效
         console.error('[power-pack] 安装提示词外层包装失败:', error)
       }
     }
 
-    /** 检查最外层是否仍属于本模块，必要时重新抢占。 */
-    const sync = (): void => {
-      try {
-        if (wrapped !== undefined && prompt.assemble === wrapped) return
-        rebuild(prompt.assemble)
-      } catch (error) {
-        console.error('[power-pack] 检查提示词外层包装失败:', error)
-      }
-    }
-
-    // 首次安装可能早于全局插件加载，因此延迟一拍并周期性复查
+    // 首次安装可能早于全局插件加载，因此周期性复查被抢占的情况
     sync()
     const timer = setInterval(sync, CHECK_INTERVAL_MS)
     if (typeof timer.unref === 'function') timer.unref()

@@ -568,6 +568,7 @@ async function disposePackPresets() {
 // src/features/power-pack/host/prompt-overlay.ts
 var SHARED_KEY = Symbol.for("dsh-all-in-one.prompt-isolation");
 var CHECK_INTERVAL_MS = 3e3;
+var OVERLAY_INNER = Symbol.for("dsh-all-in-one.prompt-overlay.inner");
 function isolationState() {
   const holder = globalThis;
   const existing = holder[SHARED_KEY];
@@ -584,17 +585,31 @@ function markAsWrapped(fn) {
   target._dshPurgeWrapped = true;
   target._dshPurgeSlot ??= { rewrite: () => void 0 };
 }
+function markOverlay(fn, inner) {
+  ;
+  fn[OVERLAY_INNER] = inner;
+}
+function unwrapOverlay(value) {
+  let current = value;
+  const seen = /* @__PURE__ */ new Set();
+  while (seen.size < 32 && !seen.has(current)) {
+    seen.add(current);
+    const inner = current[OVERLAY_INNER];
+    if (typeof inner !== "function") break;
+    current = inner;
+  }
+  return current;
+}
 function installPromptOverlay(ctx) {
   const prompt = ctx.systemPrompt;
   if (prompt === void 0) return;
   ctx.effect(() => {
-    let inner;
     let wrapped;
+    let getter;
     const rebuild = (next) => {
-      if (typeof next !== "function") return;
-      inner = next;
+      const base = unwrapOverlay(next);
       const current = async (context) => {
-        const result = await inner(context);
+        const result = await base.call(prompt, context);
         if (!isAssembly(result)) return result;
         const scope = context?.scope;
         if (typeof scope !== "object" || scope === null) return result;
@@ -605,27 +620,34 @@ function installPromptOverlay(ctx) {
         return { ...result, sections: clean };
       };
       markAsWrapped(current);
+      markOverlay(current, base);
       wrapped = current;
-      try {
-        Object.defineProperty(prompt, "assemble", {
-          configurable: true,
-          enumerable: true,
-          get: () => wrapped,
-          // 外部替换 assemble 时以新函数为下层重新包装，保持最外层不变
-          set: (nextValue) => {
-            if (typeof nextValue === "function" && nextValue !== wrapped) rebuild(nextValue);
-          }
-        });
-      } catch (error) {
-        console.error("[power-pack] \u5B89\u88C5\u63D0\u793A\u8BCD\u5916\u5C42\u5305\u88C5\u5931\u8D25:", error);
-      }
+    };
+    getter = () => wrapped;
+    const isInstalled = () => {
+      if (getter === void 0) return false;
+      const descriptor = Object.getOwnPropertyDescriptor(prompt, "assemble");
+      return descriptor?.get === getter;
+    };
+    const attach = () => {
+      Object.defineProperty(prompt, "assemble", {
+        configurable: true,
+        enumerable: true,
+        get: getter,
+        set: (nextValue) => {
+          if (typeof nextValue === "function") rebuild(nextValue);
+        }
+      });
     };
     const sync = () => {
+      if (isInstalled()) return;
       try {
-        if (wrapped !== void 0 && prompt.assemble === wrapped) return;
-        rebuild(prompt.assemble);
+        const current = prompt.assemble;
+        if (typeof current !== "function") return;
+        rebuild(current);
+        attach();
       } catch (error) {
-        console.error("[power-pack] \u68C0\u67E5\u63D0\u793A\u8BCD\u5916\u5C42\u5305\u88C5\u5931\u8D25:", error);
+        console.error("[power-pack] \u5B89\u88C5\u63D0\u793A\u8BCD\u5916\u5C42\u5305\u88C5\u5931\u8D25:", error);
       }
     };
     sync();
