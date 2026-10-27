@@ -1,21 +1,21 @@
 import type { FeatureLocales } from '../../shell/registry'
 
-/** 「对话风格」的中英文文案；key 由外壳统一加 `chat-style.` 前缀。 */
-export const chatStyleLocales: FeatureLocales = {
+/** 「技能包」的中英文文案；key 由外壳统一加 `power-pack.` 前缀。 */
+export const powerPackLocales: FeatureLocales = {
   zh: {
     // 网格入口标题
-    title: '对话风格',
+    title: '技能包',
     // 网格入口描述
-    description: '为不同任务准备不同的技能、插件与 MCP，新建对话时按风格选择。',
+    description: '为不同任务准备不同的技能、插件与 MCP，新建对话时按技能包选择。',
     // 功能页标题
-    pageTitle: '对话风格',
+    pageTitle: '技能包',
     // 功能页说明
     pageDescription:
-      '每个风格是一套独立的 Agent 组合。保存后会出现在新建任务的预设选择器中，只对选择它的会话生效。',
-    // 新建风格按钮
-    newStyle: '新建风格',
+      '每个技能包是一套叠加在模式之上的技能与工具配置。保存后在新建任务的「技能包」下拉里选择，只对选择它的会话生效。',
+    // 新建技能包按钮
+    newPack: '新建技能包',
     // 空态提示
-    empty: '还没有创建任何风格。新建一个风格，勾选它需要的技能与工具。',
+    empty: '还没有创建任何技能包。新建一个技能包，勾选它需要的技能与工具。',
     // 编辑按钮
     edit: '编辑',
     // 删除按钮
@@ -31,45 +31,45 @@ export const chatStyleLocales: FeatureLocales = {
     // MCP 服务器标识重复时的提示
     mcpIdDuplicate: 'MCP 服务器标识不能重复。',
     // 删除确认提示
-    confirmDelete: '删除后该风格不再出现在新建任务的预设列表中，确定删除？',
+    confirmDelete: '删除后该技能包不再出现在新建任务的下拉列表中，确定删除？',
     // 加载失败提示
-    loadFailed: '读取风格配置失败',
+    loadFailed: '读取技能包配置失败',
     // 保存失败提示
     saveFailed: '保存失败',
     // 删除失败提示
     deleteFailed: '删除失败',
     // 名称字段标签
-    nameLabel: '风格名称',
+    nameLabel: '技能包名称',
     // 名称输入占位
     namePlaceholder: '例如：代码审查',
     // 描述字段标签
-    descriptionLabel: '风格描述',
+    descriptionLabel: '技能包描述',
     // 描述输入占位
-    descriptionPlaceholder: '一句话说明这个风格适合什么任务',
+    descriptionPlaceholder: '一句话说明这个技能包适合什么任务',
     // 系统提示词字段标签
     systemPromptLabel: '系统提示词',
     // 系统提示词说明
-    systemPromptHint: '这段文字会追加到系统提示词末尾，用来约定该风格的工作方式。',
+    systemPromptHint: '这段文字会追加到系统提示词末尾，用来约定该技能包的工作方式。',
     // 系统提示词占位
     systemPromptPlaceholder: '例如：只审查代码，先指出潜在缺陷与测试缺口，修改文件前先询问。',
     // 技能区块标题
     skillsTitle: '技能',
     // 技能区块说明
-    skillsHint: '只对勾选的技能开放加载；未列出的技能不会出现在该风格的技能目录里。',
+    skillsHint: '只对勾选的技能开放加载；未列出的技能不会出现在该技能包的技能目录里。',
     // 插件区块标题
     pluginsTitle: '插件与工具',
     // 插件区块说明
-    pluginsHint: '从零组装 Agent：不勾选任何项时，该风格只有对话能力。',
+    pluginsHint: '在所选的模式之上筛选工具：勾选项由规则决定保留或剔除。',
     // MCP 区块标题
     mcpTitle: 'MCP 服务器',
     // MCP 区块说明
-    mcpHint: '为风格配置外部 MCP 服务；每个服务器会作为独立的客户端行挂载。',
+    mcpHint: '为技能包配置外部 MCP 服务；每个服务器会作为独立的客户端行挂载。',
     // MCP 服务器定义区块标题
     mcpServersTitle: '服务器定义',
     // MCP 启用规则区块标题
     mcpRuleTitle: '启用的服务器',
     // MCP 启用规则说明
-    mcpRuleHint: '选择该风格挂载哪些已定义的 MCP 服务器。',
+    mcpRuleHint: '选择该技能包挂载哪些已定义的 MCP 服务器。',
     // 重试加载按钮
     retry: '重试',
     // 三态模式：全部
@@ -119,18 +119,18 @@ export const chatStyleLocales: FeatureLocales = {
     // 移除 MCP 服务器按钮
     remove: '移除',
     // 保存成功提示
-    saved: '已保存，新建任务时可在「对话风格」下拉中选择该风格。',
+    saved: '已保存，新建任务时可在「技能包」下拉中选择。',
     // 必填校验提示
-    nameRequired: '请填写风格名称。',
+    nameRequired: '请填写技能包名称。',
     // 存储位置说明
     storageHint: '配置文件位置',
     // 预设选择提示
     presetHint:
-      '风格叠加在新建任务时所选的模式之上：模式提供基础工具，风格再筛选技能与工具、追加 MCP 与系统提示词。',
+      '技能包叠加在新建任务时所选的模式之上：模式提供基础工具，技能包再筛选技能与工具、追加 MCP 与系统提示词。',
     // 新会话选择器的模式下拉占位文案
     modeLabel: '模式',
-    // 新会话选择器的风格下拉占位文案
-    seatLabel: '对话风格',
+    // 新会话选择器的技能包下拉占位文案
+    seatLabel: '技能包',
     // 内置标准模式的显示名
     presetStandardName: '标准模式',
     // 内置 PTC 模式的显示名
@@ -151,25 +151,25 @@ export const chatStyleLocales: FeatureLocales = {
     // 内置创造模式的说明
     presetCordisDescription:
       '用对话定制 DSH：让 Agent 编写插件，添加新功能或界面；也能组合工具和提示词，创建自己的模式。',
-    // 会话已开始后尝试切换风格的提示
-    seatSessionStarted: '会话已开始，无法再切换风格。请在新建任务时选择。',
-    // 风格切换失败的提示前缀
+    // 会话已开始后尝试切换技能包的提示
+    seatSessionStarted: '会话已开始，无法再切换技能包。请在新建任务时选择。',
+    // 技能包切换失败的提示前缀
     seatSelectFailed: '切换失败',
   },
   en: {
     // Grid entry title
-    title: 'Chat styles',
+    title: 'Power packs',
     // Grid entry description
-    description: 'Prepare different skills, plugins and MCP servers per task, then pick a style when starting a chat.',
+    description: 'Prepare skills, plugins and MCP servers per task, then pick a power pack when starting a chat.',
     // Page title
-    pageTitle: 'Chat styles',
+    pageTitle: 'Power packs',
     // Page description
     pageDescription:
-      'Each style is a standalone agent composition. Once saved it appears in the preset picker for new tasks and only applies to sessions that choose it.',
-    // New style button
-    newStyle: 'New style',
+      'Each power pack layers on top of the mode chosen for a new task. Pick it from the Power pack dropdown when starting a task; it only applies to sessions that choose it.',
+    // New power pack button
+    newPack: 'New power pack',
     // Empty state
-    empty: 'No styles yet. Create one and choose the skills and tools it needs.',
+    empty: 'No power packs yet. Create one and choose the skills and tools it needs.',
     // Edit button
     edit: 'Edit',
     // Delete button
@@ -185,35 +185,35 @@ export const chatStyleLocales: FeatureLocales = {
     // Duplicate MCP server id
     mcpIdDuplicate: 'MCP server IDs must be unique.',
     // Delete confirmation
-    confirmDelete: 'This style will no longer appear in the preset picker. Delete it?',
+    confirmDelete: 'This power pack will no longer appear in the new-task dropdown. Delete it?',
     // Load failure
-    loadFailed: 'Could not load styles',
+    loadFailed: 'Could not load power packs',
     // Save failure
     saveFailed: 'Could not save',
     // Delete failure
     deleteFailed: 'Could not delete',
     // Name field label
-    nameLabel: 'Style name',
+    nameLabel: 'Power pack name',
     // Name placeholder
     namePlaceholder: 'e.g. Code review',
     // Description field label
     descriptionLabel: 'Description',
     // Description placeholder
-    descriptionPlaceholder: 'One sentence about when to use this style',
+    descriptionPlaceholder: 'One sentence about when to use this power pack',
     // System prompt label
     systemPromptLabel: 'System prompt',
     // System prompt hint
-    systemPromptHint: 'Appended to the end of the system prompt to define how this style works.',
+    systemPromptHint: 'Appended to the end of the system prompt to define how this power pack works.',
     // System prompt placeholder
     systemPromptPlaceholder: 'e.g. Only review code. Point out defects and test gaps, ask before editing files.',
     // Skills section title
     skillsTitle: 'Skills',
     // Skills section hint
-    skillsHint: 'Only selected skills can be loaded; unlisted ones are absent from this style.',
+    skillsHint: 'Only selected skills can be loaded; unlisted ones are absent from this power pack.',
     // Plugins section title
     pluginsTitle: 'Plugins and tools',
     // Plugins section hint
-    pluginsHint: 'Assemble the agent from scratch: with nothing selected the style can only chat.',
+    pluginsHint: 'Filter the tools of the chosen mode: each selection is kept or dropped by the rule.',
     // MCP section title
     mcpTitle: 'MCP servers',
     // MCP section hint
@@ -223,7 +223,7 @@ export const chatStyleLocales: FeatureLocales = {
     // MCP enabled-servers rule title
     mcpRuleTitle: 'Enabled servers',
     // MCP rule hint
-    mcpRuleHint: 'Choose which defined MCP servers this style mounts.',
+    mcpRuleHint: 'Choose which defined MCP servers this power pack mounts.',
     // Retry loading button
     retry: 'Retry',
     // Rule mode: all
@@ -273,18 +273,18 @@ export const chatStyleLocales: FeatureLocales = {
     // Remove MCP server
     remove: 'Remove',
     // Saved notice
-    saved: 'Saved. Pick this style from the Chat style dropdown when starting a new task.',
+    saved: 'Saved. Pick this power pack from the Power pack dropdown when starting a new task.',
     // Required name message
-    nameRequired: 'Enter a style name.',
+    nameRequired: 'Enter a power pack name.',
     // Storage location hint
     storageHint: 'Config file',
     // Preset picker hint
     presetHint:
-      'A style layers on top of the mode chosen for a new task: the mode supplies base tools, and the style filters skills and tools, then adds MCP servers and a system prompt.',
+      'A power pack layers on top of the mode chosen for a new task: the mode supplies base tools, and the power pack filters skills and tools, then adds MCP servers and a system prompt.',
     // Placeholder for the mode dropdown
     modeLabel: 'Mode',
-    // Placeholder for the style dropdown
-    seatLabel: 'Chat style',
+    // Placeholder for the power pack dropdown
+    seatLabel: 'Power pack',
     // Display name for the built-in Standard mode
     presetStandardName: 'Standard mode',
     // Display name for the built-in PTC mode
@@ -306,8 +306,8 @@ export const chatStyleLocales: FeatureLocales = {
     presetCordisDescription:
       'Customize DSH through conversation. Let the agent write plugins that add features or UI, or combine tools and prompts to create your own mode.',
     // Shown when trying to switch a session that already started
-    seatSessionStarted: 'This session has started; a style can only be chosen for a new task.',
-    // Prefix for a failed style switch
+    seatSessionStarted: 'This session has started; a power pack can only be chosen for a new task.',
+    // Prefix for a failed power pack switch
     seatSelectFailed: 'Could not switch',
   },
 }

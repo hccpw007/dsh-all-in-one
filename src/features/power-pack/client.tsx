@@ -1,20 +1,20 @@
 /**
- * 「对话风格」的客户端扩展：在新会话界面注入独立的风格选择器。
+ * 「技能包」的客户端扩展：在新会话界面注入独立的技能包选择器。
  *
  * 覆盖宿主的预设位（single 插槽，低 priority 生效），但渲染两个并排的独立
- * 下拉：左「模式」只列宿主预设，右「对话风格」只列本插件定义的风格。两者
- * 互不覆盖，风格非空时由宿主侧合成为组合预设。
+ * 下拉：左「模式」只列宿主预设，右「技能包」只列本插件定义的技能包。两者
+ * 互不覆盖，技能包非空时由宿主侧合成为组合预设。
  *
  * 会话与预设服务按需注入：服务缺失时只跳过选择器，设置页仍可正常使用。
  */
 import React from 'react'
 
 import type { PluginContext, Translate } from '../../types/plugin'
-import { ChatStyleSeat, type ChatStyleSeatProps } from './seat'
+import { PowerPackSeat, type PowerPackSeatProps } from './seat'
 import { createSeatController } from './seat-store'
 
 /**
- * 注册新会话界面的风格选择器。
+ * 注册新会话界面的技能包选择器。
  * @param ctx 客户端插件上下文
  * @param t 已绑定本 feature 前缀的翻译函数
  */
@@ -30,17 +30,17 @@ export function apply(ctx: PluginContext, t: Translate): void {
           // 宿主内置选择器使用默认 priority 0；更低的值覆盖它
           priority: -10,
           inject: (sessionId) => ({
-            hooks: { chatStyleSeat: controller.store },
+            hooks: { powerPackSeat: controller.store },
             load: () => controller.load(sessionId),
             selectMode: (presetId: string) => controller.selectMode(sessionId, presetId),
-            selectStyle: (styleId: string) => controller.selectStyle(sessionId, styleId),
+            selectPack: (packId: string) => controller.selectPack(sessionId, packId),
             applyStaged: async () => {
               if (sessionId !== undefined) await controller.applyStaged(sessionId)
             },
           }),
         },
         (props: Record<string, unknown>) => (
-          <ChatStyleSeat {...(props as unknown as Omit<ChatStyleSeatProps, 't'>)} t={t} />
+          <PowerPackSeat {...(props as unknown as Omit<PowerPackSeatProps, 't'>)} t={t} />
         ),
       ),
     )

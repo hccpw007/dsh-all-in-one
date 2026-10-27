@@ -1,5 +1,5 @@
 /**
- * 「对话风格」的数据模型。
+ * 「技能包」的数据模型。
  *
  * 客户端编辑页与宿主侧预设生成共用同一份定义，避免两边各写一套字段。
  */
@@ -15,7 +15,7 @@ export interface ResourceRule {
   items: string[]
 }
 
-/** 风格内维护的 MCP 服务器定义，对应宿主 mcp-client 的一行。 */
+/** 技能包内维护的 MCP 服务器定义，对应宿主 mcp-client 的一行。 */
 export interface McpServerConfig {
   /** 稳定标识，同时用于行 id 与 serverName。 */
   id: string
@@ -31,13 +31,13 @@ export interface McpServerConfig {
   headers: Record<string, string>
 }
 
-/** 一个可保存的对话风格。 */
-export interface ChatStyle {
-  /** 稳定标识，注册预设时加 `style-` 前缀。 */
+/** 一个可保存的技能包。 */
+export interface PowerPack {
+  /** 稳定标识，注册预设时加 `pack-` 前缀。 */
   id: string
   name: string
   description: string
-  /** 追加到系统提示词末尾的风格要求。 */
+  /** 追加到系统提示词末尾的技能包要求。 */
   systemPrompt: string
   skills: ResourceRule
   plugins: ResourceRule
@@ -46,9 +46,9 @@ export interface ChatStyle {
 }
 
 /** 存储文件的内容结构。 */
-export interface ChatStyleDocument {
+export interface PowerPackDocument {
   version: 1
-  styles: ChatStyle[]
+  packs: PowerPack[]
 }
 
 /** 插件/工具行的来源类别。 */
@@ -69,27 +69,27 @@ export interface SkillCatalogItem {
 }
 
 /** 编辑页需要的清单数据。 */
-export interface ChatStyleCatalog {
+export interface PowerPackCatalog {
   skills: SkillCatalogItem[]
   plugins: PluginCatalogItem[]
 }
 
 /** GET / POST 共用的响应负载。 */
-export interface ChatStylesPayload {
-  styles: ChatStyle[]
-  catalog: ChatStyleCatalog
+export interface PowerPacksPayload {
+  packs: PowerPack[]
+  catalog: PowerPackCatalog
   /** 存储文件路径，便于用户定位与备份。 */
   storagePath: string
 }
 
 /** 保存、删除或合成组合预设的请求体。 */
-export type ChatStyleWriteRequest =
-  | { action: 'save'; style: ChatStyle }
+export type PowerPackWriteRequest =
+  | { action: 'save'; pack: PowerPack }
   | { action: 'delete'; id: string }
-  | { action: 'compose'; style: string; mode: string }
+  | { action: 'compose'; pack: string; mode: string }
 
 /** 合成组合预设的响应体。 */
-export interface ChatStyleComposeResponse {
+export interface PowerPackComposeResponse {
   /** 已注册的组合预设 id，客户端直接用它选择会话预设。 */
   presetId: string
 }

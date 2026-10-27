@@ -1,6 +1,6 @@
 import type { FeatureDefinition } from '../shell/registry'
 
-import chatStyle from './chat-style'
+import powerPack from './power-pack'
 import demo from './demo'
 import expandProcess from './expand-process'
 
@@ -15,4 +15,4 @@ import expandProcess from './expand-process'
  *
  * 新增开关型功能：提供 switch 组件即可，网格中直接渲染开关，没有独立页面。
  */
-export const featureList: FeatureDefinition[] = [expandProcess, chatStyle, demo]
+export const featureList: FeatureDefinition[] = [expandProcess, powerPack, demo]

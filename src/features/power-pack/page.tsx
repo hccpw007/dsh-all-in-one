@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react'
 
 import { Button } from '../../components/Button'
 import type { FeaturePageProps } from '../../shell/registry'
-import { deleteChatStyle, loadChatStyles, saveChatStyle } from './api'
-import { StyleEditor } from './StyleEditor'
-import type { ChatStyle, ChatStylesPayload, RuleMode } from './types'
+import { deletePowerPack, loadPowerPacks, savePowerPack } from './api'
+import { PackEditor } from './PackEditor'
+import type { PowerPack, PowerPacksPayload, RuleMode } from './types'
 import type { Translate } from '../../types/plugin'
 
 /**
@@ -20,8 +20,8 @@ function modeLabel(mode: RuleMode, t: Translate): string {
   return t('modeAll')
 }
 
-/** 新建风格时的空白草稿；默认全部可用，用户再按需收窄。 */
-function createDraft(): ChatStyle {
+/** 新建技能包时的空白草稿；默认全部可用，用户再按需收窄。 */
+function createDraft(): PowerPack {
   return {
     id: crypto.randomUUID().replace(/-/g, '').slice(0, 12),
     name: '',
@@ -35,25 +35,25 @@ function createDraft(): ChatStyle {
 }
 
 /**
- * 「对话风格」页面：列出风格、进入编辑、保存与删除。
+ * 「技能包」页面：列出技能包、进入编辑、保存与删除。
  * @param props t 已绑定本 feature 的 key 前缀
  */
-export function ChatStylePage({ t }: FeaturePageProps) {
-  const [payload, setPayload] = useState<ChatStylesPayload | null>(null)
-  // 当前编辑中的草稿；为 null 时显示风格列表
-  const [editing, setEditing] = useState<ChatStyle | null>(null)
+export function PowerPackPage({ t }: FeaturePageProps) {
+  const [payload, setPayload] = useState<PowerPacksPayload | null>(null)
+  // 当前编辑中的草稿；为 null 时显示技能包列表
+  const [editing, setEditing] = useState<PowerPack | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [notice, setNotice] = useState<string | null>(null)
 
-  /** 拉取最新风格与清单。 */
+  /** 拉取最新技能包与清单。 */
   const reload = async (): Promise<void> => {
     try {
-      setPayload(await loadChatStyles())
+      setPayload(await loadPowerPacks())
       setError(null)
     } catch (failure) {
-      console.error('[chat-style] 加载风格失败:', failure)
+      console.error('[power-pack] 加载技能包失败:', failure)
       setError(`${t('loadFailed')}：${failure instanceof Error ? failure.message : String(failure)}`)
     } finally {
       setLoading(false)
@@ -66,11 +66,11 @@ export function ChatStylePage({ t }: FeaturePageProps) {
 
     void (async () => {
       try {
-        const next = await loadChatStyles()
+        const next = await loadPowerPacks()
         if (!active) return
         setPayload(next)
       } catch (failure) {
-        console.error('[chat-style] 加载风格失败:', failure)
+        console.error('[power-pack] 加载技能包失败:', failure)
         if (active) {
           setError(
             `${t('loadFailed')}：${failure instanceof Error ? failure.message : String(failure)}`,
@@ -87,31 +87,31 @@ export function ChatStylePage({ t }: FeaturePageProps) {
   }, [t])
 
   /** 保存草稿并刷新列表。 */
-  const handleSave = async (style: ChatStyle): Promise<void> => {
+  const handleSave = async (pack: PowerPack): Promise<void> => {
     setSaving(true)
     try {
-      setPayload(await saveChatStyle(style))
+      setPayload(await savePowerPack(pack))
       setEditing(null)
       setError(null)
       setNotice(t('saved'))
     } catch (failure) {
-      console.error('[chat-style] 保存风格失败:', failure)
+      console.error('[power-pack] 保存技能包失败:', failure)
       setError(`${t('saveFailed')}：${failure instanceof Error ? failure.message : String(failure)}`)
     } finally {
       setSaving(false)
     }
   }
 
-  /** 删除风格，确认后调用宿主接口。 */
+  /** 删除技能包，确认后调用宿主接口。 */
   const handleDelete = async (id: string): Promise<void> => {
     if (!window.confirm(t('confirmDelete'))) return
 
     try {
-      setPayload(await deleteChatStyle(id))
+      setPayload(await deletePowerPack(id))
       setError(null)
       setNotice(null)
     } catch (failure) {
-      console.error('[chat-style] 删除风格失败:', failure)
+      console.error('[power-pack] 删除技能包失败:', failure)
       setError(
         `${t('deleteFailed')}：${failure instanceof Error ? failure.message : String(failure)}`,
       )
@@ -129,12 +129,12 @@ export function ChatStylePage({ t }: FeaturePageProps) {
           <p className="mt-1.5 text-[13px] leading-5 text-secondary">{t('pageDescription')}</p>
         </header>
 
-        <StyleEditor
+        <PackEditor
           initial={editing}
           catalog={payload.catalog}
           saving={saving}
           error={error}
-          onSave={(style) => void handleSave(style)}
+          onSave={(pack) => void handleSave(pack)}
           onCancel={() => {
             setEditing(null)
             setError(null)
@@ -154,7 +154,7 @@ export function ChatStylePage({ t }: FeaturePageProps) {
           {/* 功能页说明 */}
           <p className="mt-1.5 text-[13px] leading-5 text-secondary">{t('pageDescription')}</p>
         </div>
-        {/* 新建风格入口 */}
+        {/* 新建技能包入口 */}
         <Button
           variant="outline"
           disabled={loading || !payload}
@@ -164,7 +164,7 @@ export function ChatStylePage({ t }: FeaturePageProps) {
             setEditing(createDraft())
           }}
         >
-          {t('newStyle')}
+          {t('newPack')}
         </Button>
       </header>
 
@@ -192,48 +192,48 @@ export function ChatStylePage({ t }: FeaturePageProps) {
       {loading ? (
         // 首次加载中的占位
         <p className="text-[12px] text-secondary">…</p>
-      ) : (payload?.styles.length ?? 0) === 0 ? (
-        // 尚未创建风格时的空态
+      ) : (payload?.packs.length ?? 0) === 0 ? (
+        // 尚未创建技能包时的空态
         <p className="rounded-xl border border-dashed border-line1 px-4 py-6 text-center text-[12px] text-secondary">
           {t('empty')}
         </p>
       ) : (
         <ul className="flex flex-col gap-2">
-          {payload?.styles.map((style) => (
+          {payload?.packs.map((pack) => (
             <li
-              key={style.id}
+              key={pack.id}
               className="rounded-xl border border-line1 bg-layer1 px-4 py-3"
             >
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div className="min-w-0">
-                  {/* 风格名称 */}
-                  <h3 className="text-[13px] font-medium text-primary">{style.name}</h3>
-                  {/* 风格描述 */}
-                  {style.description ? (
+                  {/* 技能包名称 */}
+                  <h3 className="text-[13px] font-medium text-primary">{pack.name}</h3>
+                  {/* 技能包描述 */}
+                  {pack.description ? (
                     <p className="mt-1 text-[12px] leading-[18px] text-secondary">
-                      {style.description}
+                      {pack.description}
                     </p>
                   ) : null}
                   {/* 规则摘要：技能与 MCP 的启用范围 */}
                   <p className="mt-1 text-[12px] text-secondary">
-                    {t('skillsTitle')}: {modeLabel(style.skills.mode, t)} · {t('pluginsTitle')}:{' '}
-                    {modeLabel(style.plugins.mode, t)} · {t('mcpTitle')}: {style.mcpServers.length}
+                    {t('skillsTitle')}: {modeLabel(pack.skills.mode, t)} · {t('pluginsTitle')}:{' '}
+                    {modeLabel(pack.plugins.mode, t)} · {t('mcpTitle')}: {pack.mcpServers.length}
                   </p>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
-                  {/* 编辑该风格 */}
+                  {/* 编辑该技能包 */}
                   <Button
                     variant="outline"
                     onClick={() => {
                       setNotice(null)
                       setError(null)
-                      setEditing(style)
+                      setEditing(pack)
                     }}
                   >
                     {t('edit')}
                   </Button>
-                  {/* 删除该风格 */}
-                  <Button variant="ghost" onClick={() => void handleDelete(style.id)}>
+                  {/* 删除该技能包 */}
+                  <Button variant="ghost" onClick={() => void handleDelete(pack.id)}>
                     {t('delete')}
                   </Button>
                 </div>

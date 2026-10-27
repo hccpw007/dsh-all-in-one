@@ -1,13 +1,13 @@
 /**
- * 「对话风格」的宿主侧扩展。
+ * 「技能包」的宿主侧扩展。
  *
- * 风格不预注册成预设——它要叠加在用户选择的模式之上，只在新建会话选定组合时
+ * 技能包不预注册成预设——它要叠加在用户选择的模式之上，只在新建会话选定组合时
  * 才合成并注册。这里负责登记路由，并在插件卸载时撤销组合预设。
  */
 import type { HostPluginContext } from '../../types/host'
 
-import { disposeStylePresets } from './host/presets'
-import { installChatStyleRoutes } from './host/routes'
+import { disposePackPresets } from './host/presets'
+import { installPowerPackRoutes } from './host/routes'
 
 /** 预设注册依赖宿主的 Agent 预设服务。 */
 export const inject = ['agentPresets']
@@ -19,16 +19,16 @@ export const inject = ['agentPresets']
 export function apply(ctx: HostPluginContext): void {
   const api = ctx.agentPresets
   if (!api) {
-    console.error('[chat-style] 未取得 agentPresets 服务，风格组合不会注册')
+    console.error('[power-pack] 未取得 agentPresets 服务，技能包组合不会注册')
     return
   }
 
   ctx.effect(() => () => {
-    void disposeStylePresets()
-  }, 'chat-style: presets')
+    void disposePackPresets()
+  }, 'power-pack: presets')
 
   ctx.inject(['webServer'], (host) => {
-    host.effect(() => installChatStyleRoutes(resolveWebServer(host), api), 'chat-style: routes')
+    host.effect(() => installPowerPackRoutes(resolveWebServer(host), api), 'power-pack: routes')
   })
 }
 
@@ -38,7 +38,7 @@ export function apply(ctx: HostPluginContext): void {
  * @returns Web 服务器服务
  */
 function resolveWebServer(ctx: HostPluginContext) {
-  if (!ctx.webServer) throw new Error('chat-style: webServer 服务不可用')
+  if (!ctx.webServer) throw new Error('power-pack: webServer 服务不可用')
 
   return ctx.webServer
 }

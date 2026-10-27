@@ -44,7 +44,7 @@ export interface AgentPresetDefinition {
 export interface AgentPresetApi {
   /**
    * 注册并立即激活一个预设。
-   * @returns 注销函数，随插件卸载或风格更新时调用
+   * @returns 注销函数，随插件卸载或技能包更新时调用
    */
   register(definition: AgentPresetDefinition): Promise<() => Promise<void>>
 }

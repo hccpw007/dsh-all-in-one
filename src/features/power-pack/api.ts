@@ -1,20 +1,20 @@
 /**
- * 「对话风格」与宿主侧之间的 HTTP 客户端。
+ * 「技能包」与宿主侧之间的 HTTP 客户端。
  *
  * 设置页运行在宿主同源页面里，直接 fetch 插件注册的本地路由；错误统一抛出，
  * 由页面转成用户可读的提示。
  */
 import type {
-  ChatStyle,
-  ChatStyleComposeResponse,
-  ChatStylesPayload,
-  ChatStyleWriteRequest,
+  PowerPack,
+  PowerPackComposeResponse,
+  PowerPacksPayload,
+  PowerPackWriteRequest,
 } from './types'
 
 /** 宿主侧注册的路由地址。 */
-const ENDPOINT = '/dsh-all-in-one/chat-styles'
+const ENDPOINT = '/dsh-all-in-one/power-packs'
 
-/** 请求超时；风格保存需要重建技能链接目录，留出充足时间。 */
+/** 请求超时；技能包保存需要重建技能链接目录，留出充足时间。 */
 const REQUEST_TIMEOUT_MS = 20000
 
 /**
@@ -42,7 +42,7 @@ async function request<T>(init: RequestInit = {}): Promise<T> {
         if (typeof parsed.error === 'string') message = parsed.error
       } catch (error) {
         // 非 JSON 错误体保留原文，便于定位宿主路由问题
-        console.error('[chat-style] 解析错误响应失败:', error)
+        console.error('[power-pack] 解析错误响应失败:', error)
       }
 
       throw new Error(message || `HTTP ${response.status}`)
@@ -50,7 +50,7 @@ async function request<T>(init: RequestInit = {}): Promise<T> {
 
     return (await response.json()) as T
   } catch (error) {
-    console.error('[chat-style] 请求风格接口失败:', error)
+    console.error('[power-pack] 请求技能包接口失败:', error)
     throw error
   } finally {
     window.clearTimeout(timer)
@@ -58,23 +58,23 @@ async function request<T>(init: RequestInit = {}): Promise<T> {
 }
 
 /**
- * 读取风格列表与可选项清单。
+ * 读取技能包列表与可选项清单。
  * @returns 当前负载
  */
-export function loadChatStyles(): Promise<ChatStylesPayload> {
-  return request<ChatStylesPayload>()
+export function loadPowerPacks(): Promise<PowerPacksPayload> {
+  return request<PowerPacksPayload>()
 }
 
 /**
- * 让宿主侧把「模式 + 风格」合成为一个组合预设。
- * @param style 风格标识
+ * 让宿主侧把「模式 + 技能包」合成为一个组合预设。
+ * @param pack 技能包标识
  * @param mode 模式预设标识
  * @returns 已注册的组合预设 id
  */
-export function composeChatStyle(style: string, mode: string): Promise<ChatStyleComposeResponse> {
-  const body: ChatStyleWriteRequest = { action: 'compose', style, mode }
+export function composePowerPack(pack: string, mode: string): Promise<PowerPackComposeResponse> {
+  const body: PowerPackWriteRequest = { action: 'compose', pack, mode }
 
-  return request<ChatStyleComposeResponse>({
+  return request<PowerPackComposeResponse>({
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(body),
@@ -82,14 +82,14 @@ export function composeChatStyle(style: string, mode: string): Promise<ChatStyle
 }
 
 /**
- * 保存一个风格。
- * @param style 风格定义
+ * 保存一个技能包。
+ * @param pack 技能包定义
  * @returns 保存后的负载
  */
-export function saveChatStyle(style: ChatStyle): Promise<ChatStylesPayload> {
-  const body: ChatStyleWriteRequest = { action: 'save', style }
+export function savePowerPack(pack: PowerPack): Promise<PowerPacksPayload> {
+  const body: PowerPackWriteRequest = { action: 'save', pack }
 
-  return request<ChatStylesPayload>({
+  return request<PowerPacksPayload>({
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(body),
@@ -97,14 +97,14 @@ export function saveChatStyle(style: ChatStyle): Promise<ChatStylesPayload> {
 }
 
 /**
- * 删除一个风格。
- * @param id 风格标识
+ * 删除一个技能包。
+ * @param id 技能包标识
  * @returns 删除后的负载
  */
-export function deleteChatStyle(id: string): Promise<ChatStylesPayload> {
-  const body: ChatStyleWriteRequest = { action: 'delete', id }
+export function deletePowerPack(id: string): Promise<PowerPacksPayload> {
+  const body: PowerPackWriteRequest = { action: 'delete', id }
 
-  return request<ChatStylesPayload>({
+  return request<PowerPacksPayload>({
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify(body),

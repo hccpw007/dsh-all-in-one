@@ -1,17 +1,17 @@
 /**
- * 把「模式」与「对话风格」合成一份组合行。
+ * 把「模式」与「技能包」合成一份组合行。
  *
- * 模式提供基础工具与提示词，风格在此基础上做三件事：接管技能提供者行、
+ * 模式提供基础工具与提示词，技能包在此基础上做三件事：接管技能提供者行、
  * 按三态规则筛选模式里的标准工具行、追加自己的提示词与 MCP 服务器。
- * 两个维度因此相互独立：换风格不会改变所选模式，换模式也不会丢掉风格。
+ * 两个维度因此相互独立：换技能包不会改变所选模式，换模式也不会丢掉技能包。
  */
-import type { ChatStyle, ResourceRule } from '../types'
+import type { PowerPack, ResourceRule } from '../types'
 
 import { installedRowId, type InstalledPluginItem } from './catalog'
-import { buildStyleRows, SKILL_FILESYSTEM_ROW, TOOL_SKILL_ROW } from './composition'
+import { buildPackRows, SKILL_FILESYSTEM_ROW, TOOL_SKILL_ROW } from './composition'
 import { STANDARD_PLUGIN_ITEMS, type PresetRow } from './standard-rows'
 
-/** 技能相关行由风格接管，先于插件规则从模式里剔除，避免重复挂载。 */
+/** 技能相关行由技能包接管，先于插件规则从模式里剔除，避免重复挂载。 */
 const SKILL_ROW_NAMES = new Set([SKILL_FILESYSTEM_ROW, TOOL_SKILL_ROW])
 
 /** 一个标准项在模式组合里可能出现的行标识。 */
@@ -70,7 +70,7 @@ function isSelectedRow(row: PresetRow, selected: Set<string>): boolean {
 /**
  * 按三态规则筛选模式提供的工具行。
  * @param rows 去掉技能行后的模式行
- * @param rule 风格的插件规则
+ * @param rule 技能包的插件规则
  * @param installed 已安装插件清单
  * @returns 筛选后的行
  */
@@ -98,21 +98,21 @@ function filterByPluginRule(
 }
 
 /**
- * 合成模式的组合行与风格追加行。
+ * 合成模式的组合行与技能包追加行。
  * @param modeRows 模式预设的组合行
- * @param style 风格定义
+ * @param pack 技能包定义
  * @param installed 已安装插件清单
  * @returns 可直接注册为预设的完整行列表
  */
-export function composeStyleRows(
+export function composePackRows(
   modeRows: PresetRow[],
-  style: ChatStyle,
+  pack: PowerPack,
   installed: InstalledPluginItem[],
 ): PresetRow[] {
   const base = modeRows.filter((row) => !SKILL_ROW_NAMES.has(row.name))
-  const rows = filterByPluginRule(base, style.plugins, installed)
+  const rows = filterByPluginRule(base, pack.plugins, installed)
 
-  for (const row of buildStyleRows(style)) {
+  for (const row of buildPackRows(pack)) {
     if (rows.some((existing) => existing.id === row.id)) continue
     rows.push(row)
   }

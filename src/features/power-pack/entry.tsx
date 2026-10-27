@@ -2,8 +2,8 @@ import React from 'react'
 
 import type { FeatureEntryProps } from '../../shell/registry'
 
-/** 对话风格入口图标：对话气泡与调色板，表达为不同对话预设风格。 */
-function ChatStyleIcon() {
+/** 技能包入口图标：对话气泡与调色板，表达为不同对话预设技能包。 */
+function PowerPackIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -25,10 +25,10 @@ function ChatStyleIcon() {
 }
 
 /**
- * 「对话风格」在 All In One 网格中的入口。
+ * 「技能包」在 All In One 网格中的入口。
  * @param props t 已绑定本 feature 的 key 前缀，open 用于打开功能页面
  */
-export function ChatStyleEntry({ t, open }: FeatureEntryProps) {
+export function PowerPackEntry({ t, open }: FeatureEntryProps) {
   return (
     <button
       type="button"
@@ -37,7 +37,7 @@ export function ChatStyleEntry({ t, open }: FeatureEntryProps) {
     >
       {/* 入口图标 */}
       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand">
-        <ChatStyleIcon />
+        <PowerPackIcon />
       </span>
       {/* 入口标题与说明 */}
       <span className="min-w-0">

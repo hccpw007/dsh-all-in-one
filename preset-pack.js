@@ -1,5 +1,5 @@
-// src/preset-style.ts
-var SECTION_NAME = "chat-style:custom-prompt";
+// src/preset-pack.ts
+var SECTION_NAME = "power-pack:custom-prompt";
 var SECTION_ORDER = 10250;
 var inject = ["systemPrompt"];
 function apply(ctx, config = {}) {
@@ -7,7 +7,7 @@ function apply(ctx, config = {}) {
   if (text === "") return;
   ctx.effect(
     () => ctx.systemPrompt.section({ name: SECTION_NAME, order: SECTION_ORDER, text }),
-    "chat-style: prompt section"
+    "power-pack: prompt section"
   );
 }
 export {

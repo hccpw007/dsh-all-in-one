@@ -4,40 +4,40 @@ import { Button } from '../../components/Button'
 import type { Translate } from '../../types/plugin'
 import { McpServerEditor, isValidServerId } from './McpServerEditor'
 import { ResourceRuleField, type RuleOption } from './ResourceRuleField'
-import type { ChatStyle, ChatStyleCatalog, ResourceRule } from './types'
+import type { PowerPack, PowerPackCatalog, ResourceRule } from './types'
 
 /** 表单字段的统一样式。 */
 const INPUT_CLASS =
   'w-full rounded-lg border border-line1 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand'
 
-interface StyleEditorProps {
-  /** 编辑中的风格草稿。 */
-  initial: ChatStyle
+interface PackEditorProps {
+  /** 编辑中的技能包草稿。 */
+  initial: PowerPack
   /** 可勾选的技能与插件清单。 */
-  catalog: ChatStyleCatalog
+  catalog: PowerPackCatalog
   /** 保存请求进行中，禁用操作避免重复提交。 */
   saving: boolean
   /** 保存失败时的提示。 */
   error: string | null
-  onSave(style: ChatStyle): void
+  onSave(pack: PowerPack): void
   onCancel(): void
   /** 已绑定本 feature 前缀的翻译函数。 */
   t: Translate
 }
 
 /**
- * 单个风格的编辑表单。
+ * 单个技能包的编辑表单。
  *
  * 编辑器只维护草稿，保存动作交给页面；保存前的必填与 MCP 标识校验在这里
  * 完成，避免宿主静默丢弃非法服务器条目。
  * @param props 草稿、清单与回调
  */
-export function StyleEditor({ initial, catalog, saving, error, onSave, onCancel, t }: StyleEditorProps) {
-  const [draft, setDraft] = useState<ChatStyle>(initial)
+export function PackEditor({ initial, catalog, saving, error, onSave, onCancel, t }: PackEditorProps) {
+  const [draft, setDraft] = useState<PowerPack>(initial)
   const [localError, setLocalError] = useState<string | null>(null)
 
   /** 更新草稿的顶层字段。 */
-  const patch = (change: Partial<ChatStyle>): void => {
+  const patch = (change: Partial<PowerPack>): void => {
     setDraft((current) => ({ ...current, ...change }))
   }
 
@@ -97,7 +97,7 @@ export function StyleEditor({ initial, catalog, saving, error, onSave, onCancel,
         </div>
         <div className="flex flex-col gap-3 p-4">
           <label className="block">
-            {/* 风格名称，显示在新建任务的预设选择器中 */}
+            {/* 技能包名称，显示在新建任务的预设选择器中 */}
             <span className="mb-1 block text-[12px] text-secondary">{t('nameLabel')}</span>
             <input
               value={draft.name}
@@ -107,7 +107,7 @@ export function StyleEditor({ initial, catalog, saving, error, onSave, onCancel,
             />
           </label>
           <label className="block">
-            {/* 风格描述，作为预设列表里的一句话说明 */}
+            {/* 技能包描述，作为预设列表里的一句话说明 */}
             <span className="mb-1 block text-[12px] text-secondary">{t('descriptionLabel')}</span>
             <input
               value={draft.description}
@@ -117,7 +117,7 @@ export function StyleEditor({ initial, catalog, saving, error, onSave, onCancel,
             />
           </label>
           <label className="block">
-            {/* 追加到系统提示词末尾的风格要求 */}
+            {/* 追加到系统提示词末尾的技能包要求 */}
             <span className="mb-1 block text-[12px] text-secondary">{t('systemPromptLabel')}</span>
             <textarea
               value={draft.systemPrompt}

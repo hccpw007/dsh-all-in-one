@@ -80,13 +80,13 @@ async function buildHostEntry(): Promise<void> {
 }
 
 /**
- * 步骤二之二：打包 preset 内的提示词行，产出 preset-style.js。
+ * 步骤二之二：打包 preset 内的提示词行，产出 preset-pack.js。
  *
- * 该入口被「对话风格」预设作为一行加载，必须是宿主可解析的独立模块。
+ * 该入口被「技能包」预设作为一行加载，必须是宿主可解析的独立模块。
  */
-async function buildPresetStyleEntry(): Promise<void> {
+async function buildPresetPackEntry(): Promise<void> {
   const result = await build({
-    entryPoints: [join(ROOT, 'src/preset-style.ts')],
+    entryPoints: [join(ROOT, 'src/preset-pack.ts')],
     bundle: true,
     write: false,
     format: 'esm',
@@ -96,7 +96,7 @@ async function buildPresetStyleEntry(): Promise<void> {
     logLevel: 'warning',
   })
 
-  writeFileSync(join(ROOT, 'preset-style.js'), firstOutputText(result))
+  writeFileSync(join(ROOT, 'preset-pack.js'), firstOutputText(result))
 }
 
 /**
@@ -149,10 +149,10 @@ async function main(): Promise<void> {
     mkdirSync(BUILD_DIR, { recursive: true })
     buildStyles()
     await buildHostEntry()
-    await buildPresetStyleEntry()
+    await buildPresetPackEntry()
     const code = await buildScript()
     writeClient(code)
-    console.log('[build] 已生成 index.js、preset-style.js 与 client.js')
+    console.log('[build] 已生成 index.js、preset-pack.js 与 client.js')
   } catch (error) { // 构建失败必须以非零码退出，避免带着旧产物继续
     console.error('[build] 构建失败:', error)
     process.exitCode = 1

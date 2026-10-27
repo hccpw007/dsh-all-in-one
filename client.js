@@ -74,14 +74,14 @@ window.__ModuleLoader__.load({
       );
     }
 
-    // src/features/chat-style/client.tsx
+    // src/features/power-pack/client.tsx
     var client_exports = {};
     __export(client_exports, {
       apply: () => apply
     });
     var import_react2 = __toESM(require("react"), 1);
 
-    // src/features/chat-style/seat.tsx
+    // src/features/power-pack/seat.tsx
     var import_react = __toESM(require("react"), 1);
     var import_dsh_client_ui_primitives = require("@deepseek-ai/dsh-client-ui-primitives");
     var BUILTIN_NAME_KEYS = {
@@ -151,16 +151,16 @@ window.__ModuleLoader__.load({
         }
       );
     }
-    function ChatStyleSeat({
+    function PowerPackSeat({
       sessionId,
-      useChatStyleSeat,
+      usePowerPackSeat,
       load,
       selectMode,
-      selectStyle,
+      selectPack,
       applyStaged,
       t
     }) {
-      const snapshot = useChatStyleSeat((state) => state);
+      const snapshot = usePowerPackSeat((state) => state);
       const actionsRef = (0, import_react.useRef)({ load, applyStaged });
       actionsRef.current = { load, applyStaged };
       (0, import_react.useEffect)(() => {
@@ -185,17 +185,17 @@ window.__ModuleLoader__.load({
       ), /* @__PURE__ */ import_react.default.createElement(
         PresetDropdown,
         {
-          current: snapshot.style,
-          options: snapshot.styles,
+          current: snapshot.pack,
+          options: snapshot.packs,
           placeholder: t("seatLabel"),
           disabled,
-          onPick: (id) => void selectStyle(id)
+          onPick: (id) => void selectPack(id)
         }
       )), snapshot.error ? /* @__PURE__ */ import_react.default.createElement("p", { className: "mt-1 text-[12px] leading-4 text-danger", role: "alert" }, snapshot.error === "session already started" ? t("seatSessionStarted") : `${t("seatSelectFailed")}\uFF1A${snapshot.error}`) : null);
     }
 
-    // src/features/chat-style/api.ts
-    var ENDPOINT = "/dsh-all-in-one/chat-styles";
+    // src/features/power-pack/api.ts
+    var ENDPOINT = "/dsh-all-in-one/power-packs";
     var REQUEST_TIMEOUT_MS = 2e4;
     async function request(init = {}) {
       const controller = new AbortController();
@@ -214,38 +214,38 @@ window.__ModuleLoader__.load({
             const parsed = JSON.parse(text);
             if (typeof parsed.error === "string") message = parsed.error;
           } catch (error) {
-            console.error("[chat-style] \u89E3\u6790\u9519\u8BEF\u54CD\u5E94\u5931\u8D25:", error);
+            console.error("[power-pack] \u89E3\u6790\u9519\u8BEF\u54CD\u5E94\u5931\u8D25:", error);
           }
           throw new Error(message || `HTTP ${response.status}`);
         }
         return await response.json();
       } catch (error) {
-        console.error("[chat-style] \u8BF7\u6C42\u98CE\u683C\u63A5\u53E3\u5931\u8D25:", error);
+        console.error("[power-pack] \u8BF7\u6C42\u6280\u80FD\u5305\u63A5\u53E3\u5931\u8D25:", error);
         throw error;
       } finally {
         window.clearTimeout(timer);
       }
     }
-    function loadChatStyles() {
+    function loadPowerPacks() {
       return request();
     }
-    function composeChatStyle(style, mode) {
-      const body = { action: "compose", style, mode };
+    function composePowerPack(pack, mode) {
+      const body = { action: "compose", pack, mode };
       return request({
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(body)
       });
     }
-    function saveChatStyle(style) {
-      const body = { action: "save", style };
+    function savePowerPack(pack) {
+      const body = { action: "save", pack };
       return request({
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(body)
       });
     }
-    function deleteChatStyle(id) {
+    function deletePowerPack(id) {
       const body = { action: "delete", id };
       return request({
         method: "POST",
@@ -254,10 +254,10 @@ window.__ModuleLoader__.load({
       });
     }
 
-    // src/features/chat-style/seat-store.ts
-    var PRESET_ID_PREFIX = "style-";
+    // src/features/power-pack/seat-store.ts
+    var PRESET_ID_PREFIX = "power-pack-";
     function initialState() {
-      return { status: "idle", modes: [], styles: [], mode: "", style: "", error: null };
+      return { status: "idle", modes: [], packs: [], mode: "", pack: "", error: null };
     }
     function createSeatStore() {
       let snapshot = initialState();
@@ -277,11 +277,11 @@ window.__ModuleLoader__.load({
       };
     }
     function parsePresetId(presetId) {
-      if (!presetId.startsWith(PRESET_ID_PREFIX)) return { mode: presetId, style: "" };
+      if (!presetId.startsWith(PRESET_ID_PREFIX)) return { mode: presetId, pack: "" };
       const body = presetId.slice(PRESET_ID_PREFIX.length);
       const separator = body.indexOf("@");
-      if (separator < 0) return { mode: "", style: body };
-      return { mode: body.slice(separator + 1), style: body.slice(0, separator) };
+      if (separator < 0) return { mode: "", pack: body };
+      return { mode: body.slice(separator + 1), pack: body.slice(0, separator) };
     }
     function sessionPreset(ctx, sessionId) {
       if (sessionId === void 0) return void 0;
@@ -306,12 +306,12 @@ window.__ModuleLoader__.load({
             store.set({ status: "error", error: result.error?.message ?? "list failed" });
             return;
           }
-          let styles = [];
+          let packs = [];
           try {
-            const payload = await loadChatStyles();
-            styles = payload.styles.map(({ id, name, description }) => ({ id, name, description }));
+            const payload = await loadPowerPacks();
+            packs = payload.packs.map(({ id, name, description }) => ({ id, name, description }));
           } catch (error) {
-            console.error("[chat-style] \u8BFB\u53D6\u98CE\u683C\u5217\u8868\u5931\u8D25:", error);
+            console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u5305\u5217\u8868\u5931\u8D25:", error);
           }
           const modes = result.value.presets.filter(
             (preset) => preset.broken === void 0 && !preset.id.startsWith(PRESET_ID_PREFIX)
@@ -321,23 +321,23 @@ window.__ModuleLoader__.load({
           store.set({
             status: "ready",
             modes,
-            styles,
-            // 模式为空说明会话用的是旧版独立风格预设，回退到宿主默认模式
+            packs,
+            // 模式为空说明会话用的是旧版独立技能包预设，回退到宿主默认模式
             mode: staged?.mode || fromSession.mode || fallbackMode,
-            style: staged?.style ?? fromSession.style,
+            pack: staged?.pack ?? fromSession.pack,
             error: null
           });
         } catch (error) {
-          console.error("[chat-style] \u8BFB\u53D6\u6A21\u5F0F\u4E0E\u98CE\u683C\u5931\u8D25:", error);
+          console.error("[power-pack] \u8BFB\u53D6\u6A21\u5F0F\u4E0E\u6280\u80FD\u5305\u5931\u8D25:", error);
           store.set({
             status: "error",
             error: error instanceof Error ? error.message : String(error)
           });
         }
       };
-      const commit = async (sessionId, mode, style) => {
+      const commit = async (sessionId, mode, pack) => {
         if (sessionId === void 0) {
-          staged = { mode, style };
+          staged = { mode, pack };
           return;
         }
         const api = ctx.remote?.agentPresets;
@@ -353,7 +353,7 @@ window.__ModuleLoader__.load({
           return;
         }
         try {
-          const presetId = style === "" ? mode : (await composeChatStyle(style, mode)).presetId;
+          const presetId = pack === "" ? mode : (await composePowerPack(pack, mode)).presetId;
           const result = await api.select(sessionId, presetId);
           if (!result.ok) {
             store.set({ error: result.error?.message ?? "select failed" });
@@ -363,7 +363,7 @@ window.__ModuleLoader__.load({
           staged = void 0;
           store.set({ error: null });
         } catch (error) {
-          console.error("[chat-style] \u5E94\u7528\u6A21\u5F0F\u4E0E\u98CE\u683C\u5931\u8D25:", error);
+          console.error("[power-pack] \u5E94\u7528\u6A21\u5F0F\u4E0E\u6280\u80FD\u5305\u5931\u8D25:", error);
           store.set({ error: error instanceof Error ? error.message : String(error) });
           staged = void 0;
         }
@@ -372,20 +372,20 @@ window.__ModuleLoader__.load({
         if (busy) return;
         store.set({ mode: modeId, error: null });
         if (sessionId === void 0) {
-          await commit(void 0, modeId, store.getSnapshot().style);
+          await commit(void 0, modeId, store.getSnapshot().pack);
           return;
         }
         busy = true;
         try {
-          await commit(sessionId, modeId, store.getSnapshot().style);
+          await commit(sessionId, modeId, store.getSnapshot().pack);
         } finally {
           busy = false;
         }
       };
-      const selectStyle = async (sessionId, styleId) => {
+      const selectPack = async (sessionId, packId) => {
         if (busy) return;
-        const next = styleId === store.getSnapshot().style ? "" : styleId;
-        store.set({ style: next, error: null });
+        const next = packId === store.getSnapshot().pack ? "" : packId;
+        store.set({ pack: next, error: null });
         if (sessionId === void 0) {
           await commit(void 0, store.getSnapshot().mode, next);
           return;
@@ -401,15 +401,15 @@ window.__ModuleLoader__.load({
         if (staged === void 0 || busy) return;
         busy = true;
         try {
-          await commit(sessionId, staged.mode, staged.style);
+          await commit(sessionId, staged.mode, staged.pack);
         } finally {
           busy = false;
         }
       };
-      return { store, load, selectMode, selectStyle, applyStaged };
+      return { store, load, selectMode, selectPack, applyStaged };
     }
 
-    // src/features/chat-style/client.tsx
+    // src/features/power-pack/client.tsx
     function apply(ctx, t) {
       ctx.inject(["sessions", "remote", "remote.agentPresets"], (scoped) => {
         const controller = createSeatController(scoped);
@@ -421,24 +421,24 @@ window.__ModuleLoader__.load({
               // 宿主内置选择器使用默认 priority 0；更低的值覆盖它
               priority: -10,
               inject: (sessionId) => ({
-                hooks: { chatStyleSeat: controller.store },
+                hooks: { powerPackSeat: controller.store },
                 load: () => controller.load(sessionId),
                 selectMode: (presetId) => controller.selectMode(sessionId, presetId),
-                selectStyle: (styleId) => controller.selectStyle(sessionId, styleId),
+                selectPack: (packId) => controller.selectPack(sessionId, packId),
                 applyStaged: async () => {
                   if (sessionId !== void 0) await controller.applyStaged(sessionId);
                 }
               })
             },
-            (props) => /* @__PURE__ */ import_react2.default.createElement(ChatStyleSeat, { ...props, t })
+            (props) => /* @__PURE__ */ import_react2.default.createElement(PowerPackSeat, { ...props, t })
           )
         );
       });
     }
 
-    // src/features/chat-style/entry.tsx
+    // src/features/power-pack/entry.tsx
     var import_react3 = __toESM(require("react"), 1);
-    function ChatStyleIcon() {
+    function PowerPackIcon() {
       return /* @__PURE__ */ import_react3.default.createElement(
         "svg",
         {
@@ -458,7 +458,7 @@ window.__ModuleLoader__.load({
         /* @__PURE__ */ import_react3.default.createElement("circle", { cx: "18", cy: "12", r: "1" })
       );
     }
-    function ChatStyleEntry({ t, open }) {
+    function PowerPackEntry({ t, open }) {
       return /* @__PURE__ */ import_react3.default.createElement(
         "button",
         {
@@ -466,26 +466,26 @@ window.__ModuleLoader__.load({
           onClick: open,
           className: "flex w-full items-start gap-3 rounded-xl border border-line1 bg-layer1 px-4 py-3.5 text-left transition hover:border-line2 hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         },
-        /* @__PURE__ */ import_react3.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, /* @__PURE__ */ import_react3.default.createElement(ChatStyleIcon, null)),
+        /* @__PURE__ */ import_react3.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, /* @__PURE__ */ import_react3.default.createElement(PowerPackIcon, null)),
         /* @__PURE__ */ import_react3.default.createElement("span", { className: "min-w-0" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "block text-[13px] font-medium leading-5 text-primary" }, t("title")), /* @__PURE__ */ import_react3.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("description")))
       );
     }
 
-    // src/features/chat-style/locales.ts
-    var chatStyleLocales = {
+    // src/features/power-pack/locales.ts
+    var powerPackLocales = {
       zh: {
         // 网格入口标题
-        title: "\u5BF9\u8BDD\u98CE\u683C",
+        title: "\u6280\u80FD\u5305",
         // 网格入口描述
-        description: "\u4E3A\u4E0D\u540C\u4EFB\u52A1\u51C6\u5907\u4E0D\u540C\u7684\u6280\u80FD\u3001\u63D2\u4EF6\u4E0E MCP\uFF0C\u65B0\u5EFA\u5BF9\u8BDD\u65F6\u6309\u98CE\u683C\u9009\u62E9\u3002",
+        description: "\u4E3A\u4E0D\u540C\u4EFB\u52A1\u51C6\u5907\u4E0D\u540C\u7684\u6280\u80FD\u3001\u63D2\u4EF6\u4E0E MCP\uFF0C\u65B0\u5EFA\u5BF9\u8BDD\u65F6\u6309\u6280\u80FD\u5305\u9009\u62E9\u3002",
         // 功能页标题
-        pageTitle: "\u5BF9\u8BDD\u98CE\u683C",
+        pageTitle: "\u6280\u80FD\u5305",
         // 功能页说明
-        pageDescription: "\u6BCF\u4E2A\u98CE\u683C\u662F\u4E00\u5957\u72EC\u7ACB\u7684 Agent \u7EC4\u5408\u3002\u4FDD\u5B58\u540E\u4F1A\u51FA\u73B0\u5728\u65B0\u5EFA\u4EFB\u52A1\u7684\u9884\u8BBE\u9009\u62E9\u5668\u4E2D\uFF0C\u53EA\u5BF9\u9009\u62E9\u5B83\u7684\u4F1A\u8BDD\u751F\u6548\u3002",
-        // 新建风格按钮
-        newStyle: "\u65B0\u5EFA\u98CE\u683C",
+        pageDescription: "\u6BCF\u4E2A\u6280\u80FD\u5305\u662F\u4E00\u5957\u53E0\u52A0\u5728\u6A21\u5F0F\u4E4B\u4E0A\u7684\u6280\u80FD\u4E0E\u5DE5\u5177\u914D\u7F6E\u3002\u4FDD\u5B58\u540E\u5728\u65B0\u5EFA\u4EFB\u52A1\u7684\u300C\u6280\u80FD\u5305\u300D\u4E0B\u62C9\u91CC\u9009\u62E9\uFF0C\u53EA\u5BF9\u9009\u62E9\u5B83\u7684\u4F1A\u8BDD\u751F\u6548\u3002",
+        // 新建技能包按钮
+        newPack: "\u65B0\u5EFA\u6280\u80FD\u5305",
         // 空态提示
-        empty: "\u8FD8\u6CA1\u6709\u521B\u5EFA\u4EFB\u4F55\u98CE\u683C\u3002\u65B0\u5EFA\u4E00\u4E2A\u98CE\u683C\uFF0C\u52FE\u9009\u5B83\u9700\u8981\u7684\u6280\u80FD\u4E0E\u5DE5\u5177\u3002",
+        empty: "\u8FD8\u6CA1\u6709\u521B\u5EFA\u4EFB\u4F55\u6280\u80FD\u5305\u3002\u65B0\u5EFA\u4E00\u4E2A\u6280\u80FD\u5305\uFF0C\u52FE\u9009\u5B83\u9700\u8981\u7684\u6280\u80FD\u4E0E\u5DE5\u5177\u3002",
         // 编辑按钮
         edit: "\u7F16\u8F91",
         // 删除按钮
@@ -501,45 +501,45 @@ window.__ModuleLoader__.load({
         // MCP 服务器标识重复时的提示
         mcpIdDuplicate: "MCP \u670D\u52A1\u5668\u6807\u8BC6\u4E0D\u80FD\u91CD\u590D\u3002",
         // 删除确认提示
-        confirmDelete: "\u5220\u9664\u540E\u8BE5\u98CE\u683C\u4E0D\u518D\u51FA\u73B0\u5728\u65B0\u5EFA\u4EFB\u52A1\u7684\u9884\u8BBE\u5217\u8868\u4E2D\uFF0C\u786E\u5B9A\u5220\u9664\uFF1F",
+        confirmDelete: "\u5220\u9664\u540E\u8BE5\u6280\u80FD\u5305\u4E0D\u518D\u51FA\u73B0\u5728\u65B0\u5EFA\u4EFB\u52A1\u7684\u4E0B\u62C9\u5217\u8868\u4E2D\uFF0C\u786E\u5B9A\u5220\u9664\uFF1F",
         // 加载失败提示
-        loadFailed: "\u8BFB\u53D6\u98CE\u683C\u914D\u7F6E\u5931\u8D25",
+        loadFailed: "\u8BFB\u53D6\u6280\u80FD\u5305\u914D\u7F6E\u5931\u8D25",
         // 保存失败提示
         saveFailed: "\u4FDD\u5B58\u5931\u8D25",
         // 删除失败提示
         deleteFailed: "\u5220\u9664\u5931\u8D25",
         // 名称字段标签
-        nameLabel: "\u98CE\u683C\u540D\u79F0",
+        nameLabel: "\u6280\u80FD\u5305\u540D\u79F0",
         // 名称输入占位
         namePlaceholder: "\u4F8B\u5982\uFF1A\u4EE3\u7801\u5BA1\u67E5",
         // 描述字段标签
-        descriptionLabel: "\u98CE\u683C\u63CF\u8FF0",
+        descriptionLabel: "\u6280\u80FD\u5305\u63CF\u8FF0",
         // 描述输入占位
-        descriptionPlaceholder: "\u4E00\u53E5\u8BDD\u8BF4\u660E\u8FD9\u4E2A\u98CE\u683C\u9002\u5408\u4EC0\u4E48\u4EFB\u52A1",
+        descriptionPlaceholder: "\u4E00\u53E5\u8BDD\u8BF4\u660E\u8FD9\u4E2A\u6280\u80FD\u5305\u9002\u5408\u4EC0\u4E48\u4EFB\u52A1",
         // 系统提示词字段标签
         systemPromptLabel: "\u7CFB\u7EDF\u63D0\u793A\u8BCD",
         // 系统提示词说明
-        systemPromptHint: "\u8FD9\u6BB5\u6587\u5B57\u4F1A\u8FFD\u52A0\u5230\u7CFB\u7EDF\u63D0\u793A\u8BCD\u672B\u5C3E\uFF0C\u7528\u6765\u7EA6\u5B9A\u8BE5\u98CE\u683C\u7684\u5DE5\u4F5C\u65B9\u5F0F\u3002",
+        systemPromptHint: "\u8FD9\u6BB5\u6587\u5B57\u4F1A\u8FFD\u52A0\u5230\u7CFB\u7EDF\u63D0\u793A\u8BCD\u672B\u5C3E\uFF0C\u7528\u6765\u7EA6\u5B9A\u8BE5\u6280\u80FD\u5305\u7684\u5DE5\u4F5C\u65B9\u5F0F\u3002",
         // 系统提示词占位
         systemPromptPlaceholder: "\u4F8B\u5982\uFF1A\u53EA\u5BA1\u67E5\u4EE3\u7801\uFF0C\u5148\u6307\u51FA\u6F5C\u5728\u7F3A\u9677\u4E0E\u6D4B\u8BD5\u7F3A\u53E3\uFF0C\u4FEE\u6539\u6587\u4EF6\u524D\u5148\u8BE2\u95EE\u3002",
         // 技能区块标题
         skillsTitle: "\u6280\u80FD",
         // 技能区块说明
-        skillsHint: "\u53EA\u5BF9\u52FE\u9009\u7684\u6280\u80FD\u5F00\u653E\u52A0\u8F7D\uFF1B\u672A\u5217\u51FA\u7684\u6280\u80FD\u4E0D\u4F1A\u51FA\u73B0\u5728\u8BE5\u98CE\u683C\u7684\u6280\u80FD\u76EE\u5F55\u91CC\u3002",
+        skillsHint: "\u53EA\u5BF9\u52FE\u9009\u7684\u6280\u80FD\u5F00\u653E\u52A0\u8F7D\uFF1B\u672A\u5217\u51FA\u7684\u6280\u80FD\u4E0D\u4F1A\u51FA\u73B0\u5728\u8BE5\u6280\u80FD\u5305\u7684\u6280\u80FD\u76EE\u5F55\u91CC\u3002",
         // 插件区块标题
         pluginsTitle: "\u63D2\u4EF6\u4E0E\u5DE5\u5177",
         // 插件区块说明
-        pluginsHint: "\u4ECE\u96F6\u7EC4\u88C5 Agent\uFF1A\u4E0D\u52FE\u9009\u4EFB\u4F55\u9879\u65F6\uFF0C\u8BE5\u98CE\u683C\u53EA\u6709\u5BF9\u8BDD\u80FD\u529B\u3002",
+        pluginsHint: "\u5728\u6240\u9009\u7684\u6A21\u5F0F\u4E4B\u4E0A\u7B5B\u9009\u5DE5\u5177\uFF1A\u52FE\u9009\u9879\u7531\u89C4\u5219\u51B3\u5B9A\u4FDD\u7559\u6216\u5254\u9664\u3002",
         // MCP 区块标题
         mcpTitle: "MCP \u670D\u52A1\u5668",
         // MCP 区块说明
-        mcpHint: "\u4E3A\u98CE\u683C\u914D\u7F6E\u5916\u90E8 MCP \u670D\u52A1\uFF1B\u6BCF\u4E2A\u670D\u52A1\u5668\u4F1A\u4F5C\u4E3A\u72EC\u7ACB\u7684\u5BA2\u6237\u7AEF\u884C\u6302\u8F7D\u3002",
+        mcpHint: "\u4E3A\u6280\u80FD\u5305\u914D\u7F6E\u5916\u90E8 MCP \u670D\u52A1\uFF1B\u6BCF\u4E2A\u670D\u52A1\u5668\u4F1A\u4F5C\u4E3A\u72EC\u7ACB\u7684\u5BA2\u6237\u7AEF\u884C\u6302\u8F7D\u3002",
         // MCP 服务器定义区块标题
         mcpServersTitle: "\u670D\u52A1\u5668\u5B9A\u4E49",
         // MCP 启用规则区块标题
         mcpRuleTitle: "\u542F\u7528\u7684\u670D\u52A1\u5668",
         // MCP 启用规则说明
-        mcpRuleHint: "\u9009\u62E9\u8BE5\u98CE\u683C\u6302\u8F7D\u54EA\u4E9B\u5DF2\u5B9A\u4E49\u7684 MCP \u670D\u52A1\u5668\u3002",
+        mcpRuleHint: "\u9009\u62E9\u8BE5\u6280\u80FD\u5305\u6302\u8F7D\u54EA\u4E9B\u5DF2\u5B9A\u4E49\u7684 MCP \u670D\u52A1\u5668\u3002",
         // 重试加载按钮
         retry: "\u91CD\u8BD5",
         // 三态模式：全部
@@ -589,17 +589,17 @@ window.__ModuleLoader__.load({
         // 移除 MCP 服务器按钮
         remove: "\u79FB\u9664",
         // 保存成功提示
-        saved: "\u5DF2\u4FDD\u5B58\uFF0C\u65B0\u5EFA\u4EFB\u52A1\u65F6\u53EF\u5728\u300C\u5BF9\u8BDD\u98CE\u683C\u300D\u4E0B\u62C9\u4E2D\u9009\u62E9\u8BE5\u98CE\u683C\u3002",
+        saved: "\u5DF2\u4FDD\u5B58\uFF0C\u65B0\u5EFA\u4EFB\u52A1\u65F6\u53EF\u5728\u300C\u6280\u80FD\u5305\u300D\u4E0B\u62C9\u4E2D\u9009\u62E9\u3002",
         // 必填校验提示
-        nameRequired: "\u8BF7\u586B\u5199\u98CE\u683C\u540D\u79F0\u3002",
+        nameRequired: "\u8BF7\u586B\u5199\u6280\u80FD\u5305\u540D\u79F0\u3002",
         // 存储位置说明
         storageHint: "\u914D\u7F6E\u6587\u4EF6\u4F4D\u7F6E",
         // 预设选择提示
-        presetHint: "\u98CE\u683C\u53E0\u52A0\u5728\u65B0\u5EFA\u4EFB\u52A1\u65F6\u6240\u9009\u7684\u6A21\u5F0F\u4E4B\u4E0A\uFF1A\u6A21\u5F0F\u63D0\u4F9B\u57FA\u7840\u5DE5\u5177\uFF0C\u98CE\u683C\u518D\u7B5B\u9009\u6280\u80FD\u4E0E\u5DE5\u5177\u3001\u8FFD\u52A0 MCP \u4E0E\u7CFB\u7EDF\u63D0\u793A\u8BCD\u3002",
+        presetHint: "\u6280\u80FD\u5305\u53E0\u52A0\u5728\u65B0\u5EFA\u4EFB\u52A1\u65F6\u6240\u9009\u7684\u6A21\u5F0F\u4E4B\u4E0A\uFF1A\u6A21\u5F0F\u63D0\u4F9B\u57FA\u7840\u5DE5\u5177\uFF0C\u6280\u80FD\u5305\u518D\u7B5B\u9009\u6280\u80FD\u4E0E\u5DE5\u5177\u3001\u8FFD\u52A0 MCP \u4E0E\u7CFB\u7EDF\u63D0\u793A\u8BCD\u3002",
         // 新会话选择器的模式下拉占位文案
         modeLabel: "\u6A21\u5F0F",
-        // 新会话选择器的风格下拉占位文案
-        seatLabel: "\u5BF9\u8BDD\u98CE\u683C",
+        // 新会话选择器的技能包下拉占位文案
+        seatLabel: "\u6280\u80FD\u5305",
         // 内置标准模式的显示名
         presetStandardName: "\u6807\u51C6\u6A21\u5F0F",
         // 内置 PTC 模式的显示名
@@ -616,24 +616,24 @@ window.__ModuleLoader__.load({
         presetMinimalDescription: "Agent \u4F7F\u7528\u7EC8\u7AEF\u548C\u56FE\u7247\u8BFB\u53D6\u5DE5\u5177\uFF0C\u5E76\u652F\u6301\u4E0A\u4E0B\u6587\u538B\u7F29\uFF0C\u9002\u5408\u6D4B\u8BD5\u548C\u5BF9\u6BD4\u5176\u57FA\u7840\u8868\u73B0\u3002",
         // 内置创造模式的说明
         presetCordisDescription: "\u7528\u5BF9\u8BDD\u5B9A\u5236 DSH\uFF1A\u8BA9 Agent \u7F16\u5199\u63D2\u4EF6\uFF0C\u6DFB\u52A0\u65B0\u529F\u80FD\u6216\u754C\u9762\uFF1B\u4E5F\u80FD\u7EC4\u5408\u5DE5\u5177\u548C\u63D0\u793A\u8BCD\uFF0C\u521B\u5EFA\u81EA\u5DF1\u7684\u6A21\u5F0F\u3002",
-        // 会话已开始后尝试切换风格的提示
-        seatSessionStarted: "\u4F1A\u8BDD\u5DF2\u5F00\u59CB\uFF0C\u65E0\u6CD5\u518D\u5207\u6362\u98CE\u683C\u3002\u8BF7\u5728\u65B0\u5EFA\u4EFB\u52A1\u65F6\u9009\u62E9\u3002",
-        // 风格切换失败的提示前缀
+        // 会话已开始后尝试切换技能包的提示
+        seatSessionStarted: "\u4F1A\u8BDD\u5DF2\u5F00\u59CB\uFF0C\u65E0\u6CD5\u518D\u5207\u6362\u6280\u80FD\u5305\u3002\u8BF7\u5728\u65B0\u5EFA\u4EFB\u52A1\u65F6\u9009\u62E9\u3002",
+        // 技能包切换失败的提示前缀
         seatSelectFailed: "\u5207\u6362\u5931\u8D25"
       },
       en: {
         // Grid entry title
-        title: "Chat styles",
+        title: "Power packs",
         // Grid entry description
-        description: "Prepare different skills, plugins and MCP servers per task, then pick a style when starting a chat.",
+        description: "Prepare skills, plugins and MCP servers per task, then pick a power pack when starting a chat.",
         // Page title
-        pageTitle: "Chat styles",
+        pageTitle: "Power packs",
         // Page description
-        pageDescription: "Each style is a standalone agent composition. Once saved it appears in the preset picker for new tasks and only applies to sessions that choose it.",
-        // New style button
-        newStyle: "New style",
+        pageDescription: "Each power pack layers on top of the mode chosen for a new task. Pick it from the Power pack dropdown when starting a task; it only applies to sessions that choose it.",
+        // New power pack button
+        newPack: "New power pack",
         // Empty state
-        empty: "No styles yet. Create one and choose the skills and tools it needs.",
+        empty: "No power packs yet. Create one and choose the skills and tools it needs.",
         // Edit button
         edit: "Edit",
         // Delete button
@@ -649,35 +649,35 @@ window.__ModuleLoader__.load({
         // Duplicate MCP server id
         mcpIdDuplicate: "MCP server IDs must be unique.",
         // Delete confirmation
-        confirmDelete: "This style will no longer appear in the preset picker. Delete it?",
+        confirmDelete: "This power pack will no longer appear in the new-task dropdown. Delete it?",
         // Load failure
-        loadFailed: "Could not load styles",
+        loadFailed: "Could not load power packs",
         // Save failure
         saveFailed: "Could not save",
         // Delete failure
         deleteFailed: "Could not delete",
         // Name field label
-        nameLabel: "Style name",
+        nameLabel: "Power pack name",
         // Name placeholder
         namePlaceholder: "e.g. Code review",
         // Description field label
         descriptionLabel: "Description",
         // Description placeholder
-        descriptionPlaceholder: "One sentence about when to use this style",
+        descriptionPlaceholder: "One sentence about when to use this power pack",
         // System prompt label
         systemPromptLabel: "System prompt",
         // System prompt hint
-        systemPromptHint: "Appended to the end of the system prompt to define how this style works.",
+        systemPromptHint: "Appended to the end of the system prompt to define how this power pack works.",
         // System prompt placeholder
         systemPromptPlaceholder: "e.g. Only review code. Point out defects and test gaps, ask before editing files.",
         // Skills section title
         skillsTitle: "Skills",
         // Skills section hint
-        skillsHint: "Only selected skills can be loaded; unlisted ones are absent from this style.",
+        skillsHint: "Only selected skills can be loaded; unlisted ones are absent from this power pack.",
         // Plugins section title
         pluginsTitle: "Plugins and tools",
         // Plugins section hint
-        pluginsHint: "Assemble the agent from scratch: with nothing selected the style can only chat.",
+        pluginsHint: "Filter the tools of the chosen mode: each selection is kept or dropped by the rule.",
         // MCP section title
         mcpTitle: "MCP servers",
         // MCP section hint
@@ -687,7 +687,7 @@ window.__ModuleLoader__.load({
         // MCP enabled-servers rule title
         mcpRuleTitle: "Enabled servers",
         // MCP rule hint
-        mcpRuleHint: "Choose which defined MCP servers this style mounts.",
+        mcpRuleHint: "Choose which defined MCP servers this power pack mounts.",
         // Retry loading button
         retry: "Retry",
         // Rule mode: all
@@ -737,17 +737,17 @@ window.__ModuleLoader__.load({
         // Remove MCP server
         remove: "Remove",
         // Saved notice
-        saved: "Saved. Pick this style from the Chat style dropdown when starting a new task.",
+        saved: "Saved. Pick this power pack from the Power pack dropdown when starting a new task.",
         // Required name message
-        nameRequired: "Enter a style name.",
+        nameRequired: "Enter a power pack name.",
         // Storage location hint
         storageHint: "Config file",
         // Preset picker hint
-        presetHint: "A style layers on top of the mode chosen for a new task: the mode supplies base tools, and the style filters skills and tools, then adds MCP servers and a system prompt.",
+        presetHint: "A power pack layers on top of the mode chosen for a new task: the mode supplies base tools, and the power pack filters skills and tools, then adds MCP servers and a system prompt.",
         // Placeholder for the mode dropdown
         modeLabel: "Mode",
-        // Placeholder for the style dropdown
-        seatLabel: "Chat style",
+        // Placeholder for the power pack dropdown
+        seatLabel: "Power pack",
         // Display name for the built-in Standard mode
         presetStandardName: "Standard mode",
         // Display name for the built-in PTC mode
@@ -765,13 +765,13 @@ window.__ModuleLoader__.load({
         // Description for the built-in Creator mode
         presetCordisDescription: "Customize DSH through conversation. Let the agent write plugins that add features or UI, or combine tools and prompts to create your own mode.",
         // Shown when trying to switch a session that already started
-        seatSessionStarted: "This session has started; a style can only be chosen for a new task.",
-        // Prefix for a failed style switch
+        seatSessionStarted: "This session has started; a power pack can only be chosen for a new task.",
+        // Prefix for a failed power pack switch
         seatSelectFailed: "Could not switch"
       }
     };
 
-    // src/features/chat-style/page.tsx
+    // src/features/power-pack/page.tsx
     var import_react8 = __toESM(require("react"), 1);
 
     // src/components/Button.tsx
@@ -802,10 +802,10 @@ window.__ModuleLoader__.load({
       );
     }
 
-    // src/features/chat-style/StyleEditor.tsx
+    // src/features/power-pack/PackEditor.tsx
     var import_react7 = __toESM(require("react"), 1);
 
-    // src/features/chat-style/McpServerEditor.tsx
+    // src/features/power-pack/McpServerEditor.tsx
     var import_react5 = __toESM(require("react"), 1);
     var INPUT_CLASS = "w-full rounded-lg border border-line1 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand";
     var SERVER_ID_PATTERN = /^[A-Za-z0-9_-]{1,32}$/;
@@ -924,7 +924,7 @@ window.__ModuleLoader__.load({
       return SERVER_ID_PATTERN.test(id);
     }
 
-    // src/features/chat-style/ResourceRuleField.tsx
+    // src/features/power-pack/ResourceRuleField.tsx
     var import_react6 = __toESM(require("react"), 1);
     var MODE_ORDER = ["all", "include", "exclude"];
     function ResourceRuleField({
@@ -1009,9 +1009,9 @@ window.__ModuleLoader__.load({
       }))));
     }
 
-    // src/features/chat-style/StyleEditor.tsx
+    // src/features/power-pack/PackEditor.tsx
     var INPUT_CLASS2 = "w-full rounded-lg border border-line1 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand";
-    function StyleEditor({ initial, catalog, saving, error, onSave, onCancel, t }) {
+    function PackEditor({ initial, catalog, saving, error, onSave, onCancel, t }) {
       const [draft, setDraft] = (0, import_react7.useState)(initial);
       const [localError, setLocalError] = (0, import_react7.useState)(null);
       const patch = (change) => {
@@ -1126,7 +1126,7 @@ window.__ModuleLoader__.load({
       ), localError ?? error ? /* @__PURE__ */ import_react7.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, localError ?? error) : null, /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex items-center gap-2" }, /* @__PURE__ */ import_react7.default.createElement(Button, { variant: "outline", disabled: saving, onClick: handleSave }, saving ? t("saving") : t("save")), /* @__PURE__ */ import_react7.default.createElement(Button, { variant: "ghost", disabled: saving, onClick: onCancel }, t("cancel"))));
     }
 
-    // src/features/chat-style/page.tsx
+    // src/features/power-pack/page.tsx
     function modeLabel(mode, t) {
       if (mode === "include") return t("modeInclude");
       if (mode === "exclude") return t("modeExclude");
@@ -1144,7 +1144,7 @@ window.__ModuleLoader__.load({
         mcpServers: []
       };
     }
-    function ChatStylePage({ t }) {
+    function PowerPackPage({ t }) {
       const [payload, setPayload] = (0, import_react8.useState)(null);
       const [editing, setEditing] = (0, import_react8.useState)(null);
       const [loading, setLoading] = (0, import_react8.useState)(true);
@@ -1153,10 +1153,10 @@ window.__ModuleLoader__.load({
       const [notice, setNotice] = (0, import_react8.useState)(null);
       const reload = async () => {
         try {
-          setPayload(await loadChatStyles());
+          setPayload(await loadPowerPacks());
           setError(null);
         } catch (failure) {
-          console.error("[chat-style] \u52A0\u8F7D\u98CE\u683C\u5931\u8D25:", failure);
+          console.error("[power-pack] \u52A0\u8F7D\u6280\u80FD\u5305\u5931\u8D25:", failure);
           setError(`${t("loadFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
         } finally {
           setLoading(false);
@@ -1166,11 +1166,11 @@ window.__ModuleLoader__.load({
         let active = true;
         void (async () => {
           try {
-            const next = await loadChatStyles();
+            const next = await loadPowerPacks();
             if (!active) return;
             setPayload(next);
           } catch (failure) {
-            console.error("[chat-style] \u52A0\u8F7D\u98CE\u683C\u5931\u8D25:", failure);
+            console.error("[power-pack] \u52A0\u8F7D\u6280\u80FD\u5305\u5931\u8D25:", failure);
             if (active) {
               setError(
                 `${t("loadFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`
@@ -1184,15 +1184,15 @@ window.__ModuleLoader__.load({
           active = false;
         };
       }, [t]);
-      const handleSave = async (style) => {
+      const handleSave = async (pack) => {
         setSaving(true);
         try {
-          setPayload(await saveChatStyle(style));
+          setPayload(await savePowerPack(pack));
           setEditing(null);
           setError(null);
           setNotice(t("saved"));
         } catch (failure) {
-          console.error("[chat-style] \u4FDD\u5B58\u98CE\u683C\u5931\u8D25:", failure);
+          console.error("[power-pack] \u4FDD\u5B58\u6280\u80FD\u5305\u5931\u8D25:", failure);
           setError(`${t("saveFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
         } finally {
           setSaving(false);
@@ -1201,11 +1201,11 @@ window.__ModuleLoader__.load({
       const handleDelete = async (id) => {
         if (!window.confirm(t("confirmDelete"))) return;
         try {
-          setPayload(await deleteChatStyle(id));
+          setPayload(await deletePowerPack(id));
           setError(null);
           setNotice(null);
         } catch (failure) {
-          console.error("[chat-style] \u5220\u9664\u98CE\u683C\u5931\u8D25:", failure);
+          console.error("[power-pack] \u5220\u9664\u6280\u80FD\u5305\u5931\u8D25:", failure);
           setError(
             `${t("deleteFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`
           );
@@ -1213,13 +1213,13 @@ window.__ModuleLoader__.load({
       };
       if (editing && payload) {
         return /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react8.default.createElement("header", null, /* @__PURE__ */ import_react8.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react8.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("pageDescription"))), /* @__PURE__ */ import_react8.default.createElement(
-          StyleEditor,
+          PackEditor,
           {
             initial: editing,
             catalog: payload.catalog,
             saving,
             error,
-            onSave: (style) => void handleSave(style),
+            onSave: (pack) => void handleSave(pack),
             onCancel: () => {
               setEditing(null);
               setError(null);
@@ -1239,7 +1239,7 @@ window.__ModuleLoader__.load({
             setEditing(createDraft());
           }
         },
-        t("newStyle")
+        t("newPack")
       )), notice ? /* @__PURE__ */ import_react8.default.createElement("p", { className: "rounded-lg border border-line1 bg-layer1 px-3 py-2 text-[12px] text-success" }, notice) : null, error ? /* @__PURE__ */ import_react8.default.createElement("p", { className: "rounded-lg border border-line1 bg-layer1 px-3 py-2 text-[12px] text-danger", role: "alert" }, error, /* @__PURE__ */ import_react8.default.createElement(
         "button",
         {
@@ -1251,40 +1251,40 @@ window.__ModuleLoader__.load({
       )) : null, loading ? (
         // 首次加载中的占位
         /* @__PURE__ */ import_react8.default.createElement("p", { className: "text-[12px] text-secondary" }, "\u2026")
-      ) : (payload?.styles.length ?? 0) === 0 ? (
-        // 尚未创建风格时的空态
+      ) : (payload?.packs.length ?? 0) === 0 ? (
+        // 尚未创建技能包时的空态
         /* @__PURE__ */ import_react8.default.createElement("p", { className: "rounded-xl border border-dashed border-line1 px-4 py-6 text-center text-[12px] text-secondary" }, t("empty"))
-      ) : /* @__PURE__ */ import_react8.default.createElement("ul", { className: "flex flex-col gap-2" }, payload?.styles.map((style) => /* @__PURE__ */ import_react8.default.createElement(
+      ) : /* @__PURE__ */ import_react8.default.createElement("ul", { className: "flex flex-col gap-2" }, payload?.packs.map((pack) => /* @__PURE__ */ import_react8.default.createElement(
         "li",
         {
-          key: style.id,
+          key: pack.id,
           className: "rounded-xl border border-line1 bg-layer1 px-4 py-3"
         },
-        /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex flex-wrap items-start justify-between gap-2" }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react8.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, style.name), style.description ? /* @__PURE__ */ import_react8.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, style.description) : null, /* @__PURE__ */ import_react8.default.createElement("p", { className: "mt-1 text-[12px] text-secondary" }, t("skillsTitle"), ": ", modeLabel(style.skills.mode, t), " \xB7 ", t("pluginsTitle"), ":", " ", modeLabel(style.plugins.mode, t), " \xB7 ", t("mcpTitle"), ": ", style.mcpServers.length)), /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex shrink-0 items-center gap-2" }, /* @__PURE__ */ import_react8.default.createElement(
+        /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex flex-wrap items-start justify-between gap-2" }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react8.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, pack.name), pack.description ? /* @__PURE__ */ import_react8.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, pack.description) : null, /* @__PURE__ */ import_react8.default.createElement("p", { className: "mt-1 text-[12px] text-secondary" }, t("skillsTitle"), ": ", modeLabel(pack.skills.mode, t), " \xB7 ", t("pluginsTitle"), ":", " ", modeLabel(pack.plugins.mode, t), " \xB7 ", t("mcpTitle"), ": ", pack.mcpServers.length)), /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex shrink-0 items-center gap-2" }, /* @__PURE__ */ import_react8.default.createElement(
           Button,
           {
             variant: "outline",
             onClick: () => {
               setNotice(null);
               setError(null);
-              setEditing(style);
+              setEditing(pack);
             }
           },
           t("edit")
-        ), /* @__PURE__ */ import_react8.default.createElement(Button, { variant: "ghost", onClick: () => void handleDelete(style.id) }, t("delete"))))
+        ), /* @__PURE__ */ import_react8.default.createElement(Button, { variant: "ghost", onClick: () => void handleDelete(pack.id) }, t("delete"))))
       ))), payload ? /* @__PURE__ */ import_react8.default.createElement("p", { className: "text-[12px] text-secondary" }, t("storageHint"), ": ", /* @__PURE__ */ import_react8.default.createElement("code", { className: "break-all" }, payload.storagePath)) : null);
     }
 
-    // src/features/chat-style/index.tsx
-    var chatStyleFeature = {
-      id: "chat-style",
+    // src/features/power-pack/index.tsx
+    var powerPackFeature = {
+      id: "power-pack",
       order: 20,
-      entry: ChatStyleEntry,
-      page: ChatStylePage,
+      entry: PowerPackEntry,
+      page: PowerPackPage,
       client: client_exports,
-      locales: chatStyleLocales
+      locales: powerPackLocales
     };
-    var chat_style_default = chatStyleFeature;
+    var power_pack_default = powerPackFeature;
 
     // src/features/demo/entry.tsx
     var import_react9 = __toESM(require("react"), 1);
@@ -1615,7 +1615,7 @@ window.__ModuleLoader__.load({
     var expand_process_default = expandProcessFeature;
 
     // src/features/index.ts
-    var featureList = [expand_process_default, chat_style_default, demo_default];
+    var featureList = [expand_process_default, power_pack_default, demo_default];
 
     // src/shell/registry.ts
     var DEFAULT_FEATURE_ORDER = 100;

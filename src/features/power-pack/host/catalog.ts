@@ -2,7 +2,7 @@
  * 插件/工具行清单。
  *
  * 可选项来自两处：标准预设的功能项，以及 profile 中已安装的 `dsh-plugin-*`。
- * 已装插件可能已经在全局组合里加载，因此在风格规则里必须显式勾选才会追加。
+ * 已装插件可能已经在全局组合里加载，因此在技能包规则里必须显式勾选才会追加。
  */
 import { readdir, readFile } from 'node:fs/promises'
 import { join } from 'node:path'
@@ -34,7 +34,7 @@ async function findInstalledPlugins(): Promise<string[]> {
   } catch (error) {
     // 没有 profile 目录说明当前是 headless 或尚未安装插件，按空处理
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') return []
-    console.error('[chat-style] 读取 profile 目录失败:', profilesRoot, error)
+    console.error('[power-pack] 读取 profile 目录失败:', profilesRoot, error)
     return []
   }
 
@@ -51,7 +51,7 @@ async function findInstalledPlugins(): Promise<string[]> {
         if (name.startsWith('dsh-plugin-') && name !== SELF_PACKAGE) names.add(name)
       }
     } catch (error) {
-      console.error('[chat-style] 读取 profile 依赖失败:', manifestPath, error)
+      console.error('[power-pack] 读取 profile 依赖失败:', manifestPath, error)
     }
 
     const modulesRoot = join(profilesRoot, profile.name, 'node_modules')
@@ -64,7 +64,7 @@ async function findInstalledPlugins(): Promise<string[]> {
         }
       }
     } catch (error) {
-      console.error('[chat-style] 读取 profile 插件目录失败:', modulesRoot, error)
+      console.error('[power-pack] 读取 profile 插件目录失败:', modulesRoot, error)
     }
   }
 

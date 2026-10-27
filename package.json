@@ -7,14 +7,14 @@
   "exports": {
     ".": "./index.js",
     "./client": "./client.js",
-    "./preset-style": "./preset-style.js",
+    "./preset-pack": "./preset-pack.js",
     "./locale/*.json": "./locale/*.json",
     "./icon": "./icon.svg"
   },
   "files": [
     "index.js",
     "client.js",
-    "preset-style.js",
+    "preset-pack.js",
     "cordis.patch.yml",
     "locale/*.json",
     "icon.svg"

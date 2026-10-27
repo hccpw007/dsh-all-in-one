@@ -4,18 +4,18 @@ var __export = (target, all) => {
     __defProp(target, name, { get: all[name], enumerable: true });
 };
 
-// src/features/chat-style/host.ts
+// src/features/power-pack/host.ts
 var host_exports = {};
 __export(host_exports, {
   apply: () => apply,
   inject: () => inject
 });
 
-// src/features/chat-style/host/catalog.ts
+// src/features/power-pack/host/catalog.ts
 import { readdir as readdir2, readFile as readFile2 } from "node:fs/promises";
 import { join as join2 } from "node:path";
 
-// src/features/chat-style/host/skill-catalog.ts
+// src/features/power-pack/host/skill-catalog.ts
 import { readdir, readFile, stat } from "node:fs/promises";
 import { homedir } from "node:os";
 import { join } from "node:path";
@@ -64,7 +64,7 @@ async function readSkillEntry(path, kind) {
     if (!parsed || !SKILL_NAME_PATTERN.test(parsed.name)) return void 0;
     return { name: parsed.name, description: parsed.description, path, kind };
   } catch (error) {
-    console.error("[chat-style] \u8BFB\u53D6\u6280\u80FD\u6587\u4EF6\u5931\u8D25:", file, error);
+    console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u6587\u4EF6\u5931\u8D25:", file, error);
     return void 0;
   }
 }
@@ -74,7 +74,7 @@ async function scanRoot(root) {
     entries = await readdir(root, { withFileTypes: true });
   } catch (error) {
     if (error.code === "ENOENT") return [];
-    console.error("[chat-style] \u8BFB\u53D6\u6280\u80FD\u6839\u76EE\u5F55\u5931\u8D25:", root, error);
+    console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u6839\u76EE\u5F55\u5931\u8D25:", root, error);
     return [];
   }
   const skills = [];
@@ -90,7 +90,7 @@ async function scanRoot(root) {
         if (info.isDirectory()) kind = "directory";
         else if (info.isFile() && entry.name.endsWith(".md")) kind = "file";
       } catch (error) {
-        console.error("[chat-style] \u8DDF\u968F\u6280\u80FD\u7B26\u53F7\u94FE\u63A5\u5931\u8D25:", path, error);
+        console.error("[power-pack] \u8DDF\u968F\u6280\u80FD\u7B26\u53F7\u94FE\u63A5\u5931\u8D25:", path, error);
         kind = void 0;
       }
     }
@@ -114,7 +114,7 @@ async function listSkillEntries() {
   return result.sort((left, right) => left.name.localeCompare(right.name));
 }
 
-// src/features/chat-style/host/standard-rows.ts
+// src/features/power-pack/host/standard-rows.ts
 var PLAN_MODE_SECTION = `You are in plan mode. Stay in plan mode until the user approves your plan through exit_plan_mode or switches the session mode. Imperative language to implement changes means plan the implementation, not execute it. A user's conversational agreement \u2014 including an answer confirming something you asked \u2014 approves nothing and does not end plan mode; fold the confirmed decision into the plan and submit it through exit_plan_mode.
 
 Explore first. Use non-mutating reads, searches, static analysis, and checks to ground the plan in the actual repository. Do not edit or write files, change configuration, run formatters or code generation that rewrites tracked files, commit, or otherwise carry out the plan. Prefer existing functions and patterns over new machinery.
@@ -328,7 +328,7 @@ var STANDARD_PLUGIN_ITEMS = [
   }
 ];
 
-// src/features/chat-style/host/catalog.ts
+// src/features/power-pack/host/catalog.ts
 var SELF_PACKAGE = "dsh-all-in-one";
 async function findInstalledPlugins() {
   const profilesRoot = join2(resolveDshHome(), "profiles");
@@ -338,7 +338,7 @@ async function findInstalledPlugins() {
     profiles = await readdir2(profilesRoot, { withFileTypes: true });
   } catch (error) {
     if (error.code === "ENOENT") return [];
-    console.error("[chat-style] \u8BFB\u53D6 profile \u76EE\u5F55\u5931\u8D25:", profilesRoot, error);
+    console.error("[power-pack] \u8BFB\u53D6 profile \u76EE\u5F55\u5931\u8D25:", profilesRoot, error);
     return [];
   }
   for (const profile of profiles) {
@@ -350,7 +350,7 @@ async function findInstalledPlugins() {
         if (name.startsWith("dsh-plugin-") && name !== SELF_PACKAGE) names.add(name);
       }
     } catch (error) {
-      console.error("[chat-style] \u8BFB\u53D6 profile \u4F9D\u8D56\u5931\u8D25:", manifestPath, error);
+      console.error("[power-pack] \u8BFB\u53D6 profile \u4F9D\u8D56\u5931\u8D25:", manifestPath, error);
     }
     const modulesRoot = join2(profilesRoot, profile.name, "node_modules");
     try {
@@ -362,7 +362,7 @@ async function findInstalledPlugins() {
         }
       }
     } catch (error) {
-      console.error("[chat-style] \u8BFB\u53D6 profile \u63D2\u4EF6\u76EE\u5F55\u5931\u8D25:", modulesRoot, error);
+      console.error("[power-pack] \u8BFB\u53D6 profile \u63D2\u4EF6\u76EE\u5F55\u5931\u8D25:", modulesRoot, error);
     }
   }
   return [...names].sort((left, right) => left.localeCompare(right));
@@ -388,14 +388,14 @@ async function listPluginItems() {
   ];
 }
 
-// src/features/chat-style/host/skill-links.ts
+// src/features/power-pack/host/skill-links.ts
 import { mkdir, rm, symlink } from "node:fs/promises";
 import { join as join3 } from "node:path";
-function chatStylesRoot() {
-  return join3(resolveDshHome(), "all-in-one", "chat-styles");
+function powerPacksRoot() {
+  return join3(resolveDshHome(), "all-in-one", "power-packs");
 }
-function styleSkillDir(styleId) {
-  return join3(chatStylesRoot(), styleId, "skills");
+function packSkillDir(packId) {
+  return join3(powerPacksRoot(), packId, "skills");
 }
 function selectSkills(rule, all) {
   const selected = new Set(rule.items);
@@ -410,8 +410,8 @@ function selectSkills(rule, all) {
       return [];
   }
 }
-async function syncStyleSkillDir(styleId, skills) {
-  const dir = styleSkillDir(styleId);
+async function syncPackSkillDir(packId, skills) {
+  const dir = packSkillDir(packId);
   try {
     await rm(dir, { recursive: true, force: true });
     await mkdir(dir, { recursive: true });
@@ -421,21 +421,21 @@ async function syncStyleSkillDir(styleId, skills) {
     }
     return dir;
   } catch (error) {
-    console.error("[chat-style] \u540C\u6B65\u6280\u80FD\u76EE\u5F55\u5931\u8D25:", dir, error);
+    console.error("[power-pack] \u540C\u6B65\u6280\u80FD\u76EE\u5F55\u5931\u8D25:", dir, error);
     throw error;
   }
 }
-async function removeStyleSkillDir(styleId) {
-  const dir = join3(chatStylesRoot(), styleId);
+async function removePackSkillDir(packId) {
+  const dir = join3(powerPacksRoot(), packId);
   try {
     await rm(dir, { recursive: true, force: true });
   } catch (error) {
-    console.error("[chat-style] \u5220\u9664\u6280\u80FD\u76EE\u5F55\u5931\u8D25:", dir, error);
+    console.error("[power-pack] \u5220\u9664\u6280\u80FD\u76EE\u5F55\u5931\u8D25:", dir, error);
   }
 }
 
-// src/features/chat-style/host/composition.ts
-var PROMPT_ROW_NAME = "dsh-all-in-one/preset-style";
+// src/features/power-pack/host/composition.ts
+var PROMPT_ROW_NAME = "dsh-all-in-one/preset-pack";
 var SKILL_FILESYSTEM_ROW = "@deepseek-ai/dsh-skill-filesystem";
 var TOOL_SKILL_ROW = "@deepseek-ai/dsh-tool-skill";
 var MCP_CLIENT_ROW = "@deepseek-ai/dsh-mcp-client";
@@ -457,38 +457,38 @@ function mcpRowConfig(server) {
     ...Object.keys(server.headers).length > 0 ? { headers: server.headers } : {}
   };
 }
-function selectMcpServers(style) {
-  const selected = new Set(style.mcp.items);
-  switch (style.mcp.mode) {
+function selectMcpServers(pack) {
+  const selected = new Set(pack.mcp.items);
+  switch (pack.mcp.mode) {
     case "all":
-      return style.mcpServers;
+      return pack.mcpServers;
     case "include":
-      return style.mcpServers.filter((server) => selected.has(server.id));
+      return pack.mcpServers.filter((server) => selected.has(server.id));
     case "exclude":
-      return style.mcpServers.filter((server) => !selected.has(server.id));
+      return pack.mcpServers.filter((server) => !selected.has(server.id));
     default:
       return [];
   }
 }
-function buildStyleRows(style) {
+function buildPackRows(pack) {
   const rows = [];
-  if (style.systemPrompt.trim() !== "") {
+  if (pack.systemPrompt.trim() !== "") {
     rows.push({
-      id: "chat-style-prompt",
+      id: "power-pack-prompt",
       name: PROMPT_ROW_NAME,
-      config: { text: style.systemPrompt }
+      config: { text: pack.systemPrompt }
     });
   }
-  const skillConfig = style.skills.mode === "all" ? { includeDefaultRoots: true } : { includeDefaultRoots: false, customSkillDirs: [styleSkillDir(style.id)] };
+  const skillConfig = pack.skills.mode === "all" ? { includeDefaultRoots: true } : { includeDefaultRoots: false, customSkillDirs: [packSkillDir(pack.id)] };
   rows.push({ id: "skill-filesystem", name: SKILL_FILESYSTEM_ROW, config: skillConfig });
   rows.push({ id: "tool-skill", name: TOOL_SKILL_ROW });
-  for (const server of selectMcpServers(style)) {
+  for (const server of selectMcpServers(pack)) {
     rows.push({ id: `mcp-${server.id}`, name: MCP_CLIENT_ROW, config: mcpRowConfig(server) });
   }
   return rows;
 }
 
-// src/features/chat-style/host/compose.ts
+// src/features/power-pack/host/compose.ts
 var SKILL_ROW_NAMES = /* @__PURE__ */ new Set([SKILL_FILESYSTEM_ROW, TOOL_SKILL_ROW]);
 function collectKeys(rows) {
   const keys = { ids: /* @__PURE__ */ new Set(), names: /* @__PURE__ */ new Set() };
@@ -525,17 +525,17 @@ function filterByPluginRule(rows, rule, installed) {
   }
   return rows.filter((row) => !isStandardRow(row) || !isSelectedRow(row, selected));
 }
-function composeStyleRows(modeRows, style, installed) {
+function composePackRows(modeRows, pack, installed) {
   const base = modeRows.filter((row) => !SKILL_ROW_NAMES.has(row.name));
-  const rows = filterByPluginRule(base, style.plugins, installed);
-  for (const row of buildStyleRows(style)) {
+  const rows = filterByPluginRule(base, pack.plugins, installed);
+  for (const row of buildPackRows(pack)) {
     if (rows.some((existing) => existing.id === row.id)) continue;
     rows.push(row);
   }
   return rows;
 }
 
-// src/features/chat-style/host/preset-source.ts
+// src/features/power-pack/host/preset-source.ts
 function readPresetRows(api, presetId) {
   const internals = api;
   const rows = internals.definitions?.get(presetId)?.config?.plugins;
@@ -543,12 +543,12 @@ function readPresetRows(api, presetId) {
   return rows;
 }
 
-// src/features/chat-style/host/presets.ts
-var PRESET_ID_PREFIX = "style-";
+// src/features/power-pack/host/presets.ts
+var PRESET_ID_PREFIX = "power-pack-";
 var PRESET_ORDER = 200;
 var composed;
-function composedPresetId(styleId, modeId) {
-  return `${PRESET_ID_PREFIX}${styleId}@${modeId}`;
+function composedPresetId(packId, modeId) {
+  return `${PRESET_ID_PREFIX}${packId}@${modeId}`;
 }
 async function disposeComposed() {
   const current = composed;
@@ -557,49 +557,50 @@ async function disposeComposed() {
   try {
     await current.dispose();
   } catch (error) {
-    console.error("[chat-style] \u6CE8\u9500\u7EC4\u5408\u9884\u8BBE\u5931\u8D25:", current.id, error);
+    console.error("[power-pack] \u6CE8\u9500\u7EC4\u5408\u9884\u8BBE\u5931\u8D25:", current.id, error);
   }
 }
-async function ensureComposedPreset(api, modeId, style) {
-  const key = `${style.id}@${modeId}`;
+async function ensureComposedPreset(api, modeId, pack) {
+  const key = `${pack.id}@${modeId}`;
   if (composed?.key === key) return composed.id;
   const modeRows = readPresetRows(api, modeId);
   if (modeRows === void 0) {
     throw new Error(`\u65E0\u6CD5\u8BFB\u53D6\u6A21\u5F0F ${modeId} \u7684\u7EC4\u5408\u884C`);
   }
   const { installed } = await listPluginCatalog();
-  const rows = composeStyleRows(modeRows, style, installed);
+  const rows = composePackRows(modeRows, pack, installed);
   await disposeComposed();
-  const id = composedPresetId(style.id, modeId);
+  const id = composedPresetId(pack.id, modeId);
   const dispose = await api.register({
     id,
-    name: style.name,
-    description: style.description,
+    name: pack.name,
+    description: pack.description,
     order: PRESET_ORDER,
     plugins: rows
   });
   composed = { key, id, dispose };
   return id;
 }
-async function invalidateComposedPreset(styleId) {
+async function invalidateComposedPreset(packId) {
   if (composed === void 0) return;
-  if (!composed.key.startsWith(`${styleId}@`)) return;
+  if (!composed.key.startsWith(`${packId}@`)) return;
   await disposeComposed();
 }
-async function disposeStylePresets() {
+async function disposePackPresets() {
   await disposeComposed();
 }
 
-// src/features/chat-style/host/store.ts
+// src/features/power-pack/host/store.ts
 import { mkdir as mkdir2, readFile as readFile3, rename, writeFile } from "node:fs/promises";
 import { dirname, join as join4 } from "node:path";
 var RULE_MODES = ["all", "include", "exclude"];
-var STYLE_ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
-function chatStylesFile() {
-  return join4(resolveDshHome(), "all-in-one", "chat-styles.json");
+var LEGACY_FILE_NAMES = ["skill-packs.json", "chat-styles.json"];
+var PACK_ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
+function powerPacksFile() {
+  return join4(resolveDshHome(), "all-in-one", "power-packs.json");
 }
-function isValidStyleId(id) {
-  return STYLE_ID_PATTERN.test(id);
+function isValidPackId(id) {
+  return PACK_ID_PATTERN.test(id);
 }
 function stringList(value) {
   return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
@@ -639,12 +640,12 @@ function normalizeMcpServer(value) {
     headers: stringDict(candidate.headers)
   };
 }
-function normalizeStyle(value) {
+function normalizePack(value) {
   if (typeof value !== "object" || value === null) return void 0;
   const candidate = value;
   const id = typeof candidate.id === "string" ? candidate.id.trim() : "";
   const name = typeof candidate.name === "string" ? candidate.name.trim() : "";
-  if (!STYLE_ID_PATTERN.test(id) || name === "") return void 0;
+  if (!PACK_ID_PATTERN.test(id) || name === "") return void 0;
   const seenServers = /* @__PURE__ */ new Set();
   const mcpServers = Array.isArray(candidate.mcpServers) ? candidate.mcpServers.map(normalizeMcpServer).filter((server) => {
     if (server === void 0 || seenServers.has(server.id)) return false;
@@ -662,22 +663,33 @@ function normalizeStyle(value) {
     mcpServers
   };
 }
-async function readStyles() {
-  const file = chatStylesFile();
+async function parsePackFile(file) {
   try {
     const raw = await readFile3(file, "utf8");
     const parsed = JSON.parse(raw);
-    const styles = Array.isArray(parsed.styles) ? parsed.styles.map(normalizeStyle).filter((style) => style !== void 0) : [];
-    return { version: 1, styles };
+    const list = Array.isArray(parsed.packs) ? parsed.packs : parsed.styles;
+    const packs = Array.isArray(list) ? list.map(normalizePack).filter((pack) => pack !== void 0) : [];
+    return { version: 1, packs };
   } catch (error) {
     if (error.code !== "ENOENT") {
-      console.error("[chat-style] \u8BFB\u53D6\u98CE\u683C\u914D\u7F6E\u5931\u8D25:", file, error);
+      console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u5305\u914D\u7F6E\u5931\u8D25:", file, error);
     }
-    return { version: 1, styles: [] };
+    return void 0;
   }
 }
-async function writeStyles(document) {
-  const file = chatStylesFile();
+async function readPacks() {
+  const current = await parsePackFile(powerPacksFile());
+  if (current !== void 0) return current;
+  for (const name of LEGACY_FILE_NAMES) {
+    const migrated = await parsePackFile(join4(resolveDshHome(), "all-in-one", name));
+    if (migrated === void 0) continue;
+    await writePacks(migrated);
+    return migrated;
+  }
+  return { version: 1, packs: [] };
+}
+async function writePacks(document) {
+  const file = powerPacksFile();
   const temp = `${file}.tmp`;
   try {
     await mkdir2(dirname(file), { recursive: true });
@@ -685,13 +697,13 @@ async function writeStyles(document) {
 `, "utf8");
     await rename(temp, file);
   } catch (error) {
-    console.error("[chat-style] \u5199\u5165\u98CE\u683C\u914D\u7F6E\u5931\u8D25:", file, error);
+    console.error("[power-pack] \u5199\u5165\u6280\u80FD\u5305\u914D\u7F6E\u5931\u8D25:", file, error);
     throw error;
   }
 }
 
-// src/features/chat-style/host/routes.ts
-var ROUTE_PATH = "/dsh-all-in-one/chat-styles";
+// src/features/power-pack/host/routes.ts
+var ROUTE_PATH = "/dsh-all-in-one/power-packs";
 var MAX_BODY_BYTES = 1024 * 1024;
 var LOOPBACK_ADDRESSES = /* @__PURE__ */ new Set(["127.0.0.1", "::1", "::ffff:127.0.0.1"]);
 function isLocalRequest(request) {
@@ -719,69 +731,69 @@ async function readJsonBody(request) {
   try {
     return JSON.parse(Buffer.concat(chunks).toString("utf8"));
   } catch (error) {
-    console.error("[chat-style] \u89E3\u6790\u8BF7\u6C42\u4F53\u5931\u8D25:", error);
+    console.error("[power-pack] \u89E3\u6790\u8BF7\u6C42\u4F53\u5931\u8D25:", error);
     return void 0;
   }
 }
 async function buildPayload() {
-  const document = await readStyles();
+  const document = await readPacks();
   const skills = await listSkillEntries();
   const plugins = await listPluginItems();
   return {
-    styles: document.styles,
+    packs: document.packs,
     catalog: {
       skills: skills.map(({ name, description }) => ({ name, description })),
       plugins
     },
-    storagePath: chatStylesFile()
+    storagePath: powerPacksFile()
   };
 }
-async function syncSkills(style, allSkills) {
-  if (style.skills.mode === "all") {
-    await removeStyleSkillDir(style.id);
+async function syncSkills(pack, allSkills) {
+  if (pack.skills.mode === "all") {
+    await removePackSkillDir(pack.id);
     return;
   }
-  await syncStyleSkillDir(style.id, selectSkills(style.skills, allSkills));
+  await syncPackSkillDir(pack.id, selectSkills(pack.skills, allSkills));
 }
-async function saveStyle(style) {
+async function savePack(pack) {
   const allSkills = await listSkillEntries();
-  await syncSkills(style, allSkills);
-  const document = await readStyles();
-  const index = document.styles.findIndex((item) => item.id === style.id);
-  if (index >= 0) document.styles[index] = style;
-  else document.styles.push(style);
-  await writeStyles(document);
+  await syncSkills(pack, allSkills);
+  const document = await readPacks();
+  const index = document.packs.findIndex((item) => item.id === pack.id);
+  if (index >= 0) document.packs[index] = pack;
+  else document.packs.push(pack);
+  await writePacks(document);
   return buildPayload();
 }
-async function deleteStyle(styleId) {
-  const document = await readStyles();
-  document.styles = document.styles.filter((style) => style.id !== styleId);
-  await writeStyles(document);
-  await removeStyleSkillDir(styleId);
+async function deletePack(packId) {
+  const document = await readPacks();
+  document.packs = document.packs.filter((pack) => pack.id !== packId);
+  await writePacks(document);
+  await removePackSkillDir(packId);
   return buildPayload();
 }
 var writeChain = Promise.resolve();
 async function handleWrite(request, api) {
   if (request.action === "compose") {
-    const document = await readStyles();
-    const style2 = document.styles.find((item) => item.id === request.style);
-    if (!style2) throw new Error("\u98CE\u683C\u4E0D\u5B58\u5728");
+    const document = await readPacks();
+    const pack2 = document.packs.find((item) => item.id === request.pack);
+    if (!pack2) throw new Error("\u6280\u80FD\u5305\u4E0D\u5B58\u5728");
     if (request.mode.trim() === "") throw new Error("\u672A\u6307\u5B9A\u6A21\u5F0F");
-    return { presetId: await ensureComposedPreset(api, request.mode, style2) };
+    return { presetId: await ensureComposedPreset(api, request.mode, pack2) };
   }
   if (request.action === "delete") {
-    if (!isValidStyleId(request.id)) throw new Error("\u98CE\u683C\u6807\u8BC6\u65E0\u6548");
-    const payload2 = await deleteStyle(request.id);
+    if (!isValidPackId(request.id)) throw new Error("\u6280\u80FD\u5305\u6807\u8BC6\u65E0\u6548");
+    const payload2 = await deletePack(request.id);
     await invalidateComposedPreset(request.id);
     return payload2;
   }
-  const style = normalizeStyle(request.style);
-  if (!style) throw new Error("\u98CE\u683C\u5B9A\u4E49\u65E0\u6548");
-  const payload = await saveStyle(style);
-  await invalidateComposedPreset(style.id);
+  const pack = normalizePack(request.pack);
+  if (!pack) throw new Error("\u6280\u80FD\u5305\u5B9A\u4E49\u65E0\u6548");
+  const payload = await savePack(pack);
+  await invalidateComposedPreset(pack.id);
   return payload;
 }
-function installChatStyleRoutes(webServer, api) {
+function installPowerPackRoutes(webServer, api) {
   return webServer.register({
     kind: "prefix",
     path: ROUTE_PATH,
@@ -805,7 +817,7 @@ function installChatStyleRoutes(webServer, api) {
             () => handleWrite(body, api)
           );
           writeChain = task.catch((error) => {
-            console.error("[chat-style] \u5199\u5165\u98CE\u683C\u5931\u8D25:", error);
+            console.error("[power-pack] \u5199\u5165\u6280\u80FD\u5305\u5931\u8D25:", error);
           });
           sendJson(response, 200, await task);
           return;
@@ -813,7 +825,7 @@ function installChatStyleRoutes(webServer, api) {
         response.writeHead(405, { allow: "GET, POST" });
         response.end();
       } catch (error) {
-        console.error("[chat-style] \u5904\u7406\u98CE\u683C\u8BF7\u6C42\u5931\u8D25:", error);
+        console.error("[power-pack] \u5904\u7406\u6280\u80FD\u5305\u8BF7\u6C42\u5931\u8D25:", error);
         sendJson(response, 500, {
           error: error instanceof Error ? error.message : String(error)
         });
@@ -822,23 +834,23 @@ function installChatStyleRoutes(webServer, api) {
   });
 }
 
-// src/features/chat-style/host.ts
+// src/features/power-pack/host.ts
 var inject = ["agentPresets"];
 function apply(ctx) {
   const api = ctx.agentPresets;
   if (!api) {
-    console.error("[chat-style] \u672A\u53D6\u5F97 agentPresets \u670D\u52A1\uFF0C\u98CE\u683C\u7EC4\u5408\u4E0D\u4F1A\u6CE8\u518C");
+    console.error("[power-pack] \u672A\u53D6\u5F97 agentPresets \u670D\u52A1\uFF0C\u6280\u80FD\u5305\u7EC4\u5408\u4E0D\u4F1A\u6CE8\u518C");
     return;
   }
   ctx.effect(() => () => {
-    void disposeStylePresets();
-  }, "chat-style: presets");
+    void disposePackPresets();
+  }, "power-pack: presets");
   ctx.inject(["webServer"], (host) => {
-    host.effect(() => installChatStyleRoutes(resolveWebServer(host), api), "chat-style: routes");
+    host.effect(() => installPowerPackRoutes(resolveWebServer(host), api), "power-pack: routes");
   });
 }
 function resolveWebServer(ctx) {
-  if (!ctx.webServer) throw new Error("chat-style: webServer \u670D\u52A1\u4E0D\u53EF\u7528");
+  if (!ctx.webServer) throw new Error("power-pack: webServer \u670D\u52A1\u4E0D\u53EF\u7528");
   return ctx.webServer;
 }
 

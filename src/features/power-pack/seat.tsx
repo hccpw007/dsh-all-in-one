@@ -13,8 +13,8 @@ import type { SeatSnapshot } from './seat-store'
  * 新会话界面的预设选择器直接复用宿主 primitives 的 `Menu` 与图标组件，
  * 不自行实现菜单 DOM；按钮沿用宿主预设选择器的类名，因此与原生样式一致。
  *
- * 左「模式」与右「对话风格」是两个独立维度：模式决定基础工具与提示词，
- * 风格叠加在模式之上筛选技能与工具。
+ * 左「模式」与右「技能包」是两个独立维度：模式决定基础工具与提示词，
+ * 技能包叠加在模式之上筛选技能与工具。
  */
 
 /** 内置预设没有自带名称与描述，用语言包补齐显示文案。 */
@@ -25,7 +25,7 @@ const BUILTIN_NAME_KEYS: Record<string, string> = {
   cordis: 'presetCordisName',
 }
 
-/** 内置预设描述的文案 key，风格与自定义预设使用自带描述。 */
+/** 内置预设描述的文案 key，技能包与自定义预设使用自带描述。 */
 const BUILTIN_DESCRIPTION_KEYS: Record<string, string> = {
   standard: 'presetStandardDescription',
   ptc: 'presetPtcDescription',
@@ -34,13 +34,13 @@ const BUILTIN_DESCRIPTION_KEYS: Record<string, string> = {
 }
 
 /** 新会话选择器收到的 props，由插槽注入。 */
-export interface ChatStyleSeatProps {
+export interface PowerPackSeatProps {
   sessionId?: string
-  /** 插槽把 hooks.chatStyleSeat 包装成按 selector 取值的 hook。 */
-  useChatStyleSeat<T>(selector: (snapshot: SeatSnapshot) => T): T
+  /** 插槽把 hooks.powerPackSeat 包装成按 selector 取值的 hook。 */
+  usePowerPackSeat<T>(selector: (snapshot: SeatSnapshot) => T): T
   load(): Promise<void>
   selectMode(presetId: string): Promise<void>
-  selectStyle(styleId: string): Promise<void>
+  selectPack(packId: string): Promise<void>
   applyStaged(): Promise<void>
   /** 已绑定本 feature 前缀的翻译函数。 */
   t: Translate
@@ -93,7 +93,7 @@ interface PresetDropdownProps {
 /**
  * 一个独立的下拉，菜单与按钮均由宿主组件绘制。
  *
- * 调用方各用一个实例并传入自己的选项集合，因此「模式」与「风格」互不混排。
+ * 调用方各用一个实例并传入自己的选项集合，因此「模式」与「技能包」互不混排。
  * @param props 当前值、选项与选择回调
  */
 function PresetDropdown({ current, options, placeholder, disabled, onPick }: PresetDropdownProps) {
@@ -151,22 +151,22 @@ function PresetDropdown({ current, options, placeholder, disabled, onPick }: Pre
 }
 
 /**
- * 新会话界面的预设选择区：左侧「模式」、右侧「对话风格」两个独立下拉。
+ * 新会话界面的预设选择区：左侧「模式」、右侧「技能包」两个独立下拉。
  *
- * 覆盖宿主的预设选择器，但模式与风格各自维护选中值，互不覆盖。新会话屏幕
+ * 覆盖宿主的预设选择器，但模式与技能包各自维护选中值，互不覆盖。新会话屏幕
  * 还没有会话时先暂存选择，会话出现后再提交。
  * @param props 插槽注入的状态与操作
  */
-export function ChatStyleSeat({
+export function PowerPackSeat({
   sessionId,
-  useChatStyleSeat,
+  usePowerPackSeat,
   load,
   selectMode,
-  selectStyle,
+  selectPack,
   applyStaged,
   t,
-}: ChatStyleSeatProps) {
-  const snapshot = useChatStyleSeat((state) => state)
+}: PowerPackSeatProps) {
+  const snapshot = usePowerPackSeat((state) => state)
   // 插槽每次渲染都可能给出新的函数引用，用 ref 固定下来，effect 只跟随会话变化
   const actionsRef = useRef({ load, applyStaged })
   actionsRef.current = { load, applyStaged }
@@ -196,13 +196,13 @@ export function ChatStyleSeat({
           disabled={disabled}
           onPick={(id) => void selectMode(id)}
         />
-        {/* 对话风格下拉：只列本插件定义的风格 */}
+        {/* 技能包下拉：只列本插件定义的技能包 */}
         <PresetDropdown
-          current={snapshot.style}
-          options={snapshot.styles}
+          current={snapshot.pack}
+          options={snapshot.packs}
           placeholder={t('seatLabel')}
           disabled={disabled}
-          onPick={(id) => void selectStyle(id)}
+          onPick={(id) => void selectPack(id)}
         />
       </div>
 

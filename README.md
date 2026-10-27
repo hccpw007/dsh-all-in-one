@@ -8,14 +8,14 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → All In One」中用一
 ```
 ├── index.js                 # 宿主侧插件产物，由 build.ts 生成，请勿手改
 ├── client.js                # 浏览器端产物，由 build.ts 生成，请勿手改
-├── preset-style.js          # 「对话风格」预设内提示词行的产物，由 build.ts 生成
+├── preset-pack.js          # 「技能包」预设内提示词行的产物，由 build.ts 生成
 ├── cordis.patch.yml         # bundle 声明，安装时插入插件行
 ├── tsconfig.json            # TypeScript 配置（strict，仅类型检查不产出文件）
 ├── tailwind.config.ts       # Tailwind 配置，颜色映射宿主主题令牌
 ├── locale/{zh,en}.json      # 插件标题与描述
 ├── src/
 │   ├── index.ts             # 宿主侧入口：只聚合各 feature 的 host 扩展并注册
-│   ├── preset-style.ts      # 「对话风格」预设内的提示词行，独立打包为 preset-style.js
+│   ├── preset-pack.ts      # 「技能包」预设内的提示词行，独立打包为 preset-pack.js
 │   ├── entry.tsx            # 注册 settings.section，合并外壳与各功能语言包
 │   ├── styles/input.css     # Tailwind 入口
 │   ├── types/               # 宿主 API（客户端与宿主侧）与资源模块的类型声明
@@ -32,17 +32,17 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → All In One」中用一
 │       │   ├── page.tsx     # 功能页面内容与页头标题
 │       │   ├── Card.tsx     # 本功能专属面板，随 demo 一起复制
 │       │   └── locales.ts   # 本功能的中英文文案
-│       ├── chat-style/      # 对话风格：按任务装配技能、插件与 MCP
+│       ├── power-pack/      # 技能包：按任务装配技能、插件与 MCP
 │       │   ├── index.tsx    # 注册定义：页面型入口与页面
 │       │   ├── entry.tsx    # 网格入口
-│       │   ├── page.tsx     # 风格列表、编辑与删除
-│       │   ├── StyleEditor.tsx      # 单个风格的编辑表单
+│       │   ├── page.tsx     # 技能包列表、编辑与删除
+│       │   ├── PackEditor.tsx      # 单个技能包的编辑表单
 │       │   ├── ResourceRuleField.tsx # 「全部 / 仅引用 / 仅排除」规则编辑
 │       │   ├── McpServerEditor.tsx  # MCP 服务器定义编辑
 │       │   ├── api.ts       # 与宿主侧路由通信
 │       │   ├── types.ts     # 客户端与宿主共用的数据模型
 │       │   ├── host.ts      # 宿主侧入口：注册预设与 HTTP 路由
-│       │   ├── host/        # 风格存储、技能扫描、模式行读取与组合、路由实现
+│       │   ├── host/        # 技能包存储、技能扫描、模式行读取与组合、路由实现
 │       │   └── locales.ts   # 本功能的中英文文案
 │       └── expand-process/  # 开关型示例功能：展开过程
 │           ├── index.tsx    # 注册定义：只提供 switch，没有独立页面
@@ -103,46 +103,47 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → All In One」中用一
 > 不要同时启用独立的 `dsh-plugin-expand-process`：两个插件都会改写同一段 UI 源码，
 > 它会把展开状态写死为开启，导致本开关失效。迁移到本插件后请从 profile 中移除它。
 
-## 「对话风格」
+## 「技能包」
 
-`chat-style` 让不同任务的对话使用不同的技能、插件与 MCP。它在新建任务界面上
+`power-pack` 让不同任务的对话使用不同的技能、插件与 MCP。它在新建任务界面上
 提供两个**相互独立**的下拉：左「模式」（标准、PTC、极简、创造等宿主预设）与
-右「对话风格」（本插件维护的风格）。两者不是二选一：模式决定基础工具与提示词，
-风格在模式之上筛选技能与工具、追加 MCP 与系统提示词。
+右「技能包」（本插件维护的技能包）。两者不是二选一：模式决定基础工具与提示词，
+技能包在模式之上筛选技能与工具、追加 MCP 与系统提示词。
 
-宿主一次只认一个 Agent 预设，因此风格非空时由宿主侧把「所选模式的行 + 风格追加行」
-合成为一个组合预设（id 形如 `style-<风格 id>@<模式 id>`）再交给宿主挂载；同一时间
-只保留一个组合，换选择时先撤销旧的再注册新的。风格本身不再单独预注册成预设，
-所以宿主原生预设列表里不会出现一堆用不到的风格条目。
+宿主一次只认一个 Agent 预设，因此技能包非空时由宿主侧把「所选模式的行 + 技能包追加行」
+合成为一个组合预设（id 形如 `power-pack-<技能包 id>@<模式 id>`）再交给宿主挂载；同一时间
+只保留一个组合，换选择时先撤销旧的再注册新的。技能包本身不再单独预注册成预设，
+所以宿主原生预设列表里不会出现一堆用不到的技能包条目。
 
 新会话界面的预设位是宿主的 single 插槽，插件用更低的 `priority` 覆盖了宿主
 选择器，并复用宿主 `@deepseek-ai/dsh-client-ui-primitives` 的 `Menu` 与图标组件，
 按钮沿用宿主预设选择器的类名，外观与原生模式选择器一致。新会话屏幕还没有
 会话时，两个维度的选择先暂存，等空白会话出现后再提交。
 
-一个风格可以维护：
+一个技能包可以维护：
 
 - **技能**：`全部 / 仅引用 / 仅排除` 三种规则。非「全部」时，插件会在
-  `$DSH_HOME/all-in-one/chat-styles/<风格 id>/skills/` 下生成只含符号链接的目录，
+  `$DSH_HOME/all-in-one/power-packs/<技能包 id>/skills/` 下生成只含符号链接的目录，
   组合只扫描该目录，于是未勾选的技能不会出现在会话的技能目录里。模式的技能行
-  始终被风格接管，不会重复挂载。
+  始终被技能包接管，不会重复挂载。
 - **插件与工具**：规则作用于**所选模式实际挂载的工具行**——勾选标准项即把它对应
   的行保留（仅引用）或剔除（仅排除）；模型、Agent 循环等非工具行不受影响。
   profile 中已安装的 `dsh-plugin-*` 也可显式勾选，按「仅引用」追加，但它们可能
   已在全局加载，重复挂载有冲突风险。
-- **MCP 服务器**：为风格定义 stdio 或 HTTP 服务器，每个启用的服务器作为独立的
+- **MCP 服务器**：为技能包定义 stdio 或 HTTP 服务器，每个启用的服务器作为独立的
   `mcp-client` 行挂载，工具名形如 `mcp__<服务器标识>__<工具名>`。
 - **系统提示词**：追加到系统提示词末尾（排在部署人设后缀之后），不覆盖宿主人设。
 
-风格追加的固定两行：`skill-filesystem`（按规则扫描技能根）与 `tool-skill`（提供
+技能包追加的固定两行：`skill-filesystem`（按规则扫描技能根）与 `tool-skill`（提供
 技能目录与加载工具）。没有它们，勾选的技能不会进入系统提示词。
 
-风格配置保存在 `$DSH_HOME/all-in-one/chat-styles.json`，不在 profile 的 patch 里，
-升级或切换 bundle 不会被覆盖。设置页通过插件注册的 `/dsh-all-in-one/chat-styles` 路由
-读写配置，写入只接受本机回环请求；选择风格时客户端还用同一路由请求合成组合预设。
+技能包配置保存在 `$DSH_HOME/all-in-one/power-packs.json`，不在 profile 的 patch 里，
+升级或切换 bundle 不会被覆盖。设置页通过插件注册的 `/dsh-all-in-one/power-packs` 路由
+读写配置，写入只接受本机回环请求；选择技能包时客户端还用同一路由请求合成组合预设。
+首次读取时若新文件不存在，会依次把 `skill-packs.json`、`chat-styles.json` 迁移过来，已有技能包不丢。
 
 > 组合预设注册在**内存**中，宿主重启后由插件在下次选择时重新合成；删除或修改
-> 风格会让当前组合失效并清理它的技能链接目录。
+> 技能包会让当前组合失效并清理它的技能链接目录。
 
 ## 功能之间如何互不干扰
 
@@ -171,7 +172,7 @@ npm run build      # 类型检查通过后产出 client.js（内含 Tailwind 生
 样式在构建期由 Tailwind 生成，颜色全部映射到宿主的 `--dsw-alias-*` 主题令牌，
 因此页面会跟随宿主自动切换明暗主题，不写入字面色值。
 
-项目源码与构建脚本均为 TypeScript，根目录的 `index.js`、`client.js`、`preset-style.js`
+项目源码与构建脚本均为 TypeScript，根目录的 `index.js`、`client.js`、`preset-pack.js`
 是产物，不要手改；修改 `src/` 或构建脚本后执行 `npm run build` 重新生成。
 
 ## 技术栈

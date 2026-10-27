@@ -1,7 +1,7 @@
 /**
  * 技能目录扫描。
  *
- * 风格编辑页需要列出用户可勾选的技能。根 skill-filesystem 在 Web 组合里由
+ * 技能包编辑页需要列出用户可勾选的技能。根 skill-filesystem 在 Web 组合里由
  * 各预设自己挂载，宿主根作用域没有可查询的技能提供者，因此这里直接按宿主
  * 的发现规则扫描用户级技能根，只读取 frontmatter 里的名称与描述。
  */
@@ -94,7 +94,7 @@ async function readSkillEntry(path: string, kind: SkillEntry['kind']): Promise<S
 
     return { name: parsed.name, description: parsed.description, path, kind }
   } catch (error) {
-    console.error('[chat-style] 读取技能文件失败:', file, error)
+    console.error('[power-pack] 读取技能文件失败:', file, error)
     return undefined
   }
 }
@@ -111,7 +111,7 @@ async function scanRoot(root: string): Promise<SkillEntry[]> {
   } catch (error) {
     // 根目录不存在是常态（用户可能只启用一个根），按空目录处理
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') return []
-    console.error('[chat-style] 读取技能根目录失败:', root, error)
+    console.error('[power-pack] 读取技能根目录失败:', root, error)
     return []
   }
 
@@ -133,7 +133,7 @@ async function scanRoot(root: string): Promise<SkillEntry[]> {
         if (info.isDirectory()) kind = 'directory'
         else if (info.isFile() && entry.name.endsWith('.md')) kind = 'file'
       } catch (error) {
-        console.error('[chat-style] 跟随技能符号链接失败:', path, error)
+        console.error('[power-pack] 跟随技能符号链接失败:', path, error)
         kind = undefined
       }
     }

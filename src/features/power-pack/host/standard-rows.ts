@@ -2,7 +2,7 @@
  * 标准预设的插件行清单。
  *
  * 与宿主 `@deepseek-ai/dsh-web-app/presets/standard.patch.yml` 保持一致：
- * 「对话风格」从零组装 Agent，编辑器把这份清单作为可选工具集。宿主升级后
+ * 「技能包」从零组装 Agent，编辑器把这份清单作为可选工具集。宿主升级后
  * 该文件若新增或改名插件行，需要同步这里。
  */
 import type { PluginCatalogItem } from '../types'
