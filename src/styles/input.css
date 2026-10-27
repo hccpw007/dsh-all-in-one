@@ -10,3 +10,26 @@
   font-size: 13px;
   line-height: 1.5;
 }
+
+/*
+ * preflight 关闭后，浏览器不会给元素统一边框样式：`border` 工具类只设宽度，
+ * border-style 仍是 none，描边根本画不出来。这里在插件根内补齐等价重置。
+ */
+:where(.dsh-aio-root) :where(*, ::before, ::after) {
+  border-style: solid;
+  border-width: 0;
+}
+
+/*
+ * preflight 关闭后，浏览器默认的标题、段落与列表边距会叠加到 Tailwind 工具类上，
+ * 撑开页面间距。这里只在插件根内清零；用 :where 保持零优先级，工具类随时可覆盖。
+ */
+:where(.dsh-aio-root) :where(h1, h2, h3, h4, h5, h6, p, ul, ol) {
+  margin: 0;
+  padding: 0;
+}
+
+/* 插件内的列表都是界面列表，不需要浏览器默认的项目符号 */
+:where(.dsh-aio-root) :where(ul, ol) {
+  list-style: none;
+}

@@ -179,9 +179,10 @@ export function PowerPackPage({ t }: FeaturePageProps) {
       {error ? (
         <p className="rounded-lg border border-line1 bg-layer1 px-3 py-2 text-[12px] text-danger" role="alert">
           {error}
+          {/* 重新加载列表 */}
           <button
             type="button"
-            className="ml-2 underline"
+            className="ml-2 cursor-pointer border-0 bg-transparent p-0 text-[12px] underline"
             onClick={() => void reload()}
           >
             {t('retry')}
@@ -198,11 +199,11 @@ export function PowerPackPage({ t }: FeaturePageProps) {
           {t('empty')}
         </p>
       ) : (
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col gap-3">
           {payload?.packs.map((pack) => (
             <li
               key={pack.id}
-              className="rounded-xl border border-line1 bg-layer1 px-4 py-3"
+              className="rounded-xl border border-line4 bg-layer1 px-4 py-3"
             >
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div className="min-w-0">

@@ -20,6 +20,8 @@ const config: Config = {
         overlay: 'var(--dsw-alias-bg-overlay)',
         line1: 'var(--dsw-alias-border-l1)',
         line2: 'var(--dsw-alias-border-l2)',
+        // 宿主设置卡片使用的描边档位，比 line2 更深，用于需要清晰边界的卡片
+        line4: 'var(--dsw-alias-border-l4)',
         brand: 'var(--dsw-alias-brand-primary)',
         primary: 'var(--dsw-alias-label-primary)',
         secondary: 'var(--dsw-alias-label-secondary)',
