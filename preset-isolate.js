@@ -56,7 +56,27 @@ function hideByPrefix(sections, prefixes) {
     return !prefixes.some((prefix) => name.startsWith(prefix));
   });
 }
-function installToolIsolation(ctx, deny) {
+var MCP_TOOL_PREFIX = "mcp__";
+var MCP_NAME_SEPARATOR = "__";
+function mcpToolNames(tools, servers) {
+  if (servers.length === 0) return [];
+  const wanted = new Set(servers);
+  const names = [];
+  try {
+    for (const schema of tools.schemas()) {
+      const name = typeof schema?.name === "string" ? schema.name : "";
+      if (!name.startsWith(MCP_TOOL_PREFIX)) continue;
+      const rest = name.slice(MCP_TOOL_PREFIX.length);
+      const separator = rest.indexOf(MCP_NAME_SEPARATOR);
+      if (separator <= 0) continue;
+      if (wanted.has(rest.slice(0, separator))) names.push(name);
+    }
+  } catch (error) {
+    console.error("[power-pack] \u679A\u4E3E MCP \u5DE5\u5177\u5931\u8D25:", error);
+  }
+  return names;
+}
+function installToolIsolation(ctx, deny, mcpServers) {
   ctx.effect(() => {
     let lift;
     let applying = false;
@@ -72,7 +92,8 @@ function installToolIsolation(ctx, deny) {
           }
           lift = void 0;
         }
-        const existing = deny.filter((name) => {
+        const names = [.../* @__PURE__ */ new Set([...deny, ...mcpToolNames(ctx.tools, mcpServers)])];
+        const existing = names.filter((name) => {
           try {
             return ctx.tools.get(name) !== void 0;
           } catch (error) {
@@ -151,12 +172,13 @@ function installPromptIsolation(ctx, strict, hidePrefixes) {
 }
 function apply(ctx, config = {}) {
   const deny = stringList(config.denyTools);
+  const mcpServers = stringList(config.denyMcpServers);
   const hide = stringList(config.hideSections).map((prefix) => prefix.toLowerCase());
   const strict = config.strict === true;
   writeDiagnostic(
-    `apply deny=${deny.length} hide=${hide.join(",") || "(none)"} strict=${strict}`
+    `apply deny=${deny.length} mcp=${mcpServers.join(",") || "(none)"} hide=${hide.join(",") || "(none)"} strict=${strict}`
   );
-  if (deny.length > 0) installToolIsolation(ctx, deny);
+  if (deny.length > 0 || mcpServers.length > 0) installToolIsolation(ctx, deny, mcpServers);
   if (strict || hide.length > 0) installPromptIsolation(ctx, strict, hide);
 }
 export {

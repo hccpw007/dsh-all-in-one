@@ -18,6 +18,7 @@ import { join } from 'node:path'
 import type {
   AssemblySection,
   PresetIsolateContext,
+  PresetToolsApi,
   PromptAssembly,
   PromptAssemblyContext,
 } from '../../../types/host'
@@ -63,6 +64,8 @@ function writeDiagnostic(message: string): void {
 export interface IsolateRowConfig {
   /** 需要从该会话隐藏的全局工具名。 */
   denyTools?: string[]
+  /** 需要从该会话隐藏其全部工具的 MCP 服务器名；工具名按前缀在运行期解析。 */
+  denyMcpServers?: string[]
   /** 需要从该会话提示词中移除的段名前缀。 */
   hideSections?: string[]
   /** 是否丢弃下游对提示词的改写（严格隔离）。 */
@@ -122,6 +125,42 @@ function hideByPrefix(sections: AssemblySection[], prefixes: string[]): Assembly
   })
 }
 
+/** MCP 公开工具名前缀与分隔符：`mcp__<serverName>__<rawName>`。 */
+const MCP_TOOL_PREFIX = 'mcp__'
+const MCP_NAME_SEPARATOR = '__'
+
+/**
+ * 从全局工具视图里取出被排除的 MCP 服务器的全部工具。
+ *
+ * 只按服务器名前缀匹配：MCP 工具是连接后异步发现的，工具清单随连接状态变化，
+ * 固化在预设行里的名字会在启动早期缺项。工具变化时会再次调用本函数。
+ * @param tools 预设作用域的工具注册表
+ * @param servers 需要屏蔽的服务器名
+ * @returns 命中的公开工具名
+ */
+function mcpToolNames(tools: PresetToolsApi, servers: string[]): string[] {
+  if (servers.length === 0) return []
+
+  const wanted = new Set(servers)
+  const names: string[] = []
+
+  try {
+    for (const schema of tools.schemas()) {
+      const name = typeof schema?.name === 'string' ? schema.name : ''
+      if (!name.startsWith(MCP_TOOL_PREFIX)) continue
+
+      const rest = name.slice(MCP_TOOL_PREFIX.length)
+      const separator = rest.indexOf(MCP_NAME_SEPARATOR)
+      if (separator <= 0) continue
+      if (wanted.has(rest.slice(0, separator))) names.push(name)
+    }
+  } catch (error) {
+    console.error('[power-pack] 枚举 MCP 工具失败:', error)
+  }
+
+  return names
+}
+
 /**
  * 安装工具掩码：先撤销上一轮，再按当前已注册的全局工具重新应用。
  *
@@ -129,8 +168,13 @@ function hideByPrefix(sections: AssemblySection[], prefixes: string[]): Assembly
  * `tools/change` 重算；否则「排除全局 MCP」只在启动顺序恰好时生效。
  * @param ctx 预设作用域上下文
  * @param deny 需要屏蔽的工具名
+ * @param mcpServers 需要屏蔽其全部工具的 MCP 服务器名
  */
-function installToolIsolation(ctx: PresetIsolateContext, deny: string[]): void {
+function installToolIsolation(
+  ctx: PresetIsolateContext,
+  deny: string[],
+  mcpServers: string[],
+): void {
   ctx.effect(() => {
     let lift: (() => void) | undefined
     // 宿主在挂载与撤销掩码时都会同步发出 tools/change：不加这道闸，
@@ -151,8 +195,11 @@ function installToolIsolation(ctx: PresetIsolateContext, deny: string[]): void {
           lift = undefined
         }
 
+        // MCP 工具随连接变化，每次重算时都要并入静态名单
+        const names = [...new Set([...deny, ...mcpToolNames(ctx.tools, mcpServers)])]
+
         // 尚未注册的名字会让宿主直接抛错，这里先按全局视图确认存在
-        const existing = deny.filter((name) => {
+        const existing = names.filter((name) => {
           try {
             return ctx.tools.get(name) !== undefined
           } catch (error) {
@@ -268,13 +315,14 @@ function installPromptIsolation(
  */
 export function apply(ctx: PresetIsolateContext, config: IsolateRowConfig = {}): void {
   const deny = stringList(config.denyTools)
+  const mcpServers = stringList(config.denyMcpServers)
   const hide = stringList(config.hideSections).map((prefix) => prefix.toLowerCase())
   const strict = config.strict === true
 
   writeDiagnostic(
-    `apply deny=${deny.length} hide=${hide.join(',') || '(none)'} strict=${strict}`,
+    `apply deny=${deny.length} mcp=${mcpServers.join(',') || '(none)'} hide=${hide.join(',') || '(none)'} strict=${strict}`,
   )
 
-  if (deny.length > 0) installToolIsolation(ctx, deny)
+  if (deny.length > 0 || mcpServers.length > 0) installToolIsolation(ctx, deny, mcpServers)
   if (strict || hide.length > 0) installPromptIsolation(ctx, strict, hide)
 }

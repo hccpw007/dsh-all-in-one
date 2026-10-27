@@ -109,6 +109,11 @@ export interface PresetPromptContext {
 export interface PresetToolsApi {
   /** 一个作用域可见的工具定义；省略作用域时按全局层解析。 */
   get(name: string, scope?: unknown): unknown
+  /**
+   * 可见工具的名字清单；省略作用域时按全局层解析。
+   * MCP 工具是异步发现的，隔离行要靠它在运行期重算掩码，而不是固化注册那一刻的名单。
+   */
+  schemas(scope?: unknown): Array<{ name?: unknown }>
   /** 对当前作用域的继承工具施加允许/拒绝掩码，返回解除函数。 */
   restrict(filter: { allow?: string[]; deny?: string[] }): () => void
 }

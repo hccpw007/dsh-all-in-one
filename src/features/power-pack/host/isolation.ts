@@ -45,6 +45,25 @@ function sectionPrefixes(packageName: string): string[] {
 }
 
 /**
+ * 从规则勾选项里取出被排除的 MCP 服务器名。
+ *
+ * 「仅应用」模式排除的是没勾选的服务器，无法从勾选项反推，只能靠能力组枚举。
+ * 「仅排除」模式则可以直接读出名字——组合预设常在 MCP 连接完成前注册，这条
+ * 路径保证那时也能拿到要屏蔽的服务器。
+ * @param rule MCP 规则
+ * @returns 服务器名，已去重
+ */
+function deniedMcpServers(rule: ResourceRule): string[] {
+  if (rule.mode !== 'exclude') return []
+
+  const servers = rule.items
+    .filter((id) => id.startsWith('mcp:') && id.length > 4)
+    .map((id) => id.slice(4))
+
+  return [...new Set(servers)]
+}
+
+/**
  * 生成预设隔离行的配置。
  * @param pack 技能包定义
  * @param groups 宿主枚举出的全局能力组
@@ -58,20 +77,32 @@ export function planIsolation(
   const denied = groups.filter((group) =>
     isDenied(group.id.startsWith('mcp:') ? pack.mcp : pack.plugins, group.id),
   )
-  const denyTools = [...new Set(denied.flatMap((group) => group.tools))].sort((left, right) =>
-    left.localeCompare(right),
-  )
+  // 已装插件的工具无法从名字反推归属，只能靠扫描结果；MCP 工具按服务器名前缀
+  // 在隔离行里重算，因此这里不再把它们的名字固化进配置
+  const denyTools = [
+    ...new Set(denied.filter((group) => !group.id.startsWith('mcp:')).flatMap((group) => group.tools)),
+  ].sort((left, right) => left.localeCompare(right))
+
+  const mcpServers = new Set(deniedMcpServers(pack.mcp))
+  for (const group of denied) {
+    if (!group.id.startsWith('mcp:')) continue
+    mcpServers.add(group.id.slice(4))
+  }
+  const denyMcpServers = [...mcpServers].sort((left, right) => left.localeCompare(right))
 
   const hideSections = new Set<string>()
   for (const group of denied) {
     if (!group.id.startsWith('pkg:')) continue
     for (const prefix of sectionPrefixes(group.id.slice(4))) hideSections.add(prefix)
   }
+  // MCP 服务器会向系统提示词注入自己的说明段，屏蔽工具的同时也要去掉它
+  for (const server of denyMcpServers) hideSections.add(`mcp:${server}`.toLowerCase())
 
-  if (denyTools.length === 0 && hideSections.size === 0) return undefined
+  if (denyTools.length === 0 && denyMcpServers.length === 0 && hideSections.size === 0) return undefined
 
   return {
     denyTools,
+    denyMcpServers,
     hideSections: [...hideSections].sort((left, right) => left.localeCompare(right)),
     // 被排除的已装插件会改写系统提示词，工具掩码之外还要丢弃它的注入
     strict: denied.some((group) => group.kind === 'installed'),

@@ -68,8 +68,16 @@ function selectMcpServers(pack: PowerPack): McpServerConfig[] {
 
 /** 隔离行配置：只包含需要被屏蔽的内容，空配置不注册该行。 */
 export interface IsolatePlan {
-  /** 需要屏蔽的全局工具名。 */
+  /** 需要屏蔽的全局工具名，来自已装插件的工具归属扫描。 */
   denyTools: string[]
+  /**
+   * 需要屏蔽的 MCP 服务器名。
+   *
+   * 只能保存服务器名而不是工具名：MCP 工具在宿主启动后异步发现，组合预设在
+   * 工具就绪前就可能注册，此时算出的工具名单是不完整的。隔离行按名字前缀在
+   * 运行期重算，工具晚到也能落到掩码里。
+   */
+  denyMcpServers: string[]
   /** 需要从提示词移除的段名前缀。 */
   hideSections: string[]
   /** 是否丢弃被排除插件对提示词的改写。 */

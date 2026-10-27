@@ -232,21 +232,34 @@ function sectionPrefixes(packageName) {
   const short = packageName.replace(/^dsh-plugin-/, "").replace(/^dsh-/, "");
   return [...new Set([packageName, short].filter((item) => item !== "").map((item) => item.toLowerCase()))];
 }
+function deniedMcpServers(rule) {
+  if (rule.mode !== "exclude") return [];
+  const servers = rule.items.filter((id) => id.startsWith("mcp:") && id.length > 4).map((id) => id.slice(4));
+  return [...new Set(servers)];
+}
 function planIsolation(pack, groups) {
   const denied = groups.filter(
     (group) => isDenied(group.id.startsWith("mcp:") ? pack.mcp : pack.plugins, group.id)
   );
-  const denyTools = [...new Set(denied.flatMap((group) => group.tools))].sort(
-    (left, right) => left.localeCompare(right)
-  );
+  const denyTools = [
+    ...new Set(denied.filter((group) => !group.id.startsWith("mcp:")).flatMap((group) => group.tools))
+  ].sort((left, right) => left.localeCompare(right));
+  const mcpServers = new Set(deniedMcpServers(pack.mcp));
+  for (const group of denied) {
+    if (!group.id.startsWith("mcp:")) continue;
+    mcpServers.add(group.id.slice(4));
+  }
+  const denyMcpServers = [...mcpServers].sort((left, right) => left.localeCompare(right));
   const hideSections = /* @__PURE__ */ new Set();
   for (const group of denied) {
     if (!group.id.startsWith("pkg:")) continue;
     for (const prefix of sectionPrefixes(group.id.slice(4))) hideSections.add(prefix);
   }
-  if (denyTools.length === 0 && hideSections.size === 0) return void 0;
+  for (const server of denyMcpServers) hideSections.add(`mcp:${server}`.toLowerCase());
+  if (denyTools.length === 0 && denyMcpServers.length === 0 && hideSections.size === 0) return void 0;
   return {
     denyTools,
+    denyMcpServers,
     hideSections: [...hideSections].sort((left, right) => left.localeCompare(right)),
     // 被排除的已装插件会改写系统提示词，工具掩码之外还要丢弃它的注入
     strict: denied.some((group) => group.kind === "installed")
