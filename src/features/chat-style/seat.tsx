@@ -12,13 +12,13 @@ const BUILTIN_NAME_KEYS: Record<string, string> = {
   cordis: 'presetCordisName',
 }
 
-/** 选择器图标：对话气泡，与设置页入口保持同一语义。 */
+/** 选择器图标：与宿主预设选择器同尺寸。 */
 function SeatIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      width="14"
-      height="14"
+      width="16"
+      height="16"
       aria-hidden="true"
       fill="none"
       stroke="currentColor"
@@ -34,7 +34,7 @@ function SeatIcon() {
   )
 }
 
-/** 展开箭头。 */
+/** 展开箭头，颜色与宿主模式选择器一致。 */
 function ChevronIcon() {
   return (
     <svg
@@ -47,8 +47,29 @@ function ChevronIcon() {
       strokeWidth="1.6"
       strokeLinecap="round"
       strokeLinejoin="round"
+      className="shrink-0 text-[var(--dsw-alias-label-caption)]"
     >
       <path d="m4 6 4 4 4-4" />
+    </svg>
+  )
+}
+
+/** 当前选中项的勾选标记，与宿主菜单一致。 */
+function CheckIcon() {
+  return (
+    <svg
+      viewBox="0 0 16 16"
+      width="14"
+      height="14"
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="mt-1 shrink-0"
+    >
+      <path d="m3 8.5 3.5 3.5L13 4.5" />
     </svg>
   )
 }
@@ -136,13 +157,14 @@ function PresetDropdown({
         disabled={disabled}
         onClick={() => setOpen((value) => !value)}
         className={cn(
-          'inline-flex min-h-7 max-w-[min(100%,200px)] items-center gap-1 rounded-lg border-0 bg-transparent px-2 text-[13px] font-medium text-primary',
-          'hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand',
-          disabled && 'cursor-default text-secondary',
+          'inline-flex min-h-[28px] max-w-[min(100%,240px)] items-center gap-1 rounded-[var(--dsw-radius-sm)] border-0 bg-transparent px-2 text-[13px] font-medium leading-5 text-primary',
+          'hover:bg-[var(--dsw-alias-interactive-bg-hover)] aria-expanded:bg-[var(--dsw-alias-interactive-bg-hover)]',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand',
+          disabled && 'cursor-default text-[var(--dsw-alias-label-quaternary)]',
         )}
       >
         <SeatIcon />
-        <span className="max-w-[150px] truncate">
+        <span className="max-w-[180px] truncate">
           {selected === undefined ? placeholder : presetName(selected, t)}
         </span>
         <ChevronIcon />
@@ -152,7 +174,7 @@ function PresetDropdown({
       {open ? (
         <div
           role="menu"
-          className="absolute left-0 top-full z-50 mt-1 max-h-[360px] w-72 overflow-y-auto rounded-xl border border-line1 bg-overlay p-1 shadow-lg"
+          className="absolute left-0 top-full z-50 mt-1 max-h-[360px] w-72 overflow-y-auto rounded-xl border border-line1 bg-layer1 p-1 shadow-lg"
         >
           {options.length === 0 ? (
             // 列表为空时的提示
@@ -168,17 +190,19 @@ function PresetDropdown({
                   setOpen(false)
                   onPick(preset.id)
                 }}
-                className={cn(
-                  'flex w-full flex-col items-start gap-0.5 rounded-lg border-0 bg-transparent px-2 py-1.5 text-left',
-                  preset.id === current ? 'bg-layer2' : 'hover:bg-layer2',
-                )}
+                className="flex w-full items-start gap-2 rounded-lg border-0 bg-transparent px-2 py-1.5 text-left hover:bg-[var(--dsw-alias-interactive-bg-hover)]"
               >
-                {/* 预设名称 */}
-                <span className="text-[13px] text-primary">{presetName(preset, t)}</span>
-                {preset.description ? (
-                  // 预设说明
-                  <span className="text-[12px] leading-4 text-secondary">{preset.description}</span>
-                ) : null}
+                {/* 预设名称与说明 */}
+                <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                  {/* 预设名称 */}
+                  <span className="text-[13px] leading-5 text-primary">{presetName(preset, t)}</span>
+                  {preset.description ? (
+                    // 预设说明
+                    <span className="text-[12px] leading-4 text-secondary">{preset.description}</span>
+                  ) : null}
+                </span>
+                {/* 选中标记 */}
+                {preset.id === current ? <CheckIcon /> : null}
               </button>
             ))
           )}
