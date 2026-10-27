@@ -36,3 +36,8 @@
 :where(.dsh-aio-root) :where(ul, ol) {
   list-style: none;
 }
+
+/* 多行输入只允许纵向伸缩：横向拖动会撑破表单列宽，产生外层横向滚动 */
+:where(.dsh-aio-root) :where(textarea) {
+  resize: vertical;
+}
