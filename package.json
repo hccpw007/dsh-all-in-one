@@ -18,7 +18,8 @@
     "icon.svg"
   ],
   "scripts": {
-    "build": "node build.mjs"
+    "typecheck": "tsc --noEmit",
+    "build": "npm run typecheck && node build.mjs"
   },
   "dsh": {
     "bundle": {

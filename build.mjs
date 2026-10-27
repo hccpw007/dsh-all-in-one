@@ -54,7 +54,7 @@ function buildStyles() {
  */
 async function buildScript() {
   const result = await build({
-    entryPoints: [join(ROOT, 'src/entry.jsx')],
+    entryPoints: [join(ROOT, 'src/entry.tsx')],
     bundle: true,
     write: false,
     format: 'cjs',

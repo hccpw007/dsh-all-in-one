@@ -9,13 +9,15 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → 定制功能」中用�
 ├── index.js                 # 宿主侧插件（本插件无宿主能力，保持空实现）
 ├── client.js                # 浏览器端产物，由 build.mjs 生成，请勿手改
 ├── cordis.patch.yml         # bundle 声明，安装时插入插件行
+├── tsconfig.json            # TypeScript 配置（strict，仅类型检查不产出文件）
 ├── locale/{zh,en}.json      # 插件标题与描述
 ├── src/
-│   ├── entry.jsx            # 注册 settings.section，注入样式与文案
+│   ├── entry.tsx            # 注册 settings.section，注入样式与文案
 │   ├── styles/input.css     # Tailwind 入口
+│   ├── types/               # 宿主 API 与资源模块的类型声明
 │   ├── shell/               # 外壳：功能注册表 + 网格页面
 │   └── features/
-│       ├── index.js         # featureList：登记所有功能
+│       ├── index.ts         # featureList：登记所有功能
 │       └── demo/            # 示例功能，可作为模板复制
 └── build.mjs                # 构建脚本
 ```
@@ -24,16 +26,17 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → 定制功能」中用�
 
 1. 复制 `src/features/demo/` 为 `src/features/<id>/`
 2. 修改其中的 `id`、`title`、`description`、`page`
-3. 在 `src/features/index.js` 的 `featureList` 里追加该文件夹的默认导出
+3. 在 `src/features/index.ts` 的 `featureList` 里追加该文件夹的默认导出
 4. 运行 `npm run build`，刷新 Harness 页面，卡片即出现在网格中
 
-`feature` 定义的字段契约见 `src/shell/registry.js`。
+`feature` 定义的字段契约见 `src/shell/registry.ts`。
 
 ## 开发与构建
 
 ```bash
-npm install      # 首次安装构建依赖
-npm run build    # 产出 client.js（内含 Tailwind 生成的样式）
+npm install        # 首次安装构建依赖
+npm run typecheck  # 仅执行 TypeScript 类型检查
+npm run build      # 类型检查通过后产出 client.js（内含 Tailwind 生成的样式）
 ```
 
 样式在构建期由 Tailwind 生成，颜色全部映射到宿主的 `--dsw-alias-*` 主题令牌，
@@ -42,4 +45,5 @@ npm run build    # 产出 client.js（内含 Tailwind 生成的样式）
 ## 技术栈
 
 - React（由宿主模块表提供，不随插件打包）
+- TypeScript（strict 模式，构建前执行 `tsc --noEmit`）
 - Tailwind CSS 3（构建期生成，preflight 关闭以免影响宿主样式）

@@ -4,6 +4,7 @@ window.__ModuleLoader__.load({
   factory(require) {
     const module = { exports: {} };
     const exports = module.exports;
+    "use strict";
     var __create = Object.create;
     var __defProp = Object.defineProperty;
     var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -32,7 +33,7 @@ window.__ModuleLoader__.load({
     ));
     var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-    // src/entry.jsx
+    // src/entry.tsx
     var entry_exports = {};
     __export(entry_exports, {
       default: () => entry_default
@@ -43,10 +44,10 @@ window.__ModuleLoader__.load({
     // .build/styles.css
     var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.grid{display:grid}.h-9{height:2.25rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.shrink-0{flex-shrink:0}.list-decimal{list-style-type:decimal}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.gap-1{gap:.25rem}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.rounded{border-radius:.25rem}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-dashed{border-style:dashed}.border-line1{border-color:var(--dsw-alias-border-l1)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0\\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.pb-3{padding-bottom:.75rem}.pl-4{padding-left:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[18px\\]{line-height:18px}.text-brand{color:var(--dsw-alias-brand-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-cf-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}.hover\\:border-line2:hover{border-color:var(--dsw-alias-border-l2)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}@media (min-width:640px){.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
 
-    // src/shell/CustomFeaturesPage.jsx
+    // src/shell/CustomFeaturesPage.tsx
     var import_react2 = __toESM(require("react"), 1);
 
-    // src/features/demo/index.jsx
+    // src/features/demo/index.tsx
     var import_react = __toESM(require("react"), 1);
     function DemoIcon() {
       return /* @__PURE__ */ import_react.default.createElement(
@@ -79,9 +80,9 @@ window.__ModuleLoader__.load({
         },
         "\u70B9\u51FB\u8BA1\u6570\uFF1A",
         count
-      )), /* @__PURE__ */ import_react.default.createElement("section", { className: "rounded-xl border border-line1 bg-layer1 p-4" }, /* @__PURE__ */ import_react.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, "\u65B0\u589E\u4E00\u4E2A\u529F\u80FD"), /* @__PURE__ */ import_react.default.createElement("ol", { className: "mt-1.5 list-decimal pl-4 text-[12px] leading-6 text-secondary" }, /* @__PURE__ */ import_react.default.createElement("li", null, "\u590D\u5236 ", /* @__PURE__ */ import_react.default.createElement("code", { className: "rounded bg-base px-1 py-0.5" }, "src/features/demo/"), " \u4E3A", " ", /* @__PURE__ */ import_react.default.createElement("code", { className: "rounded bg-base px-1 py-0.5" }, "src/features/<id>/")), /* @__PURE__ */ import_react.default.createElement("li", null, "\u5728\u6587\u4EF6\u5939\u7684 index.jsx \u91CC\u6539 id\u3001title\u3001description \u4E0E\u9875\u9762\u5185\u5BB9"), /* @__PURE__ */ import_react.default.createElement("li", null, "\u5728 ", /* @__PURE__ */ import_react.default.createElement("code", { className: "rounded bg-base px-1 py-0.5" }, "src/features/index.js"), " \u7684 featureList \u91CC\u8FFD\u52A0\u5BFC\u5165"), /* @__PURE__ */ import_react.default.createElement("li", null, "\u8FD0\u884C npm run build \u5E76\u5237\u65B0\u9875\u9762\uFF0C\u5361\u7247\u81EA\u52A8\u51FA\u73B0\u5728\u7F51\u683C\u4E2D"))));
+      )), /* @__PURE__ */ import_react.default.createElement("section", { className: "rounded-xl border border-line1 bg-layer1 p-4" }, /* @__PURE__ */ import_react.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, "\u65B0\u589E\u4E00\u4E2A\u529F\u80FD"), /* @__PURE__ */ import_react.default.createElement("ol", { className: "mt-1.5 list-decimal pl-4 text-[12px] leading-6 text-secondary" }, /* @__PURE__ */ import_react.default.createElement("li", null, "\u590D\u5236 ", /* @__PURE__ */ import_react.default.createElement("code", { className: "rounded bg-base px-1 py-0.5" }, "src/features/demo/"), " \u4E3A", " ", /* @__PURE__ */ import_react.default.createElement("code", { className: "rounded bg-base px-1 py-0.5" }, "src/features/<id>/")), /* @__PURE__ */ import_react.default.createElement("li", null, "\u5728\u6587\u4EF6\u5939\u7684 index.tsx \u91CC\u6539 id\u3001title\u3001description \u4E0E\u9875\u9762\u5185\u5BB9"), /* @__PURE__ */ import_react.default.createElement("li", null, "\u5728 ", /* @__PURE__ */ import_react.default.createElement("code", { className: "rounded bg-base px-1 py-0.5" }, "src/features/index.ts"), " \u7684 featureList \u91CC\u8FFD\u52A0\u5BFC\u5165"), /* @__PURE__ */ import_react.default.createElement("li", null, "\u8FD0\u884C npm run build \u5E76\u5237\u65B0\u9875\u9762\uFF0C\u5361\u7247\u81EA\u52A8\u51FA\u73B0\u5728\u7F51\u683C\u4E2D"))));
     }
-    var demo_default = {
+    var demoFeature = {
       id: "demo",
       title: "\u793A\u4F8B\u529F\u80FD",
       description: "\u6F14\u793A\u72EC\u7ACB\u6587\u4EF6\u5939\u7684\u7ED3\u6784\u3001\u6CE8\u518C\u65B9\u5F0F\u4E0E\u9875\u9762\u6E32\u67D3\u3002",
@@ -89,33 +90,37 @@ window.__ModuleLoader__.load({
       icon: DemoIcon,
       page: DemoPage
     };
+    var demo_default = demoFeature;
 
-    // src/features/index.js
+    // src/features/index.ts
     var featureList = [demo_default];
 
-    // src/shell/registry.js
+    // src/shell/registry.ts
+    var DEFAULT_FEATURE_ORDER = 100;
+    function isFeatureDefinition(value) {
+      if (typeof value !== "object" || value === null) return false;
+      const candidate = value;
+      return typeof candidate.id === "string" && candidate.id !== "" && typeof candidate.page === "function";
+    }
     function createFeatureRegistry(list) {
       const seen = /* @__PURE__ */ new Set();
       const features = [];
-      for (const feature of list) {
-        if (!feature || typeof feature.id !== "string" || feature.id === "") continue;
-        if (typeof feature.page !== "function") continue;
-        if (seen.has(feature.id)) continue;
-        seen.add(feature.id);
-        features.push(feature);
+      for (const item of list) {
+        if (!isFeatureDefinition(item)) continue;
+        if (seen.has(item.id)) continue;
+        seen.add(item.id);
+        features.push(item);
       }
-      features.sort((a, b) => (a.order ?? 100) - (b.order ?? 100));
+      features.sort((a, b) => (a.order ?? DEFAULT_FEATURE_ORDER) - (b.order ?? DEFAULT_FEATURE_ORDER));
       return {
-        /** 通过校验的 feature，按 order 升序。 */
         list: features,
-        /** 按 id 查找，未注册时返回 undefined。 */
         find(id) {
           return features.find((feature) => feature.id === id);
         }
       };
     }
 
-    // src/shell/CustomFeaturesPage.jsx
+    // src/shell/CustomFeaturesPage.tsx
     var registry = createFeatureRegistry(featureList);
     function DefaultGlyph() {
       return /* @__PURE__ */ import_react2.default.createElement(
@@ -181,7 +186,10 @@ window.__ModuleLoader__.load({
           t("action.back")
         ), /* @__PURE__ */ import_react2.default.createElement("span", { className: "text-[13px] font-medium text-primary" }, active.title)), /* @__PURE__ */ import_react2.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react2.default.createElement(ActivePage, null)));
       }
-      return /* @__PURE__ */ import_react2.default.createElement("div", { className: "dsh-cf-root" }, /* @__PURE__ */ import_react2.default.createElement("header", null, /* @__PURE__ */ import_react2.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("page.title")), /* @__PURE__ */ import_react2.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("page.description"))), registry.list.length === 0 ? /* @__PURE__ */ import_react2.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line1 px-4 py-6 text-center text-[12px] text-secondary" }, t("page.empty")) : /* @__PURE__ */ import_react2.default.createElement("div", { className: "mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2" }, registry.list.map((feature) => /* @__PURE__ */ import_react2.default.createElement(
+      return /* @__PURE__ */ import_react2.default.createElement("div", { className: "dsh-cf-root" }, /* @__PURE__ */ import_react2.default.createElement("header", null, /* @__PURE__ */ import_react2.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("page.title")), /* @__PURE__ */ import_react2.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("page.description"))), registry.list.length === 0 ? (
+        // 尚未注册功能时的空态提示
+        /* @__PURE__ */ import_react2.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line1 px-4 py-6 text-center text-[12px] text-secondary" }, t("page.empty"))
+      ) : /* @__PURE__ */ import_react2.default.createElement("div", { className: "mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2" }, registry.list.map((feature) => /* @__PURE__ */ import_react2.default.createElement(
         FeatureCard,
         {
           key: feature.id,
@@ -191,7 +199,7 @@ window.__ModuleLoader__.load({
       ))));
     }
 
-    // src/entry.jsx
+    // src/entry.tsx
     var LOCALE_NAMESPACE = "custom-features";
     var LOCALE_DICTIONARIES = {
       zh: {
@@ -219,7 +227,7 @@ window.__ModuleLoader__.load({
         "action.back": "Back"
       }
     };
-    var entry_default = {
+    var plugin = {
       inject: ["slots", "locale"],
       apply(ctx) {
         ctx.effect(() => {
@@ -236,7 +244,7 @@ window.__ModuleLoader__.load({
           return () => disposers.forEach((dispose) => dispose());
         });
         const t = ctx.locale.bind(LOCALE_NAMESPACE);
-        const SettingsSection = (props) => /* @__PURE__ */ import_react3.default.createElement(CustomFeaturesPage, { ...props, t });
+        const SettingsSection = () => /* @__PURE__ */ import_react3.default.createElement(CustomFeaturesPage, { t });
         ctx.slots.inject(
           "settings.section",
           () => ctx.slots.register(
@@ -251,6 +259,7 @@ window.__ModuleLoader__.load({
         );
       }
     };
+    var entry_default = plugin;
 
     return module.exports.default || module.exports;
   },
