@@ -6,8 +6,9 @@
  */
 import React, { useState } from 'react'
 
-import { featureList } from '../features/index.js'
-import { createFeatureRegistry } from './registry.js'
+import { featureList } from '../features'
+import type { Translate } from '../types/plugin'
+import { createFeatureRegistry, type FeatureDefinition } from './registry'
 
 /** 全插件共享的 feature 注册表；列表在构建期确定，运行期不再变化。 */
 const registry = createFeatureRegistry(featureList)
@@ -51,11 +52,14 @@ function BackGlyph() {
   )
 }
 
-/**
- * 网格中的单个功能入口卡片。
- * @param {{ feature: object, onOpen: () => void }} props 功能定义与打开回调
- */
-function FeatureCard({ feature, onOpen }) {
+interface FeatureCardProps {
+  feature: FeatureDefinition
+  /** 点击卡片后打开对应功能。 */
+  onOpen: () => void
+}
+
+/** 网格中的单个功能入口卡片。 */
+function FeatureCard({ feature, onOpen }: FeatureCardProps) {
   const Icon = feature.icon
 
   return (
@@ -79,19 +83,25 @@ function FeatureCard({ feature, onOpen }) {
   )
 }
 
+interface CustomFeaturesPageProps {
+  /** 宿主注入的翻译函数。 */
+  t: Translate
+}
+
 /**
  * 「定制功能」设置页：网格列出全部已注册 feature，点击卡片进入对应功能。
- * @param {{ t: (key: string) => string }} props 宿主注入的翻译函数
+ * @param props 宿主注入的翻译函数
  */
-export function CustomFeaturesPage({ t }) {
+export function CustomFeaturesPage({ t }: CustomFeaturesPageProps) {
   // 当前打开的功能 id；为 null 时显示功能网格
-  const [activeId, setActiveId] = useState(null)
+  const [activeId, setActiveId] = useState<string | null>(null)
   const active = activeId ? registry.find(activeId) : undefined
 
   // 已选中功能：切到功能页面，返回入口由外壳统一提供
   if (active) {
     const ActivePage = active.page
 
+    // 功能页面根节点，样式作用域限定在 dsh-cf-root
     return (
       <div className="dsh-cf-root">
         {/* 功能页头部：返回网格与当前功能名 */}
@@ -115,15 +125,19 @@ export function CustomFeaturesPage({ t }) {
     )
   }
 
+  // 功能网格根节点，样式作用域限定在 dsh-cf-root
   return (
     <div className="dsh-cf-root">
-      {/* 页面标题与说明 */}
+      {/* 页面标题与简介 */}
       <header>
+        {/* 页面主标题 */}
         <h1 className="text-[17px] font-semibold leading-6 text-primary">{t('page.title')}</h1>
+        {/* 页面用途说明 */}
         <p className="mt-1.5 text-[13px] leading-5 text-secondary">{t('page.description')}</p>
       </header>
       {/* 功能网格：没有注册任何 feature 时显示空态 */}
       {registry.list.length === 0 ? (
+        // 尚未注册功能时的空态提示
         <p className="mt-5 rounded-xl border border-dashed border-line1 px-4 py-6 text-center text-[12px] text-secondary">
           {t('page.empty')}
         </p>

@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+import type { FeatureDefinition } from '../../shell/registry'
+
 /**
  * 示例功能图标。
  *
@@ -35,6 +37,7 @@ function DemoPage() {
   // 演示用的点击计数，证明功能页面拥有独立的 React 状态
   const [count, setCount] = useState(0)
 
+  // 示例功能页面根节点
   return (
     <div className="flex flex-col gap-4">
       {/* 功能说明与交互演示 */}
@@ -61,10 +64,10 @@ function DemoPage() {
             复制 <code className="rounded bg-base px-1 py-0.5">src/features/demo/</code> 为{' '}
             <code className="rounded bg-base px-1 py-0.5">src/features/&lt;id&gt;/</code>
           </li>
-          <li>在文件夹的 index.jsx 里改 id、title、description 与页面内容</li>
+          <li>在文件夹的 index.tsx 里改 id、title、description 与页面内容</li>
           <li>
-            在 <code className="rounded bg-base px-1 py-0.5">src/features/index.js</code> 的 featureList
-            里追加导入
+            在 <code className="rounded bg-base px-1 py-0.5">src/features/index.ts</code> 的
+            featureList 里追加导入
           </li>
           <li>运行 npm run build 并刷新页面，卡片自动出现在网格中</li>
         </ol>
@@ -74,7 +77,7 @@ function DemoPage() {
 }
 
 /** 示例功能的注册定义，也是新增功能时可复制的模板。 */
-export default {
+const demoFeature: FeatureDefinition = {
   id: 'demo',
   title: '示例功能',
   description: '演示独立文件夹的结构、注册方式与页面渲染。',
@@ -82,3 +85,5 @@ export default {
   icon: DemoIcon,
   page: DemoPage,
 }
+
+export default demoFeature

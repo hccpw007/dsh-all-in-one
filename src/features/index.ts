@@ -1,4 +1,6 @@
-import demo from './demo/index.jsx'
+import type { FeatureDefinition } from '../shell/registry'
+
+import demo from './demo'
 
 /**
  * 所有已注册的 feature。
@@ -9,4 +11,4 @@ import demo from './demo/index.jsx'
  *   3. 在下面的数组里追加该文件夹的默认导出
  *   4. 运行 npm run build 并刷新页面，卡片即出现在「定制功能」网格中
  */
-export const featureList = [demo]
+export const featureList: FeatureDefinition[] = [demo]

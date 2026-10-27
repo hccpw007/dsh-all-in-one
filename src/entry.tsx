@@ -6,13 +6,14 @@
 import React from 'react'
 
 import cssText from '../.build/styles.css'
-import { CustomFeaturesPage } from './shell/CustomFeaturesPage.jsx'
+import { CustomFeaturesPage } from './shell/CustomFeaturesPage'
+import type { ClientPlugin, PluginContext } from './types/plugin'
 
 /** 语言命名空间，与插件的其它字典互不干扰。 */
 const LOCALE_NAMESPACE = 'custom-features'
 
 /** 外壳用到的全部界面文案。 */
-const LOCALE_DICTIONARIES = {
+const LOCALE_DICTIONARIES: Record<string, Record<string, string>> = {
   zh: {
     // 设置左侧导航项名称
     'nav.title': '定制功能',
@@ -39,10 +40,11 @@ const LOCALE_DICTIONARIES = {
   },
 }
 
-export default {
+/** 客户端插件定义：依赖 slots 与 locale 两个宿主服务。 */
+const plugin: ClientPlugin = {
   inject: ['slots', 'locale'],
 
-  apply(ctx) {
+  apply(ctx: PluginContext) {
     // 样式随插件生命周期注入和移除，不向宿主留下全局副作用
     ctx.effect(() => {
       const style = document.createElement('style')
@@ -63,7 +65,7 @@ export default {
     const t = ctx.locale.bind(LOCALE_NAMESPACE)
 
     // 页面组件持有翻译函数，语言切换后重新渲染即读取新文案
-    const SettingsSection = (props) => <CustomFeaturesPage {...props} t={t} />
+    const SettingsSection = () => <CustomFeaturesPage t={t} />
 
     // 注册设置页：id 独立于宿主既有页面，order 让它在 Agent 预设之后
     ctx.slots.inject('settings.section', () =>
@@ -79,3 +81,5 @@ export default {
     )
   },
 }
+
+export default plugin

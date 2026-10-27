@@ -1,11 +1,32 @@
+# 依赖与构建中间产物
 node_modules/
 .build/
 
-# 系统与编辑器文件
+# 本地构建输出（client.js 为插件发布产物，不忽略）
+dist/
+coverage/
+.cache/
+*.tsbuildinfo
+.eslintcache
+
+# 打包与临时文件
+*.tgz
+*.swp
+*~
+
+# 系统文件
 .DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+
+# 编辑器配置
 .idea/
+.vscode/
 
 # 日志与环境变量
 *.log
 .env
 .env.*
+!.env.example
