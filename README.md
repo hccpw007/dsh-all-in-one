@@ -19,7 +19,7 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → 定制功能」中用�
 │   ├── types/               # 宿主 API（客户端与宿主侧）与资源模块的类型声明
 │   ├── common/              # 被多个 feature 或壳子共用的纯逻辑与工具（kebab-case 文件）
 │   ├── components/          # 被多个 feature 或壳子共用的 UI 组件（PascalCase 文件）
-│   ├── shell/               # 外壳：feature 契约与注册表 + 网格页面
+│   ├── shell/               # 外壳：feature 契约与注册表、网格页面、设置导航图标
 │   └── features/
 │       ├── index.ts         # featureList：登记所有功能（装配清单）
 │       ├── host.ts          # featureHosts：登记各功能的宿主侧扩展（装配清单）
@@ -48,6 +48,13 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → 定制功能」中用�
 - 只被单个 feature 使用的代码必须留在该 feature 目录内，不放进 `src/common/` 或 `src/components/`。
 - 需要宿主能力时，在 feature 目录内新增 `host.ts`（导出 `inject` 与 `apply`），
   再到 `src/features/host.ts` 登记；`src/index.ts` 只负责合并依赖并遍历调用。
+
+## 设置导航图标
+
+宿主设置导航的图标由内置 id 决定，`settings.section` 插槽不支持传图标。
+`src/shell/settings-nav-icon.ts` 在设置弹窗挂载后，按当前语言的导航标签认领本插件那一行，
+隐藏宿主齿轮并用 `icon.svg` 作为背景图绘制插件图标；语言切换或弹窗重建时自动重新认领，
+插件卸载时移除标记与样式。宿主改动了设置弹窗结构时，最坏情况只是回退到宿主齿轮，不影响功能。
 
 ## 新增一个功能
 

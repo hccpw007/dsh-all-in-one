@@ -6,9 +6,11 @@
 import React from 'react'
 
 import cssText from '../.build/styles.css'
+import iconSvg from '../icon.svg'
 import { collectFeatureLocales, mergeDictionaries } from './common/locale'
 import { registry } from './features/registry'
 import { CustomFeaturesPage } from './shell/CustomFeaturesPage'
+import { installSettingsNavIcon } from './shell/settings-nav-icon'
 import type { ClientPlugin, PluginContext } from './types/plugin'
 
 /** 语言命名空间，与插件的其它字典互不干扰。 */
@@ -71,6 +73,9 @@ const plugin: ClientPlugin = {
     })
 
     const t = ctx.locale.bind(LOCALE_NAMESPACE)
+
+    // 宿主插槽不提供导航图标，按导航标签认领本插件那一行后替换成插件图标
+    installSettingsNavIcon(ctx, t, iconSvg)
 
     // 页面组件持有翻译函数，语言切换后重新渲染即读取新文案
     const SettingsSection = () => <CustomFeaturesPage t={t} />

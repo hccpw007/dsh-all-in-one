@@ -93,7 +93,7 @@ async function buildScript(): Promise<string> {
     target: ['chrome110'],
     jsx: 'transform',
     external: ['react'],
-    loader: { '.css': 'text' },
+    loader: { '.css': 'text', '.svg': 'text' },
     legalComments: 'none',
     define: { 'process.env.NODE_ENV': '"production"' },
     logLevel: 'warning',
