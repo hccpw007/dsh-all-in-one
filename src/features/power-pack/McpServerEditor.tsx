@@ -94,152 +94,143 @@ export function McpServerEditor({ servers, onChange, t }: McpServerEditorProps) 
   }
 
   return (
-    <section className="rounded-xl border border-line4 bg-layer1">
-      <header className="border-b border-line4 px-4 py-3">
-        {/* 区块标题 */}
-        <h3 className="text-[13px] font-medium text-primary">{t('mcpServersTitle')}</h3>
-        {/* 区块说明 */}
-        <p className="mt-1 text-[12px] leading-[18px] text-secondary">{t('mcpHint')}</p>
-      </header>
+    <div className="flex flex-col gap-3">
+      {servers.length === 0 ? (
+        // 尚未配置任何服务器时的提示
+        <p className="text-[12px] text-secondary">{t('mcpEmpty')}</p>
+      ) : null}
 
-      <div className="flex flex-col gap-3 p-4">
-        {servers.length === 0 ? (
-          // 尚未配置任何服务器时的提示
-          <p className="text-[12px] text-secondary">{t('mcpEmpty')}</p>
-        ) : null}
+      {servers.map((server, index) => (
+        <div key={`${server.id}-${index}`} className="rounded-lg border border-line4 bg-base p-3">
+          {/* 服务器头部：展示名与移除按钮 */}
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[12px] font-medium text-primary">
+              {server.label || server.id}
+            </span>
+            {/* 移除该服务器 */}
+            <Button variant="ghost" onClick={() => remove(index)}>
+              {t('remove')}
+            </Button>
+          </div>
 
-        {servers.map((server, index) => (
-          <div key={`${server.id}-${index}`} className="rounded-lg border border-line4 bg-base p-3">
-            {/* 服务器头部：展示名与移除按钮 */}
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-[12px] font-medium text-primary">
-                {server.label || server.id}
+          <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+            <label className="block">
+              {/* 服务器标识：同时作为 serverName 与 mcp__ 工具前缀 */}
+              <span className="mb-1 block text-[12px] text-secondary">{t('mcpIdLabel')}</span>
+              <input
+                value={server.id}
+                onChange={(event) => patch(index, { id: event.target.value.trim() })}
+                className={INPUT_CLASS}
+              />
+              {SERVER_ID_PATTERN.test(server.id) ? null : (
+                // 标识不合法时立即提示，保存按钮会拦截
+                <span className="mt-1 block text-[12px] text-danger">{t('mcpIdInvalid')}</span>
+              )}
+            </label>
+            <label className="block">
+              {/* 服务器展示名 */}
+              <span className="mb-1 block text-[12px] text-secondary">{t('mcpLabelLabel')}</span>
+              <input
+                value={server.label}
+                onChange={(event) => patch(index, { label: event.target.value })}
+                className={INPUT_CLASS}
+              />
+            </label>
+            <label className="block">
+              {/* 传输方式 */}
+              <span className="mb-1 block text-[12px] text-secondary">
+                {t('mcpTransportLabel')}
               </span>
-              {/* 移除该服务器 */}
-              <Button variant="ghost" onClick={() => remove(index)}>
-                {t('remove')}
-              </Button>
-            </div>
+              <select
+                value={server.transport}
+                onChange={(event) =>
+                  patch(index, {
+                    transport: event.target.value === 'streamable-http' ? 'streamable-http' : 'stdio',
+                  })
+                }
+                className={INPUT_CLASS}
+              >
+                {/* 本地命令方式 */}
+                <option value="stdio">{t('mcpStdio')}</option>
+                {/* 远程 HTTP 方式 */}
+                <option value="streamable-http">{t('mcpHttp')}</option>
+              </select>
+            </label>
+          </div>
 
-            <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+          {server.transport === 'stdio' ? (
+            <div className="mt-2 flex flex-col gap-2">
               <label className="block">
-                {/* 服务器标识：同时作为 serverName 与 mcp__ 工具前缀 */}
-                <span className="mb-1 block text-[12px] text-secondary">{t('mcpIdLabel')}</span>
-                <input
-                  value={server.id}
-                  onChange={(event) => patch(index, { id: event.target.value.trim() })}
-                  className={INPUT_CLASS}
-                />
-                {SERVER_ID_PATTERN.test(server.id) ? null : (
-                  // 标识不合法时立即提示，保存按钮会拦截
-                  <span className="mt-1 block text-[12px] text-danger">{t('mcpIdInvalid')}</span>
-                )}
-              </label>
-              <label className="block">
-                {/* 服务器展示名 */}
-                <span className="mb-1 block text-[12px] text-secondary">{t('mcpLabelLabel')}</span>
-                <input
-                  value={server.label}
-                  onChange={(event) => patch(index, { label: event.target.value })}
-                  className={INPUT_CLASS}
-                />
-              </label>
-              <label className="block">
-                {/* 传输方式 */}
+                {/* 启动命令 */}
                 <span className="mb-1 block text-[12px] text-secondary">
-                  {t('mcpTransportLabel')}
+                  {t('mcpCommandLabel')}
                 </span>
-                <select
-                  value={server.transport}
+                <input
+                  value={server.command}
+                  onChange={(event) => patch(index, { command: event.target.value })}
+                  className={INPUT_CLASS}
+                />
+              </label>
+              <label className="block">
+                {/* 命令参数，每行一个 */}
+                <span className="mb-1 block text-[12px] text-secondary">{t('mcpArgsLabel')}</span>
+                <textarea
+                  value={server.args.join('\n')}
                   onChange={(event) =>
                     patch(index, {
-                      transport: event.target.value === 'streamable-http' ? 'streamable-http' : 'stdio',
+                      args: event.target.value.split('\n').filter((arg) => arg.trim() !== ''),
                     })
                   }
+                  rows={3}
                   className={INPUT_CLASS}
-                >
-                  {/* 本地命令方式 */}
-                  <option value="stdio">{t('mcpStdio')}</option>
-                  {/* 远程 HTTP 方式 */}
-                  <option value="streamable-http">{t('mcpHttp')}</option>
-                </select>
+                />
+              </label>
+              <label className="block">
+                {/* 环境变量，每行 KEY=VALUE */}
+                <span className="mb-1 block text-[12px] text-secondary">{t('mcpEnvLabel')}</span>
+                <textarea
+                  value={formatPairs(server.env)}
+                  onChange={(event) => patch(index, { env: parsePairs(event.target.value) })}
+                  rows={3}
+                  className={INPUT_CLASS}
+                />
               </label>
             </div>
-
-            {server.transport === 'stdio' ? (
-              <div className="mt-2 flex flex-col gap-2">
-                <label className="block">
-                  {/* 启动命令 */}
-                  <span className="mb-1 block text-[12px] text-secondary">
-                    {t('mcpCommandLabel')}
-                  </span>
-                  <input
-                    value={server.command}
-                    onChange={(event) => patch(index, { command: event.target.value })}
-                    className={INPUT_CLASS}
-                  />
-                </label>
-                <label className="block">
-                  {/* 命令参数，每行一个 */}
-                  <span className="mb-1 block text-[12px] text-secondary">{t('mcpArgsLabel')}</span>
-                  <textarea
-                    value={server.args.join('\n')}
-                    onChange={(event) =>
-                      patch(index, {
-                        args: event.target.value.split('\n').filter((arg) => arg.trim() !== ''),
-                      })
-                    }
-                    rows={3}
-                    className={INPUT_CLASS}
-                  />
-                </label>
-                <label className="block">
-                  {/* 环境变量，每行 KEY=VALUE */}
-                  <span className="mb-1 block text-[12px] text-secondary">{t('mcpEnvLabel')}</span>
-                  <textarea
-                    value={formatPairs(server.env)}
-                    onChange={(event) => patch(index, { env: parsePairs(event.target.value) })}
-                    rows={3}
-                    className={INPUT_CLASS}
-                  />
-                </label>
-              </div>
-            ) : (
-              <div className="mt-2 flex flex-col gap-2">
-                <label className="block">
-                  {/* 远程 MCP 地址 */}
-                  <span className="mb-1 block text-[12px] text-secondary">{t('mcpUrlLabel')}</span>
-                  <input
-                    value={server.url}
-                    onChange={(event) => patch(index, { url: event.target.value })}
-                    className={INPUT_CLASS}
-                  />
-                </label>
-                <label className="block">
-                  {/* 请求头，每行 KEY=VALUE */}
-                  <span className="mb-1 block text-[12px] text-secondary">
-                    {t('mcpHeadersLabel')}
-                  </span>
-                  <textarea
-                    value={formatPairs(server.headers)}
-                    onChange={(event) => patch(index, { headers: parsePairs(event.target.value) })}
-                    rows={3}
-                    className={INPUT_CLASS}
-                  />
-                </label>
-              </div>
-            )}
-          </div>
-        ))}
-
-        {/* 追加一个服务器条目 */}
-        <div>
-          <Button variant="outline" onClick={add}>
-            {t('addMcp')}
-          </Button>
+          ) : (
+            <div className="mt-2 flex flex-col gap-2">
+              <label className="block">
+                {/* 远程 MCP 地址 */}
+                <span className="mb-1 block text-[12px] text-secondary">{t('mcpUrlLabel')}</span>
+                <input
+                  value={server.url}
+                  onChange={(event) => patch(index, { url: event.target.value })}
+                  className={INPUT_CLASS}
+                />
+              </label>
+              <label className="block">
+                {/* 请求头，每行 KEY=VALUE */}
+                <span className="mb-1 block text-[12px] text-secondary">
+                  {t('mcpHeadersLabel')}
+                </span>
+                <textarea
+                  value={formatPairs(server.headers)}
+                  onChange={(event) => patch(index, { headers: parsePairs(event.target.value) })}
+                  rows={3}
+                  className={INPUT_CLASS}
+                />
+              </label>
+            </div>
+          )}
         </div>
+      ))}
+
+      {/* 追加一个服务器条目 */}
+      <div>
+        <Button variant="outline" onClick={add}>
+          {t('addMcp')}
+        </Button>
       </div>
-    </section>
+    </div>
   )
 }
 

@@ -45,7 +45,6 @@ export function PowerPackPage({ t }: FeaturePageProps) {
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [notice, setNotice] = useState<string | null>(null)
 
   /** 拉取最新技能包与清单。 */
   const reload = async (): Promise<void> => {
@@ -93,7 +92,6 @@ export function PowerPackPage({ t }: FeaturePageProps) {
       setPayload(await savePowerPack(pack))
       setEditing(null)
       setError(null)
-      setNotice(t('saved'))
     } catch (failure) {
       console.error('[power-pack] 保存技能包失败:', failure)
       setError(`${t('saveFailed')}：${failure instanceof Error ? failure.message : String(failure)}`)
@@ -109,7 +107,6 @@ export function PowerPackPage({ t }: FeaturePageProps) {
     try {
       setPayload(await deletePowerPack(id))
       setError(null)
-      setNotice(null)
     } catch (failure) {
       console.error('[power-pack] 删除技能包失败:', failure)
       setError(
@@ -159,7 +156,6 @@ export function PowerPackPage({ t }: FeaturePageProps) {
           variant="outline"
           disabled={loading || !payload}
           onClick={() => {
-            setNotice(null)
             setError(null)
             setEditing(createDraft())
           }}
@@ -167,13 +163,6 @@ export function PowerPackPage({ t }: FeaturePageProps) {
           {t('newPack')}
         </Button>
       </header>
-
-      {/* 操作结果提示 */}
-      {notice ? (
-        <p className="rounded-lg border border-line4 bg-layer1 px-3 py-2 text-[12px] text-success">
-          {notice}
-        </p>
-      ) : null}
 
       {/* 加载或保存失败的提示 */}
       {error ? (
@@ -226,7 +215,6 @@ export function PowerPackPage({ t }: FeaturePageProps) {
                   <Button
                     variant="outline"
                     onClick={() => {
-                      setNotice(null)
                       setError(null)
                       setEditing(pack)
                     }}

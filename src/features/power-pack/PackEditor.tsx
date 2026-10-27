@@ -10,6 +10,9 @@ import type { PowerPack, PowerPackCatalog, ResourceRule } from './types'
 const INPUT_CLASS =
   'w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand'
 
+/** 分组之间的分隔线与间距：整页只用一张卡片，靠分隔线而不是区块标题分组。 */
+const GROUP_CLASS = 'border-t border-line4 pt-4'
+
 interface PackEditorProps {
   /** 编辑中的技能包草稿。 */
   initial: PowerPack
@@ -60,6 +63,13 @@ export function PackEditor({ initial, catalog, saving, error, onSave, onCancel, 
     ...plugin.kind === 'installed' ? { warning: t('installedWarning') } : {},
   }))
 
+  // 三处规则编辑共用同一组模式文案，只取一次避免重复调用翻译函数
+  const modeLabels = {
+    all: t('modeAll'),
+    include: t('modeInclude'),
+    exclude: t('modeExclude'),
+  }
+
   /** 保存前校验，返回错误文案或 undefined。 */
   const validate = (): string | undefined => {
     if (draft.name.trim() === '') return t('nameRequired')
@@ -86,129 +96,100 @@ export function PackEditor({ initial, catalog, saving, error, onSave, onCancel, 
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      {/* 基础信息 */}
-      <section className="rounded-xl border border-line4 bg-layer1">
-        <div className="border-b border-line4 px-4 py-3">
-          {/* 区块标题 */}
-          <h3 className="text-[13px] font-medium text-primary">{t('title')}</h3>
-          {/* 预设选择器说明 */}
-          <p className="mt-1 text-[12px] leading-[18px] text-secondary">{t('presetHint')}</p>
+    <div className="rounded-xl border border-line4 bg-layer1">
+      <div className="flex flex-col gap-4 p-4">
+        <label className="block">
+          {/* 技能包名称，显示在新建任务的技能包选择器中 */}
+          <span className="mb-1 block text-[12px] text-secondary">{t('nameLabel')}</span>
+          <input
+            value={draft.name}
+            placeholder={t('namePlaceholder')}
+            onChange={(event) => patch({ name: event.target.value })}
+            className={INPUT_CLASS}
+          />
+        </label>
+
+        <label className="block">
+          {/* 技能包描述，作为技能包列表里的一句话说明 */}
+          <span className="mb-1 block text-[12px] text-secondary">{t('descriptionLabel')}</span>
+          <input
+            value={draft.description}
+            placeholder={t('descriptionPlaceholder')}
+            onChange={(event) => patch({ description: event.target.value })}
+            className={INPUT_CLASS}
+          />
+        </label>
+
+        <label className={`block ${GROUP_CLASS}`}>
+          {/* 追加到系统提示词末尾的增强要求 */}
+          <span className="mb-1 block text-[12px] text-secondary">{t('systemPromptLabel')}</span>
+          <textarea
+            value={draft.systemPrompt}
+            placeholder={t('systemPromptPlaceholder')}
+            onChange={(event) => patch({ systemPrompt: event.target.value })}
+            rows={4}
+            className={INPUT_CLASS}
+          />
+        </label>
+
+        <div className={GROUP_CLASS}>
+          <ResourceRuleField
+            title={t('skillsTitle')}
+            rule={draft.skills}
+            options={skillOptions}
+            modeLabels={modeLabels}
+            emptyText={t('noSkills')}
+            searchPlaceholder={t('searchSkills')}
+            onChange={(rule) => patchRule('skills', rule)}
+          />
         </div>
-        <div className="flex flex-col gap-3 p-4">
-          <label className="block">
-            {/* 技能包名称，显示在新建任务的预设选择器中 */}
-            <span className="mb-1 block text-[12px] text-secondary">{t('nameLabel')}</span>
-            <input
-              value={draft.name}
-              placeholder={t('namePlaceholder')}
-              onChange={(event) => patch({ name: event.target.value })}
-              className={INPUT_CLASS}
-            />
-          </label>
-          <label className="block">
-            {/* 技能包描述，作为预设列表里的一句话说明 */}
-            <span className="mb-1 block text-[12px] text-secondary">{t('descriptionLabel')}</span>
-            <input
-              value={draft.description}
-              placeholder={t('descriptionPlaceholder')}
-              onChange={(event) => patch({ description: event.target.value })}
-              className={INPUT_CLASS}
-            />
-          </label>
-          <label className="block">
-            {/* 追加到系统提示词末尾的技能包要求 */}
-            <span className="mb-1 block text-[12px] text-secondary">{t('systemPromptLabel')}</span>
-            <textarea
-              value={draft.systemPrompt}
-              placeholder={t('systemPromptPlaceholder')}
-              onChange={(event) => patch({ systemPrompt: event.target.value })}
-              rows={5}
-              className={INPUT_CLASS}
-            />
-            {/* 系统提示词的并入方式 */}
-            <span className="mt-1 block text-[12px] leading-[18px] text-secondary">
-              {t('systemPromptHint')}
-            </span>
-          </label>
+
+        <div className={GROUP_CLASS}>
+          <ResourceRuleField
+            title={t('pluginsTitle')}
+            rule={draft.plugins}
+            options={pluginOptions}
+            modeLabels={modeLabels}
+            emptyText={t('noSkills')}
+            onChange={(rule) => patchRule('plugins', rule)}
+          />
         </div>
-      </section>
 
-      <ResourceRuleField
-        title={t('skillsTitle')}
-        hint={t('skillsHint')}
-        rule={draft.skills}
-        options={skillOptions}
-        modeLabels={{ all: t('modeAll'), include: t('modeInclude'), exclude: t('modeExclude') }}
-        modeHint={
-          draft.skills.mode === 'all'
-            ? t('modeAllHint')
-            : draft.skills.mode === 'include'
-              ? t('modeIncludeHint')
-              : t('modeExcludeHint')
-        }
-        emptyText={t('noSkills')}
-        searchPlaceholder={t('searchSkills')}
-        onChange={(rule) => patchRule('skills', rule)}
-      />
+        <div className={`flex flex-col gap-3 ${GROUP_CLASS}`}>
+          {/* MCP 分组标签：服务器定义与启用规则同属一组，不再各自带标题 */}
+          <span className="text-[12px] text-secondary">{t('mcpTitle')}</span>
+          <McpServerEditor
+            servers={draft.mcpServers}
+            onChange={(mcpServers) => patch({ mcpServers })}
+            t={t}
+          />
+          <ResourceRuleField
+            rule={draft.mcp}
+            options={draft.mcpServers.map((server) => ({
+              id: server.id,
+              label: server.label || server.id,
+            }))}
+            modeLabels={modeLabels}
+            emptyText={t('mcpEmpty')}
+            onChange={(rule) => patchRule('mcp', rule)}
+          />
+        </div>
 
-      <ResourceRuleField
-        title={t('pluginsTitle')}
-        hint={t('pluginsHint')}
-        rule={draft.plugins}
-        options={pluginOptions}
-        modeLabels={{ all: t('modeAll'), include: t('modeInclude'), exclude: t('modeExclude') }}
-        modeHint={
-          draft.plugins.mode === 'all'
-            ? t('modeAllHint')
-            : draft.plugins.mode === 'include'
-              ? t('modeIncludeHint')
-              : t('modeExcludeHint')
-        }
-        emptyText={t('noSkills')}
-        onChange={(rule) => patchRule('plugins', rule)}
-      />
+        {/* 保存失败或校验失败的提示 */}
+        {localError ?? error ? (
+          <p className="text-[12px] leading-[18px] text-danger" role="alert">
+            {localError ?? error}
+          </p>
+        ) : null}
+      </div>
 
-      <McpServerEditor
-        servers={draft.mcpServers}
-        onChange={(mcpServers) => patch({ mcpServers })}
-        t={t}
-      />
-
-      <ResourceRuleField
-        title={t('mcpRuleTitle')}
-        hint={t('mcpRuleHint')}
-        rule={draft.mcp}
-        options={draft.mcpServers.map((server) => ({
-          id: server.id,
-          label: server.label || server.id,
-        }))}
-        modeLabels={{ all: t('modeAll'), include: t('modeInclude'), exclude: t('modeExclude') }}
-        modeHint={
-          draft.mcp.mode === 'all'
-            ? t('modeAllHint')
-            : draft.mcp.mode === 'include'
-              ? t('modeIncludeHint')
-              : t('modeExcludeHint')
-        }
-        emptyText={t('mcpEmpty')}
-        onChange={(rule) => patchRule('mcp', rule)}
-      />
-
-      {/* 保存失败或校验失败的提示 */}
-      {localError ?? error ? (
-        <p className="text-[12px] leading-[18px] text-danger" role="alert">
-          {localError ?? error}
-        </p>
-      ) : null}
-
-      {/* 表单操作 */}
-      <div className="flex items-center gap-2">
-        <Button variant="outline" disabled={saving} onClick={handleSave}>
-          {saving ? t('saving') : t('save')}
-        </Button>
+      {/* 表单操作：放在卡片底部，与内容用分隔线隔开 */}
+      <div className="flex items-center justify-end gap-2 border-t border-line4 px-4 py-3">
         <Button variant="ghost" disabled={saving} onClick={onCancel}>
           {t('cancel')}
+        </Button>
+        <Button variant="outline" disabled={saving} onClick={handleSave}>
+          {saving ? t('saving') : t('save')}
         </Button>
       </div>
     </div>

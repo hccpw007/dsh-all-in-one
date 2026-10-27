@@ -46,30 +46,16 @@ export const powerPackLocales: FeatureLocales = {
     descriptionLabel: '技能包描述',
     // 描述输入占位
     descriptionPlaceholder: '一句话说明这个技能包适合什么任务',
-    // 系统提示词字段标签
-    systemPromptLabel: '系统提示词',
-    // 系统提示词说明
-    systemPromptHint: '这段文字会追加到系统提示词末尾，用来约定该技能包的工作方式。',
-    // 系统提示词占位
+    // 提示词增强字段标签
+    systemPromptLabel: '提示词增强',
+    // 提示词增强占位
     systemPromptPlaceholder: '例如：只审查代码，先指出潜在缺陷与测试缺口，修改文件前先询问。',
-    // 技能区块标题
-    skillsTitle: '技能',
-    // 技能区块说明
-    skillsHint: '只对勾选的技能开放加载；未列出的技能不会出现在该技能包的技能目录里。',
-    // 插件区块标题
+    // 技能分组标签
+    skillsTitle: 'Skill 技能',
+    // 插件分组标签
     pluginsTitle: '插件与工具',
-    // 插件区块说明
-    pluginsHint: '在所选的模式之上筛选工具：勾选项由规则决定保留或剔除。',
-    // MCP 区块标题
+    // MCP 分组标签
     mcpTitle: 'MCP 服务器',
-    // MCP 区块说明
-    mcpHint: '为技能包配置外部 MCP 服务；每个服务器会作为独立的客户端行挂载。',
-    // MCP 服务器定义区块标题
-    mcpServersTitle: '服务器定义',
-    // MCP 启用规则区块标题
-    mcpRuleTitle: '启用的服务器',
-    // MCP 启用规则说明
-    mcpRuleHint: '选择该技能包挂载哪些已定义的 MCP 服务器。',
     // 重试加载按钮
     retry: '重试',
     // 三态模式：全部
@@ -78,12 +64,6 @@ export const powerPackLocales: FeatureLocales = {
     modeInclude: '仅引用',
     // 三态模式：仅排除
     modeExclude: '仅排除',
-    // 全部模式的说明
-    modeAllHint: '使用全部可用项，不需要逐个勾选。',
-    // 仅引用模式的说明
-    modeIncludeHint: '只有勾选的项会被使用。',
-    // 仅排除模式的说明
-    modeExcludeHint: '除勾选项外全部使用。',
     // 搜索技能占位
     searchSkills: '搜索技能',
     // 未找到技能
@@ -118,15 +98,10 @@ export const powerPackLocales: FeatureLocales = {
     mcpHeadersLabel: '请求头（每行 KEY=VALUE）',
     // 移除 MCP 服务器按钮
     remove: '移除',
-    // 保存成功提示
-    saved: '已保存，新建任务时可在「技能包」下拉中选择。',
     // 必填校验提示
     nameRequired: '请填写技能包名称。',
     // 存储位置说明
     storageHint: '配置文件位置',
-    // 预设选择提示
-    presetHint:
-      '技能包叠加在新建任务时所选的模式之上：模式提供基础工具，技能包再筛选技能与工具、追加 MCP 与系统提示词。',
     // 新会话选择器的模式下拉占位文案
     modeLabel: '模式',
     // 新会话选择器的技能包下拉占位文案
@@ -200,30 +175,16 @@ export const powerPackLocales: FeatureLocales = {
     descriptionLabel: 'Description',
     // Description placeholder
     descriptionPlaceholder: 'One sentence about when to use this power pack',
-    // System prompt label
-    systemPromptLabel: 'System prompt',
-    // System prompt hint
-    systemPromptHint: 'Appended to the end of the system prompt to define how this power pack works.',
-    // System prompt placeholder
+    // Prompt enhancement label
+    systemPromptLabel: 'Prompt enhancement',
+    // Prompt enhancement placeholder
     systemPromptPlaceholder: 'e.g. Only review code. Point out defects and test gaps, ask before editing files.',
-    // Skills section title
+    // Skills group label
     skillsTitle: 'Skills',
-    // Skills section hint
-    skillsHint: 'Only selected skills can be loaded; unlisted ones are absent from this power pack.',
-    // Plugins section title
+    // Plugins group label
     pluginsTitle: 'Plugins and tools',
-    // Plugins section hint
-    pluginsHint: 'Filter the tools of the chosen mode: each selection is kept or dropped by the rule.',
-    // MCP section title
+    // MCP group label
     mcpTitle: 'MCP servers',
-    // MCP section hint
-    mcpHint: 'Configure external MCP services; each server mounts as its own client row.',
-    // MCP server definitions title
-    mcpServersTitle: 'Server definitions',
-    // MCP enabled-servers rule title
-    mcpRuleTitle: 'Enabled servers',
-    // MCP rule hint
-    mcpRuleHint: 'Choose which defined MCP servers this power pack mounts.',
     // Retry loading button
     retry: 'Retry',
     // Rule mode: all
@@ -232,12 +193,6 @@ export const powerPackLocales: FeatureLocales = {
     modeInclude: 'Only selected',
     // Rule mode: exclude
     modeExclude: 'All except selected',
-    // All mode hint
-    modeAllHint: 'Use everything available; no selection needed.',
-    // Include mode hint
-    modeIncludeHint: 'Only the selected items are used.',
-    // Exclude mode hint
-    modeExcludeHint: 'Everything except the selected items is used.',
     // Skill search placeholder
     searchSkills: 'Search skills',
     // No matching skills
@@ -272,15 +227,10 @@ export const powerPackLocales: FeatureLocales = {
     mcpHeadersLabel: 'Headers (KEY=VALUE per line)',
     // Remove MCP server
     remove: 'Remove',
-    // Saved notice
-    saved: 'Saved. Pick this power pack from the Power pack dropdown when starting a new task.',
     // Required name message
     nameRequired: 'Enter a power pack name.',
     // Storage location hint
     storageHint: 'Config file',
-    // Preset picker hint
-    presetHint:
-      'A power pack layers on top of the mode chosen for a new task: the mode supplies base tools, and the power pack filters skills and tools, then adds MCP servers and a system prompt.',
     // Placeholder for the mode dropdown
     modeLabel: 'Mode',
     // Placeholder for the power pack dropdown

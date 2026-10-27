@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react'
 
 import { cn } from '../../common/cn'
-import { Button } from '../../components/Button'
 import type { ResourceRule, RuleMode } from './types'
 
 /** 可勾选项的展示信息。 */
@@ -16,16 +15,12 @@ export interface RuleOption {
 }
 
 interface ResourceRuleFieldProps {
-  /** 区块标题。 */
-  title: string
-  /** 区块用途说明。 */
-  hint: string
+  /** 分组标签；不传时只渲染模式与列表，用于紧跟在上一个控件后的规则（如 MCP）。 */
+  title?: string
   rule: ResourceRule
   options: RuleOption[]
   /** 三种模式的按钮文案。 */
   modeLabels: Record<RuleMode, string>
-  /** 当前模式的行为说明。 */
-  modeHint: string
   /** 没有可选项时的提示。 */
   emptyText: string
   /** 提供时显示搜索框。 */
@@ -36,19 +31,21 @@ interface ResourceRuleFieldProps {
 /** 三态按钮的固定顺序。 */
 const MODE_ORDER: RuleMode[] = ['all', 'include', 'exclude']
 
+/** 搜索框样式，与表单输入框一致。 */
+const SEARCH_CLASS =
+  'w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand'
+
 /**
  * 资源规则编辑：选择「全部 / 仅引用 / 仅排除」，再勾选具体条目。
  *
  * 勾选结果始终按选项原顺序保存，避免保存后列表顺序随点击变化。
- * @param props 标题、规则、可选项与变更回调
+ * @param props 标签、规则、可选项与变更回调
  */
 export function ResourceRuleField({
   title,
-  hint,
   rule,
   options,
   modeLabels,
-  modeHint,
   emptyText,
   searchPlaceholder,
   onChange,
@@ -81,40 +78,49 @@ export function ResourceRuleField({
   }
 
   return (
-    <section className="rounded-xl border border-line4 bg-layer1">
-      <header className="border-b border-line4 px-4 py-3">
-        {/* 区块标题与已选数量 */}
-        <div className="flex items-center justify-between gap-2">
-          {/* 区块标题 */}
-          <h3 className="text-[13px] font-medium text-primary">{title}</h3>
-          {/* 已选数量：让用户快速确认规则生效范围 */}
-          <span className="text-[12px] text-secondary">
-            {selected.size > 0 ? selected.size : ''}
-          </span>
-        </div>
-        {/* 区块用途说明 */}
-        <p className="mt-1 text-[12px] leading-[18px] text-secondary">{hint}</p>
-      </header>
+    <div className="flex flex-col gap-2">
+      {/* 一行内放下分组标签、模式切换与已选数量，省掉独立的区块头部 */}
+      <div className="flex flex-wrap items-center gap-3">
+        {title ? (
+          // 分组标签
+          <span className="text-[12px] text-secondary">{title}</span>
+        ) : null}
 
-      {/* 规则模式切换 */}
-      <div className="flex flex-wrap items-center gap-2 px-4 pt-3">
-        {MODE_ORDER.map((mode) => (
-          <Button
-            key={mode}
-            variant={rule.mode === mode ? 'outline' : 'ghost'}
-            aria-pressed={rule.mode === mode}
-            onClick={() => onChange({ mode, items: rule.items })}
-          >
-            {modeLabels[mode]}
-          </Button>
-        ))}
-        {/* 当前模式的行为说明 */}
-        <span className="text-[12px] leading-[18px] text-secondary">{modeHint}</span>
+        <div className="flex items-center gap-2">
+          {/* 规则模式切换：三态共用一个描边容器，避免三个按钮各占一份边框 */}
+          <div className="flex items-center rounded-lg border border-line4 p-0.5">
+            {MODE_ORDER.map((mode) => {
+              const active = rule.mode === mode
+
+              return (
+                <button
+                  key={mode}
+                  type="button"
+                  aria-pressed={active}
+                  onClick={() => onChange({ mode, items: rule.items })}
+                  className={cn(
+                    'rounded-md px-2 py-1 text-[12px] transition',
+                    active
+                      ? 'bg-layer2 font-medium text-primary'
+                      : 'text-secondary hover:text-primary',
+                  )}
+                >
+                  {modeLabels[mode]}
+                </button>
+              )
+            })}
+          </div>
+
+          {/* 已选数量：让用户快速确认规则生效范围 */}
+          {selected.size > 0 ? (
+            <span className="text-[11px] text-secondary">{selected.size}</span>
+          ) : null}
+        </div>
       </div>
 
       {/* 「全部」不需要逐项勾选 */}
       {rule.mode === 'all' ? null : (
-        <div className="px-4 pb-4 pt-3">
+        <div className="flex flex-col gap-2">
           {/* 搜索框：技能数量较多时按名称或描述过滤 */}
           {searchPlaceholder ? (
             <input
@@ -122,13 +128,13 @@ export function ResourceRuleField({
               value={query}
               placeholder={searchPlaceholder}
               onChange={(event) => setQuery(event.target.value)}
-              className="mb-2 w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand"
+              className={SEARCH_CLASS}
             />
           ) : null}
 
           {visibleOptions.length === 0 ? (
             // 没有可选项或搜索无结果时的提示
-            <p className="py-3 text-[12px] text-secondary">{emptyText}</p>
+            <p className="py-2 text-[12px] text-secondary">{emptyText}</p>
           ) : (
             <ul className="max-h-72 overflow-y-auto">
               {visibleOptions.map((option) => {
@@ -183,6 +189,6 @@ export function ResourceRuleField({
           )}
         </div>
       )}
-    </section>
+    </div>
   )
 }

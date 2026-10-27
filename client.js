@@ -42,7 +42,7 @@ window.__ModuleLoader__.load({
     var import_react11 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.static{position:static}.relative{position:relative}.isolate{isolation:isolate}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-9{height:2.25rem}.max-h-72{max-height:18rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-0\\.5,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[18px\\]{--tw-translate-x:18px}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-dashed{border-style:dashed}.border-line4{border-color:var(--dsw-alias-border-l4)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-transparent{background-color:transparent}.p-0{padding:0}.p-3{padding:.75rem}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pb-4{padding-bottom:1rem}.pt-3{padding-top:.75rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[18px\\]{line-height:18px}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}@media (min-width:640px){.sm\\:col-span-2{grid-column:span 2/span 2}.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
+    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.static{position:static}.relative{position:relative}.isolate{isolation:isolate}.mb-1{margin-bottom:.25rem}.ml-2{margin-left:.5rem}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-9{height:2.25rem}.max-h-72{max-height:18rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-0\\.5,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[18px\\]{--tw-translate-x:18px}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-dashed{border-style:dashed}.border-line4{border-color:var(--dsw-alias-border-l4)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-transparent{background-color:transparent}.p-0{padding:0}.p-0\\.5{padding:.125rem}.p-3{padding:.75rem}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[18px\\]{line-height:18px}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}@media (min-width:640px){.sm\\:col-span-2{grid-column:span 2/span 2}.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -516,30 +516,16 @@ window.__ModuleLoader__.load({
         descriptionLabel: "\u6280\u80FD\u5305\u63CF\u8FF0",
         // 描述输入占位
         descriptionPlaceholder: "\u4E00\u53E5\u8BDD\u8BF4\u660E\u8FD9\u4E2A\u6280\u80FD\u5305\u9002\u5408\u4EC0\u4E48\u4EFB\u52A1",
-        // 系统提示词字段标签
-        systemPromptLabel: "\u7CFB\u7EDF\u63D0\u793A\u8BCD",
-        // 系统提示词说明
-        systemPromptHint: "\u8FD9\u6BB5\u6587\u5B57\u4F1A\u8FFD\u52A0\u5230\u7CFB\u7EDF\u63D0\u793A\u8BCD\u672B\u5C3E\uFF0C\u7528\u6765\u7EA6\u5B9A\u8BE5\u6280\u80FD\u5305\u7684\u5DE5\u4F5C\u65B9\u5F0F\u3002",
-        // 系统提示词占位
+        // 提示词增强字段标签
+        systemPromptLabel: "\u63D0\u793A\u8BCD\u589E\u5F3A",
+        // 提示词增强占位
         systemPromptPlaceholder: "\u4F8B\u5982\uFF1A\u53EA\u5BA1\u67E5\u4EE3\u7801\uFF0C\u5148\u6307\u51FA\u6F5C\u5728\u7F3A\u9677\u4E0E\u6D4B\u8BD5\u7F3A\u53E3\uFF0C\u4FEE\u6539\u6587\u4EF6\u524D\u5148\u8BE2\u95EE\u3002",
-        // 技能区块标题
-        skillsTitle: "\u6280\u80FD",
-        // 技能区块说明
-        skillsHint: "\u53EA\u5BF9\u52FE\u9009\u7684\u6280\u80FD\u5F00\u653E\u52A0\u8F7D\uFF1B\u672A\u5217\u51FA\u7684\u6280\u80FD\u4E0D\u4F1A\u51FA\u73B0\u5728\u8BE5\u6280\u80FD\u5305\u7684\u6280\u80FD\u76EE\u5F55\u91CC\u3002",
-        // 插件区块标题
+        // 技能分组标签
+        skillsTitle: "Skill \u6280\u80FD",
+        // 插件分组标签
         pluginsTitle: "\u63D2\u4EF6\u4E0E\u5DE5\u5177",
-        // 插件区块说明
-        pluginsHint: "\u5728\u6240\u9009\u7684\u6A21\u5F0F\u4E4B\u4E0A\u7B5B\u9009\u5DE5\u5177\uFF1A\u52FE\u9009\u9879\u7531\u89C4\u5219\u51B3\u5B9A\u4FDD\u7559\u6216\u5254\u9664\u3002",
-        // MCP 区块标题
+        // MCP 分组标签
         mcpTitle: "MCP \u670D\u52A1\u5668",
-        // MCP 区块说明
-        mcpHint: "\u4E3A\u6280\u80FD\u5305\u914D\u7F6E\u5916\u90E8 MCP \u670D\u52A1\uFF1B\u6BCF\u4E2A\u670D\u52A1\u5668\u4F1A\u4F5C\u4E3A\u72EC\u7ACB\u7684\u5BA2\u6237\u7AEF\u884C\u6302\u8F7D\u3002",
-        // MCP 服务器定义区块标题
-        mcpServersTitle: "\u670D\u52A1\u5668\u5B9A\u4E49",
-        // MCP 启用规则区块标题
-        mcpRuleTitle: "\u542F\u7528\u7684\u670D\u52A1\u5668",
-        // MCP 启用规则说明
-        mcpRuleHint: "\u9009\u62E9\u8BE5\u6280\u80FD\u5305\u6302\u8F7D\u54EA\u4E9B\u5DF2\u5B9A\u4E49\u7684 MCP \u670D\u52A1\u5668\u3002",
         // 重试加载按钮
         retry: "\u91CD\u8BD5",
         // 三态模式：全部
@@ -548,12 +534,6 @@ window.__ModuleLoader__.load({
         modeInclude: "\u4EC5\u5F15\u7528",
         // 三态模式：仅排除
         modeExclude: "\u4EC5\u6392\u9664",
-        // 全部模式的说明
-        modeAllHint: "\u4F7F\u7528\u5168\u90E8\u53EF\u7528\u9879\uFF0C\u4E0D\u9700\u8981\u9010\u4E2A\u52FE\u9009\u3002",
-        // 仅引用模式的说明
-        modeIncludeHint: "\u53EA\u6709\u52FE\u9009\u7684\u9879\u4F1A\u88AB\u4F7F\u7528\u3002",
-        // 仅排除模式的说明
-        modeExcludeHint: "\u9664\u52FE\u9009\u9879\u5916\u5168\u90E8\u4F7F\u7528\u3002",
         // 搜索技能占位
         searchSkills: "\u641C\u7D22\u6280\u80FD",
         // 未找到技能
@@ -588,14 +568,10 @@ window.__ModuleLoader__.load({
         mcpHeadersLabel: "\u8BF7\u6C42\u5934\uFF08\u6BCF\u884C KEY=VALUE\uFF09",
         // 移除 MCP 服务器按钮
         remove: "\u79FB\u9664",
-        // 保存成功提示
-        saved: "\u5DF2\u4FDD\u5B58\uFF0C\u65B0\u5EFA\u4EFB\u52A1\u65F6\u53EF\u5728\u300C\u6280\u80FD\u5305\u300D\u4E0B\u62C9\u4E2D\u9009\u62E9\u3002",
         // 必填校验提示
         nameRequired: "\u8BF7\u586B\u5199\u6280\u80FD\u5305\u540D\u79F0\u3002",
         // 存储位置说明
         storageHint: "\u914D\u7F6E\u6587\u4EF6\u4F4D\u7F6E",
-        // 预设选择提示
-        presetHint: "\u6280\u80FD\u5305\u53E0\u52A0\u5728\u65B0\u5EFA\u4EFB\u52A1\u65F6\u6240\u9009\u7684\u6A21\u5F0F\u4E4B\u4E0A\uFF1A\u6A21\u5F0F\u63D0\u4F9B\u57FA\u7840\u5DE5\u5177\uFF0C\u6280\u80FD\u5305\u518D\u7B5B\u9009\u6280\u80FD\u4E0E\u5DE5\u5177\u3001\u8FFD\u52A0 MCP \u4E0E\u7CFB\u7EDF\u63D0\u793A\u8BCD\u3002",
         // 新会话选择器的模式下拉占位文案
         modeLabel: "\u6A21\u5F0F",
         // 新会话选择器的技能包下拉占位文案
@@ -664,30 +640,16 @@ window.__ModuleLoader__.load({
         descriptionLabel: "Description",
         // Description placeholder
         descriptionPlaceholder: "One sentence about when to use this power pack",
-        // System prompt label
-        systemPromptLabel: "System prompt",
-        // System prompt hint
-        systemPromptHint: "Appended to the end of the system prompt to define how this power pack works.",
-        // System prompt placeholder
+        // Prompt enhancement label
+        systemPromptLabel: "Prompt enhancement",
+        // Prompt enhancement placeholder
         systemPromptPlaceholder: "e.g. Only review code. Point out defects and test gaps, ask before editing files.",
-        // Skills section title
+        // Skills group label
         skillsTitle: "Skills",
-        // Skills section hint
-        skillsHint: "Only selected skills can be loaded; unlisted ones are absent from this power pack.",
-        // Plugins section title
+        // Plugins group label
         pluginsTitle: "Plugins and tools",
-        // Plugins section hint
-        pluginsHint: "Filter the tools of the chosen mode: each selection is kept or dropped by the rule.",
-        // MCP section title
+        // MCP group label
         mcpTitle: "MCP servers",
-        // MCP section hint
-        mcpHint: "Configure external MCP services; each server mounts as its own client row.",
-        // MCP server definitions title
-        mcpServersTitle: "Server definitions",
-        // MCP enabled-servers rule title
-        mcpRuleTitle: "Enabled servers",
-        // MCP rule hint
-        mcpRuleHint: "Choose which defined MCP servers this power pack mounts.",
         // Retry loading button
         retry: "Retry",
         // Rule mode: all
@@ -696,12 +658,6 @@ window.__ModuleLoader__.load({
         modeInclude: "Only selected",
         // Rule mode: exclude
         modeExclude: "All except selected",
-        // All mode hint
-        modeAllHint: "Use everything available; no selection needed.",
-        // Include mode hint
-        modeIncludeHint: "Only the selected items are used.",
-        // Exclude mode hint
-        modeExcludeHint: "Everything except the selected items is used.",
         // Skill search placeholder
         searchSkills: "Search skills",
         // No matching skills
@@ -736,14 +692,10 @@ window.__ModuleLoader__.load({
         mcpHeadersLabel: "Headers (KEY=VALUE per line)",
         // Remove MCP server
         remove: "Remove",
-        // Saved notice
-        saved: "Saved. Pick this power pack from the Power pack dropdown when starting a new task.",
         // Required name message
         nameRequired: "Enter a power pack name.",
         // Storage location hint
         storageHint: "Config file",
-        // Preset picker hint
-        presetHint: "A power pack layers on top of the mode chosen for a new task: the mode supplies base tools, and the power pack filters skills and tools, then adds MCP servers and a system prompt.",
         // Placeholder for the mode dropdown
         modeLabel: "Mode",
         // Placeholder for the power pack dropdown
@@ -849,7 +801,7 @@ window.__ModuleLoader__.load({
       const remove = (index) => {
         onChange(servers.filter((_, current) => current !== index));
       };
-      return /* @__PURE__ */ import_react5.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1" }, /* @__PURE__ */ import_react5.default.createElement("header", { className: "border-b border-line4 px-4 py-3" }, /* @__PURE__ */ import_react5.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, t("mcpServersTitle")), /* @__PURE__ */ import_react5.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("mcpHint"))), /* @__PURE__ */ import_react5.default.createElement("div", { className: "flex flex-col gap-3 p-4" }, servers.length === 0 ? (
+      return /* @__PURE__ */ import_react5.default.createElement("div", { className: "flex flex-col gap-3" }, servers.length === 0 ? (
         // 尚未配置任何服务器时的提示
         /* @__PURE__ */ import_react5.default.createElement("p", { className: "text-[12px] text-secondary" }, t("mcpEmpty"))
       ) : null, servers.map((server, index) => /* @__PURE__ */ import_react5.default.createElement("div", { key: `${server.id}-${index}`, className: "rounded-lg border border-line4 bg-base p-3" }, /* @__PURE__ */ import_react5.default.createElement("div", { className: "flex items-center justify-between gap-2" }, /* @__PURE__ */ import_react5.default.createElement("span", { className: "text-[12px] font-medium text-primary" }, server.label || server.id), /* @__PURE__ */ import_react5.default.createElement(Button, { variant: "ghost", onClick: () => remove(index) }, t("remove"))), /* @__PURE__ */ import_react5.default.createElement("div", { className: "mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2" }, /* @__PURE__ */ import_react5.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react5.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpIdLabel")), /* @__PURE__ */ import_react5.default.createElement(
@@ -920,7 +872,7 @@ window.__ModuleLoader__.load({
           rows: 3,
           className: INPUT_CLASS
         }
-      ))))), /* @__PURE__ */ import_react5.default.createElement("div", null, /* @__PURE__ */ import_react5.default.createElement(Button, { variant: "outline", onClick: add }, t("addMcp")))));
+      ))))), /* @__PURE__ */ import_react5.default.createElement("div", null, /* @__PURE__ */ import_react5.default.createElement(Button, { variant: "outline", onClick: add }, t("addMcp"))));
     }
     function isValidServerId(id) {
       return SERVER_ID_PATTERN.test(id);
@@ -929,13 +881,12 @@ window.__ModuleLoader__.load({
     // src/features/power-pack/ResourceRuleField.tsx
     var import_react6 = __toESM(require("react"), 1);
     var MODE_ORDER = ["all", "include", "exclude"];
+    var SEARCH_CLASS = "w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand";
     function ResourceRuleField({
       title,
-      hint,
       rule,
       options,
       modeLabels,
-      modeHint,
       emptyText,
       searchPlaceholder,
       onChange
@@ -957,27 +908,37 @@ window.__ModuleLoader__.load({
         const unknown = [...next].filter((item) => !options.some((option) => option.id === item));
         onChange({ mode: rule.mode, items: [...ordered, ...unknown] });
       };
-      return /* @__PURE__ */ import_react6.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1" }, /* @__PURE__ */ import_react6.default.createElement("header", { className: "border-b border-line4 px-4 py-3" }, /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex items-center justify-between gap-2" }, /* @__PURE__ */ import_react6.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, title), /* @__PURE__ */ import_react6.default.createElement("span", { className: "text-[12px] text-secondary" }, selected.size > 0 ? selected.size : "")), /* @__PURE__ */ import_react6.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, hint)), /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex flex-wrap items-center gap-2 px-4 pt-3" }, MODE_ORDER.map((mode) => /* @__PURE__ */ import_react6.default.createElement(
-        Button,
-        {
-          key: mode,
-          variant: rule.mode === mode ? "outline" : "ghost",
-          "aria-pressed": rule.mode === mode,
-          onClick: () => onChange({ mode, items: rule.items })
-        },
-        modeLabels[mode]
-      )), /* @__PURE__ */ import_react6.default.createElement("span", { className: "text-[12px] leading-[18px] text-secondary" }, modeHint)), rule.mode === "all" ? null : /* @__PURE__ */ import_react6.default.createElement("div", { className: "px-4 pb-4 pt-3" }, searchPlaceholder ? /* @__PURE__ */ import_react6.default.createElement(
+      return /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex flex-col gap-2" }, /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex flex-wrap items-center gap-3" }, title ? (
+        // 分组标签
+        /* @__PURE__ */ import_react6.default.createElement("span", { className: "text-[12px] text-secondary" }, title)
+      ) : null, /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex items-center gap-2" }, /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex items-center rounded-lg border border-line4 p-0.5" }, MODE_ORDER.map((mode) => {
+        const active = rule.mode === mode;
+        return /* @__PURE__ */ import_react6.default.createElement(
+          "button",
+          {
+            key: mode,
+            type: "button",
+            "aria-pressed": active,
+            onClick: () => onChange({ mode, items: rule.items }),
+            className: cn(
+              "rounded-md px-2 py-1 text-[12px] transition",
+              active ? "bg-layer2 font-medium text-primary" : "text-secondary hover:text-primary"
+            )
+          },
+          modeLabels[mode]
+        );
+      })), selected.size > 0 ? /* @__PURE__ */ import_react6.default.createElement("span", { className: "text-[11px] text-secondary" }, selected.size) : null)), rule.mode === "all" ? null : /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex flex-col gap-2" }, searchPlaceholder ? /* @__PURE__ */ import_react6.default.createElement(
         "input",
         {
           type: "search",
           value: query,
           placeholder: searchPlaceholder,
           onChange: (event) => setQuery(event.target.value),
-          className: "mb-2 w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand"
+          className: SEARCH_CLASS
         }
       ) : null, visibleOptions.length === 0 ? (
         // 没有可选项或搜索无结果时的提示
-        /* @__PURE__ */ import_react6.default.createElement("p", { className: "py-3 text-[12px] text-secondary" }, emptyText)
+        /* @__PURE__ */ import_react6.default.createElement("p", { className: "py-2 text-[12px] text-secondary" }, emptyText)
       ) : /* @__PURE__ */ import_react6.default.createElement("ul", { className: "max-h-72 overflow-y-auto" }, visibleOptions.map((option) => {
         const checked = selected.has(option.id);
         return /* @__PURE__ */ import_react6.default.createElement("li", { key: option.id }, /* @__PURE__ */ import_react6.default.createElement(
@@ -1013,6 +974,7 @@ window.__ModuleLoader__.load({
 
     // src/features/power-pack/PackEditor.tsx
     var INPUT_CLASS2 = "w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand";
+    var GROUP_CLASS = "border-t border-line4 pt-4";
     function PackEditor({ initial, catalog, saving, error, onSave, onCancel, t }) {
       const [draft, setDraft] = (0, import_react7.useState)(initial);
       const [localError, setLocalError] = (0, import_react7.useState)(null);
@@ -1034,6 +996,11 @@ window.__ModuleLoader__.load({
         ...plugin2.kind === "installed" ? { badge: t("installedBadge") } : {},
         ...plugin2.kind === "installed" ? { warning: t("installedWarning") } : {}
       }));
+      const modeLabels = {
+        all: t("modeAll"),
+        include: t("modeInclude"),
+        exclude: t("modeExclude")
+      };
       const validate = () => {
         if (draft.name.trim() === "") return t("nameRequired");
         const ids = /* @__PURE__ */ new Set();
@@ -1053,7 +1020,7 @@ window.__ModuleLoader__.load({
         setLocalError(null);
         onSave({ ...draft, name: draft.name.trim(), description: draft.description.trim() });
       };
-      return /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex flex-col gap-3" }, /* @__PURE__ */ import_react7.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1" }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "border-b border-line4 px-4 py-3" }, /* @__PURE__ */ import_react7.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, t("title")), /* @__PURE__ */ import_react7.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("presetHint"))), /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex flex-col gap-3 p-4" }, /* @__PURE__ */ import_react7.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("nameLabel")), /* @__PURE__ */ import_react7.default.createElement(
+      return /* @__PURE__ */ import_react7.default.createElement("div", { className: "rounded-xl border border-line4 bg-layer1" }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex flex-col gap-4 p-4" }, /* @__PURE__ */ import_react7.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("nameLabel")), /* @__PURE__ */ import_react7.default.createElement(
         "input",
         {
           value: draft.name,
@@ -1069,41 +1036,37 @@ window.__ModuleLoader__.load({
           onChange: (event) => patch({ description: event.target.value }),
           className: INPUT_CLASS2
         }
-      )), /* @__PURE__ */ import_react7.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("systemPromptLabel")), /* @__PURE__ */ import_react7.default.createElement(
+      )), /* @__PURE__ */ import_react7.default.createElement("label", { className: `block ${GROUP_CLASS}` }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("systemPromptLabel")), /* @__PURE__ */ import_react7.default.createElement(
         "textarea",
         {
           value: draft.systemPrompt,
           placeholder: t("systemPromptPlaceholder"),
           onChange: (event) => patch({ systemPrompt: event.target.value }),
-          rows: 5,
+          rows: 4,
           className: INPUT_CLASS2
         }
-      ), /* @__PURE__ */ import_react7.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("systemPromptHint"))))), /* @__PURE__ */ import_react7.default.createElement(
+      )), /* @__PURE__ */ import_react7.default.createElement("div", { className: GROUP_CLASS }, /* @__PURE__ */ import_react7.default.createElement(
         ResourceRuleField,
         {
           title: t("skillsTitle"),
-          hint: t("skillsHint"),
           rule: draft.skills,
           options: skillOptions,
-          modeLabels: { all: t("modeAll"), include: t("modeInclude"), exclude: t("modeExclude") },
-          modeHint: draft.skills.mode === "all" ? t("modeAllHint") : draft.skills.mode === "include" ? t("modeIncludeHint") : t("modeExcludeHint"),
+          modeLabels,
           emptyText: t("noSkills"),
           searchPlaceholder: t("searchSkills"),
           onChange: (rule) => patchRule("skills", rule)
         }
-      ), /* @__PURE__ */ import_react7.default.createElement(
+      )), /* @__PURE__ */ import_react7.default.createElement("div", { className: GROUP_CLASS }, /* @__PURE__ */ import_react7.default.createElement(
         ResourceRuleField,
         {
           title: t("pluginsTitle"),
-          hint: t("pluginsHint"),
           rule: draft.plugins,
           options: pluginOptions,
-          modeLabels: { all: t("modeAll"), include: t("modeInclude"), exclude: t("modeExclude") },
-          modeHint: draft.plugins.mode === "all" ? t("modeAllHint") : draft.plugins.mode === "include" ? t("modeIncludeHint") : t("modeExcludeHint"),
+          modeLabels,
           emptyText: t("noSkills"),
           onChange: (rule) => patchRule("plugins", rule)
         }
-      ), /* @__PURE__ */ import_react7.default.createElement(
+      )), /* @__PURE__ */ import_react7.default.createElement("div", { className: `flex flex-col gap-3 ${GROUP_CLASS}` }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "text-[12px] text-secondary" }, t("mcpTitle")), /* @__PURE__ */ import_react7.default.createElement(
         McpServerEditor,
         {
           servers: draft.mcpServers,
@@ -1113,19 +1076,16 @@ window.__ModuleLoader__.load({
       ), /* @__PURE__ */ import_react7.default.createElement(
         ResourceRuleField,
         {
-          title: t("mcpRuleTitle"),
-          hint: t("mcpRuleHint"),
           rule: draft.mcp,
           options: draft.mcpServers.map((server) => ({
             id: server.id,
             label: server.label || server.id
           })),
-          modeLabels: { all: t("modeAll"), include: t("modeInclude"), exclude: t("modeExclude") },
-          modeHint: draft.mcp.mode === "all" ? t("modeAllHint") : draft.mcp.mode === "include" ? t("modeIncludeHint") : t("modeExcludeHint"),
+          modeLabels,
           emptyText: t("mcpEmpty"),
           onChange: (rule) => patchRule("mcp", rule)
         }
-      ), localError ?? error ? /* @__PURE__ */ import_react7.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, localError ?? error) : null, /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex items-center gap-2" }, /* @__PURE__ */ import_react7.default.createElement(Button, { variant: "outline", disabled: saving, onClick: handleSave }, saving ? t("saving") : t("save")), /* @__PURE__ */ import_react7.default.createElement(Button, { variant: "ghost", disabled: saving, onClick: onCancel }, t("cancel"))));
+      )), localError ?? error ? /* @__PURE__ */ import_react7.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, localError ?? error) : null), /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex items-center justify-end gap-2 border-t border-line4 px-4 py-3" }, /* @__PURE__ */ import_react7.default.createElement(Button, { variant: "ghost", disabled: saving, onClick: onCancel }, t("cancel")), /* @__PURE__ */ import_react7.default.createElement(Button, { variant: "outline", disabled: saving, onClick: handleSave }, saving ? t("saving") : t("save"))));
     }
 
     // src/features/power-pack/page.tsx
@@ -1152,7 +1112,6 @@ window.__ModuleLoader__.load({
       const [loading, setLoading] = (0, import_react8.useState)(true);
       const [saving, setSaving] = (0, import_react8.useState)(false);
       const [error, setError] = (0, import_react8.useState)(null);
-      const [notice, setNotice] = (0, import_react8.useState)(null);
       const reload = async () => {
         try {
           setPayload(await loadPowerPacks());
@@ -1192,7 +1151,6 @@ window.__ModuleLoader__.load({
           setPayload(await savePowerPack(pack));
           setEditing(null);
           setError(null);
-          setNotice(t("saved"));
         } catch (failure) {
           console.error("[power-pack] \u4FDD\u5B58\u6280\u80FD\u5305\u5931\u8D25:", failure);
           setError(`${t("saveFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
@@ -1205,7 +1163,6 @@ window.__ModuleLoader__.load({
         try {
           setPayload(await deletePowerPack(id));
           setError(null);
-          setNotice(null);
         } catch (failure) {
           console.error("[power-pack] \u5220\u9664\u6280\u80FD\u5305\u5931\u8D25:", failure);
           setError(
@@ -1236,13 +1193,12 @@ window.__ModuleLoader__.load({
           variant: "outline",
           disabled: loading || !payload,
           onClick: () => {
-            setNotice(null);
             setError(null);
             setEditing(createDraft());
           }
         },
         t("newPack")
-      )), notice ? /* @__PURE__ */ import_react8.default.createElement("p", { className: "rounded-lg border border-line4 bg-layer1 px-3 py-2 text-[12px] text-success" }, notice) : null, error ? /* @__PURE__ */ import_react8.default.createElement("p", { className: "rounded-lg border border-line4 bg-layer1 px-3 py-2 text-[12px] text-danger", role: "alert" }, error, /* @__PURE__ */ import_react8.default.createElement(
+      )), error ? /* @__PURE__ */ import_react8.default.createElement("p", { className: "rounded-lg border border-line4 bg-layer1 px-3 py-2 text-[12px] text-danger", role: "alert" }, error, /* @__PURE__ */ import_react8.default.createElement(
         "button",
         {
           type: "button",
@@ -1267,7 +1223,6 @@ window.__ModuleLoader__.load({
           {
             variant: "outline",
             onClick: () => {
-              setNotice(null);
               setError(null);
               setEditing(pack);
             }
