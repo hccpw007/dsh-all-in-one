@@ -69,7 +69,8 @@ export function AllInOnePage({ t }: AllInOnePageProps) {
             宿主滚动的是设置弹窗的内容区，这里用 sticky 让头部钉在滚动区顶端，
             只让下方功能页内容滚动；需要不透明底色，否则内容会从头部下方透出。
           */}
-          <div className="sticky top-0 z-10 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3">
+          {/* 头部层级需高于页面内带 z-index 的浮层控件（如规则三态按钮选中态 z-10），否则滚动时会被后者盖住 */}
+          <div className="sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3">
             {/* 返回按钮：回到功能网格 */}
             <Button variant="outline" onClick={() => setActiveId(null)}>
               <BackGlyph />

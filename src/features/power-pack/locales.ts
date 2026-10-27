@@ -75,7 +75,7 @@ export const powerPackLocales: FeatureLocales = {
     // 已装插件标记
     installedBadge: '已安装插件',
     // 已装插件风险提示
-    installedWarning: '已安装插件可能已在 profile 中全局加载，重复挂载可能冲突，仅在必要时勾选。',
+    installedWarning: '该插件已在 profile 中全局加载，重复挂载会冲突，仅在必要时勾选。',
     // 添加 MCP 服务器按钮
     addMcp: '添加 MCP 服务器',
     // 尚未配置 MCP 时的提示
@@ -208,7 +208,7 @@ export const powerPackLocales: FeatureLocales = {
     // Installed plugin badge
     installedBadge: 'Installed plugin',
     // Installed plugin warning
-    installedWarning: 'Installed plugins may already load globally in the profile; mounting them again can conflict. Select only when needed.',
+    installedWarning: 'This plugin is already loaded globally in the profile; mounting it again conflicts. Select only when needed.',
     // Add MCP server button
     addMcp: 'Add MCP server',
     // Empty MCP hint

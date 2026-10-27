@@ -23,13 +23,28 @@ export function apply(ctx: HostPluginContext): void {
     return
   }
 
+  const profileDir = currentProfileDir(ctx)
+
   ctx.effect(() => () => {
     void disposePackPresets()
   }, 'power-pack: presets')
 
   ctx.inject(['webServer'], (host) => {
-    host.effect(() => installPowerPackRoutes(resolveWebServer(host), api), 'power-pack: routes')
+    host.effect(
+      () => installPowerPackRoutes(resolveWebServer(host), api, profileDir),
+      'power-pack: routes',
+    )
   })
+}
+
+/**
+ * 取宿主报告的当前 profile 目录，用于把插件清单限定在本 profile。
+ * @param ctx 宿主插件上下文
+ * @returns profile 目录；宿主未报告时返回 undefined
+ */
+function currentProfileDir(ctx: HostPluginContext): string | undefined {
+  const dir = ctx.profileContext?.dir
+  return typeof dir === 'string' && dir !== '' ? dir : undefined
 }
 
 /**

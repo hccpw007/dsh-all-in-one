@@ -330,58 +330,55 @@ var STANDARD_PLUGIN_ITEMS = [
 
 // src/features/power-pack/host/catalog.ts
 var SELF_PACKAGE = "dsh-all-in-one";
-async function findInstalledPlugins() {
-  const profilesRoot = join2(resolveDshHome(), "profiles");
-  const names = /* @__PURE__ */ new Set();
-  let profiles;
+async function collectProfilePlugins(dir, names) {
+  const manifestPath = join2(dir, "package.json");
   try {
-    profiles = await readdir2(profilesRoot, { withFileTypes: true });
+    const manifest = JSON.parse(await readFile2(manifestPath, "utf8"));
+    const enabled = Array.isArray(manifest.dsh?.profile?.bundles) ? new Set(manifest.dsh.profile.bundles) : /* @__PURE__ */ new Set();
+    for (const name of Object.keys(manifest.dependencies ?? {})) {
+      if (name.startsWith("@deepseek-ai/") || name === SELF_PACKAGE) continue;
+      if (enabled.has(name)) names.add(name);
+    }
+  } catch (error) {
+    console.error("[power-pack] \u8BFB\u53D6 profile \u4F9D\u8D56\u5931\u8D25:", manifestPath, error);
+  }
+}
+async function resolveProfileDirs(currentProfileDir2) {
+  if (currentProfileDir2 !== void 0 && currentProfileDir2 !== "") return [currentProfileDir2];
+  const profilesRoot = join2(resolveDshHome(), "profiles");
+  try {
+    const profiles = await readdir2(profilesRoot, { withFileTypes: true });
+    return profiles.filter((profile) => profile.isDirectory() && profile.name !== "node_modules").map((profile) => join2(profilesRoot, profile.name));
   } catch (error) {
     if (error.code === "ENOENT") return [];
     console.error("[power-pack] \u8BFB\u53D6 profile \u76EE\u5F55\u5931\u8D25:", profilesRoot, error);
     return [];
   }
-  for (const profile of profiles) {
-    if (!profile.isDirectory()) continue;
-    const manifestPath = join2(profilesRoot, profile.name, "package.json");
-    try {
-      const manifest = JSON.parse(await readFile2(manifestPath, "utf8"));
-      for (const name of Object.keys(manifest.dependencies ?? {})) {
-        if (name.startsWith("dsh-plugin-") && name !== SELF_PACKAGE) names.add(name);
-      }
-    } catch (error) {
-      console.error("[power-pack] \u8BFB\u53D6 profile \u4F9D\u8D56\u5931\u8D25:", manifestPath, error);
-    }
-    const modulesRoot = join2(profilesRoot, profile.name, "node_modules");
-    try {
-      const modules = await readdir2(modulesRoot, { withFileTypes: true });
-      for (const entry of modules) {
-        if (!entry.isDirectory() && !entry.isSymbolicLink()) continue;
-        if (entry.name.startsWith("dsh-plugin-") && entry.name !== SELF_PACKAGE) {
-          names.add(entry.name);
-        }
-      }
-    } catch (error) {
-      console.error("[power-pack] \u8BFB\u53D6 profile \u63D2\u4EF6\u76EE\u5F55\u5931\u8D25:", modulesRoot, error);
-    }
+}
+async function findInstalledPlugins(currentProfileDir2) {
+  const names = /* @__PURE__ */ new Set();
+  for (const dir of await resolveProfileDirs(currentProfileDir2)) {
+    await collectProfilePlugins(dir, names);
   }
   return [...names].sort((left, right) => left.localeCompare(right));
 }
 function installedRowId(packageName) {
   return `pkg-${packageName.replace(/[^A-Za-z0-9_-]/g, "-")}`;
 }
-async function listPluginCatalog() {
-  const installed = (await findInstalledPlugins()).map((packageName) => ({
-    id: `pkg:${packageName}`,
-    label: packageName,
-    description: "\u5DF2\u5B89\u88C5\u63D2\u4EF6\u3002\u82E5\u5B83\u5DF2\u5728 profile \u4E2D\u5168\u5C40\u52A0\u8F7D\uFF0C\u91CD\u590D\u6302\u8F7D\u53EF\u80FD\u51B2\u7A81\uFF0C\u8BF7\u8C28\u614E\u52FE\u9009\u3002",
-    kind: "installed",
-    packageName
-  }));
+async function listPluginCatalog(currentProfileDir2) {
+  const installed = (await findInstalledPlugins(currentProfileDir2)).map(
+    (packageName) => ({
+      id: `pkg:${packageName}`,
+      label: packageName,
+      description: "\u5DF2\u5728 profile \u4E2D\u542F\u7528\u3002\u5B83\u5DF2\u5728\u5168\u5C40\u7EC4\u5408\u91CC\u52A0\u8F7D\uFF0C\u91CD\u590D\u6302\u8F7D\u4F1A\u51B2\u7A81\uFF0C\u8BF7\u8C28\u614E\u52FE\u9009\u3002",
+      kind: "installed",
+      packageName
+    })
+  );
   return { standard: STANDARD_PLUGIN_ITEMS, installed };
 }
-async function listPluginItems() {
-  const { standard, installed } = await listPluginCatalog();
+async function listPluginItems(currentProfileDir2) {
+  const { standard, installed } = await listPluginCatalog(currentProfileDir2);
   return [
     ...standard.map(({ id, label, description, kind }) => ({ id, label, description, kind })),
     ...installed.map(({ id, label, description, kind }) => ({ id, label, description, kind }))
@@ -560,14 +557,14 @@ async function disposeComposed() {
     console.error("[power-pack] \u6CE8\u9500\u7EC4\u5408\u9884\u8BBE\u5931\u8D25:", current.id, error);
   }
 }
-async function ensureComposedPreset(api, modeId, pack) {
+async function ensureComposedPreset(api, modeId, pack, profileDir) {
   const key = `${pack.id}@${modeId}`;
   if (composed?.key === key) return composed.id;
   const modeRows = readPresetRows(api, modeId);
   if (modeRows === void 0) {
     throw new Error(`\u65E0\u6CD5\u8BFB\u53D6\u6A21\u5F0F ${modeId} \u7684\u7EC4\u5408\u884C`);
   }
-  const { installed } = await listPluginCatalog();
+  const { installed } = await listPluginCatalog(profileDir);
   const rows = composePackRows(modeRows, pack, installed);
   await disposeComposed();
   const id = composedPresetId(pack.id, modeId);
@@ -736,10 +733,10 @@ async function readJsonBody(request) {
     return void 0;
   }
 }
-async function buildPayload() {
+async function buildPayload(profileDir) {
   const document = await readPacks();
   const skills = await listSkillEntries();
-  const plugins = await listPluginItems();
+  const plugins = await listPluginItems(profileDir);
   return {
     packs: document.packs,
     defaultPackId: document.defaultPackId,
@@ -757,7 +754,7 @@ async function syncSkills(pack, allSkills) {
   }
   await syncPackSkillDir(pack.id, selectSkills(pack.skills, allSkills));
 }
-async function savePack(pack) {
+async function savePack(pack, profileDir) {
   const allSkills = await listSkillEntries();
   await syncSkills(pack, allSkills);
   const document = await readPacks();
@@ -765,49 +762,49 @@ async function savePack(pack) {
   if (index >= 0) document.packs[index] = pack;
   else document.packs.push(pack);
   await writePacks(document);
-  return buildPayload();
+  return buildPayload(profileDir);
 }
-async function deletePack(packId) {
+async function deletePack(packId, profileDir) {
   const document = await readPacks();
   document.packs = document.packs.filter((pack) => pack.id !== packId);
   if (document.defaultPackId === packId) document.defaultPackId = "";
   await writePacks(document);
   await removePackSkillDir(packId);
-  return buildPayload();
+  return buildPayload(profileDir);
 }
-async function setDefaultPack(packId) {
+async function setDefaultPack(packId, profileDir) {
   const document = await readPacks();
   if (!document.packs.some((pack) => pack.id === packId)) throw new Error("\u6280\u80FD\u5305\u4E0D\u5B58\u5728");
   document.defaultPackId = packId;
   await writePacks(document);
-  return buildPayload();
+  return buildPayload(profileDir);
 }
 var writeChain = Promise.resolve();
-async function handleWrite(request, api) {
+async function handleWrite(request, api, profileDir) {
   if (request.action === "compose") {
     const document = await readPacks();
     const pack2 = document.packs.find((item) => item.id === request.pack);
     if (!pack2) throw new Error("\u6280\u80FD\u5305\u4E0D\u5B58\u5728");
     if (request.mode.trim() === "") throw new Error("\u672A\u6307\u5B9A\u6A21\u5F0F");
-    return { presetId: await ensureComposedPreset(api, request.mode, pack2) };
+    return { presetId: await ensureComposedPreset(api, request.mode, pack2, profileDir) };
   }
   if (request.action === "delete") {
     if (!isValidPackId(request.id)) throw new Error("\u6280\u80FD\u5305\u6807\u8BC6\u65E0\u6548");
-    const payload2 = await deletePack(request.id);
+    const payload2 = await deletePack(request.id, profileDir);
     await invalidateComposedPreset(request.id);
     return payload2;
   }
   if (request.action === "setDefault") {
     if (!isValidPackId(request.id)) throw new Error("\u6280\u80FD\u5305\u6807\u8BC6\u65E0\u6548");
-    return setDefaultPack(request.id);
+    return setDefaultPack(request.id, profileDir);
   }
   const pack = normalizePack(request.pack);
   if (!pack) throw new Error("\u6280\u80FD\u5305\u5B9A\u4E49\u65E0\u6548");
-  const payload = await savePack(pack);
+  const payload = await savePack(pack, profileDir);
   await invalidateComposedPreset(pack.id);
   return payload;
 }
-function installPowerPackRoutes(webServer, api) {
+function installPowerPackRoutes(webServer, api, profileDir) {
   return webServer.register({
     kind: "prefix",
     path: ROUTE_PATH,
@@ -818,7 +815,7 @@ function installPowerPackRoutes(webServer, api) {
       }
       try {
         if (request.method === "GET") {
-          sendJson(response, 200, await buildPayload());
+          sendJson(response, 200, await buildPayload(profileDir));
           return;
         }
         if (request.method === "POST") {
@@ -828,7 +825,7 @@ function installPowerPackRoutes(webServer, api) {
             return;
           }
           const task = writeChain.then(
-            () => handleWrite(body, api)
+            () => handleWrite(body, api, profileDir)
           );
           writeChain = task.catch((error) => {
             console.error("[power-pack] \u5199\u5165\u6280\u80FD\u5305\u5931\u8D25:", error);
@@ -856,12 +853,20 @@ function apply(ctx) {
     console.error("[power-pack] \u672A\u53D6\u5F97 agentPresets \u670D\u52A1\uFF0C\u6280\u80FD\u5305\u7EC4\u5408\u4E0D\u4F1A\u6CE8\u518C");
     return;
   }
+  const profileDir = currentProfileDir(ctx);
   ctx.effect(() => () => {
     void disposePackPresets();
   }, "power-pack: presets");
   ctx.inject(["webServer"], (host) => {
-    host.effect(() => installPowerPackRoutes(resolveWebServer(host), api), "power-pack: routes");
+    host.effect(
+      () => installPowerPackRoutes(resolveWebServer(host), api, profileDir),
+      "power-pack: routes"
+    );
   });
+}
+function currentProfileDir(ctx) {
+  const dir = ctx.profileContext?.dir;
+  return typeof dir === "string" && dir !== "" ? dir : void 0;
 }
 function resolveWebServer(ctx) {
   if (!ctx.webServer) throw new Error("power-pack: webServer \u670D\u52A1\u4E0D\u53EF\u7528");

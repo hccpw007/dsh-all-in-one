@@ -57,12 +57,14 @@ async function disposeComposed(): Promise<void> {
  * @param api 宿主的 Agent 预设服务
  * @param modeId 模式预设标识
  * @param pack 技能包定义
+ * @param profileDir 当前 profile 目录，用于解析已启用插件
  * @returns 组合预设 id
  */
 export async function ensureComposedPreset(
   api: AgentPresetApi,
   modeId: string,
   pack: PowerPack,
+  profileDir?: string,
 ): Promise<string> {
   const key = `${pack.id}@${modeId}`
   if (composed?.key === key) return composed.id
@@ -72,7 +74,7 @@ export async function ensureComposedPreset(
     throw new Error(`无法读取模式 ${modeId} 的组合行`)
   }
 
-  const { installed } = await listPluginCatalog()
+  const { installed } = await listPluginCatalog(profileDir)
   const rows = composePackRows(modeRows, pack, installed)
 
   await disposeComposed()

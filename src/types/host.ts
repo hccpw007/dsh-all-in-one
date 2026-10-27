@@ -28,6 +28,16 @@ export interface HostPluginContext {
   agentPresets?: AgentPresetApi
   /** Web 服务器服务；通过 inject 取得后可用。 */
   webServer?: WebServerApi
+  /** 启动本进程的 profile；缺失时相关功能回退为扫描全部 profile。 */
+  profileContext?: ProfileContext
+}
+
+/** 宿主报告的 profile 信息。 */
+export interface ProfileContext {
+  /** profile 名，如 desktop、web。 */
+  name?: string
+  /** profile 目录的绝对路径。 */
+  dir?: string
 }
 
 /** 宿主 Agent 预设定义，字段与 `@deepseek-ai/dsh-agent-preset` 的配置一致。 */

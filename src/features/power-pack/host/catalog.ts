@@ -21,51 +21,68 @@ export interface InstalledPluginItem extends PluginCatalogItem {
 }
 
 /**
- * 扫描 `$DSH_HOME/profiles/*` 中已安装的插件包。
- * @returns 去重后的插件包名，按字母排序
+ * 读取一个 profile 目录里已启用的插件包。
+ *
+ * 只认该目录的 `package.json`：既要在依赖里，也要在启用清单
+ * （`dsh.profile.bundles`）里。node_modules 可能残留已卸载的包，不能作为依据。
+ * @param dir profile 目录
+ * @param names 收集结果的集合
  */
-async function findInstalledPlugins(): Promise<string[]> {
-  const profilesRoot = join(resolveDshHome(), 'profiles')
-  const names = new Set<string>()
-
-  let profiles
+async function collectProfilePlugins(dir: string, names: Set<string>): Promise<void> {
+  const manifestPath = join(dir, 'package.json')
   try {
-    profiles = await readdir(profilesRoot, { withFileTypes: true })
+    const manifest = JSON.parse(await readFile(manifestPath, 'utf8')) as {
+      dependencies?: Record<string, string>
+      dsh?: { profile?: { bundles?: unknown } }
+    }
+    const enabled = Array.isArray(manifest.dsh?.profile?.bundles)
+      ? new Set(manifest.dsh.profile.bundles as string[])
+      : new Set<string>()
+
+    for (const name of Object.keys(manifest.dependencies ?? {})) {
+      // 官方 bundle 与本插件自身不计入可选插件，避免预设重复加载
+      if (name.startsWith('@deepseek-ai/') || name === SELF_PACKAGE) continue
+      if (enabled.has(name)) names.add(name)
+    }
+  } catch (error) {
+    console.error('[power-pack] 读取 profile 依赖失败:', manifestPath, error)
+  }
+}
+
+/**
+ * 列出待扫描的 profile 目录：优先用启动本进程的 profile，宿主未提供时回退到全部 profile。
+ * @param currentProfileDir 宿主报告的当前 profile 目录
+ * @returns 待扫描目录
+ */
+async function resolveProfileDirs(currentProfileDir?: string): Promise<string[]> {
+  if (currentProfileDir !== undefined && currentProfileDir !== '') return [currentProfileDir]
+
+  const profilesRoot = join(resolveDshHome(), 'profiles')
+  try {
+    const profiles = await readdir(profilesRoot, { withFileTypes: true })
+
+    return profiles
+      // 顶层 node_modules 是各 profile 的共享依赖目录，不是 profile
+      .filter((profile) => profile.isDirectory() && profile.name !== 'node_modules')
+      .map((profile) => join(profilesRoot, profile.name))
   } catch (error) {
     // 没有 profile 目录说明当前是 headless 或尚未安装插件，按空处理
     if ((error as NodeJS.ErrnoException).code === 'ENOENT') return []
     console.error('[power-pack] 读取 profile 目录失败:', profilesRoot, error)
     return []
   }
+}
 
-  for (const profile of profiles) {
-    if (!profile.isDirectory()) continue
+/**
+ * 扫描 profile 中已启用的插件包。
+ * @param currentProfileDir 宿主报告的当前 profile 目录；缺省时扫描全部 profile
+ * @returns 去重后的插件包名，按字母排序
+ */
+async function findInstalledPlugins(currentProfileDir?: string): Promise<string[]> {
+  const names = new Set<string>()
 
-    // 先读 package.json 依赖，再补 node_modules 中实际存在的插件目录
-    const manifestPath = join(profilesRoot, profile.name, 'package.json')
-    try {
-      const manifest = JSON.parse(await readFile(manifestPath, 'utf8')) as {
-        dependencies?: Record<string, string>
-      }
-      for (const name of Object.keys(manifest.dependencies ?? {})) {
-        if (name.startsWith('dsh-plugin-') && name !== SELF_PACKAGE) names.add(name)
-      }
-    } catch (error) {
-      console.error('[power-pack] 读取 profile 依赖失败:', manifestPath, error)
-    }
-
-    const modulesRoot = join(profilesRoot, profile.name, 'node_modules')
-    try {
-      const modules = await readdir(modulesRoot, { withFileTypes: true })
-      for (const entry of modules) {
-        if (!entry.isDirectory() && !entry.isSymbolicLink()) continue
-        if (entry.name.startsWith('dsh-plugin-') && entry.name !== SELF_PACKAGE) {
-          names.add(entry.name)
-        }
-      }
-    } catch (error) {
-      console.error('[power-pack] 读取 profile 插件目录失败:', modulesRoot, error)
-    }
+  for (const dir of await resolveProfileDirs(currentProfileDir)) {
+    await collectProfilePlugins(dir, names)
   }
 
   return [...names].sort((left, right) => left.localeCompare(right))
@@ -82,29 +99,33 @@ export function installedRowId(packageName: string): string {
 
 /**
  * 生成编辑页的插件清单。
+ * @param currentProfileDir 宿主报告的当前 profile 目录；缺省时扫描全部 profile
  * @returns 标准项在前、已装插件在后
  */
-export async function listPluginCatalog(): Promise<{
+export async function listPluginCatalog(currentProfileDir?: string): Promise<{
   standard: StandardPluginItem[]
   installed: InstalledPluginItem[]
 }> {
-  const installed = (await findInstalledPlugins()).map<InstalledPluginItem>((packageName) => ({
-    id: `pkg:${packageName}`,
-    label: packageName,
-    description: '已安装插件。若它已在 profile 中全局加载，重复挂载可能冲突，请谨慎勾选。',
-    kind: 'installed',
-    packageName,
-  }))
+  const installed = (await findInstalledPlugins(currentProfileDir)).map<InstalledPluginItem>(
+    (packageName) => ({
+      id: `pkg:${packageName}`,
+      label: packageName,
+      description: '已在 profile 中启用。它已在全局组合里加载，重复挂载会冲突，请谨慎勾选。',
+      kind: 'installed',
+      packageName,
+    }),
+  )
 
   return { standard: STANDARD_PLUGIN_ITEMS, installed }
 }
 
 /**
  * 把清单转成客户端可渲染的条目，不暴露组合行细节。
+ * @param currentProfileDir 宿主报告的当前 profile 目录；缺省时扫描全部 profile
  * @returns 扁平化的插件条目
  */
-export async function listPluginItems(): Promise<PluginCatalogItem[]> {
-  const { standard, installed } = await listPluginCatalog()
+export async function listPluginItems(currentProfileDir?: string): Promise<PluginCatalogItem[]> {
+  const { standard, installed } = await listPluginCatalog(currentProfileDir)
 
   return [
     ...standard.map(({ id, label, description, kind }) => ({ id, label, description, kind })),
