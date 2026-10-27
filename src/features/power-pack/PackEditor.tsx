@@ -184,7 +184,7 @@ export function PackEditor({ initial, catalog, saving, error, onSave, t }: PackE
         </div>
 
         <label className={`block ${GROUP_CLASS}`}>
-          {/* 追加到系统提示词末尾的增强要求；放在最后，作为整个技能包的收尾设置 */}
+          {/* 插到系统提示词前部的增强要求；放在最后，作为整个技能包的收尾设置 */}
           <span className="mb-1 block text-[12px] font-semibold text-primary">{t('systemPromptLabel')}</span>
           <textarea
             value={draft.systemPrompt}

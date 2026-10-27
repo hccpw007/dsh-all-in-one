@@ -71,7 +71,7 @@ function selectMcpServers(pack: PowerPack): McpServerConfig[] {
 export function buildPackRows(pack: PowerPack): PresetRow[] {
   const rows: PresetRow[] = []
 
-  // 技能包提示词追加在系统提示词末尾；为空时不注册，保持模式的提示词不变
+  // 技能包提示词插到系统提示词前部；为空时不注册，保持模式的提示词不变
   if (pack.systemPrompt.trim() !== '') {
     rows.push({
       id: 'power-pack-prompt',

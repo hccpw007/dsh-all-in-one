@@ -1,6 +1,6 @@
 // src/features/power-pack/preset-entry.ts
 var SECTION_NAME = "power-pack:custom-prompt";
-var SECTION_ORDER = 10250;
+var SECTION_ORDER = -500;
 var inject = ["systemPrompt"];
 function apply(ctx, config = {}) {
   const text = typeof config.text === "string" ? config.text.trim() : "";
