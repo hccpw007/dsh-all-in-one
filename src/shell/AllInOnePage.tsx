@@ -64,8 +64,12 @@ export function AllInOnePage({ t }: AllInOnePageProps) {
     return (
       <div className="dsh-aio-root">
         <PageActionsContext.Provider value={setPageActions}>
-          {/* 功能页头部：左侧返回网格，右侧留给功能页的保存等操作 */}
-          <div className="flex items-center justify-between gap-2 border-b border-line4 pb-3">
+          {/*
+            功能页头部：左侧返回网格，右侧留给功能页的保存等操作。
+            宿主滚动的是设置弹窗的内容区，这里用 sticky 让头部钉在滚动区顶端，
+            只让下方功能页内容滚动；需要不透明底色，否则内容会从头部下方透出。
+          */}
+          <div className="sticky top-0 z-10 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3">
             {/* 返回按钮：回到功能网格 */}
             <Button variant="outline" onClick={() => setActiveId(null)}>
               <BackGlyph />
