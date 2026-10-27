@@ -1,2 +1,11 @@
 node_modules/
 .build/
+
+# 系统与编辑器文件
+.DS_Store
+.idea/
+
+# 日志与环境变量
+*.log
+.env
+.env.*

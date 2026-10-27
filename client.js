@@ -1,6 +1,6 @@
 /* 本文件由 build.mjs 生成，请勿手工修改。 */
 window.__ModuleLoader__.load({
-  id: "@local/dsh-custom-features",
+  id: "dsh-all-in-one",
   factory(require) {
     const module = { exports: {} };
     const exports = module.exports;

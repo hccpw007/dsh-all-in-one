@@ -1,4 +1,4 @@
-# 定制功能（Custom Features）
+# dsh-all-in-one
 
 DeepSeek Harness 的 all-in-one 插件：在「设置 → 定制功能」中用一个网格收纳各种独立小工具。
 外壳只负责网格、导航与样式，每个功能在自己的文件夹里独立实现。
