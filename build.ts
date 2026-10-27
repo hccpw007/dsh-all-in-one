@@ -80,6 +80,26 @@ async function buildHostEntry(): Promise<void> {
 }
 
 /**
+ * 步骤二之二：打包 preset 内的提示词行，产出 preset-style.js。
+ *
+ * 该入口被「对话风格」预设作为一行加载，必须是宿主可解析的独立模块。
+ */
+async function buildPresetStyleEntry(): Promise<void> {
+  const result = await build({
+    entryPoints: [join(ROOT, 'src/preset-style.ts')],
+    bundle: true,
+    write: false,
+    format: 'esm',
+    platform: 'node',
+    target: ['node20'],
+    legalComments: 'none',
+    logLevel: 'warning',
+  })
+
+  writeFileSync(join(ROOT, 'preset-style.js'), firstOutputText(result))
+}
+
+/**
  * 步骤三：打包浏览器端入口。
  * React 保持 external，由 ModuleLoader 工厂的 require 参数提供。
  */
@@ -129,9 +149,10 @@ async function main(): Promise<void> {
     mkdirSync(BUILD_DIR, { recursive: true })
     buildStyles()
     await buildHostEntry()
+    await buildPresetStyleEntry()
     const code = await buildScript()
     writeClient(code)
-    console.log('[build] 已生成 index.js 与 client.js')
+    console.log('[build] 已生成 index.js、preset-style.js 与 client.js')
   } catch (error) { // 构建失败必须以非零码退出，避免带着旧产物继续
     console.error('[build] 构建失败:', error)
     process.exitCode = 1
