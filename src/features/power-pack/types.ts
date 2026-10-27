@@ -49,6 +49,8 @@ export interface PowerPack {
 export interface PowerPackDocument {
   version: 1
   packs: PowerPack[]
+  /** 新建会话默认预选的技能包 id；空字符串表示没有默认。 */
+  defaultPackId: string
 }
 
 /** 插件/工具行的来源类别。 */
@@ -77,15 +79,18 @@ export interface PowerPackCatalog {
 /** GET / POST 共用的响应负载。 */
 export interface PowerPacksPayload {
   packs: PowerPack[]
+  /** 新建会话默认预选的技能包 id；空字符串表示没有默认。 */
+  defaultPackId: string
   catalog: PowerPackCatalog
   /** 存储文件路径，便于用户定位与备份。 */
   storagePath: string
 }
 
-/** 保存、删除或合成组合预设的请求体。 */
+/** 保存、删除、设置默认或合成组合预设的请求体。 */
 export type PowerPackWriteRequest =
   | { action: 'save'; pack: PowerPack }
   | { action: 'delete'; id: string }
+  | { action: 'setDefault'; id: string }
   | { action: 'compose'; pack: string; mode: string }
 
 /** 合成组合预设的响应体。 */

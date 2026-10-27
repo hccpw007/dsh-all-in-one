@@ -110,3 +110,18 @@ export function deletePowerPack(id: string): Promise<PowerPacksPayload> {
     body: JSON.stringify(body),
   })
 }
+
+/**
+ * 设置新建会话默认预选的技能包。
+ * @param id 技能包标识
+ * @returns 设置后的负载
+ */
+export function setDefaultPowerPack(id: string): Promise<PowerPacksPayload> {
+  const body: PowerPackWriteRequest = { action: 'setDefault', id }
+
+  return request<PowerPacksPayload>({
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+}

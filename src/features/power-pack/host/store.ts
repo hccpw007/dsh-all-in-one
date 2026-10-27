@@ -135,13 +135,18 @@ export function normalizePack(value: unknown): PowerPack | undefined {
 async function parsePackFile(file: string): Promise<PowerPackDocument | undefined> {
   try {
     const raw = await readFile(file, 'utf8')
-    const parsed = JSON.parse(raw) as { packs?: unknown; styles?: unknown }
+    const parsed = JSON.parse(raw) as { packs?: unknown; styles?: unknown; defaultPackId?: unknown }
     const list = Array.isArray(parsed.packs) ? parsed.packs : parsed.styles
     const packs = Array.isArray(list)
       ? list.map(normalizePack).filter((pack): pack is PowerPack => pack !== undefined)
       : []
+    // 默认技能包可能已被删除或来自旧文件，只保留仍存在的 id
+    const defaultPackId = typeof parsed.defaultPackId === 'string'
+      && packs.some((pack) => pack.id === parsed.defaultPackId)
+      ? parsed.defaultPackId
+      : ''
 
-    return { version: 1, packs }
+    return { version: 1, packs, defaultPackId }
   } catch (error) {
     // 首次运行时文件不存在是正常情况；其它读取错误留下日志但仍保持可用
     if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
@@ -168,7 +173,7 @@ export async function readPacks(): Promise<PowerPackDocument> {
     return migrated
   }
 
-  return { version: 1, packs: [] }
+  return { version: 1, packs: [], defaultPackId: '' }
 }
 
 /**

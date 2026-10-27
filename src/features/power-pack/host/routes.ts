@@ -86,6 +86,7 @@ async function buildPayload(): Promise<PowerPacksPayload> {
 
   return {
     packs: document.packs,
+    defaultPackId: document.defaultPackId,
     catalog: {
       skills: skills.map(({ name, description }) => ({ name, description })),
       plugins,
@@ -137,9 +138,26 @@ async function savePack(pack: PowerPack): Promise<PowerPacksPayload> {
 async function deletePack(packId: string): Promise<PowerPacksPayload> {
   const document = await readPacks()
   document.packs = document.packs.filter((pack) => pack.id !== packId)
+  // 删除的正是默认技能包时一并清空，避免默认指向不存在的包
+  if (document.defaultPackId === packId) document.defaultPackId = ''
   await writePacks(document)
 
   await removePackSkillDir(packId)
+
+  return buildPayload()
+}
+
+/**
+ * 设置新建会话默认预选的技能包。
+ * @param packId 技能包标识
+ * @returns 设置后的完整负载
+ */
+async function setDefaultPack(packId: string): Promise<PowerPacksPayload> {
+  const document = await readPacks()
+  if (!document.packs.some((pack) => pack.id === packId)) throw new Error('技能包不存在')
+
+  document.defaultPackId = packId
+  await writePacks(document)
 
   return buildPayload()
 }
@@ -148,7 +166,7 @@ async function deletePack(packId: string): Promise<PowerPacksPayload> {
 let writeChain: Promise<unknown> = Promise.resolve()
 
 /**
- * 处理一次写入请求：保存或删除技能包，或为「模式 + 技能包」合成组合预设。
+ * 处理一次写入请求：保存或删除技能包、设置默认技能包，或为「模式 + 技能包」合成组合预设。
  * @param request 写请求体
  * @param api 宿主预设服务
  * @returns 技能包负载，或合成结果的预设 id
@@ -172,6 +190,12 @@ async function handleWrite(
     const payload = await deletePack(request.id)
     await invalidateComposedPreset(request.id)
     return payload
+  }
+
+  if (request.action === 'setDefault') {
+    if (!isValidPackId(request.id)) throw new Error('技能包标识无效')
+
+    return setDefaultPack(request.id)
   }
 
   const pack = normalizePack(request.pack)

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import { Button } from '../../components/Button'
 import type { FeaturePageProps } from '../../shell/registry'
-import { deletePowerPack, loadPowerPacks, savePowerPack } from './api'
+import { deletePowerPack, loadPowerPacks, savePowerPack, setDefaultPowerPack } from './api'
 import { PackEditor } from './PackEditor'
 import type { PowerPack, PowerPacksPayload, RuleMode } from './types'
 import type { Translate } from '../../types/plugin'
@@ -44,6 +44,8 @@ export function PowerPackPage({ t }: FeaturePageProps) {
   const [editing, setEditing] = useState<PowerPack | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  // 设置默认技能包的请求进行中，避免重复点击
+  const [defaulting, setDefaulting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   /** 拉取最新技能包与清单。 */
@@ -122,6 +124,22 @@ export function PowerPackPage({ t }: FeaturePageProps) {
       setError(
         `${t('deleteFailed')}：${failure instanceof Error ? failure.message : String(failure)}`,
       )
+    }
+  }
+
+  /** 把某个技能包设为新建会话的默认选择。 */
+  const handleSetDefault = async (id: string): Promise<void> => {
+    setDefaulting(true)
+    try {
+      setPayload(await setDefaultPowerPack(id))
+      setError(null)
+    } catch (failure) {
+      console.error('[power-pack] 设置默认技能包失败:', failure)
+      setError(
+        `${t('setDefaultFailed')}：${failure instanceof Error ? failure.message : String(failure)}`,
+      )
+    } finally {
+      setDefaulting(false)
     }
   }
 
@@ -217,6 +235,21 @@ export function PowerPackPage({ t }: FeaturePageProps) {
                   </p>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
+                  {/* 默认技能包：已是默认只显示标识，否则提供设置入口 */}
+                  {payload?.defaultPackId === pack.id ? (
+                    <span className="rounded-lg border border-line4 px-3 py-1.5 text-[12px] text-secondary">
+                      {t('defaultBadge')}
+                    </span>
+                  ) : (
+                    // 设为默认按钮：新建会话时自动预选该技能包
+                    <Button
+                      variant="outline"
+                      disabled={defaulting}
+                      onClick={() => void handleSetDefault(pack.id)}
+                    >
+                      {t('setDefault')}
+                    </Button>
+                  )}
                   {/* 编辑该技能包 */}
                   <Button
                     variant="outline"

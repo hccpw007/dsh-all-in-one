@@ -669,7 +669,8 @@ async function parsePackFile(file) {
     const parsed = JSON.parse(raw);
     const list = Array.isArray(parsed.packs) ? parsed.packs : parsed.styles;
     const packs = Array.isArray(list) ? list.map(normalizePack).filter((pack) => pack !== void 0) : [];
-    return { version: 1, packs };
+    const defaultPackId = typeof parsed.defaultPackId === "string" && packs.some((pack) => pack.id === parsed.defaultPackId) ? parsed.defaultPackId : "";
+    return { version: 1, packs, defaultPackId };
   } catch (error) {
     if (error.code !== "ENOENT") {
       console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u5305\u914D\u7F6E\u5931\u8D25:", file, error);
@@ -686,7 +687,7 @@ async function readPacks() {
     await writePacks(migrated);
     return migrated;
   }
-  return { version: 1, packs: [] };
+  return { version: 1, packs: [], defaultPackId: "" };
 }
 async function writePacks(document) {
   const file = powerPacksFile();
@@ -741,6 +742,7 @@ async function buildPayload() {
   const plugins = await listPluginItems();
   return {
     packs: document.packs,
+    defaultPackId: document.defaultPackId,
     catalog: {
       skills: skills.map(({ name, description }) => ({ name, description })),
       plugins
@@ -768,8 +770,16 @@ async function savePack(pack) {
 async function deletePack(packId) {
   const document = await readPacks();
   document.packs = document.packs.filter((pack) => pack.id !== packId);
+  if (document.defaultPackId === packId) document.defaultPackId = "";
   await writePacks(document);
   await removePackSkillDir(packId);
+  return buildPayload();
+}
+async function setDefaultPack(packId) {
+  const document = await readPacks();
+  if (!document.packs.some((pack) => pack.id === packId)) throw new Error("\u6280\u80FD\u5305\u4E0D\u5B58\u5728");
+  document.defaultPackId = packId;
+  await writePacks(document);
   return buildPayload();
 }
 var writeChain = Promise.resolve();
@@ -786,6 +796,10 @@ async function handleWrite(request, api) {
     const payload2 = await deletePack(request.id);
     await invalidateComposedPreset(request.id);
     return payload2;
+  }
+  if (request.action === "setDefault") {
+    if (!isValidPackId(request.id)) throw new Error("\u6280\u80FD\u5305\u6807\u8BC6\u65E0\u6548");
+    return setDefaultPack(request.id);
   }
   const pack = normalizePack(request.pack);
   if (!pack) throw new Error("\u6280\u80FD\u5305\u5B9A\u4E49\u65E0\u6548");

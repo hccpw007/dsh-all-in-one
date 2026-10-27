@@ -20,6 +20,12 @@ export const powerPackLocales: FeatureLocales = {
     edit: '编辑',
     // 删除按钮
     delete: '删除',
+    // 把技能包设为新建会话默认选择的按钮
+    setDefault: '设为默认',
+    // 已是默认技能包的标识
+    defaultBadge: '默认',
+    // 设置默认技能包失败提示
+    setDefaultFailed: '设置默认失败',
     // 保存按钮
     save: '保存',
     // 保存中的按钮文案
@@ -147,6 +153,12 @@ export const powerPackLocales: FeatureLocales = {
     edit: 'Edit',
     // Delete button
     delete: 'Delete',
+    // Button that makes a pack the default choice for new sessions
+    setDefault: 'Set as default',
+    // Badge shown on the default pack
+    defaultBadge: 'Default',
+    // Failure when setting the default pack
+    setDefaultFailed: 'Could not set default',
     // Save button
     save: 'Save',
     // Save-in-progress label

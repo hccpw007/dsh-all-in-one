@@ -253,6 +253,14 @@ window.__ModuleLoader__.load({
         body: JSON.stringify(body)
       });
     }
+    function setDefaultPowerPack(id) {
+      const body = { action: "setDefault", id };
+      return request({
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(body)
+      });
+    }
 
     // src/features/power-pack/seat-store.ts
     var PRESET_ID_PREFIX = "power-pack-";
@@ -307,9 +315,11 @@ window.__ModuleLoader__.load({
             return;
           }
           let packs = [];
+          let defaultPackId = "";
           try {
             const payload = await loadPowerPacks();
             packs = payload.packs.map(({ id, name, description }) => ({ id, name, description }));
+            defaultPackId = payload.defaultPackId;
           } catch (error) {
             console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u5305\u5217\u8868\u5931\u8D25:", error);
           }
@@ -318,15 +328,15 @@ window.__ModuleLoader__.load({
           );
           const fallbackMode = modes.find((preset) => preset.isDefault)?.id ?? modes[0]?.id ?? "";
           const fromSession = parsePresetId(sessionPreset(ctx, sessionId) ?? "");
-          store.set({
-            status: "ready",
-            modes,
-            packs,
-            // 模式为空说明会话用的是旧版独立技能包预设，回退到宿主默认模式
-            mode: staged?.mode || fromSession.mode || fallbackMode,
-            pack: staged?.pack ?? fromSession.pack,
-            error: null
-          });
+          const sessionBlank = sessionId === void 0 || ctx.sessions?.list.getSnapshot().byId[sessionId]?.blank !== false;
+          const fallbackPack = sessionBlank ? defaultPackId : "";
+          const mode = staged?.mode || fromSession.mode || fallbackMode;
+          const pack = staged ? staged.pack : fromSession.pack || fallbackPack;
+          store.set({ status: "ready", modes, packs, mode, pack, error: null });
+          if (staged === void 0 && fromSession.pack === "" && fallbackPack !== "" && mode !== "") {
+            if (sessionId === void 0) staged = { mode, pack: fallbackPack };
+            else await commit(sessionId, mode, fallbackPack);
+          }
         } catch (error) {
           console.error("[power-pack] \u8BFB\u53D6\u6A21\u5F0F\u4E0E\u6280\u80FD\u5305\u5931\u8D25:", error);
           store.set({
@@ -490,6 +500,12 @@ window.__ModuleLoader__.load({
         edit: "\u7F16\u8F91",
         // 删除按钮
         delete: "\u5220\u9664",
+        // 把技能包设为新建会话默认选择的按钮
+        setDefault: "\u8BBE\u4E3A\u9ED8\u8BA4",
+        // 已是默认技能包的标识
+        defaultBadge: "\u9ED8\u8BA4",
+        // 设置默认技能包失败提示
+        setDefaultFailed: "\u8BBE\u7F6E\u9ED8\u8BA4\u5931\u8D25",
         // 保存按钮
         save: "\u4FDD\u5B58",
         // 保存中的按钮文案
@@ -612,6 +628,12 @@ window.__ModuleLoader__.load({
         edit: "Edit",
         // Delete button
         delete: "Delete",
+        // Button that makes a pack the default choice for new sessions
+        setDefault: "Set as default",
+        // Badge shown on the default pack
+        defaultBadge: "Default",
+        // Failure when setting the default pack
+        setDefaultFailed: "Could not set default",
         // Save button
         save: "Save",
         // Save-in-progress label
@@ -1128,6 +1150,7 @@ window.__ModuleLoader__.load({
       const [editing, setEditing] = (0, import_react9.useState)(null);
       const [loading, setLoading] = (0, import_react9.useState)(true);
       const [saving, setSaving] = (0, import_react9.useState)(false);
+      const [defaulting, setDefaulting] = (0, import_react9.useState)(false);
       const [error, setError] = (0, import_react9.useState)(null);
       const reload = async () => {
         try {
@@ -1190,6 +1213,20 @@ window.__ModuleLoader__.load({
           );
         }
       };
+      const handleSetDefault = async (id) => {
+        setDefaulting(true);
+        try {
+          setPayload(await setDefaultPowerPack(id));
+          setError(null);
+        } catch (failure) {
+          console.error("[power-pack] \u8BBE\u7F6E\u9ED8\u8BA4\u6280\u80FD\u5305\u5931\u8D25:", failure);
+          setError(
+            `${t("setDefaultFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`
+          );
+        } finally {
+          setDefaulting(false);
+        }
+      };
       if (editing && payload) {
         return /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react9.default.createElement("header", null, /* @__PURE__ */ import_react9.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react9.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("pageDescription"))), /* @__PURE__ */ import_react9.default.createElement(
           PackEditor,
@@ -1234,7 +1271,18 @@ window.__ModuleLoader__.load({
           key: pack.id,
           className: "rounded-xl border border-line4 bg-layer1 px-4 py-3"
         },
-        /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex flex-wrap items-start justify-between gap-2" }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react9.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, pack.name), pack.description ? /* @__PURE__ */ import_react9.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, pack.description) : null, /* @__PURE__ */ import_react9.default.createElement("p", { className: "mt-1 text-[12px] text-secondary" }, t("skillsTitle"), ": ", modeLabel(pack.skills.mode, t), " \xB7 ", t("pluginsTitle"), ":", " ", modeLabel(pack.plugins.mode, t), " \xB7 ", t("mcpTitle"), ": ", pack.mcpServers.length)), /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex shrink-0 items-center gap-2" }, /* @__PURE__ */ import_react9.default.createElement(
+        /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex flex-wrap items-start justify-between gap-2" }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react9.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, pack.name), pack.description ? /* @__PURE__ */ import_react9.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, pack.description) : null, /* @__PURE__ */ import_react9.default.createElement("p", { className: "mt-1 text-[12px] text-secondary" }, t("skillsTitle"), ": ", modeLabel(pack.skills.mode, t), " \xB7 ", t("pluginsTitle"), ":", " ", modeLabel(pack.plugins.mode, t), " \xB7 ", t("mcpTitle"), ": ", pack.mcpServers.length)), /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex shrink-0 items-center gap-2" }, payload?.defaultPackId === pack.id ? /* @__PURE__ */ import_react9.default.createElement("span", { className: "rounded-lg border border-line4 px-3 py-1.5 text-[12px] text-secondary" }, t("defaultBadge")) : (
+          // 设为默认按钮：新建会话时自动预选该技能包
+          /* @__PURE__ */ import_react9.default.createElement(
+            Button,
+            {
+              variant: "outline",
+              disabled: defaulting,
+              onClick: () => void handleSetDefault(pack.id)
+            },
+            t("setDefault")
+          )
+        ), /* @__PURE__ */ import_react9.default.createElement(
           Button,
           {
             variant: "outline",

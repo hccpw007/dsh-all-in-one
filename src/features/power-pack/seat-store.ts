@@ -144,9 +144,11 @@ export function createSeatController(ctx: PluginContext): SeatController {
 
       // 技能包名单来自插件自己的路由；它失败只影响技能包下拉，模式仍可用
       let packs: SeatPackOption[] = []
+      let defaultPackId = ''
       try {
         const payload = await loadPowerPacks()
         packs = payload.packs.map(({ id, name, description }) => ({ id, name, description }))
+        defaultPackId = payload.defaultPackId
       } catch (error) {
         console.error('[power-pack] 读取技能包列表失败:', error)
       }
@@ -158,15 +160,22 @@ export function createSeatController(ctx: PluginContext): SeatController {
       const fallbackMode = modes.find((preset) => preset.isDefault)?.id ?? modes[0]?.id ?? ''
       const fromSession = parsePresetId(sessionPreset(ctx, sessionId) ?? '')
 
-      store.set({
-        status: 'ready',
-        modes,
-        packs,
-        // 模式为空说明会话用的是旧版独立技能包预设，回退到宿主默认模式
-        mode: staged?.mode || fromSession.mode || fallbackMode,
-        pack: staged?.pack ?? fromSession.pack,
-        error: null,
-      })
+      // 只有新会话才预选默认技能包；已有内容的会话保持原记录
+      const sessionBlank =
+        sessionId === undefined ||
+        ctx.sessions?.list.getSnapshot().byId[sessionId]?.blank !== false
+      const fallbackPack = sessionBlank ? defaultPackId : ''
+      // 模式为空说明会话用的是旧版独立技能包预设，回退到宿主默认模式
+      const mode = staged?.mode || fromSession.mode || fallbackMode
+      const pack = staged ? staged.pack : (fromSession.pack || fallbackPack)
+
+      store.set({ status: 'ready', modes, packs, mode, pack, error: null })
+
+      // 默认技能包要真正提交到会话才会生效：没有会话时先暂存，会话出现后由 applyStaged 应用
+      if (staged === undefined && fromSession.pack === '' && fallbackPack !== '' && mode !== '') {
+        if (sessionId === undefined) staged = { mode, pack: fallbackPack }
+        else await commit(sessionId, mode, fallbackPack)
+      }
     } catch (error) {
       console.error('[power-pack] 读取模式与技能包失败:', error)
       store.set({
