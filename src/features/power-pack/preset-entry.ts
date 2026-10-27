@@ -4,7 +4,7 @@
  * 预设本身不能把文本拼到部署人设后面；这里注册一个独立的系统提示词段落，
  * 排在部署人设后缀之后。插件作为 preset 的一行加载，只在该预设作用域生效。
  */
-import type { PresetPromptContext } from './types/host'
+import type { PresetPromptContext } from '../../types/host'
 
 /** 段落名保持唯一，避免覆盖部署人设或工具说明。 */
 const SECTION_NAME = 'power-pack:custom-prompt'

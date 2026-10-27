@@ -8,14 +8,13 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → All In One」中用一
 ```
 ├── index.js                 # 宿主侧插件产物，由 build.ts 生成，请勿手改
 ├── client.js                # 浏览器端产物，由 build.ts 生成，请勿手改
-├── preset-pack.js          # 「技能包」预设内提示词行的产物，由 build.ts 生成
+├── preset-pack.js           # 「技能包」预设内提示词行的产物，由 build.ts 生成
 ├── cordis.patch.yml         # bundle 声明，安装时插入插件行
 ├── tsconfig.json            # TypeScript 配置（strict，仅类型检查不产出文件）
 ├── tailwind.config.ts       # Tailwind 配置，颜色映射宿主主题令牌
 ├── locale/{zh,en}.json      # 插件标题与描述
 ├── src/
 │   ├── index.ts             # 宿主侧入口：只聚合各 feature 的 host 扩展并注册
-│   ├── preset-pack.ts      # 「技能包」预设内的提示词行，独立打包为 preset-pack.js
 │   ├── entry.tsx            # 注册 settings.section，合并外壳与各功能语言包
 │   ├── styles/input.css     # Tailwind 入口
 │   ├── types/               # 宿主 API（客户端与宿主侧）与资源模块的类型声明
@@ -26,12 +25,6 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → All In One」中用一
 │       ├── index.ts         # featureList：登记所有功能（装配清单）
 │       ├── host.ts          # featureHosts：登记各功能的宿主侧扩展（装配清单）
 │       ├── registry.ts      # 校验后的共享注册表，外壳与入口共用
-│       ├── demo/            # 页面型示例功能，可作为模板复制
-│       │   ├── index.tsx    # 注册定义：id、入口、页面与文案的装配
-│       │   ├── entry.tsx    # 功能在网格中的入口，外观由功能自己设计
-│       │   ├── page.tsx     # 功能页面内容与页头标题
-│       │   ├── Card.tsx     # 本功能专属面板，随 demo 一起复制
-│       │   └── locales.ts   # 本功能的中英文文案
 │       ├── power-pack/      # 技能包：按任务装配技能、插件与 MCP
 │       │   ├── index.tsx    # 注册定义：页面型入口与页面
 │       │   ├── entry.tsx    # 网格入口
@@ -40,11 +33,12 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → All In One」中用一
 │       │   ├── ResourceRuleField.tsx # 「全部 / 仅引用 / 仅排除」规则编辑
 │       │   ├── McpServerEditor.tsx  # MCP 服务器定义编辑
 │       │   ├── api.ts       # 与宿主侧路由通信
+│       │   ├── preset-entry.ts # 预设内提示词行，独立打包为 preset-pack.js
 │       │   ├── types.ts     # 客户端与宿主共用的数据模型
-│       │   ├── host.ts      # 宿主侧入口：注册预设与 HTTP 路由
+│       │   ├── host.ts      # 宿主侧入口：注册组合预设与 HTTP 路由
 │       │   ├── host/        # 技能包存储、技能扫描、模式行读取与组合、路由实现
 │       │   └── locales.ts   # 本功能的中英文文案
-│       └── expand-process/  # 开关型示例功能：展开过程
+│       └── expand-process/  # 开关型功能：展开过程
 │           ├── index.tsx    # 注册定义：只提供 switch，没有独立页面
 │           ├── toggle.tsx   # 网格中的开关入口
 │           ├── expand-process.ts # 引导脚本与开关状态读写，本功能专属
@@ -74,8 +68,8 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → All In One」中用一
 
 页面型（点击卡片进入独立页面）：
 
-1. 复制 `src/features/demo/` 为 `src/features/<id>/`
-2. 修改 `index.tsx` 里的 `id`，并在 `entry.tsx`、`page.tsx`、`locales.ts` 中写入本功能的内容
+1. 参考 `src/features/power-pack/`，在 `src/features/<id>/` 下新建 `index.tsx`、`entry.tsx`、`page.tsx` 与 `locales.ts`
+2. 修改 `index.tsx` 里的 `id`，并在这几个文件中写入本功能的内容
 3. 在 `src/features/index.ts` 的 `featureList` 里追加该文件夹的默认导出
 4. 运行 `npm run build`，刷新 Harness 页面，卡片即出现在网格中
 

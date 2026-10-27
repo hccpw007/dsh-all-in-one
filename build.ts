@@ -82,11 +82,12 @@ async function buildHostEntry(): Promise<void> {
 /**
  * 步骤二之二：打包 preset 内的提示词行，产出 preset-pack.js。
  *
- * 该入口被「技能包」预设作为一行加载，必须是宿主可解析的独立模块。
+ * 该入口由「技能包」feature 提供，被组合预设作为一行加载，必须是宿主可解析的
+ * 独立模块；它不能并进宿主入口，否则会随插件整体加载而不是只在预设作用域生效。
  */
 async function buildPresetPackEntry(): Promise<void> {
   const result = await build({
-    entryPoints: [join(ROOT, 'src/preset-pack.ts')],
+    entryPoints: [join(ROOT, 'src/features/power-pack/preset-entry.ts')],
     bundle: true,
     write: false,
     format: 'esm',

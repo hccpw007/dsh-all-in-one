@@ -1,4 +1,4 @@
-// src/preset-pack.ts
+// src/features/power-pack/preset-entry.ts
 var SECTION_NAME = "power-pack:custom-prompt";
 var SECTION_ORDER = 10250;
 var inject = ["systemPrompt"];
