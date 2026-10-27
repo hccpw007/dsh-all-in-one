@@ -4,8 +4,9 @@
  * 颜色全部映射到宿主主题令牌（`--dsw-alias-*`），因此页面随宿主的明暗主题
  * 自动切换，不使用字面色值。preflight 关闭，避免重置宿主的既有样式。
  */
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
   content: ['./src/**/*.{ts,tsx}'],
   corePlugins: {
     preflight: false,
@@ -29,3 +30,5 @@ module.exports = {
     },
   },
 }
+
+export default config

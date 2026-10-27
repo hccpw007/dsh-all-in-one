@@ -1,7 +1,7 @@
 /**
  * 浏览器端入口：把「定制功能」页面注册进设置的 section 插槽。
  *
- * 由 build.mjs 打包并包裹成 ModuleLoader 的工厂函数，React 来自宿主模块表。
+ * 由 build.ts 打包并包裹成 ModuleLoader 的工厂函数，React 来自宿主模块表。
  */
 import React from 'react'
 

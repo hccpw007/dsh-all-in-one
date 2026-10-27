@@ -6,12 +6,14 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → 定制功能」中用�
 ## 目录结构
 
 ```
-├── index.js                 # 宿主侧插件（本插件无宿主能力，保持空实现）
-├── client.js                # 浏览器端产物，由 build.mjs 生成，请勿手改
+├── index.js                 # 宿主侧插件产物，由 build.ts 生成，请勿手改
+├── client.js                # 浏览器端产物，由 build.ts 生成，请勿手改
 ├── cordis.patch.yml         # bundle 声明，安装时插入插件行
 ├── tsconfig.json            # TypeScript 配置（strict，仅类型检查不产出文件）
+├── tailwind.config.ts       # Tailwind 配置，颜色映射宿主主题令牌
 ├── locale/{zh,en}.json      # 插件标题与描述
 ├── src/
+│   ├── index.ts             # 宿主侧插件源码（本插件无宿主能力，保持空实现）
 │   ├── entry.tsx            # 注册 settings.section，注入样式与文案
 │   ├── styles/input.css     # Tailwind 入口
 │   ├── types/               # 宿主 API 与资源模块的类型声明
@@ -19,7 +21,7 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → 定制功能」中用�
 │   └── features/
 │       ├── index.ts         # featureList：登记所有功能
 │       └── demo/            # 示例功能，可作为模板复制
-└── build.mjs                # 构建脚本
+└── build.ts                 # 构建脚本，由 tsx 直接执行
 ```
 
 ## 新增一个功能
@@ -42,8 +44,11 @@ npm run build      # 类型检查通过后产出 client.js（内含 Tailwind 生
 样式在构建期由 Tailwind 生成，颜色全部映射到宿主的 `--dsw-alias-*` 主题令牌，
 因此页面会跟随宿主自动切换明暗主题，不写入字面色值。
 
+项目源码与构建脚本均为 TypeScript，根目录的 `index.js`、`client.js` 是产物，不要手改；
+修改 `src/` 或构建脚本后执行 `npm run build` 重新生成。
+
 ## 技术栈
 
 - React（由宿主模块表提供，不随插件打包）
-- TypeScript（strict 模式，构建前执行 `tsc --noEmit`）
+- TypeScript（strict 模式，构建前执行 `tsc --noEmit`；构建脚本用 `tsx` 执行）
 - Tailwind CSS 3（构建期生成，preflight 关闭以免影响宿主样式）

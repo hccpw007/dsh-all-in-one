@@ -1,4 +1,4 @@
-/* 本文件由 build.mjs 生成，请勿手工修改。 */
+/* 本文件由 build.ts 生成，请勿手工修改。 */
 window.__ModuleLoader__.load({
   id: "dsh-all-in-one",
   factory(require) {

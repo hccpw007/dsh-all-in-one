@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "npm run typecheck && node build.mjs"
+    "build": "npm run typecheck && tsx build.ts"
   },
   "dsh": {
     "bundle": {
@@ -34,9 +34,11 @@
     }
   },
   "devDependencies": {
+    "@types/node": "^26.6.5",
     "@types/react": "^18.3.31",
     "esbuild": "^0.25.9",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.3"
   }
 }
