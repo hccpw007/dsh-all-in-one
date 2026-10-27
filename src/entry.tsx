@@ -50,7 +50,7 @@ const LOCALE_DICTIONARIES = mergeDictionaries(
   collectFeatureLocales(registry.list),
 )
 
-/** 客户端插件定义：依赖 slots 与 locale 两个宿主服务。 */
+/** 客户端插件定义：只依赖设置页必需的服务，功能扩展自行按需注入。 */
 const plugin: ClientPlugin = {
   inject: ['slots', 'locale'],
 
@@ -92,6 +92,15 @@ const plugin: ClientPlugin = {
         SettingsSection,
       ),
     )
+
+    // 执行各 feature 的客户端扩展；单个扩展失败不应影响设置页与其它扩展
+    for (const feature of registry.list) {
+      try {
+        feature.client?.apply(ctx, (key) => t(`${feature.id}.${key}`))
+      } catch (error) {
+        console.error('[all-in-one] 客户端扩展启动失败:', feature.id, error)
+      }
+    }
   },
 }
 

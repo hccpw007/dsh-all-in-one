@@ -127,6 +127,24 @@ export const chatStyleLocales: FeatureLocales = {
     // 预设选择提示
     presetHint:
       '风格以 Agent 预设的形式注册。新建任务时在「标准模式」旁的预设选择器里选择它。',
+    // 新会话选择器的风格分组标题
+    styleGroup: '对话风格',
+    // 新会话选择器的模式分组标题
+    modeGroup: '模式',
+    // 尚未创建任何风格时的提示
+    seatNoStyles: '还没有创建风格，可在「设置 → All In One → 对话风格」中新建。',
+    // 内置标准模式的显示名
+    presetStandardName: '标准模式',
+    // 内置 PTC 模式的显示名
+    presetPtcName: 'PTC 模式',
+    // 内置极简模式的显示名
+    presetMinimalName: '极简模式',
+    // 内置创造模式的显示名
+    presetCordisName: '创造模式',
+    // 会话已开始后尝试切换风格的提示
+    seatSessionStarted: '会话已开始，无法再切换风格。请在新建任务时选择。',
+    // 风格切换失败的提示前缀
+    seatSelectFailed: '切换失败',
   },
   en: {
     // Grid entry title
@@ -253,5 +271,23 @@ export const chatStyleLocales: FeatureLocales = {
     // Preset picker hint
     presetHint:
       'Styles register as agent presets. Choose one in the preset picker next to Standard mode when starting a new task.',
+    // Group heading for styles in the new-session picker
+    styleGroup: 'Chat styles',
+    // Group heading for modes in the new-session picker
+    modeGroup: 'Modes',
+    // Shown when no style has been created yet
+    seatNoStyles: 'No styles yet. Create one in Settings → All In One → Chat styles.',
+    // Display name for the built-in Standard mode
+    presetStandardName: 'Standard mode',
+    // Display name for the built-in PTC mode
+    presetPtcName: 'PTC mode',
+    // Display name for the built-in Minimal mode
+    presetMinimalName: 'Minimal mode',
+    // Display name for the built-in Creator mode
+    presetCordisName: 'Creator mode',
+    // Shown when trying to switch a session that already started
+    seatSessionStarted: 'This session has started; a style can only be chosen for a new task.',
+    // Prefix for a failed style switch
+    seatSelectFailed: 'Could not switch',
   },
 }

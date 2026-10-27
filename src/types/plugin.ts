@@ -17,12 +17,18 @@ export interface LocaleApi {
   bind(namespace: string): Translate
 }
 
-/** 设置页插槽的注册描述，label 决定左侧导航项的名称。 */
+/** 插槽描述：label 用于设置页导航，priority 用于覆盖同一 single 插槽的注册。 */
 export interface SlotDescriptor {
   name: string
-  id: string
+  id?: string
   order?: number
+  /** 同一 single 插槽内优先级最低者渲染；默认 0。 */
+  priority?: number
   label?: () => string
+  /** 语言命名空间，插槽组件会收到绑定该命名空间的 `t`。 */
+  locale?: string
+  /** 按会话 id 计算注入给组件的 props 与 hooks。 */
+  inject?: (sessionId?: string) => Record<string, unknown>
 }
 
 /** 宿主 slot 服务：插槽就绪时执行工厂并注册组件。 */
@@ -30,15 +36,58 @@ export interface SlotsApi {
   /** 在插槽可用后执行工厂，返回的注销函数随插件卸载调用。 */
   inject(slot: string, factory: () => () => void): void
   /** 把组件注册进插槽，返回注销函数。 */
-  register(descriptor: SlotDescriptor, component: ComponentType): () => void
+  register(descriptor: SlotDescriptor, component: ComponentType<Record<string, unknown>>): () => void
+}
+
+/** 远程调用的统一结果。 */
+export interface RemoteResult<T> {
+  ok: boolean
+  value?: T
+  error?: { message?: string; code?: string }
+}
+
+/** 预设摘要，字段与宿主 `agentPresets.list` 的返回一致。 */
+export interface AgentPresetSummary {
+  id: string
+  name?: string
+  description?: string
+  isDefault?: boolean
+  /** 存在时表示该预设无法挂载。 */
+  broken?: string
+}
+
+/** 宿主 Agent 预设远程接口。 */
+export interface AgentPresetsRemote {
+  list(): Promise<RemoteResult<{ presets: AgentPresetSummary[] }>>
+  select(sessionId: string, agentPreset: string): Promise<RemoteResult<string>>
+}
+
+/** 会话摘要中本插件用到的字段。 */
+export interface SessionSummary {
+  id: string
+  blank?: boolean
+  projectionValues?: { agentPreset?: unknown }
+}
+
+/** 会话服务：只读取列表快照，用于确认当前会话与预设。 */
+export interface SessionsApi {
+  list: {
+    getSnapshot(): { byId: Record<string, SessionSummary> }
+  }
 }
 
 /** 插件上下文：只声明本插件实际依赖的宿主能力。 */
 export interface PluginContext {
   /** 注册随插件生命周期自动清理的副作用，回调返回清理函数。 */
   effect(effect: () => () => void, label?: string): void
+  /** 在依赖服务就绪后执行回调；服务缺失时回调不会执行，也不阻断插件主体。 */
+  inject(names: string[], callback: (ctx: PluginContext) => void): void
   locale: LocaleApi
   slots: SlotsApi
+  /** 会话列表服务；声明依赖后可用。 */
+  sessions?: SessionsApi
+  /** 远程服务；声明 `remote.agentPresets` 依赖后可用。 */
+  remote?: { agentPresets?: AgentPresetsRemote }
 }
 
 /** 客户端插件定义，作为 ModuleLoader 工厂的默认导出。 */

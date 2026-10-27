@@ -1,7 +1,7 @@
 import type { ComponentType } from 'react'
 
 import type { LocaleDictionaries } from '../common/locale'
-import type { Translate } from '../types/plugin'
+import type { PluginContext, Translate } from '../types/plugin'
 
 /** feature 页面收到的 props。 */
 export interface FeaturePageProps {
@@ -26,6 +26,18 @@ export interface FeatureSwitchProps {
 /** feature 自带语言包：按语言分组，key 不含 feature id 前缀，注册时由外壳统一加。 */
 export type FeatureLocales = LocaleDictionaries
 
+/**
+ * feature 的客户端扩展：除网格入口与功能页之外的宿主界面挂载点。
+ *
+ * 例如「对话风格」需要在新会话界面注入选择器。扩展由外壳统一执行，
+ * 依赖的服务由扩展在自己的 apply 里用 `ctx.inject` 按需声明，服务缺失时
+ * 只跳过扩展，不影响设置页主体。
+ */
+export interface FeatureClientExtension {
+  /** 注册本扩展；t 已绑定本 feature 的 key 前缀。 */
+  apply(ctx: PluginContext, t: Translate): void
+}
+
 /** 所有 feature 共有的字段。 */
 interface FeatureCommon {
   /** 唯一标识，同时作为语言 key 前缀与渲染 key，重复时只保留第一个。 */
@@ -34,6 +46,8 @@ interface FeatureCommon {
   order?: number
   /** 本功能的中英文文案，外壳统一加 id 前缀后注册。 */
   locales: FeatureLocales
+  /** 网格与功能页之外的客户端扩展，可选。 */
+  client?: FeatureClientExtension
 }
 
 /** 页面型 feature：网格入口打开一个功能页面。 */
@@ -86,10 +100,17 @@ function isFeatureDefinition(value: unknown): value is FeatureDefinition {
     entry?: unknown
     page?: unknown
     switch?: unknown
+    client?: unknown
   }
 
   if (typeof candidate.id !== 'string' || candidate.id === '') return false
   if (typeof candidate.locales !== 'object' || candidate.locales === null) return false
+
+  // 客户端扩展是可选字段；一旦声明，apply 必须是函数，否则整页渲染会中断
+  if (candidate.client !== undefined) {
+    if (typeof candidate.client !== 'object' || candidate.client === null) return false
+    if (typeof (candidate.client as { apply?: unknown }).apply !== 'function') return false
+  }
 
   const hasPage = typeof candidate.entry === 'function' && typeof candidate.page === 'function'
   const hasSwitch = typeof candidate.switch === 'function'

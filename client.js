@@ -39,10 +39,10 @@ window.__ModuleLoader__.load({
       default: () => entry_default
     });
     module.exports = __toCommonJS(entry_exports);
-    var import_react12 = __toESM(require("react"), 1);
+    var import_react14 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.static{position:static}.relative{position:relative}.isolate{isolation:isolate}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-9{height:2.25rem}.max-h-72{max-height:18rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-0\\.5,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[18px\\]{--tw-translate-x:18px}.cursor-pointer{cursor:pointer}.list-decimal{list-style-type:decimal}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-dashed{border-style:dashed}.border-line1{border-color:var(--dsw-alias-border-l1)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.p-3{padding:.75rem}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pb-4{padding-bottom:1rem}.pl-4{padding-left:1rem}.pt-3{padding-top:.75rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[18px\\]{line-height:18px}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:border-line2:hover{border-color:var(--dsw-alias-border-l2)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}@media (min-width:640px){.sm\\:col-span-2{grid-column:span 2/span 2}.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
+    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.static{position:static}.absolute{position:absolute}.relative{position:relative}.left-0{left:0}.top-full{top:100%}.isolate{isolation:isolate}.z-50{z-index:50}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-9{height:2.25rem}.max-h-72{max-height:18rem}.max-h-\\[360px\\]{max-height:360px}.min-h-7{min-height:1.75rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-72{width:18rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.max-w-\\[180px\\]{max-width:180px}.max-w-\\[min\\(100\\%\\2c 240px\\)\\]{max-width:min(100%,240px)}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-0\\.5,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[18px\\]{--tw-translate-x:18px}.cursor-default{cursor:default}.cursor-pointer{cursor:pointer}.list-decimal{list-style-type:decimal}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-dashed{border-style:dashed}.border-line1{border-color:var(--dsw-alias-border-l1)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-transparent{background-color:transparent}.p-1{padding:.25rem}.p-3{padding:.75rem}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pb-4{padding-bottom:1rem}.pl-4{padding-left:1rem}.pt-3{padding-top:.75rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[18px\\]{line-height:18px}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-lg{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:border-line2:hover{border-color:var(--dsw-alias-border-l2)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}@media (min-width:640px){.sm\\:col-span-2{grid-column:span 2/span 2}.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -74,15 +74,146 @@ window.__ModuleLoader__.load({
       );
     }
 
-    // src/features/chat-style/entry.tsx
+    // src/features/chat-style/client.tsx
+    var client_exports = {};
+    __export(client_exports, {
+      apply: () => apply
+    });
+    var import_react2 = __toESM(require("react"), 1);
+
+    // src/features/chat-style/seat.tsx
     var import_react = __toESM(require("react"), 1);
-    function ChatStyleIcon() {
+
+    // src/common/cn.ts
+    function cn(...classes) {
+      return classes.filter(Boolean).join(" ");
+    }
+
+    // src/features/chat-style/seat-store.ts
+    function initialState() {
+      return { status: "idle", options: [], current: "", error: null };
+    }
+    function createSeatStore() {
+      let snapshot = initialState();
+      const listeners = /* @__PURE__ */ new Set();
+      return {
+        getSnapshot: () => snapshot,
+        set(patch) {
+          snapshot = { ...snapshot, ...patch };
+          for (const listener of listeners) listener();
+        },
+        subscribe(listener) {
+          listeners.add(listener);
+          return () => {
+            listeners.delete(listener);
+          };
+        }
+      };
+    }
+    function isStylePreset(preset) {
+      return preset.id.startsWith("style-");
+    }
+    function sessionPreset(ctx, sessionId) {
+      if (sessionId === void 0) return void 0;
+      const value = ctx.sessions?.list.getSnapshot().byId[sessionId]?.projectionValues?.agentPreset;
+      return typeof value === "string" ? value : void 0;
+    }
+    function createSeatController(ctx) {
+      const store = createSeatStore();
+      let staged;
+      let busy = false;
+      const load = async (sessionId) => {
+        const api = ctx.remote?.agentPresets;
+        if (!api) {
+          store.set({ status: "error", error: "agentPresets remote unavailable" });
+          return;
+        }
+        if (store.getSnapshot().status === "loading") return;
+        store.set({ status: "loading", error: null });
+        try {
+          const result = await api.list();
+          if (!result.ok || !result.value) {
+            store.set({ status: "error", error: result.error?.message ?? "list failed" });
+            return;
+          }
+          const presets = result.value.presets.filter((preset) => preset.broken === void 0);
+          const fallback = presets.find((preset) => preset.isDefault)?.id ?? presets[0]?.id ?? "";
+          const current = staged ?? sessionPreset(ctx, sessionId) ?? fallback;
+          store.set({ status: "ready", options: presets, current, error: null });
+        } catch (error) {
+          console.error("[chat-style] \u8BFB\u53D6 Agent \u9884\u8BBE\u5931\u8D25:", error);
+          store.set({
+            status: "error",
+            error: error instanceof Error ? error.message : String(error)
+          });
+        }
+      };
+      const submit = async (sessionId, presetId) => {
+        const api = ctx.remote?.agentPresets;
+        if (!api) {
+          store.set({ error: "agentPresets remote unavailable" });
+          staged = void 0;
+          return;
+        }
+        const summary = ctx.sessions?.list.getSnapshot().byId[sessionId];
+        if (summary && summary.blank === false) {
+          store.set({ error: "session already started", current: sessionPreset(ctx, sessionId) ?? "" });
+          staged = void 0;
+          return;
+        }
+        try {
+          const result = await api.select(sessionId, presetId);
+          if (!result.ok) {
+            store.set({ error: result.error?.message ?? "select failed" });
+            staged = void 0;
+            return;
+          }
+          staged = void 0;
+          store.set({ current: result.value ?? presetId, error: null });
+        } catch (error) {
+          console.error("[chat-style] \u5E94\u7528\u5BF9\u8BDD\u98CE\u683C\u5931\u8D25:", error);
+          store.set({ error: error instanceof Error ? error.message : String(error) });
+          staged = void 0;
+        }
+      };
+      const select = async (sessionId, presetId) => {
+        if (busy) return;
+        staged = presetId;
+        store.set({ current: presetId, error: null });
+        if (sessionId === void 0) return;
+        busy = true;
+        try {
+          await submit(sessionId, presetId);
+        } finally {
+          busy = false;
+        }
+      };
+      const applyStaged = async (sessionId) => {
+        if (staged === void 0 || busy) return;
+        busy = true;
+        try {
+          await submit(sessionId, staged);
+        } finally {
+          busy = false;
+        }
+      };
+      return { store, load, select, applyStaged };
+    }
+
+    // src/features/chat-style/seat.tsx
+    var BUILTIN_NAME_KEYS = {
+      standard: "presetStandardName",
+      ptc: "presetPtcName",
+      minimal: "presetMinimalName",
+      cordis: "presetCordisName"
+    };
+    function SeatIcon() {
       return /* @__PURE__ */ import_react.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
-          width: "18",
-          height: "18",
+          width: "14",
+          height: "14",
           "aria-hidden": "true",
           fill: "none",
           stroke: "currentColor",
@@ -96,16 +227,195 @@ window.__ModuleLoader__.load({
         /* @__PURE__ */ import_react.default.createElement("circle", { cx: "18", cy: "12", r: "1" })
       );
     }
-    function ChatStyleEntry({ t, open }) {
+    function ChevronIcon() {
       return /* @__PURE__ */ import_react.default.createElement(
+        "svg",
+        {
+          viewBox: "0 0 16 16",
+          width: "12",
+          height: "12",
+          "aria-hidden": "true",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: "1.6",
+          strokeLinecap: "round",
+          strokeLinejoin: "round"
+        },
+        /* @__PURE__ */ import_react.default.createElement("path", { d: "m4 6 4 4 4-4" })
+      );
+    }
+    function presetName(preset, t) {
+      if (preset.name) return preset.name;
+      const key = BUILTIN_NAME_KEYS[preset.id];
+      return key === void 0 ? preset.id : t(key);
+    }
+    function presetDescription(preset) {
+      return preset.description;
+    }
+    function ChatStyleSeat({
+      sessionId,
+      useChatStyleSeat,
+      load,
+      select,
+      applyStaged,
+      t
+    }) {
+      const snapshot = useChatStyleSeat((state) => state);
+      const [open, setOpen] = (0, import_react.useState)(false);
+      const rootRef = (0, import_react.useRef)(null);
+      const actionsRef = (0, import_react.useRef)({ load, applyStaged });
+      actionsRef.current = { load, applyStaged };
+      (0, import_react.useEffect)(() => {
+        void actionsRef.current.load();
+        if (sessionId !== void 0) void actionsRef.current.applyStaged();
+      }, [sessionId]);
+      (0, import_react.useEffect)(() => {
+        if (!open) return;
+        const onPointerDown = (event) => {
+          if (rootRef.current?.contains(event.target)) return;
+          setOpen(false);
+        };
+        document.addEventListener("mousedown", onPointerDown);
+        return () => document.removeEventListener("mousedown", onPointerDown);
+      }, [open]);
+      const styles = snapshot.options.filter(isStylePreset);
+      const modes = snapshot.options.filter((preset) => !isStylePreset(preset));
+      const current = snapshot.options.find((preset) => preset.id === snapshot.current);
+      const label = current === void 0 ? snapshot.current : presetName(current, t);
+      const pick = (id) => {
+        setOpen(false);
+        void select(id);
+      };
+      return /* @__PURE__ */ import_react.default.createElement("div", { ref: rootRef, className: "relative" }, /* @__PURE__ */ import_react.default.createElement(
+        "button",
+        {
+          type: "button",
+          "aria-haspopup": "menu",
+          "aria-expanded": open,
+          disabled: snapshot.status === "loading" || snapshot.options.length === 0,
+          onClick: () => {
+            const next = !open;
+            setOpen(next);
+            if (next) void load();
+          },
+          className: cn(
+            "inline-flex min-h-7 max-w-[min(100%,240px)] items-center gap-1 rounded-lg border-0 bg-transparent px-2 text-[13px] font-medium text-primary",
+            "hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+            snapshot.options.length === 0 && "cursor-default text-secondary"
+          )
+        },
+        /* @__PURE__ */ import_react.default.createElement(SeatIcon, null),
+        /* @__PURE__ */ import_react.default.createElement("span", { className: "max-w-[180px] truncate" }, label),
+        /* @__PURE__ */ import_react.default.createElement(ChevronIcon, null)
+      ), open ? /* @__PURE__ */ import_react.default.createElement(
+        "div",
+        {
+          role: "menu",
+          className: "absolute left-0 top-full z-50 mt-1 max-h-[360px] w-72 overflow-y-auto rounded-xl border border-line1 bg-overlay p-1 shadow-lg"
+        },
+        /* @__PURE__ */ import_react.default.createElement("p", { className: "px-2 py-1 text-[11px] text-secondary" }, t("styleGroup")),
+        styles.length === 0 ? (
+          // 尚未创建风格时的提示，引导去设置页创建
+          /* @__PURE__ */ import_react.default.createElement("p", { className: "px-2 py-1.5 text-[12px] leading-4 text-secondary" }, t("seatNoStyles"))
+        ) : styles.map((preset) => /* @__PURE__ */ import_react.default.createElement(
+          "button",
+          {
+            key: preset.id,
+            type: "button",
+            role: "menuitemradio",
+            "aria-checked": preset.id === snapshot.current,
+            onClick: () => pick(preset.id),
+            className: cn(
+              "flex w-full flex-col items-start gap-0.5 rounded-lg border-0 bg-transparent px-2 py-1.5 text-left",
+              preset.id === snapshot.current ? "bg-layer2" : "hover:bg-layer2"
+            )
+          },
+          /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[13px] text-primary" }, presetName(preset, t)),
+          presetDescription(preset) ? (
+            // 风格说明
+            /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[12px] leading-4 text-secondary" }, presetDescription(preset))
+          ) : null
+        )),
+        modes.length > 0 ? /* @__PURE__ */ import_react.default.createElement(import_react.default.Fragment, null, /* @__PURE__ */ import_react.default.createElement("p", { className: "mt-1 px-2 py-1 text-[11px] text-secondary" }, t("modeGroup")), modes.map((preset) => /* @__PURE__ */ import_react.default.createElement(
+          "button",
+          {
+            key: preset.id,
+            type: "button",
+            role: "menuitemradio",
+            "aria-checked": preset.id === snapshot.current,
+            onClick: () => pick(preset.id),
+            className: cn(
+              "flex w-full flex-col items-start gap-0.5 rounded-lg border-0 bg-transparent px-2 py-1.5 text-left",
+              preset.id === snapshot.current ? "bg-layer2" : "hover:bg-layer2"
+            )
+          },
+          /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[13px] text-primary" }, presetName(preset, t)),
+          presetDescription(preset) ? (
+            // 模式说明
+            /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[12px] leading-4 text-secondary" }, presetDescription(preset))
+          ) : null
+        ))) : null
+      ) : null, snapshot.error ? /* @__PURE__ */ import_react.default.createElement("p", { className: "mt-1 text-[12px] leading-4 text-danger", role: "alert" }, snapshot.error === "session already started" ? t("seatSessionStarted") : `${t("seatSelectFailed")}\uFF1A${snapshot.error}`) : null);
+    }
+
+    // src/features/chat-style/client.tsx
+    function apply(ctx, t) {
+      ctx.inject(["sessions", "remote", "remote.agentPresets"], (scoped) => {
+        const controller = createSeatController(scoped);
+        ctx.slots.inject(
+          "conversation.hero.agentPreset",
+          () => ctx.slots.register(
+            {
+              name: "conversation.hero.agentPreset",
+              // 宿主内置选择器使用默认 priority 0；更低的值覆盖它
+              priority: -10,
+              inject: (sessionId) => ({
+                hooks: { chatStyleSeat: controller.store },
+                load: () => controller.load(sessionId),
+                select: (presetId) => controller.select(sessionId, presetId),
+                applyStaged: async () => {
+                  if (sessionId !== void 0) await controller.applyStaged(sessionId);
+                }
+              })
+            },
+            (props) => /* @__PURE__ */ import_react2.default.createElement(ChatStyleSeat, { ...props, t })
+          )
+        );
+      });
+    }
+
+    // src/features/chat-style/entry.tsx
+    var import_react3 = __toESM(require("react"), 1);
+    function ChatStyleIcon() {
+      return /* @__PURE__ */ import_react3.default.createElement(
+        "svg",
+        {
+          viewBox: "0 0 24 24",
+          width: "18",
+          height: "18",
+          "aria-hidden": "true",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: "1.8",
+          strokeLinecap: "round",
+          strokeLinejoin: "round"
+        },
+        /* @__PURE__ */ import_react3.default.createElement("path", { d: "M20 12a7 7 0 0 1-7 7H8l-4 3v-5.5A7 7 0 0 1 11 5h2a7 7 0 0 1 7 7Z" }),
+        /* @__PURE__ */ import_react3.default.createElement("circle", { cx: "10", cy: "12", r: "1" }),
+        /* @__PURE__ */ import_react3.default.createElement("circle", { cx: "14", cy: "12", r: "1" }),
+        /* @__PURE__ */ import_react3.default.createElement("circle", { cx: "18", cy: "12", r: "1" })
+      );
+    }
+    function ChatStyleEntry({ t, open }) {
+      return /* @__PURE__ */ import_react3.default.createElement(
         "button",
         {
           type: "button",
           onClick: open,
           className: "flex w-full items-start gap-3 rounded-xl border border-line1 bg-layer1 px-4 py-3.5 text-left transition hover:border-line2 hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         },
-        /* @__PURE__ */ import_react.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, /* @__PURE__ */ import_react.default.createElement(ChatStyleIcon, null)),
-        /* @__PURE__ */ import_react.default.createElement("span", { className: "min-w-0" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "block text-[13px] font-medium leading-5 text-primary" }, t("title")), /* @__PURE__ */ import_react.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("description")))
+        /* @__PURE__ */ import_react3.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, /* @__PURE__ */ import_react3.default.createElement(ChatStyleIcon, null)),
+        /* @__PURE__ */ import_react3.default.createElement("span", { className: "min-w-0" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "block text-[13px] font-medium leading-5 text-primary" }, t("title")), /* @__PURE__ */ import_react3.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("description")))
       );
     }
 
@@ -233,7 +543,25 @@ window.__ModuleLoader__.load({
         // 存储位置说明
         storageHint: "\u914D\u7F6E\u6587\u4EF6\u4F4D\u7F6E",
         // 预设选择提示
-        presetHint: "\u98CE\u683C\u4EE5 Agent \u9884\u8BBE\u7684\u5F62\u5F0F\u6CE8\u518C\u3002\u65B0\u5EFA\u4EFB\u52A1\u65F6\u5728\u300C\u6807\u51C6\u6A21\u5F0F\u300D\u65C1\u7684\u9884\u8BBE\u9009\u62E9\u5668\u91CC\u9009\u62E9\u5B83\u3002"
+        presetHint: "\u98CE\u683C\u4EE5 Agent \u9884\u8BBE\u7684\u5F62\u5F0F\u6CE8\u518C\u3002\u65B0\u5EFA\u4EFB\u52A1\u65F6\u5728\u300C\u6807\u51C6\u6A21\u5F0F\u300D\u65C1\u7684\u9884\u8BBE\u9009\u62E9\u5668\u91CC\u9009\u62E9\u5B83\u3002",
+        // 新会话选择器的风格分组标题
+        styleGroup: "\u5BF9\u8BDD\u98CE\u683C",
+        // 新会话选择器的模式分组标题
+        modeGroup: "\u6A21\u5F0F",
+        // 尚未创建任何风格时的提示
+        seatNoStyles: "\u8FD8\u6CA1\u6709\u521B\u5EFA\u98CE\u683C\uFF0C\u53EF\u5728\u300C\u8BBE\u7F6E \u2192 All In One \u2192 \u5BF9\u8BDD\u98CE\u683C\u300D\u4E2D\u65B0\u5EFA\u3002",
+        // 内置标准模式的显示名
+        presetStandardName: "\u6807\u51C6\u6A21\u5F0F",
+        // 内置 PTC 模式的显示名
+        presetPtcName: "PTC \u6A21\u5F0F",
+        // 内置极简模式的显示名
+        presetMinimalName: "\u6781\u7B80\u6A21\u5F0F",
+        // 内置创造模式的显示名
+        presetCordisName: "\u521B\u9020\u6A21\u5F0F",
+        // 会话已开始后尝试切换风格的提示
+        seatSessionStarted: "\u4F1A\u8BDD\u5DF2\u5F00\u59CB\uFF0C\u65E0\u6CD5\u518D\u5207\u6362\u98CE\u683C\u3002\u8BF7\u5728\u65B0\u5EFA\u4EFB\u52A1\u65F6\u9009\u62E9\u3002",
+        // 风格切换失败的提示前缀
+        seatSelectFailed: "\u5207\u6362\u5931\u8D25"
       },
       en: {
         // Grid entry title
@@ -357,28 +685,39 @@ window.__ModuleLoader__.load({
         // Storage location hint
         storageHint: "Config file",
         // Preset picker hint
-        presetHint: "Styles register as agent presets. Choose one in the preset picker next to Standard mode when starting a new task."
+        presetHint: "Styles register as agent presets. Choose one in the preset picker next to Standard mode when starting a new task.",
+        // Group heading for styles in the new-session picker
+        styleGroup: "Chat styles",
+        // Group heading for modes in the new-session picker
+        modeGroup: "Modes",
+        // Shown when no style has been created yet
+        seatNoStyles: "No styles yet. Create one in Settings \u2192 All In One \u2192 Chat styles.",
+        // Display name for the built-in Standard mode
+        presetStandardName: "Standard mode",
+        // Display name for the built-in PTC mode
+        presetPtcName: "PTC mode",
+        // Display name for the built-in Minimal mode
+        presetMinimalName: "Minimal mode",
+        // Display name for the built-in Creator mode
+        presetCordisName: "Creator mode",
+        // Shown when trying to switch a session that already started
+        seatSessionStarted: "This session has started; a style can only be chosen for a new task.",
+        // Prefix for a failed style switch
+        seatSelectFailed: "Could not switch"
       }
     };
 
     // src/features/chat-style/page.tsx
-    var import_react6 = __toESM(require("react"), 1);
+    var import_react8 = __toESM(require("react"), 1);
 
     // src/components/Button.tsx
-    var import_react2 = __toESM(require("react"), 1);
-
-    // src/common/cn.ts
-    function cn(...classes) {
-      return classes.filter(Boolean).join(" ");
-    }
-
-    // src/components/Button.tsx
+    var import_react4 = __toESM(require("react"), 1);
     var VARIANT_CLASS = {
       ghost: "flex items-center gap-1 rounded-lg px-2 py-1 text-secondary hover:bg-layer2 hover:text-primary",
       outline: "rounded-lg border border-line1 bg-base px-3 py-1.5 text-primary hover:bg-layer2"
     };
     function Button({ variant = "ghost", className, type = "button", ...rest }) {
-      return /* @__PURE__ */ import_react2.default.createElement(
+      return /* @__PURE__ */ import_react4.default.createElement(
         "button",
         {
           type,
@@ -445,10 +784,10 @@ window.__ModuleLoader__.load({
     }
 
     // src/features/chat-style/StyleEditor.tsx
-    var import_react5 = __toESM(require("react"), 1);
+    var import_react7 = __toESM(require("react"), 1);
 
     // src/features/chat-style/McpServerEditor.tsx
-    var import_react3 = __toESM(require("react"), 1);
+    var import_react5 = __toESM(require("react"), 1);
     var INPUT_CLASS = "w-full rounded-lg border border-line1 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand";
     var SERVER_ID_PATTERN = /^[A-Za-z0-9_-]{1,32}$/;
     function formatPairs(dict) {
@@ -489,10 +828,10 @@ window.__ModuleLoader__.load({
       const remove = (index) => {
         onChange(servers.filter((_, current) => current !== index));
       };
-      return /* @__PURE__ */ import_react3.default.createElement("section", { className: "rounded-xl border border-line1 bg-layer1" }, /* @__PURE__ */ import_react3.default.createElement("header", { className: "border-b border-line1 px-4 py-3" }, /* @__PURE__ */ import_react3.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, t("mcpServersTitle")), /* @__PURE__ */ import_react3.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("mcpHint"))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex flex-col gap-3 p-4" }, servers.length === 0 ? (
+      return /* @__PURE__ */ import_react5.default.createElement("section", { className: "rounded-xl border border-line1 bg-layer1" }, /* @__PURE__ */ import_react5.default.createElement("header", { className: "border-b border-line1 px-4 py-3" }, /* @__PURE__ */ import_react5.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, t("mcpServersTitle")), /* @__PURE__ */ import_react5.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("mcpHint"))), /* @__PURE__ */ import_react5.default.createElement("div", { className: "flex flex-col gap-3 p-4" }, servers.length === 0 ? (
         // 尚未配置任何服务器时的提示
-        /* @__PURE__ */ import_react3.default.createElement("p", { className: "text-[12px] text-secondary" }, t("mcpEmpty"))
-      ) : null, servers.map((server, index) => /* @__PURE__ */ import_react3.default.createElement("div", { key: `${server.id}-${index}`, className: "rounded-lg border border-line1 bg-base p-3" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center justify-between gap-2" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-[12px] font-medium text-primary" }, server.label || server.id), /* @__PURE__ */ import_react3.default.createElement(Button, { variant: "ghost", onClick: () => remove(index) }, t("remove"))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2" }, /* @__PURE__ */ import_react3.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpIdLabel")), /* @__PURE__ */ import_react3.default.createElement(
+        /* @__PURE__ */ import_react5.default.createElement("p", { className: "text-[12px] text-secondary" }, t("mcpEmpty"))
+      ) : null, servers.map((server, index) => /* @__PURE__ */ import_react5.default.createElement("div", { key: `${server.id}-${index}`, className: "rounded-lg border border-line1 bg-base p-3" }, /* @__PURE__ */ import_react5.default.createElement("div", { className: "flex items-center justify-between gap-2" }, /* @__PURE__ */ import_react5.default.createElement("span", { className: "text-[12px] font-medium text-primary" }, server.label || server.id), /* @__PURE__ */ import_react5.default.createElement(Button, { variant: "ghost", onClick: () => remove(index) }, t("remove"))), /* @__PURE__ */ import_react5.default.createElement("div", { className: "mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2" }, /* @__PURE__ */ import_react5.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react5.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpIdLabel")), /* @__PURE__ */ import_react5.default.createElement(
         "input",
         {
           value: server.id,
@@ -501,15 +840,15 @@ window.__ModuleLoader__.load({
         }
       ), SERVER_ID_PATTERN.test(server.id) ? null : (
         // 标识不合法时立即提示，保存按钮会拦截
-        /* @__PURE__ */ import_react3.default.createElement("span", { className: "mt-1 block text-[12px] text-danger" }, t("mcpIdInvalid"))
-      )), /* @__PURE__ */ import_react3.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpLabelLabel")), /* @__PURE__ */ import_react3.default.createElement(
+        /* @__PURE__ */ import_react5.default.createElement("span", { className: "mt-1 block text-[12px] text-danger" }, t("mcpIdInvalid"))
+      )), /* @__PURE__ */ import_react5.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react5.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpLabelLabel")), /* @__PURE__ */ import_react5.default.createElement(
         "input",
         {
           value: server.label,
           onChange: (event) => patch(index, { label: event.target.value }),
           className: INPUT_CLASS
         }
-      )), /* @__PURE__ */ import_react3.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpTransportLabel")), /* @__PURE__ */ import_react3.default.createElement(
+      )), /* @__PURE__ */ import_react5.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react5.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpTransportLabel")), /* @__PURE__ */ import_react5.default.createElement(
         "select",
         {
           value: server.transport,
@@ -518,16 +857,16 @@ window.__ModuleLoader__.load({
           }),
           className: INPUT_CLASS
         },
-        /* @__PURE__ */ import_react3.default.createElement("option", { value: "stdio" }, t("mcpStdio")),
-        /* @__PURE__ */ import_react3.default.createElement("option", { value: "streamable-http" }, t("mcpHttp"))
-      ))), server.transport === "stdio" ? /* @__PURE__ */ import_react3.default.createElement("div", { className: "mt-2 flex flex-col gap-2" }, /* @__PURE__ */ import_react3.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpCommandLabel")), /* @__PURE__ */ import_react3.default.createElement(
+        /* @__PURE__ */ import_react5.default.createElement("option", { value: "stdio" }, t("mcpStdio")),
+        /* @__PURE__ */ import_react5.default.createElement("option", { value: "streamable-http" }, t("mcpHttp"))
+      ))), server.transport === "stdio" ? /* @__PURE__ */ import_react5.default.createElement("div", { className: "mt-2 flex flex-col gap-2" }, /* @__PURE__ */ import_react5.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react5.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpCommandLabel")), /* @__PURE__ */ import_react5.default.createElement(
         "input",
         {
           value: server.command,
           onChange: (event) => patch(index, { command: event.target.value }),
           className: INPUT_CLASS
         }
-      )), /* @__PURE__ */ import_react3.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpArgsLabel")), /* @__PURE__ */ import_react3.default.createElement(
+      )), /* @__PURE__ */ import_react5.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react5.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpArgsLabel")), /* @__PURE__ */ import_react5.default.createElement(
         "textarea",
         {
           value: server.args.join("\n"),
@@ -537,7 +876,7 @@ window.__ModuleLoader__.load({
           rows: 3,
           className: INPUT_CLASS
         }
-      )), /* @__PURE__ */ import_react3.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpEnvLabel")), /* @__PURE__ */ import_react3.default.createElement(
+      )), /* @__PURE__ */ import_react5.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react5.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpEnvLabel")), /* @__PURE__ */ import_react5.default.createElement(
         "textarea",
         {
           value: formatPairs(server.env),
@@ -545,14 +884,14 @@ window.__ModuleLoader__.load({
           rows: 3,
           className: INPUT_CLASS
         }
-      ))) : /* @__PURE__ */ import_react3.default.createElement("div", { className: "mt-2 flex flex-col gap-2" }, /* @__PURE__ */ import_react3.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpUrlLabel")), /* @__PURE__ */ import_react3.default.createElement(
+      ))) : /* @__PURE__ */ import_react5.default.createElement("div", { className: "mt-2 flex flex-col gap-2" }, /* @__PURE__ */ import_react5.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react5.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpUrlLabel")), /* @__PURE__ */ import_react5.default.createElement(
         "input",
         {
           value: server.url,
           onChange: (event) => patch(index, { url: event.target.value }),
           className: INPUT_CLASS
         }
-      )), /* @__PURE__ */ import_react3.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpHeadersLabel")), /* @__PURE__ */ import_react3.default.createElement(
+      )), /* @__PURE__ */ import_react5.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react5.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpHeadersLabel")), /* @__PURE__ */ import_react5.default.createElement(
         "textarea",
         {
           value: formatPairs(server.headers),
@@ -560,14 +899,14 @@ window.__ModuleLoader__.load({
           rows: 3,
           className: INPUT_CLASS
         }
-      ))))), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement(Button, { variant: "outline", onClick: add }, t("addMcp")))));
+      ))))), /* @__PURE__ */ import_react5.default.createElement("div", null, /* @__PURE__ */ import_react5.default.createElement(Button, { variant: "outline", onClick: add }, t("addMcp")))));
     }
     function isValidServerId(id) {
       return SERVER_ID_PATTERN.test(id);
     }
 
     // src/features/chat-style/ResourceRuleField.tsx
-    var import_react4 = __toESM(require("react"), 1);
+    var import_react6 = __toESM(require("react"), 1);
     var MODE_ORDER = ["all", "include", "exclude"];
     function ResourceRuleField({
       title,
@@ -580,9 +919,9 @@ window.__ModuleLoader__.load({
       searchPlaceholder,
       onChange
     }) {
-      const [query, setQuery] = (0, import_react4.useState)("");
-      const selected = (0, import_react4.useMemo)(() => new Set(rule.items), [rule.items]);
-      const visibleOptions = (0, import_react4.useMemo)(() => {
+      const [query, setQuery] = (0, import_react6.useState)("");
+      const selected = (0, import_react6.useMemo)(() => new Set(rule.items), [rule.items]);
+      const visibleOptions = (0, import_react6.useMemo)(() => {
         const keyword = query.trim().toLowerCase();
         if (keyword === "") return options;
         return options.filter(
@@ -597,7 +936,7 @@ window.__ModuleLoader__.load({
         const unknown = [...next].filter((item) => !options.some((option) => option.id === item));
         onChange({ mode: rule.mode, items: [...ordered, ...unknown] });
       };
-      return /* @__PURE__ */ import_react4.default.createElement("section", { className: "rounded-xl border border-line1 bg-layer1" }, /* @__PURE__ */ import_react4.default.createElement("header", { className: "border-b border-line1 px-4 py-3" }, /* @__PURE__ */ import_react4.default.createElement("div", { className: "flex items-center justify-between gap-2" }, /* @__PURE__ */ import_react4.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, title), /* @__PURE__ */ import_react4.default.createElement("span", { className: "text-[12px] text-secondary" }, selected.size > 0 ? selected.size : "")), /* @__PURE__ */ import_react4.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, hint)), /* @__PURE__ */ import_react4.default.createElement("div", { className: "flex flex-wrap items-center gap-2 px-4 pt-3" }, MODE_ORDER.map((mode) => /* @__PURE__ */ import_react4.default.createElement(
+      return /* @__PURE__ */ import_react6.default.createElement("section", { className: "rounded-xl border border-line1 bg-layer1" }, /* @__PURE__ */ import_react6.default.createElement("header", { className: "border-b border-line1 px-4 py-3" }, /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex items-center justify-between gap-2" }, /* @__PURE__ */ import_react6.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, title), /* @__PURE__ */ import_react6.default.createElement("span", { className: "text-[12px] text-secondary" }, selected.size > 0 ? selected.size : "")), /* @__PURE__ */ import_react6.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, hint)), /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex flex-wrap items-center gap-2 px-4 pt-3" }, MODE_ORDER.map((mode) => /* @__PURE__ */ import_react6.default.createElement(
         Button,
         {
           key: mode,
@@ -606,7 +945,7 @@ window.__ModuleLoader__.load({
           onClick: () => onChange({ mode, items: rule.items })
         },
         modeLabels[mode]
-      )), /* @__PURE__ */ import_react4.default.createElement("span", { className: "text-[12px] leading-[18px] text-secondary" }, modeHint)), rule.mode === "all" ? null : /* @__PURE__ */ import_react4.default.createElement("div", { className: "px-4 pb-4 pt-3" }, searchPlaceholder ? /* @__PURE__ */ import_react4.default.createElement(
+      )), /* @__PURE__ */ import_react6.default.createElement("span", { className: "text-[12px] leading-[18px] text-secondary" }, modeHint)), rule.mode === "all" ? null : /* @__PURE__ */ import_react6.default.createElement("div", { className: "px-4 pb-4 pt-3" }, searchPlaceholder ? /* @__PURE__ */ import_react6.default.createElement(
         "input",
         {
           type: "search",
@@ -617,10 +956,10 @@ window.__ModuleLoader__.load({
         }
       ) : null, visibleOptions.length === 0 ? (
         // 没有可选项或搜索无结果时的提示
-        /* @__PURE__ */ import_react4.default.createElement("p", { className: "py-3 text-[12px] text-secondary" }, emptyText)
-      ) : /* @__PURE__ */ import_react4.default.createElement("ul", { className: "max-h-72 overflow-y-auto" }, visibleOptions.map((option) => {
+        /* @__PURE__ */ import_react6.default.createElement("p", { className: "py-3 text-[12px] text-secondary" }, emptyText)
+      ) : /* @__PURE__ */ import_react6.default.createElement("ul", { className: "max-h-72 overflow-y-auto" }, visibleOptions.map((option) => {
         const checked = selected.has(option.id);
-        return /* @__PURE__ */ import_react4.default.createElement("li", { key: option.id }, /* @__PURE__ */ import_react4.default.createElement(
+        return /* @__PURE__ */ import_react6.default.createElement("li", { key: option.id }, /* @__PURE__ */ import_react6.default.createElement(
           "label",
           {
             className: cn(
@@ -628,7 +967,7 @@ window.__ModuleLoader__.load({
               checked ? "bg-layer2" : "hover:bg-layer2"
             )
           },
-          /* @__PURE__ */ import_react4.default.createElement(
+          /* @__PURE__ */ import_react6.default.createElement(
             "input",
             {
               type: "checkbox",
@@ -637,15 +976,15 @@ window.__ModuleLoader__.load({
               className: "mt-0.5 h-3.5 w-3.5 shrink-0 accent-brand"
             }
           ),
-          /* @__PURE__ */ import_react4.default.createElement("span", { className: "min-w-0" }, /* @__PURE__ */ import_react4.default.createElement("span", { className: "flex flex-wrap items-center gap-1.5" }, /* @__PURE__ */ import_react4.default.createElement("span", { className: "text-[12px] font-medium text-primary" }, option.label), option.badge ? (
+          /* @__PURE__ */ import_react6.default.createElement("span", { className: "min-w-0" }, /* @__PURE__ */ import_react6.default.createElement("span", { className: "flex flex-wrap items-center gap-1.5" }, /* @__PURE__ */ import_react6.default.createElement("span", { className: "text-[12px] font-medium text-primary" }, option.label), option.badge ? (
             // 条目来源标记，如「已安装插件」
-            /* @__PURE__ */ import_react4.default.createElement("span", { className: "rounded border border-line1 px-1 py-px text-[10px] text-secondary" }, option.badge)
+            /* @__PURE__ */ import_react6.default.createElement("span", { className: "rounded border border-line1 px-1 py-px text-[10px] text-secondary" }, option.badge)
           ) : null), option.description ? (
             // 条目说明
-            /* @__PURE__ */ import_react4.default.createElement("span", { className: "mt-0.5 block text-[12px] leading-[18px] text-secondary" }, option.description)
+            /* @__PURE__ */ import_react6.default.createElement("span", { className: "mt-0.5 block text-[12px] leading-[18px] text-secondary" }, option.description)
           ) : null, checked && option.warning ? (
             // 选中后才提示的风险，避免干扰普通浏览
-            /* @__PURE__ */ import_react4.default.createElement("span", { className: "mt-0.5 block text-[12px] leading-[18px] text-warn" }, option.warning)
+            /* @__PURE__ */ import_react6.default.createElement("span", { className: "mt-0.5 block text-[12px] leading-[18px] text-warn" }, option.warning)
           ) : null)
         ));
       }))));
@@ -654,8 +993,8 @@ window.__ModuleLoader__.load({
     // src/features/chat-style/StyleEditor.tsx
     var INPUT_CLASS2 = "w-full rounded-lg border border-line1 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand";
     function StyleEditor({ initial, catalog, saving, error, onSave, onCancel, t }) {
-      const [draft, setDraft] = (0, import_react5.useState)(initial);
-      const [localError, setLocalError] = (0, import_react5.useState)(null);
+      const [draft, setDraft] = (0, import_react7.useState)(initial);
+      const [localError, setLocalError] = (0, import_react7.useState)(null);
       const patch = (change) => {
         setDraft((current) => ({ ...current, ...change }));
       };
@@ -693,7 +1032,7 @@ window.__ModuleLoader__.load({
         setLocalError(null);
         onSave({ ...draft, name: draft.name.trim(), description: draft.description.trim() });
       };
-      return /* @__PURE__ */ import_react5.default.createElement("div", { className: "flex flex-col gap-3" }, /* @__PURE__ */ import_react5.default.createElement("section", { className: "rounded-xl border border-line1 bg-layer1" }, /* @__PURE__ */ import_react5.default.createElement("div", { className: "border-b border-line1 px-4 py-3" }, /* @__PURE__ */ import_react5.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, t("title")), /* @__PURE__ */ import_react5.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("presetHint"))), /* @__PURE__ */ import_react5.default.createElement("div", { className: "flex flex-col gap-3 p-4" }, /* @__PURE__ */ import_react5.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react5.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("nameLabel")), /* @__PURE__ */ import_react5.default.createElement(
+      return /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex flex-col gap-3" }, /* @__PURE__ */ import_react7.default.createElement("section", { className: "rounded-xl border border-line1 bg-layer1" }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "border-b border-line1 px-4 py-3" }, /* @__PURE__ */ import_react7.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, t("title")), /* @__PURE__ */ import_react7.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("presetHint"))), /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex flex-col gap-3 p-4" }, /* @__PURE__ */ import_react7.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("nameLabel")), /* @__PURE__ */ import_react7.default.createElement(
         "input",
         {
           value: draft.name,
@@ -701,7 +1040,7 @@ window.__ModuleLoader__.load({
           onChange: (event) => patch({ name: event.target.value }),
           className: INPUT_CLASS2
         }
-      )), /* @__PURE__ */ import_react5.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react5.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("descriptionLabel")), /* @__PURE__ */ import_react5.default.createElement(
+      )), /* @__PURE__ */ import_react7.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("descriptionLabel")), /* @__PURE__ */ import_react7.default.createElement(
         "input",
         {
           value: draft.description,
@@ -709,7 +1048,7 @@ window.__ModuleLoader__.load({
           onChange: (event) => patch({ description: event.target.value }),
           className: INPUT_CLASS2
         }
-      )), /* @__PURE__ */ import_react5.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react5.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("systemPromptLabel")), /* @__PURE__ */ import_react5.default.createElement(
+      )), /* @__PURE__ */ import_react7.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("systemPromptLabel")), /* @__PURE__ */ import_react7.default.createElement(
         "textarea",
         {
           value: draft.systemPrompt,
@@ -718,7 +1057,7 @@ window.__ModuleLoader__.load({
           rows: 5,
           className: INPUT_CLASS2
         }
-      ), /* @__PURE__ */ import_react5.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("systemPromptHint"))))), /* @__PURE__ */ import_react5.default.createElement(
+      ), /* @__PURE__ */ import_react7.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("systemPromptHint"))))), /* @__PURE__ */ import_react7.default.createElement(
         ResourceRuleField,
         {
           title: t("skillsTitle"),
@@ -731,7 +1070,7 @@ window.__ModuleLoader__.load({
           searchPlaceholder: t("searchSkills"),
           onChange: (rule) => patchRule("skills", rule)
         }
-      ), /* @__PURE__ */ import_react5.default.createElement(
+      ), /* @__PURE__ */ import_react7.default.createElement(
         ResourceRuleField,
         {
           title: t("pluginsTitle"),
@@ -743,14 +1082,14 @@ window.__ModuleLoader__.load({
           emptyText: t("noSkills"),
           onChange: (rule) => patchRule("plugins", rule)
         }
-      ), /* @__PURE__ */ import_react5.default.createElement(
+      ), /* @__PURE__ */ import_react7.default.createElement(
         McpServerEditor,
         {
           servers: draft.mcpServers,
           onChange: (mcpServers) => patch({ mcpServers }),
           t
         }
-      ), /* @__PURE__ */ import_react5.default.createElement(
+      ), /* @__PURE__ */ import_react7.default.createElement(
         ResourceRuleField,
         {
           title: t("mcpRuleTitle"),
@@ -765,7 +1104,7 @@ window.__ModuleLoader__.load({
           emptyText: t("mcpEmpty"),
           onChange: (rule) => patchRule("mcp", rule)
         }
-      ), localError ?? error ? /* @__PURE__ */ import_react5.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, localError ?? error) : null, /* @__PURE__ */ import_react5.default.createElement("div", { className: "flex items-center gap-2" }, /* @__PURE__ */ import_react5.default.createElement(Button, { variant: "outline", disabled: saving, onClick: handleSave }, saving ? t("saving") : t("save")), /* @__PURE__ */ import_react5.default.createElement(Button, { variant: "ghost", disabled: saving, onClick: onCancel }, t("cancel"))));
+      ), localError ?? error ? /* @__PURE__ */ import_react7.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, localError ?? error) : null, /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex items-center gap-2" }, /* @__PURE__ */ import_react7.default.createElement(Button, { variant: "outline", disabled: saving, onClick: handleSave }, saving ? t("saving") : t("save")), /* @__PURE__ */ import_react7.default.createElement(Button, { variant: "ghost", disabled: saving, onClick: onCancel }, t("cancel"))));
     }
 
     // src/features/chat-style/page.tsx
@@ -787,12 +1126,12 @@ window.__ModuleLoader__.load({
       };
     }
     function ChatStylePage({ t }) {
-      const [payload, setPayload] = (0, import_react6.useState)(null);
-      const [editing, setEditing] = (0, import_react6.useState)(null);
-      const [loading, setLoading] = (0, import_react6.useState)(true);
-      const [saving, setSaving] = (0, import_react6.useState)(false);
-      const [error, setError] = (0, import_react6.useState)(null);
-      const [notice, setNotice] = (0, import_react6.useState)(null);
+      const [payload, setPayload] = (0, import_react8.useState)(null);
+      const [editing, setEditing] = (0, import_react8.useState)(null);
+      const [loading, setLoading] = (0, import_react8.useState)(true);
+      const [saving, setSaving] = (0, import_react8.useState)(false);
+      const [error, setError] = (0, import_react8.useState)(null);
+      const [notice, setNotice] = (0, import_react8.useState)(null);
       const reload = async () => {
         try {
           setPayload(await loadChatStyles());
@@ -804,7 +1143,7 @@ window.__ModuleLoader__.load({
           setLoading(false);
         }
       };
-      (0, import_react6.useEffect)(() => {
+      (0, import_react8.useEffect)(() => {
         let active = true;
         void (async () => {
           try {
@@ -854,7 +1193,7 @@ window.__ModuleLoader__.load({
         }
       };
       if (editing && payload) {
-        return /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react6.default.createElement("header", null, /* @__PURE__ */ import_react6.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react6.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("pageDescription"))), /* @__PURE__ */ import_react6.default.createElement(
+        return /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react8.default.createElement("header", null, /* @__PURE__ */ import_react8.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react8.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("pageDescription"))), /* @__PURE__ */ import_react8.default.createElement(
           StyleEditor,
           {
             initial: editing,
@@ -870,7 +1209,7 @@ window.__ModuleLoader__.load({
           }
         ));
       }
-      return /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react6.default.createElement("header", { className: "flex flex-wrap items-start justify-between gap-3" }, /* @__PURE__ */ import_react6.default.createElement("div", null, /* @__PURE__ */ import_react6.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react6.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("pageDescription"))), /* @__PURE__ */ import_react6.default.createElement(
+      return /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react8.default.createElement("header", { className: "flex flex-wrap items-start justify-between gap-3" }, /* @__PURE__ */ import_react8.default.createElement("div", null, /* @__PURE__ */ import_react8.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react8.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("pageDescription"))), /* @__PURE__ */ import_react8.default.createElement(
         Button,
         {
           variant: "outline",
@@ -882,7 +1221,7 @@ window.__ModuleLoader__.load({
           }
         },
         t("newStyle")
-      )), notice ? /* @__PURE__ */ import_react6.default.createElement("p", { className: "rounded-lg border border-line1 bg-layer1 px-3 py-2 text-[12px] text-success" }, notice) : null, error ? /* @__PURE__ */ import_react6.default.createElement("p", { className: "rounded-lg border border-line1 bg-layer1 px-3 py-2 text-[12px] text-danger", role: "alert" }, error, /* @__PURE__ */ import_react6.default.createElement(
+      )), notice ? /* @__PURE__ */ import_react8.default.createElement("p", { className: "rounded-lg border border-line1 bg-layer1 px-3 py-2 text-[12px] text-success" }, notice) : null, error ? /* @__PURE__ */ import_react8.default.createElement("p", { className: "rounded-lg border border-line1 bg-layer1 px-3 py-2 text-[12px] text-danger", role: "alert" }, error, /* @__PURE__ */ import_react8.default.createElement(
         "button",
         {
           type: "button",
@@ -892,17 +1231,17 @@ window.__ModuleLoader__.load({
         t("retry")
       )) : null, loading ? (
         // 首次加载中的占位
-        /* @__PURE__ */ import_react6.default.createElement("p", { className: "text-[12px] text-secondary" }, "\u2026")
+        /* @__PURE__ */ import_react8.default.createElement("p", { className: "text-[12px] text-secondary" }, "\u2026")
       ) : (payload?.styles.length ?? 0) === 0 ? (
         // 尚未创建风格时的空态
-        /* @__PURE__ */ import_react6.default.createElement("p", { className: "rounded-xl border border-dashed border-line1 px-4 py-6 text-center text-[12px] text-secondary" }, t("empty"))
-      ) : /* @__PURE__ */ import_react6.default.createElement("ul", { className: "flex flex-col gap-2" }, payload?.styles.map((style) => /* @__PURE__ */ import_react6.default.createElement(
+        /* @__PURE__ */ import_react8.default.createElement("p", { className: "rounded-xl border border-dashed border-line1 px-4 py-6 text-center text-[12px] text-secondary" }, t("empty"))
+      ) : /* @__PURE__ */ import_react8.default.createElement("ul", { className: "flex flex-col gap-2" }, payload?.styles.map((style) => /* @__PURE__ */ import_react8.default.createElement(
         "li",
         {
           key: style.id,
           className: "rounded-xl border border-line1 bg-layer1 px-4 py-3"
         },
-        /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex flex-wrap items-start justify-between gap-2" }, /* @__PURE__ */ import_react6.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react6.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, style.name), style.description ? /* @__PURE__ */ import_react6.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, style.description) : null, /* @__PURE__ */ import_react6.default.createElement("p", { className: "mt-1 text-[12px] text-secondary" }, t("skillsTitle"), ": ", modeLabel(style.skills.mode, t), " \xB7 ", t("pluginsTitle"), ":", " ", modeLabel(style.plugins.mode, t), " \xB7 ", t("mcpTitle"), ": ", style.mcpServers.length)), /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex shrink-0 items-center gap-2" }, /* @__PURE__ */ import_react6.default.createElement(
+        /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex flex-wrap items-start justify-between gap-2" }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react8.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, style.name), style.description ? /* @__PURE__ */ import_react8.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, style.description) : null, /* @__PURE__ */ import_react8.default.createElement("p", { className: "mt-1 text-[12px] text-secondary" }, t("skillsTitle"), ": ", modeLabel(style.skills.mode, t), " \xB7 ", t("pluginsTitle"), ":", " ", modeLabel(style.plugins.mode, t), " \xB7 ", t("mcpTitle"), ": ", style.mcpServers.length)), /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex shrink-0 items-center gap-2" }, /* @__PURE__ */ import_react8.default.createElement(
           Button,
           {
             variant: "outline",
@@ -913,8 +1252,8 @@ window.__ModuleLoader__.load({
             }
           },
           t("edit")
-        ), /* @__PURE__ */ import_react6.default.createElement(Button, { variant: "ghost", onClick: () => void handleDelete(style.id) }, t("delete"))))
-      ))), payload ? /* @__PURE__ */ import_react6.default.createElement("p", { className: "text-[12px] text-secondary" }, t("storageHint"), ": ", /* @__PURE__ */ import_react6.default.createElement("code", { className: "break-all" }, payload.storagePath)) : null);
+        ), /* @__PURE__ */ import_react8.default.createElement(Button, { variant: "ghost", onClick: () => void handleDelete(style.id) }, t("delete"))))
+      ))), payload ? /* @__PURE__ */ import_react8.default.createElement("p", { className: "text-[12px] text-secondary" }, t("storageHint"), ": ", /* @__PURE__ */ import_react8.default.createElement("code", { className: "break-all" }, payload.storagePath)) : null);
     }
 
     // src/features/chat-style/index.tsx
@@ -923,14 +1262,15 @@ window.__ModuleLoader__.load({
       order: 20,
       entry: ChatStyleEntry,
       page: ChatStylePage,
+      client: client_exports,
       locales: chatStyleLocales
     };
     var chat_style_default = chatStyleFeature;
 
     // src/features/demo/entry.tsx
-    var import_react7 = __toESM(require("react"), 1);
+    var import_react9 = __toESM(require("react"), 1);
     function DemoIcon() {
-      return /* @__PURE__ */ import_react7.default.createElement(
+      return /* @__PURE__ */ import_react9.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -943,22 +1283,22 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react7.default.createElement("rect", { x: "3", y: "3", width: "7", height: "7", rx: "2" }),
-        /* @__PURE__ */ import_react7.default.createElement("rect", { x: "14", y: "3", width: "7", height: "7", rx: "2" }),
-        /* @__PURE__ */ import_react7.default.createElement("rect", { x: "3", y: "14", width: "7", height: "7", rx: "2" }),
-        /* @__PURE__ */ import_react7.default.createElement("path", { d: "M14 17.5h7M17.5 14v7" })
+        /* @__PURE__ */ import_react9.default.createElement("rect", { x: "3", y: "3", width: "7", height: "7", rx: "2" }),
+        /* @__PURE__ */ import_react9.default.createElement("rect", { x: "14", y: "3", width: "7", height: "7", rx: "2" }),
+        /* @__PURE__ */ import_react9.default.createElement("rect", { x: "3", y: "14", width: "7", height: "7", rx: "2" }),
+        /* @__PURE__ */ import_react9.default.createElement("path", { d: "M14 17.5h7M17.5 14v7" })
       );
     }
     function DemoEntry({ t, open }) {
-      return /* @__PURE__ */ import_react7.default.createElement(
+      return /* @__PURE__ */ import_react9.default.createElement(
         "button",
         {
           type: "button",
           onClick: open,
           className: "flex w-full items-start gap-3 rounded-xl border border-line1 bg-layer1 px-4 py-3.5 text-left transition hover:border-line2 hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         },
-        /* @__PURE__ */ import_react7.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, /* @__PURE__ */ import_react7.default.createElement(DemoIcon, null)),
-        /* @__PURE__ */ import_react7.default.createElement("span", { className: "min-w-0" }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "block text-[13px] font-medium leading-5 text-primary" }, t("title")), /* @__PURE__ */ import_react7.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("description")))
+        /* @__PURE__ */ import_react9.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, /* @__PURE__ */ import_react9.default.createElement(DemoIcon, null)),
+        /* @__PURE__ */ import_react9.default.createElement("span", { className: "min-w-0" }, /* @__PURE__ */ import_react9.default.createElement("span", { className: "block text-[13px] font-medium leading-5 text-primary" }, t("title")), /* @__PURE__ */ import_react9.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("description")))
       );
     }
 
@@ -1011,18 +1351,18 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/demo/page.tsx
-    var import_react9 = __toESM(require("react"), 1);
+    var import_react11 = __toESM(require("react"), 1);
 
     // src/features/demo/Card.tsx
-    var import_react8 = __toESM(require("react"), 1);
+    var import_react10 = __toESM(require("react"), 1);
     function Card({ className, children }) {
-      return /* @__PURE__ */ import_react8.default.createElement("div", { className: cn("rounded-xl border border-line1 bg-layer1", className) }, children);
+      return /* @__PURE__ */ import_react10.default.createElement("div", { className: cn("rounded-xl border border-line1 bg-layer1", className) }, children);
     }
 
     // src/features/demo/page.tsx
     function DemoPage({ t }) {
-      const [count, setCount] = (0, import_react9.useState)(0);
-      return /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react9.default.createElement("header", null, /* @__PURE__ */ import_react9.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("title")), /* @__PURE__ */ import_react9.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("description"))), /* @__PURE__ */ import_react9.default.createElement(Card, { className: "p-4" }, /* @__PURE__ */ import_react9.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, t("sectionTitle")), /* @__PURE__ */ import_react9.default.createElement("p", { className: "mt-1.5 text-[12px] leading-5 text-secondary" }, t("sectionDescription")), /* @__PURE__ */ import_react9.default.createElement(Button, { variant: "outline", className: "mt-3", onClick: () => setCount((value) => value + 1) }, t("counterLabel"), ": ", count)), /* @__PURE__ */ import_react9.default.createElement(Card, { className: "p-4" }, /* @__PURE__ */ import_react9.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, t("stepsTitle")), /* @__PURE__ */ import_react9.default.createElement("ol", { className: "mt-1.5 list-decimal pl-4 text-[12px] leading-6 text-secondary" }, /* @__PURE__ */ import_react9.default.createElement("li", null, t("step1")), /* @__PURE__ */ import_react9.default.createElement("li", null, t("step2")), /* @__PURE__ */ import_react9.default.createElement("li", null, t("step3")), /* @__PURE__ */ import_react9.default.createElement("li", null, t("step4")))));
+      const [count, setCount] = (0, import_react11.useState)(0);
+      return /* @__PURE__ */ import_react11.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react11.default.createElement("header", null, /* @__PURE__ */ import_react11.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("title")), /* @__PURE__ */ import_react11.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("description"))), /* @__PURE__ */ import_react11.default.createElement(Card, { className: "p-4" }, /* @__PURE__ */ import_react11.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, t("sectionTitle")), /* @__PURE__ */ import_react11.default.createElement("p", { className: "mt-1.5 text-[12px] leading-5 text-secondary" }, t("sectionDescription")), /* @__PURE__ */ import_react11.default.createElement(Button, { variant: "outline", className: "mt-3", onClick: () => setCount((value) => value + 1) }, t("counterLabel"), ": ", count)), /* @__PURE__ */ import_react11.default.createElement(Card, { className: "p-4" }, /* @__PURE__ */ import_react11.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, t("stepsTitle")), /* @__PURE__ */ import_react11.default.createElement("ol", { className: "mt-1.5 list-decimal pl-4 text-[12px] leading-6 text-secondary" }, /* @__PURE__ */ import_react11.default.createElement("li", null, t("step1")), /* @__PURE__ */ import_react11.default.createElement("li", null, t("step2")), /* @__PURE__ */ import_react11.default.createElement("li", null, t("step3")), /* @__PURE__ */ import_react11.default.createElement("li", null, t("step4")))));
     }
 
     // src/features/demo/index.tsx
@@ -1056,7 +1396,7 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/expand-process/toggle.tsx
-    var import_react10 = __toESM(require("react"), 1);
+    var import_react12 = __toESM(require("react"), 1);
 
     // src/features/expand-process/expand-process.ts
     var EXPAND_PROCESS_STORAGE_KEY = "dsh-all-in-one:expand-process";
@@ -1183,7 +1523,7 @@ window.__ModuleLoader__.load({
 
     // src/features/expand-process/toggle.tsx
     function ExpandIcon() {
-      return /* @__PURE__ */ import_react10.default.createElement(
+      return /* @__PURE__ */ import_react12.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -1196,13 +1536,13 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react10.default.createElement("path", { d: "m7 9 5-5 5 5" }),
-        /* @__PURE__ */ import_react10.default.createElement("path", { d: "m7 15 5 5 5-5" })
+        /* @__PURE__ */ import_react12.default.createElement("path", { d: "m7 9 5-5 5 5" }),
+        /* @__PURE__ */ import_react12.default.createElement("path", { d: "m7 15 5 5 5-5" })
       );
     }
     function ExpandProcessToggle({ t }) {
-      const [enabled, setEnabled] = (0, import_react10.useState)(readExpandProcessEnabled);
-      const [saveFailed, setSaveFailed] = (0, import_react10.useState)(false);
+      const [enabled, setEnabled] = (0, import_react12.useState)(readExpandProcessEnabled);
+      const [saveFailed, setSaveFailed] = (0, import_react12.useState)(false);
       const handleToggle = () => {
         const next = !enabled;
         if (!writeExpandProcessEnabled(next)) {
@@ -1213,7 +1553,7 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react10.default.createElement("div", null, /* @__PURE__ */ import_react10.default.createElement(
+      return /* @__PURE__ */ import_react12.default.createElement("div", null, /* @__PURE__ */ import_react12.default.createElement(
         "button",
         {
           type: "button",
@@ -1222,9 +1562,9 @@ window.__ModuleLoader__.load({
           onClick: handleToggle,
           className: "flex w-full items-center gap-3 rounded-xl border border-line1 bg-layer1 px-4 py-3.5 text-left transition hover:border-line2 hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         },
-        /* @__PURE__ */ import_react10.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, /* @__PURE__ */ import_react10.default.createElement(ExpandIcon, null)),
-        /* @__PURE__ */ import_react10.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[13px] font-medium leading-5 text-primary" }, t("title")), /* @__PURE__ */ import_react10.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("description"))),
-        /* @__PURE__ */ import_react10.default.createElement(
+        /* @__PURE__ */ import_react12.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, /* @__PURE__ */ import_react12.default.createElement(ExpandIcon, null)),
+        /* @__PURE__ */ import_react12.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react12.default.createElement("span", { className: "block text-[13px] font-medium leading-5 text-primary" }, t("title")), /* @__PURE__ */ import_react12.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("description"))),
+        /* @__PURE__ */ import_react12.default.createElement(
           "span",
           {
             "aria-hidden": "true",
@@ -1233,7 +1573,7 @@ window.__ModuleLoader__.load({
               enabled ? "bg-brand" : "bg-line2"
             )
           },
-          /* @__PURE__ */ import_react10.default.createElement(
+          /* @__PURE__ */ import_react12.default.createElement(
             "span",
             {
               className: cn(
@@ -1243,7 +1583,7 @@ window.__ModuleLoader__.load({
             }
           )
         )
-      ), saveFailed ? /* @__PURE__ */ import_react10.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-danger" }, t("saveFailed")) : null);
+      ), saveFailed ? /* @__PURE__ */ import_react12.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-danger" }, t("saveFailed")) : null);
     }
 
     // src/features/expand-process/index.tsx
@@ -1265,6 +1605,10 @@ window.__ModuleLoader__.load({
       const candidate = value;
       if (typeof candidate.id !== "string" || candidate.id === "") return false;
       if (typeof candidate.locales !== "object" || candidate.locales === null) return false;
+      if (candidate.client !== void 0) {
+        if (typeof candidate.client !== "object" || candidate.client === null) return false;
+        if (typeof candidate.client.apply !== "function") return false;
+      }
       const hasPage = typeof candidate.entry === "function" && typeof candidate.page === "function";
       const hasSwitch = typeof candidate.switch === "function";
       return hasPage || hasSwitch;
@@ -1291,9 +1635,9 @@ window.__ModuleLoader__.load({
     var registry = createFeatureRegistry(featureList);
 
     // src/shell/AllInOnePage.tsx
-    var import_react11 = __toESM(require("react"), 1);
+    var import_react13 = __toESM(require("react"), 1);
     function BackGlyph() {
-      return /* @__PURE__ */ import_react11.default.createElement(
+      return /* @__PURE__ */ import_react13.default.createElement(
         "svg",
         {
           viewBox: "0 0 16 16",
@@ -1306,27 +1650,27 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react11.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
+        /* @__PURE__ */ import_react13.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
       );
     }
     function AllInOnePage({ t }) {
-      const [activeId, setActiveId] = (0, import_react11.useState)(null);
+      const [activeId, setActiveId] = (0, import_react13.useState)(null);
       const active = activeId ? registry.find(activeId) : void 0;
       if (active && "page" in active) {
         const ActivePage = active.page;
-        return /* @__PURE__ */ import_react11.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react11.default.createElement("div", { className: "flex items-center gap-2 border-b border-line1 pb-3" }, /* @__PURE__ */ import_react11.default.createElement(Button, { variant: "ghost", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react11.default.createElement(BackGlyph, null), t("shell.back"))), /* @__PURE__ */ import_react11.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react11.default.createElement(ActivePage, { t: (key) => t(`${active.id}.${key}`) })));
+        return /* @__PURE__ */ import_react13.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react13.default.createElement("div", { className: "flex items-center gap-2 border-b border-line1 pb-3" }, /* @__PURE__ */ import_react13.default.createElement(Button, { variant: "ghost", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react13.default.createElement(BackGlyph, null), t("shell.back"))), /* @__PURE__ */ import_react13.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react13.default.createElement(ActivePage, { t: (key) => t(`${active.id}.${key}`) })));
       }
-      return /* @__PURE__ */ import_react11.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react11.default.createElement("header", null, /* @__PURE__ */ import_react11.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react11.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
+      return /* @__PURE__ */ import_react13.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react13.default.createElement("header", null, /* @__PURE__ */ import_react13.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react13.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
         // 尚未注册功能时的空态提示
-        /* @__PURE__ */ import_react11.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line1 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
-      ) : /* @__PURE__ */ import_react11.default.createElement("div", { className: "mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2" }, registry.list.map((feature) => {
+        /* @__PURE__ */ import_react13.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line1 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
+      ) : /* @__PURE__ */ import_react13.default.createElement("div", { className: "mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2" }, registry.list.map((feature) => {
         const featureT = (key) => t(`${feature.id}.${key}`);
         if ("switch" in feature) {
           const SwitchEntry = feature.switch;
-          return /* @__PURE__ */ import_react11.default.createElement("div", { key: feature.id, className: "sm:col-span-2" }, /* @__PURE__ */ import_react11.default.createElement(SwitchEntry, { t: featureT }));
+          return /* @__PURE__ */ import_react13.default.createElement("div", { key: feature.id, className: "sm:col-span-2" }, /* @__PURE__ */ import_react13.default.createElement(SwitchEntry, { t: featureT }));
         }
         const Entry = feature.entry;
-        return /* @__PURE__ */ import_react11.default.createElement(Entry, { key: feature.id, t: featureT, open: () => setActiveId(feature.id) });
+        return /* @__PURE__ */ import_react13.default.createElement(Entry, { key: feature.id, t: featureT, open: () => setActiveId(feature.id) });
       })));
     }
 
@@ -1445,7 +1789,7 @@ window.__ModuleLoader__.load({
         });
         const t = ctx.locale.bind(LOCALE_NAMESPACE);
         installSettingsNavIcon(ctx, t, icon_default);
-        const SettingsSection = () => /* @__PURE__ */ import_react12.default.createElement(AllInOnePage, { t });
+        const SettingsSection = () => /* @__PURE__ */ import_react14.default.createElement(AllInOnePage, { t });
         ctx.slots.inject(
           "settings.section",
           () => ctx.slots.register(
@@ -1458,6 +1802,13 @@ window.__ModuleLoader__.load({
             SettingsSection
           )
         );
+        for (const feature of registry.list) {
+          try {
+            feature.client?.apply(ctx, (key) => t(`${feature.id}.${key}`));
+          } catch (error) {
+            console.error("[all-in-one] \u5BA2\u6237\u7AEF\u6269\u5C55\u542F\u52A8\u5931\u8D25:", feature.id, error);
+          }
+        }
       }
     };
     var entry_default = plugin;
