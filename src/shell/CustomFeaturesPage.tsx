@@ -44,7 +44,7 @@ export function CustomFeaturesPage({ t }: CustomFeaturesPageProps) {
   const active = activeId ? registry.find(activeId) : undefined
 
   // 已选中功能：切到功能页面，返回入口由外壳统一提供
-  if (active) {
+  if (active && 'page' in active) {
     const ActivePage = active.page
 
     // 功能页面根节点，样式作用域限定在 dsh-cf-root
@@ -85,11 +85,24 @@ export function CustomFeaturesPage({ t }: CustomFeaturesPageProps) {
       ) : (
         <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
           {registry.list.map((feature) => {
+            const featureT = (key: string) => t(`${feature.id}.${key}`)
+
+            // 开关型 feature 直接在网格中渲染开关并占满整行，没有独立功能页
+            if ('switch' in feature) {
+              const SwitchEntry = feature.switch
+
+              return (
+                <div key={feature.id} className="sm:col-span-2">
+                  <SwitchEntry t={featureT} />
+                </div>
+              )
+            }
+
             const Entry = feature.entry
 
             // 入口卡片由功能自己渲染，外壳只负责布局与打开动作
             return (
-              <Entry key={feature.id} t={(key) => t(`${feature.id}.${key}`)} open={() => setActiveId(feature.id)} />
+              <Entry key={feature.id} t={featureT} open={() => setActiveId(feature.id)} />
             )
           })}
         </div>

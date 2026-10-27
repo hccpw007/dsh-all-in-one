@@ -17,24 +17,47 @@ export interface FeatureEntryProps {
   open: () => void
 }
 
+/** 开关型入口组件收到的 props。 */
+export interface FeatureSwitchProps {
+  /** 已绑定本 feature key 前缀的翻译函数。 */
+  t: Translate
+}
+
 /** feature 自带语言包：按语言分组，key 不含 feature id 前缀，注册时由外壳统一加。 */
 export type FeatureLocales = LocaleDictionaries
+
+/** 所有 feature 共有的字段。 */
+interface FeatureCommon {
+  /** 唯一标识，同时作为语言 key 前缀与渲染 key，重复时只保留第一个。 */
+  id: string
+  /** 网格排序权重，越小越靠前，默认 100，相同权重保持注册顺序。 */
+  order?: number
+  /** 本功能的中英文文案，外壳统一加 id 前缀后注册。 */
+  locales: FeatureLocales
+}
+
+/** 页面型 feature：网格入口打开一个功能页面。 */
+export interface FeaturePageDefinition extends FeatureCommon {
+  entry: ComponentType<FeatureEntryProps>
+  page: ComponentType<FeaturePageProps>
+}
+
+/** 开关型 feature：在网格中直接渲染开关，没有独立页面。 */
+export interface FeatureSwitchDefinition extends FeatureCommon {
+  switch: ComponentType<FeatureSwitchProps>
+}
 
 /**
  * Feature 定义契约，新增功能的模板结构见 src/features/demo/：
  *   id       string   唯一标识，同时作为语言 key 前缀与渲染 key
- *   entry    function 网格入口组件，feature 自定义在网格中的展现形式
- *   page     function React 组件，在外壳内渲染该功能页面
- *   order    number   可选，网格排序权重，越小越靠前，默认 100
  *   locales  object   本功能的中英文文案，外壳统一注册，新增功能无需改外壳
+ *   order    number   可选，网格排序权重，越小越靠前，默认 100
+ *
+ * 入口形态二选一：
+ *   页面型  entry + page   网格入口由 feature 自行渲染，点击打开功能页
+ *   开关型  switch         网格中直接渲染开关，无功能页
  */
-export interface FeatureDefinition {
-  id: string
-  entry: ComponentType<FeatureEntryProps>
-  page: ComponentType<FeaturePageProps>
-  order?: number
-  locales: FeatureLocales
-}
+export type FeatureDefinition = FeaturePageDefinition | FeatureSwitchDefinition
 
 /** 只读注册表：通过校验的 feature 列表与按 id 查询能力。 */
 export interface FeatureRegistry {
@@ -51,21 +74,27 @@ const DEFAULT_FEATURE_ORDER = 100
  * 判定单条 feature 是否满足最小契约。
  *
  * 输入来自各功能文件夹的默认导出，可能漏写字段或写成非函数，先收窄再使用。
- * locales 缺失会让文案取不到值，因此与 id/entry/page 一同视为无效定义。
+ * locales 缺失会让文案取不到值，因此与 id 一同视为必需字段；
+ * 入口形态必须二选一：页面型需要 entry 与 page，开关型需要 switch。
  */
 function isFeatureDefinition(value: unknown): value is FeatureDefinition {
   if (typeof value !== 'object' || value === null) return false
 
-  const candidate = value as Partial<FeatureDefinition>
+  const candidate = value as {
+    id?: unknown
+    locales?: unknown
+    entry?: unknown
+    page?: unknown
+    switch?: unknown
+  }
 
-  return (
-    typeof candidate.id === 'string' &&
-    candidate.id !== '' &&
-    typeof candidate.entry === 'function' &&
-    typeof candidate.page === 'function' &&
-    typeof candidate.locales === 'object' &&
-    candidate.locales !== null
-  )
+  if (typeof candidate.id !== 'string' || candidate.id === '') return false
+  if (typeof candidate.locales !== 'object' || candidate.locales === null) return false
+
+  const hasPage = typeof candidate.entry === 'function' && typeof candidate.page === 'function'
+  const hasSwitch = typeof candidate.switch === 'function'
+
+  return hasPage || hasSwitch
 }
 
 /**

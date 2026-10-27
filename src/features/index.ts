@@ -1,14 +1,17 @@
 import type { FeatureDefinition } from '../shell/registry'
 
 import demo from './demo'
+import expandProcess from './expand-process'
 
 /**
  * 所有已注册的 feature。
  *
- * 新增功能：
+ * 新增页面型功能：
  *   1. 复制 src/features/demo/ 为 src/features/<id>/
  *   2. 改其中的 id，并重写 entry、page 与 locales
  *   3. 在下面的数组里追加该文件夹的默认导出
  *   4. 运行 npm run build 并刷新页面，卡片即出现在「定制功能」网格中
+ *
+ * 新增开关型功能：提供 switch 组件即可，网格中直接渲染开关，没有独立页面。
  */
-export const featureList: FeatureDefinition[] = [demo]
+export const featureList: FeatureDefinition[] = [expandProcess, demo]
