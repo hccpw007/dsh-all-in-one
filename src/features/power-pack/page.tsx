@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import { Button } from '../../components/Button'
 import type { FeaturePageProps } from '../../shell/registry'
@@ -85,8 +85,13 @@ export function PowerPackPage({ t }: FeaturePageProps) {
     }
   }, [t])
 
-  /** 保存草稿并刷新列表。 */
-  const handleSave = async (pack: PowerPack): Promise<void> => {
+  /**
+   * 保存草稿并刷新列表。
+   *
+   * 必须保持引用稳定：编辑器据此创建的保存按钮会写回外壳头部状态，
+   * 每次渲染换新函数会触发重复投放。
+   */
+  const handleSave = useCallback(async (pack: PowerPack): Promise<void> => {
     setSaving(true)
     try {
       setPayload(await savePowerPack(pack))
@@ -98,7 +103,12 @@ export function PowerPackPage({ t }: FeaturePageProps) {
     } finally {
       setSaving(false)
     }
-  }
+  }, [t])
+
+  /** 编辑器回调要求同步签名，异步保存结果由 handleSave 自己处理错误。 */
+  const submitDraft = useCallback((pack: PowerPack): void => {
+    void handleSave(pack)
+  }, [handleSave])
 
   /** 删除技能包，确认后调用宿主接口。 */
   const handleDelete = async (id: string): Promise<void> => {
@@ -115,7 +125,7 @@ export function PowerPackPage({ t }: FeaturePageProps) {
     }
   }
 
-  // 编辑态：显示表单，取消后回到列表
+  // 编辑态：显示表单，保存成功后回到列表；离开本页由外壳的返回按钮负责
   if (editing && payload) {
     return (
       <div className="flex flex-col gap-4">
@@ -131,11 +141,7 @@ export function PowerPackPage({ t }: FeaturePageProps) {
           catalog={payload.catalog}
           saving={saving}
           error={error}
-          onSave={(pack) => void handleSave(pack)}
-          onCancel={() => {
-            setEditing(null)
-            setError(null)
-          }}
+          onSave={submitDraft}
           t={t}
         />
       </div>

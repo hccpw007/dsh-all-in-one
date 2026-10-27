@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 import { Button } from '../../components/Button'
+import { PageActionsContext } from '../../shell/page-actions'
 import type { Translate } from '../../types/plugin'
 import { McpServerEditor, isValidServerId } from './McpServerEditor'
 import { ResourceRuleField, type RuleOption } from './ResourceRuleField'
@@ -23,7 +24,6 @@ interface PackEditorProps {
   /** 保存失败时的提示。 */
   error: string | null
   onSave(pack: PowerPack): void
-  onCancel(): void
   /** 已绑定本 feature 前缀的翻译函数。 */
   t: Translate
 }
@@ -32,12 +32,13 @@ interface PackEditorProps {
  * 单个技能包的编辑表单。
  *
  * 编辑器只维护草稿，保存动作交给页面；保存前的必填与 MCP 标识校验在这里
- * 完成，避免宿主静默丢弃非法服务器条目。
+ * 完成，避免宿主静默丢弃非法服务器条目。保存按钮投放到外壳头部，与返回按钮同行。
  * @param props 草稿、清单与回调
  */
-export function PackEditor({ initial, catalog, saving, error, onSave, onCancel, t }: PackEditorProps) {
+export function PackEditor({ initial, catalog, saving, error, onSave, t }: PackEditorProps) {
   const [draft, setDraft] = useState<PowerPack>(initial)
   const [localError, setLocalError] = useState<string | null>(null)
+  const setPageActions = useContext(PageActionsContext)
 
   /** 更新草稿的顶层字段。 */
   const patch = (change: Partial<PowerPack>): void => {
@@ -71,7 +72,7 @@ export function PackEditor({ initial, catalog, saving, error, onSave, onCancel, 
   }
 
   /** 保存前校验，返回错误文案或 undefined。 */
-  const validate = (): string | undefined => {
+  const validate = useCallback((): string | undefined => {
     if (draft.name.trim() === '') return t('nameRequired')
 
     const ids = new Set<string>()
@@ -82,9 +83,9 @@ export function PackEditor({ initial, catalog, saving, error, onSave, onCancel, 
     }
 
     return undefined
-  }
+  }, [draft, t])
 
-  const handleSave = (): void => {
+  const handleSave = useCallback((): void => {
     const message = validate()
     if (message) {
       setLocalError(message)
@@ -93,7 +94,26 @@ export function PackEditor({ initial, catalog, saving, error, onSave, onCancel, 
 
     setLocalError(null)
     onSave({ ...draft, name: draft.name.trim(), description: draft.description.trim() })
-  }
+  }, [draft, onSave, validate])
+
+  /** 外壳头部的保存按钮；表单底部不再重复放置操作区。 */
+  const saveAction = useMemo(
+    () => (
+      <Button variant="outline" disabled={saving} onClick={handleSave}>
+        {/* 保存按钮文案，提交中显示进度 */}
+        {saving ? t('saving') : t('save')}
+      </Button>
+    ),
+    [handleSave, saving, t],
+  )
+
+  // 把保存按钮挂到外壳头部右侧；离开编辑器时撤回，避免残留到其他功能页
+  useEffect(() => {
+    if (!setPageActions) return
+
+    setPageActions(saveAction)
+    return () => setPageActions(null)
+  }, [saveAction, setPageActions])
 
   return (
     <div className="rounded-xl border border-line4 bg-layer1">
@@ -181,16 +201,6 @@ export function PackEditor({ initial, catalog, saving, error, onSave, onCancel, 
             {localError ?? error}
           </p>
         ) : null}
-      </div>
-
-      {/* 表单操作：放在卡片底部，与内容用分隔线隔开 */}
-      <div className="flex items-center justify-end gap-2 border-t border-line4 px-4 py-3">
-        <Button variant="ghost" disabled={saving} onClick={onCancel}>
-          {t('cancel')}
-        </Button>
-        <Button variant="outline" disabled={saving} onClick={handleSave}>
-          {saving ? t('saving') : t('save')}
-        </Button>
       </div>
     </div>
   )

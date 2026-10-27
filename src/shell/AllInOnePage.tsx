@@ -4,11 +4,13 @@
  * 页面只负责网格布局、功能切换与返回入口；每张入口卡片由功能自己渲染，
  * 功能页面的标题与内容也都留在各自的文件夹里。
  */
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
+import type { ReactNode } from 'react'
 
 import { Button } from '../components/Button'
 import { registry } from '../features/registry'
 import type { Translate } from '../types/plugin'
+import { PageActionsContext } from './page-actions'
 
 /** 功能页返回网格时显示的箭头图标。 */
 function BackGlyph() {
@@ -41,27 +43,42 @@ interface AllInOnePageProps {
 export function AllInOnePage({ t }: AllInOnePageProps) {
   // 当前打开的功能 id；为 null 时显示功能网格
   const [activeId, setActiveId] = useState<string | null>(null)
+  // 功能页投放到头部右侧的操作按钮；由功能页自己设置与清空
+  const [pageActions, setPageActions] = useState<ReactNode>(null)
   const active = activeId ? registry.find(activeId) : undefined
+  const activePage = active && 'page' in active ? active : undefined
+
+  // 功能页的翻译函数必须保持引用稳定：页面据此创建的保存按钮会回写到本组件状态，
+  // 若每次渲染都换新函数，会形成「投放按钮 → 重渲染 → 新函数 → 再投放」的死循环
+  const featureTranslate = useCallback(
+    // 网格视图不会调用此函数，activePage 为空时直接返回 key 兜底
+    (key: string) => (activePage ? t(`${activePage.id}.${key}`) : key),
+    [activePage, t],
+  )
 
   // 已选中功能：切到功能页面，返回入口由外壳统一提供
-  if (active && 'page' in active) {
-    const ActivePage = active.page
+  if (activePage) {
+    const ActivePage = activePage.page
 
     // 功能页面根节点，样式作用域限定在 dsh-aio-root
     return (
       <div className="dsh-aio-root">
-        {/* 功能页头部：只提供返回网格的入口，标题由功能页面自行渲染 */}
-        <div className="flex items-center gap-2 border-b border-line4 pb-3">
-          {/* 返回按钮：回到功能网格 */}
-          <Button variant="outline" onClick={() => setActiveId(null)}>
-            <BackGlyph />
-            {t('shell.back')}
-          </Button>
-        </div>
-        {/* 当前功能的页面内容；页面拿到只带本 feature 前缀的 t，key 冲突由外壳隔离 */}
-        <div className="mt-4">
-          <ActivePage t={(key) => t(`${active.id}.${key}`)} />
-        </div>
+        <PageActionsContext.Provider value={setPageActions}>
+          {/* 功能页头部：左侧返回网格，右侧留给功能页的保存等操作 */}
+          <div className="flex items-center justify-between gap-2 border-b border-line4 pb-3">
+            {/* 返回按钮：回到功能网格 */}
+            <Button variant="outline" onClick={() => setActiveId(null)}>
+              <BackGlyph />
+              {t('shell.back')}
+            </Button>
+            {/* 功能页投放的操作按钮 */}
+            {pageActions ? <div className="flex items-center gap-2">{pageActions}</div> : null}
+          </div>
+          {/* 当前功能的页面内容；页面拿到只带本 feature 前缀的 t，key 冲突由外壳隔离 */}
+          <div className="mt-4">
+            <ActivePage t={featureTranslate} />
+          </div>
+        </PageActionsContext.Provider>
       </div>
     )
   }

@@ -24,8 +24,6 @@ export const powerPackLocales: FeatureLocales = {
     save: '保存',
     // 保存中的按钮文案
     saving: '保存中…',
-    // 取消按钮
-    cancel: '取消',
     // MCP 服务器标识非法时的提示
     mcpIdInvalid: '标识只能包含字母、数字、下划线和短横线，长度 1–32。',
     // MCP 服务器标识重复时的提示
@@ -153,8 +151,6 @@ export const powerPackLocales: FeatureLocales = {
     save: 'Save',
     // Save-in-progress label
     saving: 'Saving…',
-    // Cancel button
-    cancel: 'Cancel',
     // Invalid MCP server id
     mcpIdInvalid: 'ID may contain letters, digits, underscores and hyphens, 1–32 characters.',
     // Duplicate MCP server id
