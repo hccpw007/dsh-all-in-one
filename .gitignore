@@ -25,6 +25,10 @@ Thumbs.db
 .idea/
 .vscode/
 
+# AI 协作规则，仅本地使用，不入库
+AGENT.md
+Agent.md
+
 # 日志与环境变量
 *.log
 .env
