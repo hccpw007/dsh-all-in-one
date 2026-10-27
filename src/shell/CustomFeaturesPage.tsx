@@ -2,16 +2,14 @@
  * 「定制功能」外壳页面。
  *
  * 页面本身只做两件事：把注册表里的 feature 渲染成网格，以及为选中的
- * feature 提供返回入口。每个功能的具体实现都留在各自的文件夹里。
+ * feature 提供返回入口。每个功能的具体实现与文案都留在各自的文件夹里。
  */
 import React, { useState } from 'react'
 
-import { featureList } from '../features'
+import { Button } from '../components/Button'
+import { registry } from '../features/registry'
 import type { Translate } from '../types/plugin'
-import { createFeatureRegistry, type FeatureDefinition } from './registry'
-
-/** 全插件共享的 feature 注册表；列表在构建期确定，运行期不再变化。 */
-const registry = createFeatureRegistry(featureList)
+import type { FeatureDefinition } from './registry'
 
 /** 未提供图标的 feature 使用的默认网格图标。 */
 function DefaultGlyph() {
@@ -54,12 +52,14 @@ function BackGlyph() {
 
 interface FeatureCardProps {
   feature: FeatureDefinition
+  /** 宿主翻译函数，用于取本 feature 的标题与描述。 */
+  t: Translate
   /** 点击卡片后打开对应功能。 */
   onOpen: () => void
 }
 
 /** 网格中的单个功能入口卡片。 */
-function FeatureCard({ feature, onOpen }: FeatureCardProps) {
+function FeatureCard({ feature, t, onOpen }: FeatureCardProps) {
   const Icon = feature.icon
 
   return (
@@ -72,11 +72,13 @@ function FeatureCard({ feature, onOpen }: FeatureCardProps) {
       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand">
         {Icon ? <Icon /> : <DefaultGlyph />}
       </span>
-      {/* 功能标题与一句话描述 */}
+      {/* 功能标题与一句话描述，key 由外壳统一加 feature id 前缀后取值 */}
       <span className="min-w-0">
-        <span className="block text-[13px] font-medium leading-5 text-primary">{feature.title}</span>
+        <span className="block text-[13px] font-medium leading-5 text-primary">
+          {t(`${feature.id}.${feature.titleKey}`)}
+        </span>
         <span className="mt-1 block text-[12px] leading-[18px] text-secondary">
-          {feature.description}
+          {t(`${feature.id}.${feature.descriptionKey}`)}
         </span>
       </span>
     </button>
@@ -107,19 +109,17 @@ export function CustomFeaturesPage({ t }: CustomFeaturesPageProps) {
         {/* 功能页头部：返回网格与当前功能名 */}
         <div className="flex items-center gap-2 border-b border-line1 pb-3">
           {/* 返回按钮：回到功能网格 */}
-          <button
-            type="button"
-            onClick={() => setActiveId(null)}
-            className="flex items-center gap-1 rounded-lg px-2 py-1 text-[12px] text-secondary transition hover:bg-layer2 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-          >
+          <Button variant="ghost" onClick={() => setActiveId(null)}>
             <BackGlyph />
-            {t('action.back')}
-          </button>
-          <span className="text-[13px] font-medium text-primary">{active.title}</span>
+            {t('shell.back')}
+          </Button>
+          <span className="text-[13px] font-medium text-primary">
+            {t(`${active.id}.${active.titleKey}`)}
+          </span>
         </div>
-        {/* 当前功能的页面内容 */}
+        {/* 当前功能的页面内容；页面拿到只带本 feature 前缀的 t，key 冲突由外壳隔离 */}
         <div className="mt-4">
-          <ActivePage />
+          <ActivePage t={(key) => t(`${active.id}.${key}`)} />
         </div>
       </div>
     )
@@ -131,15 +131,15 @@ export function CustomFeaturesPage({ t }: CustomFeaturesPageProps) {
       {/* 页面标题与简介 */}
       <header>
         {/* 页面主标题 */}
-        <h1 className="text-[17px] font-semibold leading-6 text-primary">{t('page.title')}</h1>
+        <h1 className="text-[17px] font-semibold leading-6 text-primary">{t('shell.pageTitle')}</h1>
         {/* 页面用途说明 */}
-        <p className="mt-1.5 text-[13px] leading-5 text-secondary">{t('page.description')}</p>
+        <p className="mt-1.5 text-[13px] leading-5 text-secondary">{t('shell.pageDescription')}</p>
       </header>
       {/* 功能网格：没有注册任何 feature 时显示空态 */}
       {registry.list.length === 0 ? (
         // 尚未注册功能时的空态提示
         <p className="mt-5 rounded-xl border border-dashed border-line1 px-4 py-6 text-center text-[12px] text-secondary">
-          {t('page.empty')}
+          {t('shell.empty')}
         </p>
       ) : (
         <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -147,6 +147,7 @@ export function CustomFeaturesPage({ t }: CustomFeaturesPageProps) {
             <FeatureCard
               key={feature.id}
               feature={feature}
+              t={t}
               onOpen={() => setActiveId(feature.id)}
             />
           ))}

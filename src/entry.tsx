@@ -6,39 +6,47 @@
 import React from 'react'
 
 import cssText from '../.build/styles.css'
+import { collectFeatureLocales, mergeDictionaries } from './common/locale'
+import { registry } from './features/registry'
 import { CustomFeaturesPage } from './shell/CustomFeaturesPage'
 import type { ClientPlugin, PluginContext } from './types/plugin'
 
 /** 语言命名空间，与插件的其它字典互不干扰。 */
 const LOCALE_NAMESPACE = 'custom-features'
 
-/** 外壳用到的全部界面文案。 */
-const LOCALE_DICTIONARIES: Record<string, Record<string, string>> = {
+/** 外壳自身的界面文案；feature 文案由各功能自带的 locales 提供。 */
+const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
   zh: {
     // 设置左侧导航项名称
-    'nav.title': '定制功能',
+    'shell.navTitle': '定制功能',
     // 页面主标题
-    'page.title': '定制功能',
+    'shell.pageTitle': '定制功能',
     // 页面说明，解释这一页的用途
-    'page.description': '所有独立的小工具都收拢在这里，点击卡片进入对应的功能。',
+    'shell.pageDescription': '所有独立的小工具都收拢在这里，点击卡片进入对应的功能。',
     // 尚未注册任何功能时的空态提示
-    'page.empty': '还没有注册任何功能，在 src/features 下新建文件夹即可添加。',
+    'shell.empty': '还没有注册任何功能，在 src/features 下新建文件夹即可添加。',
     // 从功能页面返回功能网格的按钮文案
-    'action.back': '返回',
+    'shell.back': '返回',
   },
   en: {
     // Settings navigation entry label
-    'nav.title': 'Custom Features',
+    'shell.navTitle': 'Custom Features',
     // Page heading
-    'page.title': 'Custom Features',
+    'shell.pageTitle': 'Custom Features',
     // Page description explaining the purpose of this section
-    'page.description': 'Every standalone tool lives here. Pick a card to open it.',
+    'shell.pageDescription': 'Every standalone tool lives here. Pick a card to open it.',
     // Empty state shown when no feature is registered
-    'page.empty': 'No features registered yet. Add a folder under src/features.',
+    'shell.empty': 'No features registered yet. Add a folder under src/features.',
     // Button that leaves a feature page and returns to the grid
-    'action.back': 'Back',
+    'shell.back': 'Back',
   },
 }
+
+/** 外壳字典与全部 feature 字典的合并结果；feature key 已带 id 前缀，不会互相覆盖。 */
+const LOCALE_DICTIONARIES = mergeDictionaries(
+  SHELL_DICTIONARIES,
+  collectFeatureLocales(registry.list),
+)
 
 /** 客户端插件定义：依赖 slots 与 locale 两个宿主服务。 */
 const plugin: ClientPlugin = {
@@ -74,7 +82,7 @@ const plugin: ClientPlugin = {
           name: 'settings.section',
           id: 'custom-features',
           order: 30,
-          label: () => t('nav.title'),
+          label: () => t('shell.navTitle'),
         },
         SettingsSection,
       ),
