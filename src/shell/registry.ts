@@ -9,25 +9,29 @@ export interface FeaturePageProps {
   t: Translate
 }
 
+/** 网格入口组件收到的 props。 */
+export interface FeatureEntryProps {
+  /** 已绑定本 feature key 前缀的翻译函数。 */
+  t: Translate
+  /** 打开本功能；点击区域与交互形式由 feature 自行决定。 */
+  open: () => void
+}
+
 /** feature 自带语言包：按语言分组，key 不含 feature id 前缀，注册时由外壳统一加。 */
 export type FeatureLocales = LocaleDictionaries
 
 /**
  * Feature 定义契约，新增功能的模板结构见 src/features/demo/：
- *   id                string   唯一标识，同时作为语言 key 前缀与渲染 key
- *   titleKey          string   网格卡片标题的语言 key（相对本 feature 字典）
- *   descriptionKey    string   网格卡片描述的语言 key（相对本 feature 字典）
- *   page              function React 组件，在外壳内渲染该功能页面
- *   icon              function 可选，返回图标的 React 组件
- *   order             number   可选，网格排序权重，越小越靠前，默认 100
- *   locales           object   本功能的中英文文案，外壳统一注册，新增功能无需改外壳
+ *   id       string   唯一标识，同时作为语言 key 前缀与渲染 key
+ *   entry    function 网格入口组件，feature 自定义在网格中的展现形式
+ *   page     function React 组件，在外壳内渲染该功能页面
+ *   order    number   可选，网格排序权重，越小越靠前，默认 100
+ *   locales  object   本功能的中英文文案，外壳统一注册，新增功能无需改外壳
  */
 export interface FeatureDefinition {
   id: string
-  titleKey: string
-  descriptionKey: string
+  entry: ComponentType<FeatureEntryProps>
   page: ComponentType<FeaturePageProps>
-  icon?: ComponentType
   order?: number
   locales: FeatureLocales
 }
@@ -47,7 +51,7 @@ const DEFAULT_FEATURE_ORDER = 100
  * 判定单条 feature 是否满足最小契约。
  *
  * 输入来自各功能文件夹的默认导出，可能漏写字段或写成非函数，先收窄再使用。
- * locales 缺失会让卡片文案取不到值，因此与 id/page 一同视为无效定义。
+ * locales 缺失会让文案取不到值，因此与 id/entry/page 一同视为无效定义。
  */
 function isFeatureDefinition(value: unknown): value is FeatureDefinition {
   if (typeof value !== 'object' || value === null) return false
@@ -57,8 +61,7 @@ function isFeatureDefinition(value: unknown): value is FeatureDefinition {
   return (
     typeof candidate.id === 'string' &&
     candidate.id !== '' &&
-    typeof candidate.titleKey === 'string' &&
-    typeof candidate.descriptionKey === 'string' &&
+    typeof candidate.entry === 'function' &&
     typeof candidate.page === 'function' &&
     typeof candidate.locales === 'object' &&
     candidate.locales !== null

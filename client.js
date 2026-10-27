@@ -71,8 +71,40 @@ window.__ModuleLoader__.load({
       );
     }
 
-    // src/features/demo/index.tsx
-    var import_react4 = __toESM(require("react"), 1);
+    // src/features/demo/entry.tsx
+    var import_react = __toESM(require("react"), 1);
+    function DemoIcon() {
+      return /* @__PURE__ */ import_react.default.createElement(
+        "svg",
+        {
+          viewBox: "0 0 24 24",
+          width: "18",
+          height: "18",
+          "aria-hidden": "true",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: "1.8",
+          strokeLinecap: "round",
+          strokeLinejoin: "round"
+        },
+        /* @__PURE__ */ import_react.default.createElement("rect", { x: "3", y: "3", width: "7", height: "7", rx: "2" }),
+        /* @__PURE__ */ import_react.default.createElement("rect", { x: "14", y: "3", width: "7", height: "7", rx: "2" }),
+        /* @__PURE__ */ import_react.default.createElement("rect", { x: "3", y: "14", width: "7", height: "7", rx: "2" }),
+        /* @__PURE__ */ import_react.default.createElement("path", { d: "M14 17.5h7M17.5 14v7" })
+      );
+    }
+    function DemoEntry({ t, open }) {
+      return /* @__PURE__ */ import_react.default.createElement(
+        "button",
+        {
+          type: "button",
+          onClick: open,
+          className: "flex w-full items-start gap-3 rounded-xl border border-line1 bg-layer1 px-4 py-3.5 text-left transition hover:border-line2 hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        },
+        /* @__PURE__ */ import_react.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, /* @__PURE__ */ import_react.default.createElement(DemoIcon, null)),
+        /* @__PURE__ */ import_react.default.createElement("span", { className: "min-w-0" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "block text-[13px] font-medium leading-5 text-primary" }, t("title")), /* @__PURE__ */ import_react.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("description")))
+      );
+    }
 
     // src/features/demo/locales.ts
     var demoLocales = {
@@ -92,7 +124,7 @@ window.__ModuleLoader__.load({
         // 步骤一：复制示例文件夹
         step1: "\u590D\u5236 src/features/demo/ \u4E3A src/features/<id>/",
         // 步骤二：修改功能定义与页面
-        step2: "\u4FEE\u6539\u6587\u4EF6\u5939\u91CC\u7684 id\u3001titleKey\u3001descriptionKey\u3001locales \u4E0E\u9875\u9762\u5185\u5BB9",
+        step2: "\u4FEE\u6539 id\uFF0C\u5E76\u5728 entry\u3001page\u3001locales \u4E2D\u5199\u5165\u672C\u529F\u80FD\u7684\u5185\u5BB9",
         // 步骤三：在 featureList 中登记
         step3: "\u5728 src/features/index.ts \u7684 featureList \u91CC\u8FFD\u52A0\u8BE5\u6587\u4EF6\u5939\u7684\u9ED8\u8BA4\u5BFC\u51FA",
         // 步骤四：构建并刷新页面
@@ -114,7 +146,7 @@ window.__ModuleLoader__.load({
         // Step one: copy the demo folder
         step1: "Copy src/features/demo/ to src/features/<id>/",
         // Step two: edit the feature definition and page
-        step2: "Change id, titleKey, descriptionKey, locales and page content in the folder",
+        step2: "Change id, then write the feature content in entry, page and locales",
         // Step three: register in featureList
         step3: "Append the folder default export to featureList in src/features/index.ts",
         // Step four: build and refresh
@@ -123,10 +155,10 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/demo/page.tsx
-    var import_react3 = __toESM(require("react"), 1);
+    var import_react4 = __toESM(require("react"), 1);
 
     // src/components/Button.tsx
-    var import_react = __toESM(require("react"), 1);
+    var import_react2 = __toESM(require("react"), 1);
 
     // src/common/cn.ts
     function cn(...classes) {
@@ -139,7 +171,7 @@ window.__ModuleLoader__.load({
       outline: "rounded-lg border border-line1 bg-base px-3 py-1.5 text-primary hover:bg-layer2"
     };
     function Button({ variant = "ghost", className, type = "button", ...rest }) {
-      return /* @__PURE__ */ import_react.default.createElement(
+      return /* @__PURE__ */ import_react2.default.createElement(
         "button",
         {
           type,
@@ -154,46 +186,24 @@ window.__ModuleLoader__.load({
     }
 
     // src/components/Card.tsx
-    var import_react2 = __toESM(require("react"), 1);
+    var import_react3 = __toESM(require("react"), 1);
     function Card({ className, children }) {
-      return /* @__PURE__ */ import_react2.default.createElement("div", { className: cn("rounded-xl border border-line1 bg-layer1", className) }, children);
+      return /* @__PURE__ */ import_react3.default.createElement("div", { className: cn("rounded-xl border border-line1 bg-layer1", className) }, children);
     }
 
     // src/features/demo/page.tsx
     function DemoPage({ t }) {
-      const [count, setCount] = (0, import_react3.useState)(0);
-      return /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react3.default.createElement(Card, { className: "p-4" }, /* @__PURE__ */ import_react3.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, t("sectionTitle")), /* @__PURE__ */ import_react3.default.createElement("p", { className: "mt-1.5 text-[12px] leading-5 text-secondary" }, t("sectionDescription")), /* @__PURE__ */ import_react3.default.createElement(Button, { variant: "outline", className: "mt-3", onClick: () => setCount((value) => value + 1) }, t("counterLabel"), ": ", count)), /* @__PURE__ */ import_react3.default.createElement(Card, { className: "p-4" }, /* @__PURE__ */ import_react3.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, t("stepsTitle")), /* @__PURE__ */ import_react3.default.createElement("ol", { className: "mt-1.5 list-decimal pl-4 text-[12px] leading-6 text-secondary" }, /* @__PURE__ */ import_react3.default.createElement("li", null, t("step1")), /* @__PURE__ */ import_react3.default.createElement("li", null, t("step2")), /* @__PURE__ */ import_react3.default.createElement("li", null, t("step3")), /* @__PURE__ */ import_react3.default.createElement("li", null, t("step4")))));
+      const [count, setCount] = (0, import_react4.useState)(0);
+      return /* @__PURE__ */ import_react4.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react4.default.createElement("header", null, /* @__PURE__ */ import_react4.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("title")), /* @__PURE__ */ import_react4.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("description"))), /* @__PURE__ */ import_react4.default.createElement(Card, { className: "p-4" }, /* @__PURE__ */ import_react4.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, t("sectionTitle")), /* @__PURE__ */ import_react4.default.createElement("p", { className: "mt-1.5 text-[12px] leading-5 text-secondary" }, t("sectionDescription")), /* @__PURE__ */ import_react4.default.createElement(Button, { variant: "outline", className: "mt-3", onClick: () => setCount((value) => value + 1) }, t("counterLabel"), ": ", count)), /* @__PURE__ */ import_react4.default.createElement(Card, { className: "p-4" }, /* @__PURE__ */ import_react4.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, t("stepsTitle")), /* @__PURE__ */ import_react4.default.createElement("ol", { className: "mt-1.5 list-decimal pl-4 text-[12px] leading-6 text-secondary" }, /* @__PURE__ */ import_react4.default.createElement("li", null, t("step1")), /* @__PURE__ */ import_react4.default.createElement("li", null, t("step2")), /* @__PURE__ */ import_react4.default.createElement("li", null, t("step3")), /* @__PURE__ */ import_react4.default.createElement("li", null, t("step4")))));
     }
 
     // src/features/demo/index.tsx
-    function DemoIcon() {
-      return /* @__PURE__ */ import_react4.default.createElement(
-        "svg",
-        {
-          viewBox: "0 0 24 24",
-          width: "18",
-          height: "18",
-          "aria-hidden": "true",
-          fill: "none",
-          stroke: "currentColor",
-          strokeWidth: "1.8",
-          strokeLinecap: "round",
-          strokeLinejoin: "round"
-        },
-        /* @__PURE__ */ import_react4.default.createElement("rect", { x: "3", y: "3", width: "7", height: "7", rx: "2" }),
-        /* @__PURE__ */ import_react4.default.createElement("rect", { x: "14", y: "3", width: "7", height: "7", rx: "2" }),
-        /* @__PURE__ */ import_react4.default.createElement("rect", { x: "3", y: "14", width: "7", height: "7", rx: "2" }),
-        /* @__PURE__ */ import_react4.default.createElement("path", { d: "M14 17.5h7M17.5 14v7" })
-      );
-    }
     var demoFeature = {
       id: "demo",
-      titleKey: "title",
-      descriptionKey: "description",
       order: 100,
-      icon: DemoIcon,
-      locales: demoLocales,
-      page: DemoPage
+      entry: DemoEntry,
+      page: DemoPage,
+      locales: demoLocales
     };
     var demo_default = demoFeature;
 
@@ -205,7 +215,7 @@ window.__ModuleLoader__.load({
     function isFeatureDefinition(value) {
       if (typeof value !== "object" || value === null) return false;
       const candidate = value;
-      return typeof candidate.id === "string" && candidate.id !== "" && typeof candidate.titleKey === "string" && typeof candidate.descriptionKey === "string" && typeof candidate.page === "function" && typeof candidate.locales === "object" && candidate.locales !== null;
+      return typeof candidate.id === "string" && candidate.id !== "" && typeof candidate.entry === "function" && typeof candidate.page === "function" && typeof candidate.locales === "object" && candidate.locales !== null;
     }
     function createFeatureRegistry(list) {
       const seen = /* @__PURE__ */ new Set();
@@ -230,24 +240,6 @@ window.__ModuleLoader__.load({
 
     // src/shell/CustomFeaturesPage.tsx
     var import_react5 = __toESM(require("react"), 1);
-    function DefaultGlyph() {
-      return /* @__PURE__ */ import_react5.default.createElement(
-        "svg",
-        {
-          viewBox: "0 0 16 16",
-          width: "16",
-          height: "16",
-          "aria-hidden": "true",
-          fill: "none",
-          stroke: "currentColor",
-          strokeWidth: "1.4"
-        },
-        /* @__PURE__ */ import_react5.default.createElement("rect", { x: "2", y: "2", width: "5", height: "5", rx: "1.4" }),
-        /* @__PURE__ */ import_react5.default.createElement("rect", { x: "9", y: "2", width: "5", height: "5", rx: "1.4" }),
-        /* @__PURE__ */ import_react5.default.createElement("rect", { x: "2", y: "9", width: "5", height: "5", rx: "1.4" }),
-        /* @__PURE__ */ import_react5.default.createElement("rect", { x: "9", y: "9", width: "5", height: "5", rx: "1.4" })
-      );
-    }
     function BackGlyph() {
       return /* @__PURE__ */ import_react5.default.createElement(
         "svg",
@@ -265,38 +257,20 @@ window.__ModuleLoader__.load({
         /* @__PURE__ */ import_react5.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
       );
     }
-    function FeatureCard({ feature, t, onOpen }) {
-      const Icon = feature.icon;
-      return /* @__PURE__ */ import_react5.default.createElement(
-        "button",
-        {
-          type: "button",
-          onClick: onOpen,
-          className: "flex w-full items-start gap-3 rounded-xl border border-line1 bg-layer1 px-4 py-3.5 text-left transition hover:border-line2 hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-        },
-        /* @__PURE__ */ import_react5.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, Icon ? /* @__PURE__ */ import_react5.default.createElement(Icon, null) : /* @__PURE__ */ import_react5.default.createElement(DefaultGlyph, null)),
-        /* @__PURE__ */ import_react5.default.createElement("span", { className: "min-w-0" }, /* @__PURE__ */ import_react5.default.createElement("span", { className: "block text-[13px] font-medium leading-5 text-primary" }, t(`${feature.id}.${feature.titleKey}`)), /* @__PURE__ */ import_react5.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t(`${feature.id}.${feature.descriptionKey}`)))
-      );
-    }
     function CustomFeaturesPage({ t }) {
       const [activeId, setActiveId] = (0, import_react5.useState)(null);
       const active = activeId ? registry.find(activeId) : void 0;
       if (active) {
         const ActivePage = active.page;
-        return /* @__PURE__ */ import_react5.default.createElement("div", { className: "dsh-cf-root" }, /* @__PURE__ */ import_react5.default.createElement("div", { className: "flex items-center gap-2 border-b border-line1 pb-3" }, /* @__PURE__ */ import_react5.default.createElement(Button, { variant: "ghost", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react5.default.createElement(BackGlyph, null), t("shell.back")), /* @__PURE__ */ import_react5.default.createElement("span", { className: "text-[13px] font-medium text-primary" }, t(`${active.id}.${active.titleKey}`))), /* @__PURE__ */ import_react5.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react5.default.createElement(ActivePage, { t: (key) => t(`${active.id}.${key}`) })));
+        return /* @__PURE__ */ import_react5.default.createElement("div", { className: "dsh-cf-root" }, /* @__PURE__ */ import_react5.default.createElement("div", { className: "flex items-center gap-2 border-b border-line1 pb-3" }, /* @__PURE__ */ import_react5.default.createElement(Button, { variant: "ghost", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react5.default.createElement(BackGlyph, null), t("shell.back"))), /* @__PURE__ */ import_react5.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react5.default.createElement(ActivePage, { t: (key) => t(`${active.id}.${key}`) })));
       }
       return /* @__PURE__ */ import_react5.default.createElement("div", { className: "dsh-cf-root" }, /* @__PURE__ */ import_react5.default.createElement("header", null, /* @__PURE__ */ import_react5.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react5.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
         // 尚未注册功能时的空态提示
         /* @__PURE__ */ import_react5.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line1 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
-      ) : /* @__PURE__ */ import_react5.default.createElement("div", { className: "mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2" }, registry.list.map((feature) => /* @__PURE__ */ import_react5.default.createElement(
-        FeatureCard,
-        {
-          key: feature.id,
-          feature,
-          t,
-          onOpen: () => setActiveId(feature.id)
-        }
-      ))));
+      ) : /* @__PURE__ */ import_react5.default.createElement("div", { className: "mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2" }, registry.list.map((feature) => {
+        const Entry = feature.entry;
+        return /* @__PURE__ */ import_react5.default.createElement(Entry, { key: feature.id, t: (key) => t(`${feature.id}.${key}`), open: () => setActiveId(feature.id) });
+      })));
     }
 
     // src/entry.tsx

@@ -19,7 +19,7 @@ export const demoLocales: FeatureLocales = {
     // 步骤一：复制示例文件夹
     step1: '复制 src/features/demo/ 为 src/features/<id>/',
     // 步骤二：修改功能定义与页面
-    step2: '修改文件夹里的 id、titleKey、descriptionKey、locales 与页面内容',
+    step2: '修改 id，并在 entry、page、locales 中写入本功能的内容',
     // 步骤三：在 featureList 中登记
     step3: '在 src/features/index.ts 的 featureList 里追加该文件夹的默认导出',
     // 步骤四：构建并刷新页面
@@ -42,7 +42,7 @@ export const demoLocales: FeatureLocales = {
     // Step one: copy the demo folder
     step1: 'Copy src/features/demo/ to src/features/<id>/',
     // Step two: edit the feature definition and page
-    step2: 'Change id, titleKey, descriptionKey, locales and page content in the folder',
+    step2: 'Change id, then write the feature content in entry, page and locales',
     // Step three: register in featureList
     step3: 'Append the folder default export to featureList in src/features/index.ts',
     // Step four: build and refresh

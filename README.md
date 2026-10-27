@@ -1,7 +1,7 @@
 # dsh-all-in-one
 
 DeepSeek Harness 的 all-in-one 插件：在「设置 → 定制功能」中用一个网格收纳各种独立小工具。
-外壳只负责网格、导航与样式，每个功能在自己的文件夹里独立实现。
+外壳只负责网格布局、功能切换与样式，每个功能的入口外观和页面内容都在自己的文件夹里实现。
 
 ## 目录结构
 
@@ -24,8 +24,9 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → 定制功能」中用�
 │       ├── index.ts         # featureList：登记所有功能
 │       ├── registry.ts      # 校验后的共享注册表，外壳与入口共用
 │       └── demo/            # 示例功能，可作为模板复制
-│           ├── index.tsx    # 注册定义与图标
-│           ├── page.tsx     # 功能页面内容
+│           ├── index.tsx    # 注册定义：id、入口、页面与文案的装配
+│           ├── entry.tsx    # 功能在网格中的入口，外观由功能自己设计
+│           ├── page.tsx     # 功能页面内容与页头标题
 │           └── locales.ts   # 本功能的中英文文案
 └── build.ts                 # 构建脚本，由 tsx 直接执行
 ```
@@ -33,11 +34,12 @@ DeepSeek Harness 的 all-in-one 插件：在「设置 → 定制功能」中用�
 ## 新增一个功能
 
 1. 复制 `src/features/demo/` 为 `src/features/<id>/`
-2. 修改 `index.tsx` 里的 `id`、`titleKey`、`descriptionKey`，并按需改页面与文案
+2. 修改 `index.tsx` 里的 `id`，并在 `entry.tsx`、`page.tsx`、`locales.ts` 中写入本功能的内容
 3. 在 `src/features/index.ts` 的 `featureList` 里追加该文件夹的默认导出
 4. 运行 `npm run build`，刷新 Harness 页面，卡片即出现在网格中
 
-`feature` 定义的字段契约见 `src/shell/registry.ts`。
+`feature` 定义的字段契约见 `src/shell/registry.ts`。入口组件拿到 `t` 与 `open`，
+可自行设计任意展现形式（卡片、按钮、横幅等），外壳只负责网格布局与打开动作。
 
 ## 功能之间如何互不干扰
 

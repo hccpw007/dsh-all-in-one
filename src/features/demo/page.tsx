@@ -17,6 +17,14 @@ export function DemoPage({ t }: FeaturePageProps) {
   // 示例功能页面根节点
   return (
     <div className="flex flex-col gap-4">
+      {/* 功能页头部：标题与简介由功能自己渲染，外壳不再介入 */}
+      <header>
+        {/* 功能页标题 */}
+        <h1 className="text-[17px] font-semibold leading-6 text-primary">{t('title')}</h1>
+        {/* 功能页简介 */}
+        <p className="mt-1.5 text-[13px] leading-5 text-secondary">{t('description')}</p>
+      </header>
+
       {/* 功能说明与交互演示 */}
       <Card className="p-4">
         <h3 className="text-[13px] font-medium text-primary">{t('sectionTitle')}</h3>
