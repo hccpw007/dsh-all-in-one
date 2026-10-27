@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "定制功能：把独立小工具收拢到设置页的 all-in-one 外壳。",
+  "description": "All In One：把独立小工具收拢到设置页的统一外壳。",
   "exports": {
     ".": "./index.js",
     "./client": "./client.js",

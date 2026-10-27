@@ -1,5 +1,5 @@
 /**
- * 定制功能的宿主侧入口。
+ * All In One 的宿主侧入口。
  *
  * 壳子只负责装配：合并各 feature 的宿主服务依赖，并依次调用它们的 apply。
  * 具体能力（如「展开过程」的 index.html 注入）由 feature 目录内的 host.ts 实现。

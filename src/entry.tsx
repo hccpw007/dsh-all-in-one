@@ -1,5 +1,5 @@
 /**
- * 浏览器端入口：把「定制功能」页面注册进设置的 section 插槽。
+ * 浏览器端入口：把「All In One」页面注册进设置的 section 插槽。
  *
  * 由 build.ts 打包并包裹成 ModuleLoader 的工厂函数，React 来自宿主模块表。
  */
@@ -9,20 +9,20 @@ import cssText from '../.build/styles.css'
 import iconSvg from '../icon.svg'
 import { collectFeatureLocales, mergeDictionaries } from './common/locale'
 import { registry } from './features/registry'
-import { CustomFeaturesPage } from './shell/CustomFeaturesPage'
+import { AllInOnePage } from './shell/AllInOnePage'
 import { installSettingsNavIcon } from './shell/settings-nav-icon'
 import type { ClientPlugin, PluginContext } from './types/plugin'
 
 /** 语言命名空间，与插件的其它字典互不干扰。 */
-const LOCALE_NAMESPACE = 'custom-features'
+const LOCALE_NAMESPACE = 'all-in-one'
 
 /** 外壳自身的界面文案；feature 文案由各功能自带的 locales 提供。 */
 const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
   zh: {
     // 设置左侧导航项名称
-    'shell.navTitle': '定制功能',
+    'shell.navTitle': 'All In One',
     // 页面主标题
-    'shell.pageTitle': '定制功能',
+    'shell.pageTitle': 'All In One',
     // 页面说明，解释这一页的用途
     'shell.pageDescription': '所有独立的小工具都收拢在这里，点击卡片进入对应的功能。',
     // 尚未注册任何功能时的空态提示
@@ -32,9 +32,9 @@ const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
   },
   en: {
     // Settings navigation entry label
-    'shell.navTitle': 'Custom Features',
+    'shell.navTitle': 'All In One',
     // Page heading
-    'shell.pageTitle': 'Custom Features',
+    'shell.pageTitle': 'All In One',
     // Page description explaining the purpose of this section
     'shell.pageDescription': 'Every standalone tool lives here. Pick a card to open it.',
     // Empty state shown when no feature is registered
@@ -58,7 +58,7 @@ const plugin: ClientPlugin = {
     // 样式随插件生命周期注入和移除，不向宿主留下全局副作用
     ctx.effect(() => {
       const style = document.createElement('style')
-      style.setAttribute('data-dsh-plugin', 'custom-features')
+      style.setAttribute('data-dsh-plugin', 'dsh-all-in-one')
       style.textContent = cssText
       document.head.appendChild(style)
       return () => style.remove()
@@ -78,14 +78,14 @@ const plugin: ClientPlugin = {
     installSettingsNavIcon(ctx, t, iconSvg)
 
     // 页面组件持有翻译函数，语言切换后重新渲染即读取新文案
-    const SettingsSection = () => <CustomFeaturesPage t={t} />
+    const SettingsSection = () => <AllInOnePage t={t} />
 
     // 注册设置页：id 独立于宿主既有页面，order 让它在 Agent 预设之后
     ctx.slots.inject('settings.section', () =>
       ctx.slots.register(
         {
           name: 'settings.section',
-          id: 'custom-features',
+          id: 'all-in-one',
           order: 30,
           label: () => t('shell.navTitle'),
         },

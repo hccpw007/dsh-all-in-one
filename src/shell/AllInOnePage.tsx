@@ -1,5 +1,5 @@
 /**
- * 「定制功能」外壳页面。
+ * 「All In One」外壳页面。
  *
  * 页面只负责网格布局、功能切换与返回入口；每张入口卡片由功能自己渲染，
  * 功能页面的标题与内容也都留在各自的文件夹里。
@@ -29,16 +29,16 @@ function BackGlyph() {
   )
 }
 
-interface CustomFeaturesPageProps {
+interface AllInOnePageProps {
   /** 宿主注入的翻译函数。 */
   t: Translate
 }
 
 /**
- * 「定制功能」设置页：网格列出全部已注册 feature，点击卡片进入对应功能。
+ * 「All In One」设置页：网格列出全部已注册 feature，点击卡片进入对应功能。
  * @param props 宿主注入的翻译函数
  */
-export function CustomFeaturesPage({ t }: CustomFeaturesPageProps) {
+export function AllInOnePage({ t }: AllInOnePageProps) {
   // 当前打开的功能 id；为 null 时显示功能网格
   const [activeId, setActiveId] = useState<string | null>(null)
   const active = activeId ? registry.find(activeId) : undefined
@@ -47,9 +47,9 @@ export function CustomFeaturesPage({ t }: CustomFeaturesPageProps) {
   if (active && 'page' in active) {
     const ActivePage = active.page
 
-    // 功能页面根节点，样式作用域限定在 dsh-cf-root
+    // 功能页面根节点，样式作用域限定在 dsh-aio-root
     return (
-      <div className="dsh-cf-root">
+      <div className="dsh-aio-root">
         {/* 功能页头部：只提供返回网格的入口，标题由功能页面自行渲染 */}
         <div className="flex items-center gap-2 border-b border-line1 pb-3">
           {/* 返回按钮：回到功能网格 */}
@@ -66,9 +66,9 @@ export function CustomFeaturesPage({ t }: CustomFeaturesPageProps) {
     )
   }
 
-  // 功能网格根节点，样式作用域限定在 dsh-cf-root
+  // 功能网格根节点，样式作用域限定在 dsh-aio-root
   return (
-    <div className="dsh-cf-root">
+    <div className="dsh-aio-root">
       {/* 页面标题与简介 */}
       <header>
         {/* 页面主标题 */}

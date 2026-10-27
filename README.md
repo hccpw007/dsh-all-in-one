@@ -1,6 +1,6 @@
 # dsh-all-in-one
 
-DeepSeek Harness 的 all-in-one 插件：在「设置 → 定制功能」中用一个网格收纳各种独立小工具。
+DeepSeek Harness 的 all-in-one 插件：在「设置 → All In One」中用一个网格收纳各种独立小工具。
 外壳只负责网格布局、功能切换与样式，每个功能的入口外观和页面内容都在自己的文件夹里实现。
 
 ## 目录结构

@@ -25,7 +25,7 @@ function DemoIcon() {
 }
 
 /**
- * 示例功能在「定制功能」网格中的入口。
+ * 示例功能在「All In One」网格中的入口。
  *
  * 入口的排版、图标与交互全部由功能自己决定，外壳只传入翻译函数与打开动作。
  * @param props t 已绑定本 feature 的 key 前缀，open 用于打开功能页面

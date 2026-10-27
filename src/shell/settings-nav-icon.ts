@@ -70,7 +70,7 @@ export function installSettingsNavIcon(ctx: NavIconContext, t: Translate, iconSv
   ctx.effect(() => {
     const iconDataUrl = `data:image/svg+xml,${encodeURIComponent(iconSvg)}`
     const style = document.createElement('style')
-    style.setAttribute('data-dsh-plugin', 'custom-features-nav-icon')
+    style.setAttribute('data-dsh-plugin', 'dsh-all-in-one-nav-icon')
     style.textContent = navIconCss(iconDataUrl)
     document.head.appendChild(style)
 
@@ -114,5 +114,5 @@ export function installSettingsNavIcon(ctx: NavIconContext, t: Translate, iconSv
 
       style.remove()
     }
-  }, 'custom-features: settings nav icon')
+  }, 'dsh-all-in-one: settings nav icon')
 }
