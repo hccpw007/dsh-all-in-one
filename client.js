@@ -733,9 +733,10 @@ window.__ModuleLoader__.load({
     // src/components/Button.tsx
     var VARIANT_CLASS = {
       // 构建关闭了 preflight，浏览器会给 button 加上原生边框与灰底，ghost 必须显式清掉
-      ghost: "flex items-center gap-1 rounded-lg border-0 bg-transparent px-2 py-1 text-secondary hover:bg-layer2 hover:text-primary",
-      // line1、line2 在宿主浅色主题下几乎看不见，描边统一使用宿主最深的 line4
-      outline: "rounded-lg border border-line4 bg-base px-3 py-1.5 text-primary hover:bg-layer2"
+      ghost: "inline-flex items-center gap-1 rounded-lg border-0 bg-transparent px-2 py-1 text-secondary hover:bg-layer2 hover:text-primary",
+      // line1、line2 在宿主浅色主题下几乎看不见，描边统一使用宿主最深的 line4；
+      // 用 inline-flex 居中对齐，避免图标按钮的 svg 落在基线下方、与文字错位
+      outline: "inline-flex items-center gap-1 rounded-lg border border-line4 bg-base px-3 py-1.5 text-primary hover:bg-layer2"
     };
     function Button({ variant = "ghost", className, type = "button", ...rest }) {
       return /* @__PURE__ */ import_react4.default.createElement(
