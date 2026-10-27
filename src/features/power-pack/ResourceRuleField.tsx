@@ -88,12 +88,9 @@ export function ResourceRuleField({
 
         {/* 模式切换靠右对齐，与左侧标签形成左右分布 */}
         <div className="ml-auto flex items-center gap-2">
-          {/* 规则模式切换：分段控件，容器铺浅底，选中项以白底凸起 */}
-          <div
-            className="flex items-center rounded-lg border border-line4 bg-layer2 p-0.5"
-            role="group"
-          >
-            {MODE_ORDER.map((mode) => {
+          {/* 规则模式切换：button group，按钮共享边框，选中项以主色实底反白区分 */}
+          <div className="inline-flex" role="group">
+            {MODE_ORDER.map((mode, index) => {
               const active = rule.mode === mode
 
               return (
@@ -103,11 +100,14 @@ export function ResourceRuleField({
                   aria-pressed={active}
                   onClick={() => onChange({ mode, items: rule.items })}
                   className={cn(
-                    'rounded-md px-2.5 py-1 text-[12px] leading-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand',
+                    'border border-line4 px-2.5 py-1 text-[12px] leading-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand',
+                    // 首尾各自圆角，中间按钮用负边距与前一格共享一条描边
+                    index === 0 ? 'rounded-l-lg' : '-ml-px',
+                    index === MODE_ORDER.length - 1 ? 'rounded-r-lg' : '',
                     active
-                      ? 'bg-base font-medium text-primary shadow-sm'
-                      : // 未选中项必须显式透明：preflight 关闭后按钮会带浏览器原生灰底
-                        'bg-transparent text-secondary hover:text-primary',
+                      ? // 选中项抬高层级，让实底盖住相邻按钮的描边
+                        'relative z-10 border-primary bg-primary font-medium text-[color:var(--dsw-alias-bg-base)]'
+                      : 'bg-base text-secondary hover:bg-layer2 hover:text-primary',
                   )}
                 >
                   {modeLabels[mode]}

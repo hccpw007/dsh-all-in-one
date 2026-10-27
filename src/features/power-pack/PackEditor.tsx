@@ -120,18 +120,6 @@ export function PackEditor({ initial, catalog, saving, error, onSave, onCancel, 
           />
         </label>
 
-        <label className={`block ${GROUP_CLASS}`}>
-          {/* 追加到系统提示词末尾的增强要求 */}
-          <span className="mb-1 block text-[12px] font-semibold text-primary">{t('systemPromptLabel')}</span>
-          <textarea
-            value={draft.systemPrompt}
-            placeholder={t('systemPromptPlaceholder')}
-            onChange={(event) => patch({ systemPrompt: event.target.value })}
-            rows={4}
-            className={INPUT_CLASS}
-          />
-        </label>
-
         <div className={GROUP_CLASS}>
           <ResourceRuleField
             title={t('skillsTitle')}
@@ -174,6 +162,18 @@ export function PackEditor({ initial, catalog, saving, error, onSave, onCancel, 
             onChange={(rule) => patchRule('mcp', rule)}
           />
         </div>
+
+        <label className={`block ${GROUP_CLASS}`}>
+          {/* 追加到系统提示词末尾的增强要求；放在最后，作为整个技能包的收尾设置 */}
+          <span className="mb-1 block text-[12px] font-semibold text-primary">{t('systemPromptLabel')}</span>
+          <textarea
+            value={draft.systemPrompt}
+            placeholder={t('systemPromptPlaceholder')}
+            onChange={(event) => patch({ systemPrompt: event.target.value })}
+            rows={15}
+            className={INPUT_CLASS}
+          />
+        </label>
 
         {/* 保存失败或校验失败的提示 */}
         {localError ?? error ? (
