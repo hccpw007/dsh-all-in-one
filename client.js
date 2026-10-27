@@ -42,7 +42,7 @@ window.__ModuleLoader__.load({
     var import_react14 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.static{position:static}.absolute{position:absolute}.relative{position:relative}.left-0{left:0}.top-full{top:100%}.isolate{isolation:isolate}.z-50{z-index:50}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-9{height:2.25rem}.max-h-72{max-height:18rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.max-w-\\[360px\\]{max-width:360px}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-0\\.5,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[18px\\]{--tw-translate-x:18px}.cursor-pointer{cursor:pointer}.list-decimal{list-style-type:decimal}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-dashed{border-style:dashed}.border-line1{border-color:var(--dsw-alias-border-l1)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.p-3{padding:.75rem}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pb-4{padding-bottom:1rem}.pl-4{padding-left:1rem}.pt-3{padding-top:.75rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[18px\\]{line-height:18px}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:border-line2:hover{border-color:var(--dsw-alias-border-l2)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}@media (min-width:640px){.sm\\:col-span-2{grid-column:span 2/span 2}.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
+    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.static{position:static}.relative{position:relative}.isolate{isolation:isolate}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-9{height:2.25rem}.max-h-72{max-height:18rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-0\\.5,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[18px\\]{--tw-translate-x:18px}.cursor-pointer{cursor:pointer}.list-decimal{list-style-type:decimal}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-dashed{border-style:dashed}.border-line1{border-color:var(--dsw-alias-border-l1)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.p-3{padding:.75rem}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pb-4{padding-bottom:1rem}.pl-4{padding-left:1rem}.pt-3{padding-top:.75rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[18px\\]{line-height:18px}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:border-line2:hover{border-color:var(--dsw-alias-border-l2)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}@media (min-width:640px){.sm\\:col-span-2{grid-column:span 2/span 2}.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -83,11 +83,7 @@ window.__ModuleLoader__.load({
 
     // src/features/chat-style/seat.tsx
     var import_react = __toESM(require("react"), 1);
-
-    // src/common/cn.ts
-    function cn(...classes) {
-      return classes.filter(Boolean).join(" ");
-    }
+    var import_dsh_client_ui_primitives = require("@deepseek-ai/dsh-client-ui-primitives");
 
     // src/features/chat-style/seat-store.ts
     function initialState() {
@@ -207,130 +203,69 @@ window.__ModuleLoader__.load({
       minimal: "presetMinimalName",
       cordis: "presetCordisName"
     };
-    function SeatIcon() {
-      return /* @__PURE__ */ import_react.default.createElement(
-        "svg",
-        {
-          viewBox: "0 0 24 24",
-          width: "16",
-          height: "16",
-          "aria-hidden": "true",
-          fill: "none",
-          stroke: "currentColor",
-          strokeWidth: "1.8",
-          strokeLinecap: "round",
-          strokeLinejoin: "round",
-          className: "ufIuna_seatIcon"
-        },
-        /* @__PURE__ */ import_react.default.createElement("path", { d: "M20 12a7 7 0 0 1-7 7H8l-4 3v-5.5A7 7 0 0 1 11 5h2a7 7 0 0 1 7 7Z" }),
-        /* @__PURE__ */ import_react.default.createElement("circle", { cx: "10", cy: "12", r: "1" }),
-        /* @__PURE__ */ import_react.default.createElement("circle", { cx: "14", cy: "12", r: "1" }),
-        /* @__PURE__ */ import_react.default.createElement("circle", { cx: "18", cy: "12", r: "1" })
-      );
-    }
-    function ChevronIcon() {
-      return /* @__PURE__ */ import_react.default.createElement(
-        "svg",
-        {
-          viewBox: "0 0 16 16",
-          width: "12",
-          height: "12",
-          "aria-hidden": "true",
-          fill: "none",
-          stroke: "currentColor",
-          strokeWidth: "1.6",
-          strokeLinecap: "round",
-          strokeLinejoin: "round",
-          className: "ufIuna_chevron"
-        },
-        /* @__PURE__ */ import_react.default.createElement("path", { d: "m4 6 4 4 4-4" })
-      );
-    }
-    function CheckIcon() {
-      return /* @__PURE__ */ import_react.default.createElement(
-        "svg",
-        {
-          viewBox: "0 0 16 16",
-          width: "16",
-          height: "16",
-          "aria-hidden": "true",
-          fill: "none",
-          stroke: "currentColor",
-          strokeWidth: "1",
-          className: "_check_4ub78_179"
-        },
-        /* @__PURE__ */ import_react.default.createElement("path", { d: "M2.25 8.5L5.49732 11.7473C5.90519 12.1552 6.57263 12.1344 6.95426 11.7018L13.75 4" })
-      );
-    }
+    var BUILTIN_DESCRIPTION_KEYS = {
+      standard: "presetStandardDescription",
+      ptc: "presetPtcDescription",
+      minimal: "presetMinimalDescription",
+      cordis: "presetCordisDescription"
+    };
     function presetName(preset, t) {
       if (preset.name) return preset.name;
       const key = BUILTIN_NAME_KEYS[preset.id];
       return key === void 0 ? preset.id : t(key);
     }
-    function PresetDropdown({
-      current,
-      options,
-      placeholder,
-      emptyText,
-      disabled,
-      onPick,
-      t
-    }) {
+    function presetDescription(preset, t) {
+      if (preset.description) return preset.description;
+      const key = BUILTIN_DESCRIPTION_KEYS[preset.id];
+      return key === void 0 ? void 0 : t(key);
+    }
+    function PresetDropdown({ current, options, placeholder, disabled, onPick, t }) {
       const [open, setOpen] = (0, import_react.useState)(false);
-      const rootRef = (0, import_react.useRef)(null);
       const selected = options.find((preset) => preset.id === current);
-      (0, import_react.useEffect)(() => {
-        if (!open) return;
-        const onPointerDown = (event) => {
-          if (rootRef.current?.contains(event.target)) return;
-          setOpen(false);
-        };
-        document.addEventListener("mousedown", onPointerDown);
-        return () => document.removeEventListener("mousedown", onPointerDown);
-      }, [open]);
-      return /* @__PURE__ */ import_react.default.createElement("div", { ref: rootRef, className: "relative" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "_root_4ub78_1 ufIuna_menuAnchor" }, /* @__PURE__ */ import_react.default.createElement(
-        "button",
-        {
-          type: "button",
-          "aria-haspopup": "menu",
-          "aria-expanded": open,
-          disabled,
-          onClick: () => setOpen((value) => !value),
-          className: "ufIuna_seat"
-        },
-        /* @__PURE__ */ import_react.default.createElement(SeatIcon, null),
-        /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_seatLabel" }, selected === void 0 ? placeholder : presetName(selected, t)),
-        /* @__PURE__ */ import_react.default.createElement(ChevronIcon, null)
-      )), open ? /* @__PURE__ */ import_react.default.createElement(
-        "div",
-        {
-          role: "menu",
-          "data-menu-material": "translucent",
-          className: "_surface_ri079_1 _list_4ub78_7 _scrollable_4ub78_19 absolute left-0 top-full z-50 mt-1 max-w-[360px]"
-        },
-        /* @__PURE__ */ import_react.default.createElement("div", { "aria-hidden": "true", className: "_material_ri079_21" }),
-        /* @__PURE__ */ import_react.default.createElement("div", { className: "_viewport_4ub78_19", role: "presentation" }, options.length === 0 ? (
-          // 列表为空时的提示
-          /* @__PURE__ */ import_react.default.createElement("div", { className: "_itemWrap_4ub78_90" }, /* @__PURE__ */ import_react.default.createElement("button", { type: "button", className: "_item_4ub78_90", disabled: true }, /* @__PURE__ */ import_react.default.createElement("span", { className: "_itemLabel_4ub78_190" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_item" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_itemDesc" }, emptyText)))))
-        ) : options.map((preset) => /* @__PURE__ */ import_react.default.createElement("div", { key: preset.id, className: "_itemWrap_4ub78_90" }, /* @__PURE__ */ import_react.default.createElement(
-          "button",
-          {
-            type: "button",
-            role: "menuitemradio",
-            "aria-checked": preset.id === current,
-            onClick: () => {
-              setOpen(false);
-              onPick(preset.id);
-            },
-            className: cn("_item_4ub78_90", preset.id === current && "_selected_4ub78_216")
-          },
-          /* @__PURE__ */ import_react.default.createElement("span", { className: "_itemLabel_4ub78_190" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_item" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_itemName" }, presetName(preset, t)), preset.description ? (
+      const canOpen = !disabled && options.length > 0;
+      const items = options.map((preset) => {
+        const description = presetDescription(preset, t);
+        return {
+          id: preset.id,
+          label: /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_item" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_itemName" }, presetName(preset, t)), description ? (
             // 预设说明
-            /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_itemDesc" }, preset.description)
-          ) : null)),
-          preset.id === current ? /* @__PURE__ */ import_react.default.createElement(CheckIcon, null) : null
-        ))))
-      ) : null);
+            /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_itemDesc" }, description)
+          ) : null)
+        };
+      });
+      return /* @__PURE__ */ import_react.default.createElement(
+        import_dsh_client_ui_primitives.Menu,
+        {
+          open: open && canOpen,
+          onClose: () => setOpen(false),
+          items,
+          selectedId: current,
+          onSelect: (id) => {
+            setOpen(false);
+            if (id !== current) onPick(id);
+          },
+          align: "start",
+          portal: true,
+          className: "ufIuna_menuAnchor",
+          anchor: (
+            // 触发按钮的结构与类名同宿主预设选择器
+            /* @__PURE__ */ import_react.default.createElement(
+              "button",
+              {
+                type: "button",
+                className: "ufIuna_seat",
+                "aria-haspopup": "menu",
+                "aria-expanded": open && canOpen,
+                disabled: !canOpen,
+                onClick: () => setOpen((value) => !value)
+              },
+              /* @__PURE__ */ import_react.default.createElement(import_dsh_client_ui_primitives.IconAgentPresetOutlineRegular, { className: "ufIuna_seatIcon" }),
+              /* @__PURE__ */ import_react.default.createElement("span", { className: "ufIuna_seatLabel" }, selected === void 0 ? placeholder : presetName(selected, t)),
+              /* @__PURE__ */ import_react.default.createElement(import_dsh_client_ui_primitives.IconChevronDownOutlineRegular, { className: "ufIuna_chevron" })
+            )
+          )
+        }
+      );
     }
     function ChatStyleSeat({
       sessionId,
@@ -359,7 +294,6 @@ window.__ModuleLoader__.load({
           current: snapshot.current,
           options: modes,
           placeholder: t("modeLabel"),
-          emptyText: t("seatNoModes"),
           disabled,
           onPick: pick,
           t
@@ -370,7 +304,6 @@ window.__ModuleLoader__.load({
           current: snapshot.current,
           options: styles,
           placeholder: t("seatLabel"),
-          emptyText: t("seatNoStyles"),
           disabled,
           onPick: pick,
           t
@@ -566,12 +499,8 @@ window.__ModuleLoader__.load({
         presetHint: "\u98CE\u683C\u4EE5 Agent \u9884\u8BBE\u7684\u5F62\u5F0F\u6CE8\u518C\u3002\u65B0\u5EFA\u4EFB\u52A1\u65F6\u5728\u300C\u6807\u51C6\u6A21\u5F0F\u300D\u65C1\u7684\u9884\u8BBE\u9009\u62E9\u5668\u91CC\u9009\u62E9\u5B83\u3002",
         // 新会话选择器的模式下拉占位文案
         modeLabel: "\u6A21\u5F0F",
-        // 模式列表为空时的提示
-        seatNoModes: "\u6CA1\u6709\u53EF\u7528\u7684\u6A21\u5F0F\u3002",
         // 新会话选择器的风格下拉占位文案
         seatLabel: "\u5BF9\u8BDD\u98CE\u683C",
-        // 尚未创建任何风格时的提示
-        seatNoStyles: "\u8FD8\u6CA1\u6709\u521B\u5EFA\u98CE\u683C\uFF0C\u53EF\u5728\u300C\u8BBE\u7F6E \u2192 All In One \u2192 \u5BF9\u8BDD\u98CE\u683C\u300D\u4E2D\u65B0\u5EFA\u3002",
         // 内置标准模式的显示名
         presetStandardName: "\u6807\u51C6\u6A21\u5F0F",
         // 内置 PTC 模式的显示名
@@ -580,6 +509,14 @@ window.__ModuleLoader__.load({
         presetMinimalName: "\u6781\u7B80\u6A21\u5F0F",
         // 内置创造模式的显示名
         presetCordisName: "\u521B\u9020\u6A21\u5F0F",
+        // 内置标准模式的说明
+        presetStandardDescription: "\u5904\u7406\u4EE3\u7801\u3001\u6587\u4EF6\u548C\u8D44\u6599\uFF0C\u9002\u5408\u5927\u591A\u6570\u4EFB\u52A1\u3002Agent \u4F1A\u6309\u9700\u4F7F\u7528\u68C0\u7D22\u3001\u7F16\u8F91\u548C\u7EC8\u7AEF\u7B49\u5DE5\u5177\u3002",
+        // 内置 PTC 模式的说明
+        presetPtcDescription: "\u5305\u542B\u6807\u51C6\u6A21\u5F0F\u7684\u6240\u6709\u80FD\u529B\uFF0C\u66F4\u9002\u5408\u6279\u91CF\u8C03\u7528\u5DE5\u5177\uFF0C\u5E76\u5BF9\u7ED3\u679C\u8FDB\u884C\u7B5B\u9009\u3001\u6574\u7406\u3001\u53BB\u91CD\u3001\u7EDF\u8BA1\u6216\u6C47\u603B\u7684\u4EFB\u52A1\u3002",
+        // 内置极简模式的说明
+        presetMinimalDescription: "Agent \u4F7F\u7528\u7EC8\u7AEF\u548C\u56FE\u7247\u8BFB\u53D6\u5DE5\u5177\uFF0C\u5E76\u652F\u6301\u4E0A\u4E0B\u6587\u538B\u7F29\uFF0C\u9002\u5408\u6D4B\u8BD5\u548C\u5BF9\u6BD4\u5176\u57FA\u7840\u8868\u73B0\u3002",
+        // 内置创造模式的说明
+        presetCordisDescription: "\u7528\u5BF9\u8BDD\u5B9A\u5236 DSH\uFF1A\u8BA9 Agent \u7F16\u5199\u63D2\u4EF6\uFF0C\u6DFB\u52A0\u65B0\u529F\u80FD\u6216\u754C\u9762\uFF1B\u4E5F\u80FD\u7EC4\u5408\u5DE5\u5177\u548C\u63D0\u793A\u8BCD\uFF0C\u521B\u5EFA\u81EA\u5DF1\u7684\u6A21\u5F0F\u3002",
         // 会话已开始后尝试切换风格的提示
         seatSessionStarted: "\u4F1A\u8BDD\u5DF2\u5F00\u59CB\uFF0C\u65E0\u6CD5\u518D\u5207\u6362\u98CE\u683C\u3002\u8BF7\u5728\u65B0\u5EFA\u4EFB\u52A1\u65F6\u9009\u62E9\u3002",
         // 风格切换失败的提示前缀
@@ -710,12 +647,8 @@ window.__ModuleLoader__.load({
         presetHint: "Styles register as agent presets. Choose one in the preset picker next to Standard mode when starting a new task.",
         // Placeholder for the mode dropdown
         modeLabel: "Mode",
-        // Shown when the mode list is empty
-        seatNoModes: "No modes available.",
         // Placeholder for the style dropdown
         seatLabel: "Chat style",
-        // Shown when no style has been created yet
-        seatNoStyles: "No styles yet. Create one in Settings \u2192 All In One \u2192 Chat styles.",
         // Display name for the built-in Standard mode
         presetStandardName: "Standard mode",
         // Display name for the built-in PTC mode
@@ -724,6 +657,14 @@ window.__ModuleLoader__.load({
         presetMinimalName: "Minimal mode",
         // Display name for the built-in Creator mode
         presetCordisName: "Creator mode",
+        // Description for the built-in Standard mode
+        presetStandardDescription: "Work with code, files, and information. Suitable for most tasks, with search, editing, terminal commands, and other tools available as needed.",
+        // Description for the built-in PTC mode
+        presetPtcDescription: "Includes all Standard mode capabilities. Better suited to tasks that call tools in batches and then filter, organize, deduplicate, count, or summarize the results.",
+        // Description for the built-in Minimal mode
+        presetMinimalDescription: "The agent uses a terminal and image reading, with context compaction. Useful for testing and comparing its basic performance.",
+        // Description for the built-in Creator mode
+        presetCordisDescription: "Customize DSH through conversation. Let the agent write plugins that add features or UI, or combine tools and prompts to create your own mode.",
         // Shown when trying to switch a session that already started
         seatSessionStarted: "This session has started; a style can only be chosen for a new task.",
         // Prefix for a failed style switch
@@ -736,6 +677,13 @@ window.__ModuleLoader__.load({
 
     // src/components/Button.tsx
     var import_react4 = __toESM(require("react"), 1);
+
+    // src/common/cn.ts
+    function cn(...classes) {
+      return classes.filter(Boolean).join(" ");
+    }
+
+    // src/components/Button.tsx
     var VARIANT_CLASS = {
       ghost: "flex items-center gap-1 rounded-lg px-2 py-1 text-secondary hover:bg-layer2 hover:text-primary",
       outline: "rounded-lg border border-line1 bg-base px-3 py-1.5 text-primary hover:bg-layer2"

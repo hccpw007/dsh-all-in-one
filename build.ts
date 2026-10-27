@@ -112,7 +112,7 @@ async function buildScript(): Promise<string> {
     platform: 'neutral',
     target: ['chrome110'],
     jsx: 'transform',
-    external: ['react'],
+    external: ['react', '@deepseek-ai/dsh-client-ui-primitives'],
     loader: { '.css': 'text', '.svg': 'text' },
     legalComments: 'none',
     define: { 'process.env.NODE_ENV': '"production"' },

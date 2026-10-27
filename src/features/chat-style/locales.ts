@@ -129,12 +129,8 @@ export const chatStyleLocales: FeatureLocales = {
       '风格以 Agent 预设的形式注册。新建任务时在「标准模式」旁的预设选择器里选择它。',
     // 新会话选择器的模式下拉占位文案
     modeLabel: '模式',
-    // 模式列表为空时的提示
-    seatNoModes: '没有可用的模式。',
     // 新会话选择器的风格下拉占位文案
     seatLabel: '对话风格',
-    // 尚未创建任何风格时的提示
-    seatNoStyles: '还没有创建风格，可在「设置 → All In One → 对话风格」中新建。',
     // 内置标准模式的显示名
     presetStandardName: '标准模式',
     // 内置 PTC 模式的显示名
@@ -143,6 +139,18 @@ export const chatStyleLocales: FeatureLocales = {
     presetMinimalName: '极简模式',
     // 内置创造模式的显示名
     presetCordisName: '创造模式',
+    // 内置标准模式的说明
+    presetStandardDescription:
+      '处理代码、文件和资料，适合大多数任务。Agent 会按需使用检索、编辑和终端等工具。',
+    // 内置 PTC 模式的说明
+    presetPtcDescription:
+      '包含标准模式的所有能力，更适合批量调用工具，并对结果进行筛选、整理、去重、统计或汇总的任务。',
+    // 内置极简模式的说明
+    presetMinimalDescription:
+      'Agent 使用终端和图片读取工具，并支持上下文压缩，适合测试和对比其基础表现。',
+    // 内置创造模式的说明
+    presetCordisDescription:
+      '用对话定制 DSH：让 Agent 编写插件，添加新功能或界面；也能组合工具和提示词，创建自己的模式。',
     // 会话已开始后尝试切换风格的提示
     seatSessionStarted: '会话已开始，无法再切换风格。请在新建任务时选择。',
     // 风格切换失败的提示前缀
@@ -275,12 +283,8 @@ export const chatStyleLocales: FeatureLocales = {
       'Styles register as agent presets. Choose one in the preset picker next to Standard mode when starting a new task.',
     // Placeholder for the mode dropdown
     modeLabel: 'Mode',
-    // Shown when the mode list is empty
-    seatNoModes: 'No modes available.',
     // Placeholder for the style dropdown
     seatLabel: 'Chat style',
-    // Shown when no style has been created yet
-    seatNoStyles: 'No styles yet. Create one in Settings → All In One → Chat styles.',
     // Display name for the built-in Standard mode
     presetStandardName: 'Standard mode',
     // Display name for the built-in PTC mode
@@ -289,6 +293,18 @@ export const chatStyleLocales: FeatureLocales = {
     presetMinimalName: 'Minimal mode',
     // Display name for the built-in Creator mode
     presetCordisName: 'Creator mode',
+    // Description for the built-in Standard mode
+    presetStandardDescription:
+      'Work with code, files, and information. Suitable for most tasks, with search, editing, terminal commands, and other tools available as needed.',
+    // Description for the built-in PTC mode
+    presetPtcDescription:
+      'Includes all Standard mode capabilities. Better suited to tasks that call tools in batches and then filter, organize, deduplicate, count, or summarize the results.',
+    // Description for the built-in Minimal mode
+    presetMinimalDescription:
+      'The agent uses a terminal and image reading, with context compaction. Useful for testing and comparing its basic performance.',
+    // Description for the built-in Creator mode
+    presetCordisDescription:
+      'Customize DSH through conversation. Let the agent write plugins that add features or UI, or combine tools and prompts to create your own mode.',
     // Shown when trying to switch a session that already started
     seatSessionStarted: 'This session has started; a style can only be chosen for a new task.',
     // Prefix for a failed style switch
