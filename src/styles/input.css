@@ -4,6 +4,8 @@
 
 /* 插件样式只作用于自己的根节点，避免影响宿主既有样式。 */
 .dsh-cf-root {
+  /* 主题令牌由宿主在运行时注入，插件源码内不定义，因此 IDE 静态检查无法解析。 */
+  /*noinspection CssUnresolvedCustomProperty*/
   color: var(--dsw-alias-label-primary);
   font-size: 13px;
   line-height: 1.5;
