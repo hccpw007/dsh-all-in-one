@@ -8,7 +8,7 @@ import type { PowerPack, PowerPackCatalog, ResourceRule } from './types'
 
 /** 表单字段的统一样式。 */
 const INPUT_CLASS =
-  'w-full rounded-lg border border-line1 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand'
+  'w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand'
 
 interface PackEditorProps {
   /** 编辑中的技能包草稿。 */
@@ -88,8 +88,8 @@ export function PackEditor({ initial, catalog, saving, error, onSave, onCancel, 
   return (
     <div className="flex flex-col gap-3">
       {/* 基础信息 */}
-      <section className="rounded-xl border border-line1 bg-layer1">
-        <div className="border-b border-line1 px-4 py-3">
+      <section className="rounded-xl border border-line4 bg-layer1">
+        <div className="border-b border-line4 px-4 py-3">
           {/* 区块标题 */}
           <h3 className="text-[13px] font-medium text-primary">{t('title')}</h3>
           {/* 预设选择器说明 */}

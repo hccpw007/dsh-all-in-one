@@ -12,10 +12,13 @@
 }
 
 /*
- * preflight 关闭后，浏览器不会给元素统一边框样式：`border` 工具类只设宽度，
- * border-style 仍是 none，描边根本画不出来。这里在插件根内补齐等价重置。
+ * preflight 关闭后，浏览器不会替插件做两项基础重置：
+ * 1. 元素默认是 content-box，`w-full` 再加上自身 padding 与边框会横向溢出容器；
+ * 2. `border` 工具类只设宽度，border-style 仍是 none，描边根本画不出来。
+ * 这里在插件根内补齐等价重置。
  */
 :where(.dsh-aio-root) :where(*, ::before, ::after) {
+  box-sizing: border-box;
   border-style: solid;
   border-width: 0;
 }

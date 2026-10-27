@@ -6,7 +6,7 @@ import type { McpServerConfig } from './types'
 
 /** MCP 服务器条目的输入框样式，与设置页其它表单保持一致。 */
 const INPUT_CLASS =
-  'w-full rounded-lg border border-line1 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand'
+  'w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand'
 
 /** 服务器标识的合法字符集，与宿主 mcp-client 的 serverName 规则一致。 */
 const SERVER_ID_PATTERN = /^[A-Za-z0-9_-]{1,32}$/
@@ -94,8 +94,8 @@ export function McpServerEditor({ servers, onChange, t }: McpServerEditorProps) 
   }
 
   return (
-    <section className="rounded-xl border border-line1 bg-layer1">
-      <header className="border-b border-line1 px-4 py-3">
+    <section className="rounded-xl border border-line4 bg-layer1">
+      <header className="border-b border-line4 px-4 py-3">
         {/* 区块标题 */}
         <h3 className="text-[13px] font-medium text-primary">{t('mcpServersTitle')}</h3>
         {/* 区块说明 */}
@@ -109,7 +109,7 @@ export function McpServerEditor({ servers, onChange, t }: McpServerEditorProps) 
         ) : null}
 
         {servers.map((server, index) => (
-          <div key={`${server.id}-${index}`} className="rounded-lg border border-line1 bg-base p-3">
+          <div key={`${server.id}-${index}`} className="rounded-lg border border-line4 bg-base p-3">
             {/* 服务器头部：展示名与移除按钮 */}
             <div className="flex items-center justify-between gap-2">
               <span className="text-[12px] font-medium text-primary">

@@ -81,8 +81,8 @@ export function ResourceRuleField({
   }
 
   return (
-    <section className="rounded-xl border border-line1 bg-layer1">
-      <header className="border-b border-line1 px-4 py-3">
+    <section className="rounded-xl border border-line4 bg-layer1">
+      <header className="border-b border-line4 px-4 py-3">
         {/* 区块标题与已选数量 */}
         <div className="flex items-center justify-between gap-2">
           {/* 区块标题 */}
@@ -122,7 +122,7 @@ export function ResourceRuleField({
               value={query}
               placeholder={searchPlaceholder}
               onChange={(event) => setQuery(event.target.value)}
-              className="mb-2 w-full rounded-lg border border-line1 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand"
+              className="mb-2 w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand"
             />
           ) : null}
 
@@ -157,7 +157,7 @@ export function ResourceRuleField({
                           </span>
                           {option.badge ? (
                             // 条目来源标记，如「已安装插件」
-                            <span className="rounded border border-line1 px-1 py-px text-[10px] text-secondary">
+                            <span className="rounded border border-line4 px-1 py-px text-[10px] text-secondary">
                               {option.badge}
                             </span>
                           ) : null}

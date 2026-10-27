@@ -51,7 +51,7 @@ export function AllInOnePage({ t }: AllInOnePageProps) {
     return (
       <div className="dsh-aio-root">
         {/* 功能页头部：只提供返回网格的入口，标题由功能页面自行渲染 */}
-        <div className="flex items-center gap-2 border-b border-line1 pb-3">
+        <div className="flex items-center gap-2 border-b border-line4 pb-3">
           {/* 返回按钮：回到功能网格 */}
           <Button variant="outline" onClick={() => setActiveId(null)}>
             <BackGlyph />
@@ -79,7 +79,7 @@ export function AllInOnePage({ t }: AllInOnePageProps) {
       {/* 功能网格：没有注册任何 feature 时显示空态 */}
       {registry.list.length === 0 ? (
         // 尚未注册功能时的空态提示
-        <p className="mt-5 rounded-xl border border-dashed border-line1 px-4 py-6 text-center text-[12px] text-secondary">
+        <p className="mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary">
           {t('shell.empty')}
         </p>
       ) : (

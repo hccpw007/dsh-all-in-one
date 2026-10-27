@@ -170,14 +170,14 @@ export function PowerPackPage({ t }: FeaturePageProps) {
 
       {/* 操作结果提示 */}
       {notice ? (
-        <p className="rounded-lg border border-line1 bg-layer1 px-3 py-2 text-[12px] text-success">
+        <p className="rounded-lg border border-line4 bg-layer1 px-3 py-2 text-[12px] text-success">
           {notice}
         </p>
       ) : null}
 
       {/* 加载或保存失败的提示 */}
       {error ? (
-        <p className="rounded-lg border border-line1 bg-layer1 px-3 py-2 text-[12px] text-danger" role="alert">
+        <p className="rounded-lg border border-line4 bg-layer1 px-3 py-2 text-[12px] text-danger" role="alert">
           {error}
           {/* 重新加载列表 */}
           <button
@@ -195,7 +195,7 @@ export function PowerPackPage({ t }: FeaturePageProps) {
         <p className="text-[12px] text-secondary">…</p>
       ) : (payload?.packs.length ?? 0) === 0 ? (
         // 尚未创建技能包时的空态
-        <p className="rounded-xl border border-dashed border-line1 px-4 py-6 text-center text-[12px] text-secondary">
+        <p className="rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary">
           {t('empty')}
         </p>
       ) : (

@@ -58,7 +58,7 @@ export function ExpandProcessToggle({ t }: FeatureSwitchProps) {
         role="switch"
         aria-checked={enabled}
         onClick={handleToggle}
-        className="flex w-full items-center gap-3 rounded-xl border border-line1 bg-layer1 px-4 py-3.5 text-left transition hover:border-line2 hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        className="flex w-full items-center gap-3 rounded-xl border border-line4 bg-layer1 px-4 py-3.5 text-left transition hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
       >
         {/* 入口图标 */}
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand">
