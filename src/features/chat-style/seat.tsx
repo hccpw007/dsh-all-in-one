@@ -4,6 +4,14 @@ import { cn } from '../../common/cn'
 import type { AgentPresetSummary, Translate } from '../../types/plugin'
 import { isStylePreset, type SeatSnapshot } from './seat-store'
 
+/**
+ * 新会话选择器复刻宿主 primitives 的类名。
+ *
+ * 这些是宿主 `@deepseek-ai/dsh-client-ui-primitives` 与 `ui-agent-preset` 的
+ * CSS Modules 类名，直接复用才能与原生模式选择器完全一致（含明暗主题）。
+ * 宿主升级导致类名变化时，最坏情况是回退为无样式按钮，不影响功能。
+ */
+
 /** 内置预设没有自带名称，用语言包补齐显示文案。 */
 const BUILTIN_NAME_KEYS: Record<string, string> = {
   standard: 'presetStandardName',
@@ -25,6 +33,7 @@ function SeatIcon() {
       strokeWidth="1.8"
       strokeLinecap="round"
       strokeLinejoin="round"
+      className="ufIuna_seatIcon"
     >
       <path d="M20 12a7 7 0 0 1-7 7H8l-4 3v-5.5A7 7 0 0 1 11 5h2a7 7 0 0 1 7 7Z" />
       <circle cx="10" cy="12" r="1" />
@@ -34,7 +43,7 @@ function SeatIcon() {
   )
 }
 
-/** 展开箭头，颜色与宿主模式选择器一致。 */
+/** 展开箭头。 */
 function ChevronIcon() {
   return (
     <svg
@@ -47,29 +56,27 @@ function ChevronIcon() {
       strokeWidth="1.6"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="shrink-0 text-[var(--dsw-alias-label-caption)]"
+      className="ufIuna_chevron"
     >
       <path d="m4 6 4 4 4-4" />
     </svg>
   )
 }
 
-/** 当前选中项的勾选标记，与宿主菜单一致。 */
+/** 选中项右侧的勾选标记，路径与宿主菜单一致。 */
 function CheckIcon() {
   return (
     <svg
       viewBox="0 0 16 16"
-      width="14"
-      height="14"
+      width="16"
+      height="16"
       aria-hidden="true"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="mt-1 shrink-0"
+      strokeWidth="1"
+      className="_check_4ub78_179"
     >
-      <path d="m3 8.5 3.5 3.5L13 4.5" />
+      <path d="M2.25 8.5L5.49732 11.7473C5.90519 12.1552 6.57263 12.1344 6.95426 11.7018L13.75 4" />
     </svg>
   )
 }
@@ -115,7 +122,7 @@ interface PresetDropdownProps {
 }
 
 /**
- * 一个独立的预设下拉。
+ * 一个独立的预设下拉，外观与宿主原生模式选择器一致。
  *
  * 菜单只列出调用方给定的预设集合，因此「模式」与「风格」可以各用一个实例，
  * 互不混排。
@@ -149,63 +156,75 @@ function PresetDropdown({
 
   return (
     <div ref={rootRef} className="relative">
-      {/* 下拉按钮：显示当前预设名或占位文案 */}
-      <button
-        type="button"
-        aria-haspopup="menu"
-        aria-expanded={open}
-        disabled={disabled}
-        onClick={() => setOpen((value) => !value)}
-        className={cn(
-          'inline-flex min-h-[28px] max-w-[min(100%,240px)] items-center gap-1 rounded-[var(--dsw-radius-sm)] border-0 bg-transparent px-2 text-[13px] font-medium leading-5 text-primary',
-          'hover:bg-[var(--dsw-alias-interactive-bg-hover)] aria-expanded:bg-[var(--dsw-alias-interactive-bg-hover)]',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand',
-          disabled && 'cursor-default text-[var(--dsw-alias-label-quaternary)]',
-        )}
-      >
-        <SeatIcon />
-        <span className="max-w-[180px] truncate">
-          {selected === undefined ? placeholder : presetName(selected, t)}
-        </span>
-        <ChevronIcon />
-      </button>
+      {/* 选择器按钮：结构与类名沿用宿主预设选择器 */}
+      <span className="_root_4ub78_1 ufIuna_menuAnchor">
+        <button
+          type="button"
+          aria-haspopup="menu"
+          aria-expanded={open}
+          disabled={disabled}
+          onClick={() => setOpen((value) => !value)}
+          className="ufIuna_seat"
+        >
+          <SeatIcon />
+          <span className="ufIuna_seatLabel">
+            {selected === undefined ? placeholder : presetName(selected, t)}
+          </span>
+          <ChevronIcon />
+        </button>
+      </span>
 
-      {/* 下拉菜单：只列出本实例负责的预设 */}
+      {/* 下拉菜单：表面、材质背景与滚动层都复用宿主菜单结构 */}
       {open ? (
         <div
           role="menu"
-          className="absolute left-0 top-full z-50 mt-1 max-h-[360px] w-72 overflow-y-auto rounded-xl border border-line1 bg-layer1 p-1 shadow-lg"
+          data-menu-material="translucent"
+          className="_surface_ri079_1 _list_4ub78_7 _scrollable_4ub78_19 absolute left-0 top-full z-50 mt-1 max-w-[360px]"
         >
-          {options.length === 0 ? (
-            // 列表为空时的提示
-            <p className="px-2 py-1.5 text-[12px] leading-4 text-secondary">{emptyText}</p>
-          ) : (
-            options.map((preset) => (
-              <button
-                key={preset.id}
-                type="button"
-                role="menuitemradio"
-                aria-checked={preset.id === current}
-                onClick={() => {
-                  setOpen(false)
-                  onPick(preset.id)
-                }}
-                className="flex w-full items-start gap-2 rounded-lg border-0 bg-transparent px-2 py-1.5 text-left hover:bg-[var(--dsw-alias-interactive-bg-hover)]"
-              >
-                {/* 预设名称与说明 */}
-                <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-                  {/* 预设名称 */}
-                  <span className="text-[13px] leading-5 text-primary">{presetName(preset, t)}</span>
-                  {preset.description ? (
-                    // 预设说明
-                    <span className="text-[12px] leading-4 text-secondary">{preset.description}</span>
-                  ) : null}
-                </span>
-                {/* 选中标记 */}
-                {preset.id === current ? <CheckIcon /> : null}
-              </button>
-            ))
-          )}
+          {/* 菜单材质背景层，宿主用 aria-hidden 的独立节点绘制 */}
+          <div aria-hidden="true" className="_material_ri079_21" />
+          <div className="_viewport_4ub78_19" role="presentation">
+            {options.length === 0 ? (
+              // 列表为空时的提示
+              <div className="_itemWrap_4ub78_90">
+                <button type="button" className="_item_4ub78_90" disabled>
+                  <span className="_itemLabel_4ub78_190">
+                    <span className="ufIuna_item">
+                      <span className="ufIuna_itemDesc">{emptyText}</span>
+                    </span>
+                  </span>
+                </button>
+              </div>
+            ) : (
+              options.map((preset) => (
+                <div key={preset.id} className="_itemWrap_4ub78_90">
+                  {/* 菜单项：选中项加宿主 selected 类，右侧显示勾选 */}
+                  <button
+                    type="button"
+                    role="menuitemradio"
+                    aria-checked={preset.id === current}
+                    onClick={() => {
+                      setOpen(false)
+                      onPick(preset.id)
+                    }}
+                    className={cn('_item_4ub78_90', preset.id === current && '_selected_4ub78_216')}
+                  >
+                    <span className="_itemLabel_4ub78_190">
+                      <span className="ufIuna_item">
+                        {/* 预设名称 */}
+                        <span className="ufIuna_itemName">{presetName(preset, t)}</span>
+                        {preset.description ? (
+                          // 预设说明
+                          <span className="ufIuna_itemDesc">{preset.description}</span>
+                        ) : null}
+                      </span>
+                    </span>
+                    {preset.id === current ? <CheckIcon /> : null}
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
         </div>
       ) : null}
     </div>
