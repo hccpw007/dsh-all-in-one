@@ -36,7 +36,7 @@ const SEARCH_CLASS =
   'w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand'
 
 /**
- * 资源规则编辑：选择「全部 / 仅引用 / 仅排除」，再勾选具体条目。
+ * 资源规则编辑：选择「全部 / 仅应用 / 仅排除」，再勾选具体条目。
  *
  * 勾选结果始终按选项原顺序保存，避免保存后列表顺序随点击变化。
  * @param props 标签、规则、可选项与变更回调
@@ -83,7 +83,7 @@ export function ResourceRuleField({
       <div className="flex flex-wrap items-center gap-3">
         {title ? (
           // 分组标签
-          <span className="text-[12px] text-secondary">{title}</span>
+          <span className="text-[12px] font-semibold text-primary">{title}</span>
         ) : null}
 
         <div className="flex items-center gap-2">

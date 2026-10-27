@@ -43,7 +43,7 @@ const ALL_KEYS = collectKeys(STANDARD_PLUGIN_ITEMS.flatMap((item) => item.rows))
  * 判断一行是否属于标准工具项。
  *
  * 模式里还有模型、Agent 循环、提示词等非工具行，它们不参与筛选，
- * 否则「仅引用」会把一个预设拆得无法运行。
+ * 否则「仅应用」会把一个预设拆得无法运行。
  * @param row 模式组合中的一行
  * @returns 属于标准工具项时返回 true
  */

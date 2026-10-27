@@ -100,7 +100,7 @@ export function PackEditor({ initial, catalog, saving, error, onSave, onCancel, 
       <div className="flex flex-col gap-4 p-4">
         <label className="block">
           {/* 技能包名称，显示在新建任务的技能包选择器中 */}
-          <span className="mb-1 block text-[12px] text-secondary">{t('nameLabel')}</span>
+          <span className="mb-1 block text-[12px] font-semibold text-primary">{t('nameLabel')}</span>
           <input
             value={draft.name}
             placeholder={t('namePlaceholder')}
@@ -111,7 +111,7 @@ export function PackEditor({ initial, catalog, saving, error, onSave, onCancel, 
 
         <label className="block">
           {/* 技能包描述，作为技能包列表里的一句话说明 */}
-          <span className="mb-1 block text-[12px] text-secondary">{t('descriptionLabel')}</span>
+          <span className="mb-1 block text-[12px] font-semibold text-primary">{t('descriptionLabel')}</span>
           <input
             value={draft.description}
             placeholder={t('descriptionPlaceholder')}
@@ -122,7 +122,7 @@ export function PackEditor({ initial, catalog, saving, error, onSave, onCancel, 
 
         <label className={`block ${GROUP_CLASS}`}>
           {/* 追加到系统提示词末尾的增强要求 */}
-          <span className="mb-1 block text-[12px] text-secondary">{t('systemPromptLabel')}</span>
+          <span className="mb-1 block text-[12px] font-semibold text-primary">{t('systemPromptLabel')}</span>
           <textarea
             value={draft.systemPrompt}
             placeholder={t('systemPromptPlaceholder')}
@@ -157,7 +157,7 @@ export function PackEditor({ initial, catalog, saving, error, onSave, onCancel, 
 
         <div className={`flex flex-col gap-3 ${GROUP_CLASS}`}>
           {/* MCP 分组标签：服务器定义与启用规则同属一组，不再各自带标题 */}
-          <span className="text-[12px] text-secondary">{t('mcpTitle')}</span>
+          <span className="text-[12px] font-semibold text-primary">{t('mcpTitle')}</span>
           <McpServerEditor
             servers={draft.mcpServers}
             onChange={(mcpServers) => patch({ mcpServers })}

@@ -530,8 +530,8 @@ window.__ModuleLoader__.load({
         retry: "\u91CD\u8BD5",
         // 三态模式：全部
         modeAll: "\u5168\u90E8",
-        // 三态模式：仅引用
-        modeInclude: "\u4EC5\u5F15\u7528",
+        // 三态模式：仅应用
+        modeInclude: "\u4EC5\u5E94\u7528",
         // 三态模式：仅排除
         modeExclude: "\u4EC5\u6392\u9664",
         // 搜索技能占位
@@ -910,7 +910,7 @@ window.__ModuleLoader__.load({
       };
       return /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex flex-col gap-2" }, /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex flex-wrap items-center gap-3" }, title ? (
         // 分组标签
-        /* @__PURE__ */ import_react6.default.createElement("span", { className: "text-[12px] text-secondary" }, title)
+        /* @__PURE__ */ import_react6.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, title)
       ) : null, /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex items-center gap-2" }, /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex items-center rounded-lg border border-line4 p-0.5" }, MODE_ORDER.map((mode) => {
         const active = rule.mode === mode;
         return /* @__PURE__ */ import_react6.default.createElement(
@@ -1020,7 +1020,7 @@ window.__ModuleLoader__.load({
         setLocalError(null);
         onSave({ ...draft, name: draft.name.trim(), description: draft.description.trim() });
       };
-      return /* @__PURE__ */ import_react7.default.createElement("div", { className: "rounded-xl border border-line4 bg-layer1" }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex flex-col gap-4 p-4" }, /* @__PURE__ */ import_react7.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("nameLabel")), /* @__PURE__ */ import_react7.default.createElement(
+      return /* @__PURE__ */ import_react7.default.createElement("div", { className: "rounded-xl border border-line4 bg-layer1" }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex flex-col gap-4 p-4" }, /* @__PURE__ */ import_react7.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("nameLabel")), /* @__PURE__ */ import_react7.default.createElement(
         "input",
         {
           value: draft.name,
@@ -1028,7 +1028,7 @@ window.__ModuleLoader__.load({
           onChange: (event) => patch({ name: event.target.value }),
           className: INPUT_CLASS2
         }
-      )), /* @__PURE__ */ import_react7.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("descriptionLabel")), /* @__PURE__ */ import_react7.default.createElement(
+      )), /* @__PURE__ */ import_react7.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("descriptionLabel")), /* @__PURE__ */ import_react7.default.createElement(
         "input",
         {
           value: draft.description,
@@ -1036,7 +1036,7 @@ window.__ModuleLoader__.load({
           onChange: (event) => patch({ description: event.target.value }),
           className: INPUT_CLASS2
         }
-      )), /* @__PURE__ */ import_react7.default.createElement("label", { className: `block ${GROUP_CLASS}` }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("systemPromptLabel")), /* @__PURE__ */ import_react7.default.createElement(
+      )), /* @__PURE__ */ import_react7.default.createElement("label", { className: `block ${GROUP_CLASS}` }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("systemPromptLabel")), /* @__PURE__ */ import_react7.default.createElement(
         "textarea",
         {
           value: draft.systemPrompt,
@@ -1066,7 +1066,7 @@ window.__ModuleLoader__.load({
           emptyText: t("noSkills"),
           onChange: (rule) => patchRule("plugins", rule)
         }
-      )), /* @__PURE__ */ import_react7.default.createElement("div", { className: `flex flex-col gap-3 ${GROUP_CLASS}` }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "text-[12px] text-secondary" }, t("mcpTitle")), /* @__PURE__ */ import_react7.default.createElement(
+      )), /* @__PURE__ */ import_react7.default.createElement("div", { className: `flex flex-col gap-3 ${GROUP_CLASS}` }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, t("mcpTitle")), /* @__PURE__ */ import_react7.default.createElement(
         McpServerEditor,
         {
           servers: draft.mcpServers,

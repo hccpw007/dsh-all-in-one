@@ -60,8 +60,8 @@ export const powerPackLocales: FeatureLocales = {
     retry: '重试',
     // 三态模式：全部
     modeAll: '全部',
-    // 三态模式：仅引用
-    modeInclude: '仅引用',
+    // 三态模式：仅应用
+    modeInclude: '仅应用',
     // 三态模式：仅排除
     modeExclude: '仅排除',
     // 搜索技能占位
