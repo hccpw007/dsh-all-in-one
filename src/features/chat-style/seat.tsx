@@ -78,42 +78,40 @@ function presetName(preset: AgentPresetSummary, t: Translate): string {
   return key === undefined ? preset.id : t(key)
 }
 
-/**
- * 把预设转成一行说明；内置预设没有自带描述，返回 undefined。
- * @param preset 预设摘要
- * @returns 说明文本
- */
-function presetDescription(preset: AgentPresetSummary): string | undefined {
-  return preset.description
+/** 单个预设下拉的 props。 */
+interface PresetDropdownProps {
+  /** 当前选中的预设 id；不在 options 中时显示占位文案。 */
+  current: string
+  options: AgentPresetSummary[]
+  /** 没有任何选中项时显示的文案。 */
+  placeholder: string
+  /** 列表为空时的提示。 */
+  emptyText: string
+  disabled: boolean
+  onPick(presetId: string): void
+  /** 已绑定本 feature 前缀的翻译函数。 */
+  t: Translate
 }
 
 /**
- * 新会话界面的「对话风格」选择器。
+ * 一个独立的预设下拉。
  *
- * 覆盖宿主的预设选择器：菜单同时列出「对话风格」与「模式」，风格来自本插件
- * 注册的 `style-*` 预设。新会话屏幕还没有会话时先暂存选择，会话出现后再提交。
- * @param props 插槽注入的状态与操作
+ * 菜单只列出调用方给定的预设集合，因此「模式」与「风格」可以各用一个实例，
+ * 互不混排。
+ * @param props 当前值、选项与选择回调
  */
-export function ChatStyleSeat({
-  sessionId,
-  useChatStyleSeat,
-  load,
-  select,
-  applyStaged,
+function PresetDropdown({
+  current,
+  options,
+  placeholder,
+  emptyText,
+  disabled,
+  onPick,
   t,
-}: ChatStyleSeatProps) {
-  const snapshot = useChatStyleSeat((state) => state)
+}: PresetDropdownProps) {
   const [open, setOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
-  // 插槽每次渲染都可能给出新的函数引用，用 ref 固定下来，effect 只跟随会话变化
-  const actionsRef = useRef({ load, applyStaged })
-  actionsRef.current = { load, applyStaged }
-
-  // 会话变化时刷新预设名单，并把暂存的选择落到新出现的空白会话
-  useEffect(() => {
-    void actionsRef.current.load()
-    if (sessionId !== undefined) void actionsRef.current.applyStaged()
-  }, [sessionId])
+  const selected = options.find((preset) => preset.id === current)
 
   // 点击选择器之外的位置时收起菜单
   useEffect(() => {
@@ -128,109 +126,126 @@ export function ChatStyleSeat({
     return () => document.removeEventListener('mousedown', onPointerDown)
   }, [open])
 
-  const styles = snapshot.options.filter(isStylePreset)
-  const modes = snapshot.options.filter((preset) => !isStylePreset(preset))
-  const current = snapshot.options.find((preset) => preset.id === snapshot.current)
-  const label = current === undefined ? snapshot.current : presetName(current, t)
-
-  /** 选择一个预设并收起菜单；失败原因由 store 写入 error。 */
-  const pick = (id: string): void => {
-    setOpen(false)
-    void select(id)
-  }
-
   return (
     <div ref={rootRef} className="relative">
-      {/* 选择器按钮：显示当前风格或模式 */}
+      {/* 下拉按钮：显示当前预设名或占位文案 */}
       <button
         type="button"
         aria-haspopup="menu"
         aria-expanded={open}
-        disabled={snapshot.status === 'loading' || snapshot.options.length === 0}
-        onClick={() => {
-          const next = !open
-          setOpen(next)
-          // 设置页可能刚创建了风格，打开菜单时重新读取一次，保证列表最新
-          if (next) void load()
-        }}
+        disabled={disabled}
+        onClick={() => setOpen((value) => !value)}
         className={cn(
-          'inline-flex min-h-7 max-w-[min(100%,240px)] items-center gap-1 rounded-lg border-0 bg-transparent px-2 text-[13px] font-medium text-primary',
+          'inline-flex min-h-7 max-w-[min(100%,200px)] items-center gap-1 rounded-lg border-0 bg-transparent px-2 text-[13px] font-medium text-primary',
           'hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand',
-          snapshot.options.length === 0 && 'cursor-default text-secondary',
+          disabled && 'cursor-default text-secondary',
         )}
       >
         <SeatIcon />
-        {/* 当前选择：风格名或模式名 */}
-        <span className="max-w-[180px] truncate">{label}</span>
+        <span className="max-w-[150px] truncate">
+          {selected === undefined ? placeholder : presetName(selected, t)}
+        </span>
         <ChevronIcon />
       </button>
 
-      {/* 下拉菜单：风格与模式分组展示 */}
+      {/* 下拉菜单：只列出本实例负责的预设 */}
       {open ? (
         <div
           role="menu"
           className="absolute left-0 top-full z-50 mt-1 max-h-[360px] w-72 overflow-y-auto rounded-xl border border-line1 bg-overlay p-1 shadow-lg"
         >
-          {/* 分组标题：本插件注册的对话风格 */}
-          <p className="px-2 py-1 text-[11px] text-secondary">{t('styleGroup')}</p>
-          {styles.length === 0 ? (
-            // 尚未创建风格时的提示，引导去设置页创建
-            <p className="px-2 py-1.5 text-[12px] leading-4 text-secondary">{t('seatNoStyles')}</p>
+          {options.length === 0 ? (
+            // 列表为空时的提示
+            <p className="px-2 py-1.5 text-[12px] leading-4 text-secondary">{emptyText}</p>
           ) : (
-            styles.map((preset) => (
+            options.map((preset) => (
               <button
                 key={preset.id}
                 type="button"
                 role="menuitemradio"
-                aria-checked={preset.id === snapshot.current}
-                onClick={() => pick(preset.id)}
+                aria-checked={preset.id === current}
+                onClick={() => {
+                  setOpen(false)
+                  onPick(preset.id)
+                }}
                 className={cn(
                   'flex w-full flex-col items-start gap-0.5 rounded-lg border-0 bg-transparent px-2 py-1.5 text-left',
-                  preset.id === snapshot.current ? 'bg-layer2' : 'hover:bg-layer2',
+                  preset.id === current ? 'bg-layer2' : 'hover:bg-layer2',
                 )}
               >
-                {/* 风格名称 */}
+                {/* 预设名称 */}
                 <span className="text-[13px] text-primary">{presetName(preset, t)}</span>
-                {presetDescription(preset) ? (
-                  // 风格说明
-                  <span className="text-[12px] leading-4 text-secondary">
-                    {presetDescription(preset)}
-                  </span>
+                {preset.description ? (
+                  // 预设说明
+                  <span className="text-[12px] leading-4 text-secondary">{preset.description}</span>
                 ) : null}
               </button>
             ))
           )}
-
-          {modes.length > 0 ? (
-            <>
-              {/* 分组标题：宿主内置与其它预设 */}
-              <p className="mt-1 px-2 py-1 text-[11px] text-secondary">{t('modeGroup')}</p>
-              {modes.map((preset) => (
-                <button
-                  key={preset.id}
-                  type="button"
-                  role="menuitemradio"
-                  aria-checked={preset.id === snapshot.current}
-                  onClick={() => pick(preset.id)}
-                  className={cn(
-                    'flex w-full flex-col items-start gap-0.5 rounded-lg border-0 bg-transparent px-2 py-1.5 text-left',
-                    preset.id === snapshot.current ? 'bg-layer2' : 'hover:bg-layer2',
-                  )}
-                >
-                  {/* 模式名称 */}
-                  <span className="text-[13px] text-primary">{presetName(preset, t)}</span>
-                  {presetDescription(preset) ? (
-                    // 模式说明
-                    <span className="text-[12px] leading-4 text-secondary">
-                      {presetDescription(preset)}
-                    </span>
-                  ) : null}
-                </button>
-              ))}
-            </>
-          ) : null}
         </div>
       ) : null}
+    </div>
+  )
+}
+
+/**
+ * 新会话界面的预设选择区：左侧「模式」、右侧「对话风格」两个独立下拉。
+ *
+ * 覆盖宿主的预设选择器，但把模式与风格拆成两个下拉：模式只列非风格预设，
+ * 风格只列本插件注册的 `style-*` 预设。新会话屏幕还没有会话时先暂存选择，
+ * 会话出现后再提交。
+ * @param props 插槽注入的状态与操作
+ */
+export function ChatStyleSeat({
+  sessionId,
+  useChatStyleSeat,
+  load,
+  select,
+  applyStaged,
+  t,
+}: ChatStyleSeatProps) {
+  const snapshot = useChatStyleSeat((state) => state)
+  // 插槽每次渲染都可能给出新的函数引用，用 ref 固定下来，effect 只跟随会话变化
+  const actionsRef = useRef({ load, applyStaged })
+  actionsRef.current = { load, applyStaged }
+
+  // 会话变化时刷新预设名单，并把暂存的选择落到新出现的空白会话
+  useEffect(() => {
+    void actionsRef.current.load()
+    if (sessionId !== undefined) void actionsRef.current.applyStaged()
+  }, [sessionId])
+
+  const styles = snapshot.options.filter(isStylePreset)
+  const modes = snapshot.options.filter((preset) => !isStylePreset(preset))
+  const disabled = snapshot.status === 'loading' || snapshot.options.length === 0
+
+  /** 选择一个预设；失败原因由 store 写入 error。 */
+  const pick = (id: string): void => {
+    void select(id)
+  }
+
+  return (
+    <div>
+      <div className="flex items-center gap-1">
+        <PresetDropdown
+          current={snapshot.current}
+          options={modes}
+          placeholder={t('modeLabel')}
+          emptyText={t('seatNoModes')}
+          disabled={disabled}
+          onPick={pick}
+          t={t}
+        />
+        <PresetDropdown
+          current={snapshot.current}
+          options={styles}
+          placeholder={t('seatLabel')}
+          emptyText={t('seatNoStyles')}
+          disabled={disabled}
+          onPick={pick}
+          t={t}
+        />
+      </div>
 
       {/* 提交失败提示：会话已开始或宿主拒绝切换 */}
       {snapshot.error ? (

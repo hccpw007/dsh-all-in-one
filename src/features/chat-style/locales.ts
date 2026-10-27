@@ -127,10 +127,12 @@ export const chatStyleLocales: FeatureLocales = {
     // 预设选择提示
     presetHint:
       '风格以 Agent 预设的形式注册。新建任务时在「标准模式」旁的预设选择器里选择它。',
-    // 新会话选择器的风格分组标题
-    styleGroup: '对话风格',
-    // 新会话选择器的模式分组标题
-    modeGroup: '模式',
+    // 新会话选择器的模式下拉占位文案
+    modeLabel: '模式',
+    // 模式列表为空时的提示
+    seatNoModes: '没有可用的模式。',
+    // 新会话选择器的风格下拉占位文案
+    seatLabel: '对话风格',
     // 尚未创建任何风格时的提示
     seatNoStyles: '还没有创建风格，可在「设置 → All In One → 对话风格」中新建。',
     // 内置标准模式的显示名
@@ -271,10 +273,12 @@ export const chatStyleLocales: FeatureLocales = {
     // Preset picker hint
     presetHint:
       'Styles register as agent presets. Choose one in the preset picker next to Standard mode when starting a new task.',
-    // Group heading for styles in the new-session picker
-    styleGroup: 'Chat styles',
-    // Group heading for modes in the new-session picker
-    modeGroup: 'Modes',
+    // Placeholder for the mode dropdown
+    modeLabel: 'Mode',
+    // Shown when the mode list is empty
+    seatNoModes: 'No modes available.',
+    // Placeholder for the style dropdown
+    seatLabel: 'Chat style',
     // Shown when no style has been created yet
     seatNoStyles: 'No styles yet. Create one in Settings → All In One → Chat styles.',
     // Display name for the built-in Standard mode

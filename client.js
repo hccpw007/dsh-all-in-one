@@ -42,7 +42,7 @@ window.__ModuleLoader__.load({
     var import_react14 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.static{position:static}.absolute{position:absolute}.relative{position:relative}.left-0{left:0}.top-full{top:100%}.isolate{isolation:isolate}.z-50{z-index:50}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-9{height:2.25rem}.max-h-72{max-height:18rem}.max-h-\\[360px\\]{max-height:360px}.min-h-7{min-height:1.75rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-72{width:18rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.max-w-\\[180px\\]{max-width:180px}.max-w-\\[min\\(100\\%\\2c 240px\\)\\]{max-width:min(100%,240px)}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-0\\.5,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[18px\\]{--tw-translate-x:18px}.cursor-default{cursor:default}.cursor-pointer{cursor:pointer}.list-decimal{list-style-type:decimal}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-dashed{border-style:dashed}.border-line1{border-color:var(--dsw-alias-border-l1)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-transparent{background-color:transparent}.p-1{padding:.25rem}.p-3{padding:.75rem}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pb-4{padding-bottom:1rem}.pl-4{padding-left:1rem}.pt-3{padding-top:.75rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[18px\\]{line-height:18px}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-lg{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:border-line2:hover{border-color:var(--dsw-alias-border-l2)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}@media (min-width:640px){.sm\\:col-span-2{grid-column:span 2/span 2}.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
+    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.static{position:static}.absolute{position:absolute}.relative{position:relative}.left-0{left:0}.top-full{top:100%}.isolate{isolation:isolate}.z-50{z-index:50}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-9{height:2.25rem}.max-h-72{max-height:18rem}.max-h-\\[360px\\]{max-height:360px}.min-h-7{min-height:1.75rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-72{width:18rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.max-w-\\[150px\\]{max-width:150px}.max-w-\\[min\\(100\\%\\2c 200px\\)\\]{max-width:min(100%,200px)}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-0\\.5,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[18px\\]{--tw-translate-x:18px}.cursor-default{cursor:default}.cursor-pointer{cursor:pointer}.list-decimal{list-style-type:decimal}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-dashed{border-style:dashed}.border-line1{border-color:var(--dsw-alias-border-l1)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-transparent{background-color:transparent}.p-1{padding:.25rem}.p-3{padding:.75rem}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pb-4{padding-bottom:1rem}.pl-4{padding-left:1rem}.pt-3{padding-top:.75rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[18px\\]{line-height:18px}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-lg{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:border-line2:hover{border-color:var(--dsw-alias-border-l2)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}@media (min-width:640px){.sm\\:col-span-2{grid-column:span 2/span 2}.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -249,8 +249,76 @@ window.__ModuleLoader__.load({
       const key = BUILTIN_NAME_KEYS[preset.id];
       return key === void 0 ? preset.id : t(key);
     }
-    function presetDescription(preset) {
-      return preset.description;
+    function PresetDropdown({
+      current,
+      options,
+      placeholder,
+      emptyText,
+      disabled,
+      onPick,
+      t
+    }) {
+      const [open, setOpen] = (0, import_react.useState)(false);
+      const rootRef = (0, import_react.useRef)(null);
+      const selected = options.find((preset) => preset.id === current);
+      (0, import_react.useEffect)(() => {
+        if (!open) return;
+        const onPointerDown = (event) => {
+          if (rootRef.current?.contains(event.target)) return;
+          setOpen(false);
+        };
+        document.addEventListener("mousedown", onPointerDown);
+        return () => document.removeEventListener("mousedown", onPointerDown);
+      }, [open]);
+      return /* @__PURE__ */ import_react.default.createElement("div", { ref: rootRef, className: "relative" }, /* @__PURE__ */ import_react.default.createElement(
+        "button",
+        {
+          type: "button",
+          "aria-haspopup": "menu",
+          "aria-expanded": open,
+          disabled,
+          onClick: () => setOpen((value) => !value),
+          className: cn(
+            "inline-flex min-h-7 max-w-[min(100%,200px)] items-center gap-1 rounded-lg border-0 bg-transparent px-2 text-[13px] font-medium text-primary",
+            "hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+            disabled && "cursor-default text-secondary"
+          )
+        },
+        /* @__PURE__ */ import_react.default.createElement(SeatIcon, null),
+        /* @__PURE__ */ import_react.default.createElement("span", { className: "max-w-[150px] truncate" }, selected === void 0 ? placeholder : presetName(selected, t)),
+        /* @__PURE__ */ import_react.default.createElement(ChevronIcon, null)
+      ), open ? /* @__PURE__ */ import_react.default.createElement(
+        "div",
+        {
+          role: "menu",
+          className: "absolute left-0 top-full z-50 mt-1 max-h-[360px] w-72 overflow-y-auto rounded-xl border border-line1 bg-overlay p-1 shadow-lg"
+        },
+        options.length === 0 ? (
+          // 列表为空时的提示
+          /* @__PURE__ */ import_react.default.createElement("p", { className: "px-2 py-1.5 text-[12px] leading-4 text-secondary" }, emptyText)
+        ) : options.map((preset) => /* @__PURE__ */ import_react.default.createElement(
+          "button",
+          {
+            key: preset.id,
+            type: "button",
+            role: "menuitemradio",
+            "aria-checked": preset.id === current,
+            onClick: () => {
+              setOpen(false);
+              onPick(preset.id);
+            },
+            className: cn(
+              "flex w-full flex-col items-start gap-0.5 rounded-lg border-0 bg-transparent px-2 py-1.5 text-left",
+              preset.id === current ? "bg-layer2" : "hover:bg-layer2"
+            )
+          },
+          /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[13px] text-primary" }, presetName(preset, t)),
+          preset.description ? (
+            // 预设说明
+            /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[12px] leading-4 text-secondary" }, preset.description)
+          ) : null
+        ))
+      ) : null);
     }
     function ChatStyleSeat({
       sessionId,
@@ -261,101 +329,41 @@ window.__ModuleLoader__.load({
       t
     }) {
       const snapshot = useChatStyleSeat((state) => state);
-      const [open, setOpen] = (0, import_react.useState)(false);
-      const rootRef = (0, import_react.useRef)(null);
       const actionsRef = (0, import_react.useRef)({ load, applyStaged });
       actionsRef.current = { load, applyStaged };
       (0, import_react.useEffect)(() => {
         void actionsRef.current.load();
         if (sessionId !== void 0) void actionsRef.current.applyStaged();
       }, [sessionId]);
-      (0, import_react.useEffect)(() => {
-        if (!open) return;
-        const onPointerDown = (event) => {
-          if (rootRef.current?.contains(event.target)) return;
-          setOpen(false);
-        };
-        document.addEventListener("mousedown", onPointerDown);
-        return () => document.removeEventListener("mousedown", onPointerDown);
-      }, [open]);
       const styles = snapshot.options.filter(isStylePreset);
       const modes = snapshot.options.filter((preset) => !isStylePreset(preset));
-      const current = snapshot.options.find((preset) => preset.id === snapshot.current);
-      const label = current === void 0 ? snapshot.current : presetName(current, t);
+      const disabled = snapshot.status === "loading" || snapshot.options.length === 0;
       const pick = (id) => {
-        setOpen(false);
         void select(id);
       };
-      return /* @__PURE__ */ import_react.default.createElement("div", { ref: rootRef, className: "relative" }, /* @__PURE__ */ import_react.default.createElement(
-        "button",
+      return /* @__PURE__ */ import_react.default.createElement("div", null, /* @__PURE__ */ import_react.default.createElement("div", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react.default.createElement(
+        PresetDropdown,
         {
-          type: "button",
-          "aria-haspopup": "menu",
-          "aria-expanded": open,
-          disabled: snapshot.status === "loading" || snapshot.options.length === 0,
-          onClick: () => {
-            const next = !open;
-            setOpen(next);
-            if (next) void load();
-          },
-          className: cn(
-            "inline-flex min-h-7 max-w-[min(100%,240px)] items-center gap-1 rounded-lg border-0 bg-transparent px-2 text-[13px] font-medium text-primary",
-            "hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
-            snapshot.options.length === 0 && "cursor-default text-secondary"
-          )
-        },
-        /* @__PURE__ */ import_react.default.createElement(SeatIcon, null),
-        /* @__PURE__ */ import_react.default.createElement("span", { className: "max-w-[180px] truncate" }, label),
-        /* @__PURE__ */ import_react.default.createElement(ChevronIcon, null)
-      ), open ? /* @__PURE__ */ import_react.default.createElement(
-        "div",
+          current: snapshot.current,
+          options: modes,
+          placeholder: t("modeLabel"),
+          emptyText: t("seatNoModes"),
+          disabled,
+          onPick: pick,
+          t
+        }
+      ), /* @__PURE__ */ import_react.default.createElement(
+        PresetDropdown,
         {
-          role: "menu",
-          className: "absolute left-0 top-full z-50 mt-1 max-h-[360px] w-72 overflow-y-auto rounded-xl border border-line1 bg-overlay p-1 shadow-lg"
-        },
-        /* @__PURE__ */ import_react.default.createElement("p", { className: "px-2 py-1 text-[11px] text-secondary" }, t("styleGroup")),
-        styles.length === 0 ? (
-          // 尚未创建风格时的提示，引导去设置页创建
-          /* @__PURE__ */ import_react.default.createElement("p", { className: "px-2 py-1.5 text-[12px] leading-4 text-secondary" }, t("seatNoStyles"))
-        ) : styles.map((preset) => /* @__PURE__ */ import_react.default.createElement(
-          "button",
-          {
-            key: preset.id,
-            type: "button",
-            role: "menuitemradio",
-            "aria-checked": preset.id === snapshot.current,
-            onClick: () => pick(preset.id),
-            className: cn(
-              "flex w-full flex-col items-start gap-0.5 rounded-lg border-0 bg-transparent px-2 py-1.5 text-left",
-              preset.id === snapshot.current ? "bg-layer2" : "hover:bg-layer2"
-            )
-          },
-          /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[13px] text-primary" }, presetName(preset, t)),
-          presetDescription(preset) ? (
-            // 风格说明
-            /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[12px] leading-4 text-secondary" }, presetDescription(preset))
-          ) : null
-        )),
-        modes.length > 0 ? /* @__PURE__ */ import_react.default.createElement(import_react.default.Fragment, null, /* @__PURE__ */ import_react.default.createElement("p", { className: "mt-1 px-2 py-1 text-[11px] text-secondary" }, t("modeGroup")), modes.map((preset) => /* @__PURE__ */ import_react.default.createElement(
-          "button",
-          {
-            key: preset.id,
-            type: "button",
-            role: "menuitemradio",
-            "aria-checked": preset.id === snapshot.current,
-            onClick: () => pick(preset.id),
-            className: cn(
-              "flex w-full flex-col items-start gap-0.5 rounded-lg border-0 bg-transparent px-2 py-1.5 text-left",
-              preset.id === snapshot.current ? "bg-layer2" : "hover:bg-layer2"
-            )
-          },
-          /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[13px] text-primary" }, presetName(preset, t)),
-          presetDescription(preset) ? (
-            // 模式说明
-            /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[12px] leading-4 text-secondary" }, presetDescription(preset))
-          ) : null
-        ))) : null
-      ) : null, snapshot.error ? /* @__PURE__ */ import_react.default.createElement("p", { className: "mt-1 text-[12px] leading-4 text-danger", role: "alert" }, snapshot.error === "session already started" ? t("seatSessionStarted") : `${t("seatSelectFailed")}\uFF1A${snapshot.error}`) : null);
+          current: snapshot.current,
+          options: styles,
+          placeholder: t("seatLabel"),
+          emptyText: t("seatNoStyles"),
+          disabled,
+          onPick: pick,
+          t
+        }
+      )), snapshot.error ? /* @__PURE__ */ import_react.default.createElement("p", { className: "mt-1 text-[12px] leading-4 text-danger", role: "alert" }, snapshot.error === "session already started" ? t("seatSessionStarted") : `${t("seatSelectFailed")}\uFF1A${snapshot.error}`) : null);
     }
 
     // src/features/chat-style/client.tsx
@@ -544,10 +552,12 @@ window.__ModuleLoader__.load({
         storageHint: "\u914D\u7F6E\u6587\u4EF6\u4F4D\u7F6E",
         // 预设选择提示
         presetHint: "\u98CE\u683C\u4EE5 Agent \u9884\u8BBE\u7684\u5F62\u5F0F\u6CE8\u518C\u3002\u65B0\u5EFA\u4EFB\u52A1\u65F6\u5728\u300C\u6807\u51C6\u6A21\u5F0F\u300D\u65C1\u7684\u9884\u8BBE\u9009\u62E9\u5668\u91CC\u9009\u62E9\u5B83\u3002",
-        // 新会话选择器的风格分组标题
-        styleGroup: "\u5BF9\u8BDD\u98CE\u683C",
-        // 新会话选择器的模式分组标题
-        modeGroup: "\u6A21\u5F0F",
+        // 新会话选择器的模式下拉占位文案
+        modeLabel: "\u6A21\u5F0F",
+        // 模式列表为空时的提示
+        seatNoModes: "\u6CA1\u6709\u53EF\u7528\u7684\u6A21\u5F0F\u3002",
+        // 新会话选择器的风格下拉占位文案
+        seatLabel: "\u5BF9\u8BDD\u98CE\u683C",
         // 尚未创建任何风格时的提示
         seatNoStyles: "\u8FD8\u6CA1\u6709\u521B\u5EFA\u98CE\u683C\uFF0C\u53EF\u5728\u300C\u8BBE\u7F6E \u2192 All In One \u2192 \u5BF9\u8BDD\u98CE\u683C\u300D\u4E2D\u65B0\u5EFA\u3002",
         // 内置标准模式的显示名
@@ -686,10 +696,12 @@ window.__ModuleLoader__.load({
         storageHint: "Config file",
         // Preset picker hint
         presetHint: "Styles register as agent presets. Choose one in the preset picker next to Standard mode when starting a new task.",
-        // Group heading for styles in the new-session picker
-        styleGroup: "Chat styles",
-        // Group heading for modes in the new-session picker
-        modeGroup: "Modes",
+        // Placeholder for the mode dropdown
+        modeLabel: "Mode",
+        // Shown when the mode list is empty
+        seatNoModes: "No modes available.",
+        // Placeholder for the style dropdown
+        seatLabel: "Chat style",
         // Shown when no style has been created yet
         seatNoStyles: "No styles yet. Create one in Settings \u2192 All In One \u2192 Chat styles.",
         // Display name for the built-in Standard mode
