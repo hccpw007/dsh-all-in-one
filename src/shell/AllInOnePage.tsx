@@ -53,7 +53,7 @@ export function AllInOnePage({ t }: AllInOnePageProps) {
         {/* 功能页头部：只提供返回网格的入口，标题由功能页面自行渲染 */}
         <div className="flex items-center gap-2 border-b border-line1 pb-3">
           {/* 返回按钮：回到功能网格 */}
-          <Button variant="ghost" onClick={() => setActiveId(null)}>
+          <Button variant="outline" onClick={() => setActiveId(null)}>
             <BackGlyph />
             {t('shell.back')}
           </Button>

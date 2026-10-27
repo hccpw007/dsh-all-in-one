@@ -11,9 +11,11 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 /** 各变体独有的尺寸与配色，公共的过渡、焦点环在组件内统一拼上。 */
 const VARIANT_CLASS: Record<ButtonVariant, string> = {
+  // 构建关闭了 preflight，浏览器会给 button 加上原生边框与灰底，ghost 必须显式清掉
   ghost:
-    'flex items-center gap-1 rounded-lg px-2 py-1 text-secondary hover:bg-layer2 hover:text-primary',
-  outline: 'rounded-lg border border-line1 bg-base px-3 py-1.5 text-primary hover:bg-layer2',
+    'flex items-center gap-1 rounded-lg border-0 bg-transparent px-2 py-1 text-secondary hover:bg-layer2 hover:text-primary',
+  // line1 在宿主浅色主题下几乎看不见，描边用深一档的 line2 才有按钮轮廓
+  outline: 'rounded-lg border border-line2 bg-base px-3 py-1.5 text-primary hover:bg-layer2',
 }
 
 /**
