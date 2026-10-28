@@ -5,9 +5,10 @@
  * 指向 `~/.claude/projects` 即可与 Claude Code 共用同一套记忆。页面同时展示
  * 「当前实际使用的目录」，避免用户填了路径却不知道生效的是哪一个（填错会回退默认）。
  */
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 import { Button } from '../../components/Button'
+import { PageActionsContext } from '../../shell/page-actions'
 import type { FeaturePageProps } from '../../shell/registry'
 import { loadMemorySettings, saveMemorySettings } from './api'
 import type { MemorySettingsPayload } from './types'
@@ -41,6 +42,8 @@ export function ProjectMemoryPage({ t }: FeaturePageProps) {
   const [error, setError] = useState<string | null>(null)
   // 保存成功提示；再次编辑时清掉，避免旧的成功状态误导
   const [saved, setSaved] = useState(false)
+  // 外壳头部右侧的操作区投放口
+  const setPageActions = useContext(PageActionsContext)
 
   useEffect(() => {
     let active = true
@@ -69,7 +72,7 @@ export function ProjectMemoryPage({ t }: FeaturePageProps) {
   }, [t])
 
   /** 保存草稿中的根目录；服务端会再校验一次并返回解析后的实际目录。 */
-  const handleSave = async () => {
+  const handleSave = useCallback(async (): Promise<void> => {
     if (saving) return
 
     const trimmed = draft.trim()
@@ -95,7 +98,27 @@ export function ProjectMemoryPage({ t }: FeaturePageProps) {
     } finally {
       setSaving(false)
     }
-  }
+  }, [draft, saving, t])
+
+  /** 外壳头部右上角的保存按钮；表单里不再重复放置。 */
+  const saveAction = useMemo(
+    () => (
+      <Button variant="outline" disabled={loading || saving} onClick={() => void handleSave()}>
+        {/* 保存按钮文案，提交中显示进度 */}
+        {saving ? t('saving') : t('save')}
+      </Button>
+    ),
+    [handleSave, loading, saving, t],
+  )
+
+  // 挂到外壳头部右侧；离开页面时撤回，避免残留
+  useEffect(() => {
+    if (!setPageActions) return
+
+    setPageActions(saveAction)
+
+    return () => setPageActions(null)
+  }, [saveAction, setPageActions])
 
   return (
     <div>
@@ -119,7 +142,7 @@ export function ProjectMemoryPage({ t }: FeaturePageProps) {
             className={INPUT_CLASS}
           />
         </label>
-        {/* 恢复默认目录：清空输入框即可回落到插件默认路径 */}
+        {/* 恢复默认目录：清空输入框即可回落到插件默认路径；保存按钮在外壳头部 */}
         <div className="mt-2 flex items-center gap-2">
           <Button
             variant="ghost"
@@ -130,9 +153,6 @@ export function ProjectMemoryPage({ t }: FeaturePageProps) {
             }}
           >
             {t('reset')}
-          </Button>
-          <Button variant="outline" disabled={loading || saving} onClick={() => void handleSave()}>
-            {saving ? t('saving') : t('save')}
           </Button>
           {/* 保存结果提示：成功或失败都直接显示在表单旁 */}
           {saved ? (

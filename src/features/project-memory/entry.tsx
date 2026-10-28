@@ -96,13 +96,13 @@ export function ProjectMemoryEntry({ t, open }: FeatureEntryProps) {
   }
 
   return (
-    // 卡片容器：主体按钮与开关是并列的两个交互区，不能互相嵌套
+    // 卡片容器：主体按钮、开关与设置按钮是并列的交互区，不能互相嵌套
     <div className="flex w-full items-start gap-3 rounded-xl border border-line4 bg-layer1 px-4 py-3.5 transition hover:bg-layer2">
-      {/* 卡片主体：进入功能页面配置记忆路径 */}
+      {/* 卡片主体：进入功能页面配置记忆路径。preflight 关闭，必须清掉浏览器默认的按钮底色与内边距 */}
       <button
         type="button"
         onClick={open}
-        className="flex min-w-0 flex-1 items-start gap-3 rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        className="flex min-w-0 flex-1 items-start gap-3 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
       >
         {/* 入口图标 */}
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand">
@@ -124,28 +124,41 @@ export function ProjectMemoryEntry({ t, open }: FeatureEntryProps) {
           ) : null}
         </span>
       </button>
-      {/* 启用开关：独立按钮，只有轨道参与交互，避免与进入页面混淆 */}
-      <button
-        type="button"
-        role="switch"
-        aria-checked={enabled}
-        aria-label={t('title')}
-        disabled={payload === null || saving}
-        onClick={() => void handleToggle()}
-        className={cn(
-          'mt-1 flex h-5 w-9 shrink-0 items-center rounded-full transition',
-          enabled ? 'bg-brand' : 'bg-line2',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2',
-        )}
-      >
-        <span
-          aria-hidden="true"
+      {/* 右侧一列：启用开关在上，设置按钮在下，两者各自独立 */}
+      <div className="flex shrink-0 flex-col items-center justify-between gap-2 self-stretch">
+        {/* 启用开关：只有轨道参与交互，避免与进入页面混淆 */}
+        <button
+          type="button"
+          role="switch"
+          aria-checked={enabled}
+          aria-label={t('title')}
+          disabled={payload === null || saving}
+          onClick={() => void handleToggle()}
           className={cn(
-            'h-4 w-4 rounded-full bg-base shadow transition-transform',
-            enabled ? 'translate-x-[18px]' : 'translate-x-0.5',
+            'flex h-5 w-9 shrink-0 items-center rounded-full border-0 p-0 transition',
+            enabled ? 'bg-brand' : 'bg-line2',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2',
           )}
-        />
-      </button>
+        >
+          <span
+            aria-hidden="true"
+            className={cn(
+              'h-4 w-4 rounded-full bg-base shadow transition-transform',
+              enabled ? 'translate-x-[18px]' : 'translate-x-0.5',
+            )}
+          />
+        </button>
+        {/* 设置按钮：从卡片右下角明确进入记忆路径页面 */}
+        <button
+          type="button"
+          onClick={open}
+          aria-label={t('pathTitle')}
+          title={t('pathTitle')}
+          className="flex items-center justify-center rounded-md border-0 bg-transparent p-0 text-[12px] leading-[18px] text-secondary transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        >
+          {t('settingsAction')}
+        </button>
+      </div>
     </div>
   )
 }

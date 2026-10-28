@@ -11,6 +11,8 @@ export const projectMemoryLocales: FeatureLocales = {
     loadFailed: '读取设置失败，请检查宿主是否已加载本插件。',
     // 保存开关状态失败时的提示
     saveFailed: '保存失败',
+    // 卡片右下角的设置按钮，点击进入记忆路径页面
+    settingsAction: '设置',
     // 记忆路径页面标题
     pathTitle: '记忆路径',
     // 路径输入框标签
@@ -48,6 +50,8 @@ export const projectMemoryLocales: FeatureLocales = {
     loadFailed: 'Could not read settings. Check that the host loaded this plugin.',
     // Shown when the switch state cannot be saved
     saveFailed: 'Could not save',
+    // Settings button at the card's bottom right; opens the memory path page
+    settingsAction: 'Settings',
     // Memory path page title
     pathTitle: 'Memory path',
     // Label of the root path input
