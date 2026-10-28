@@ -31,6 +31,21 @@ declare module '@deepseek-ai/dsh-client-ui-primitives' {
 
   export const Menu: ComponentType<MenuProps>
 
+  /** 宿主模态弹窗的属性，与 ui-workspace 的归档确认弹窗用法一致。 */
+  export interface ModalProps {
+    open: boolean
+    onClose(): void
+    /** 关闭按钮的可访问名称。 */
+    closeLabel?: string
+    title?: ReactNode
+    description?: ReactNode
+    /** 底部操作区，通常是取消与确认按钮。 */
+    footer?: ReactNode
+    children?: ReactNode
+  }
+
+  export const Modal: ComponentType<ModalProps>
+
   /** 宿主 Agent 预设图标。 */
   export const IconAgentPresetOutlineRegular: ComponentType<{
     className?: string

@@ -39,10 +39,10 @@ window.__ModuleLoader__.load({
       default: () => entry_default
     });
     module.exports = __toCommonJS(entry_exports);
-    var import_react14 = __toESM(require("react"), 1);
+    var import_react15 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.static{position:static}.relative{position:relative}.sticky{position:sticky}.top-0{top:0}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-9{height:2.25rem}.max-h-72{max-height:18rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-0\\.5,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[18px\\]{--tw-translate-x:18px}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-dashed{border-style:dashed}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[18px\\]{line-height:18px}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:opacity-50:disabled{opacity:.5}@media (min-width:640px){.sm\\:col-span-2{grid-column:span 2/span 2}.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
+    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.static{position:static}.relative{position:relative}.sticky{position:sticky}.top-0{top:0}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-9{height:2.25rem}.max-h-72{max-height:18rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-0\\.5,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[18px\\]{--tw-translate-x:18px}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-dashed{border-style:dashed}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[18px\\]{line-height:18px}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}@media (min-width:640px){.sm\\:col-span-2{grid-column:span 2/span 2}.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -269,17 +269,17 @@ window.__ModuleLoader__.load({
     }
     function createSeatStore() {
       let snapshot = initialState();
-      const listeners = /* @__PURE__ */ new Set();
+      const listeners2 = /* @__PURE__ */ new Set();
       return {
         getSnapshot: () => snapshot,
         set(patch) {
           snapshot = { ...snapshot, ...patch };
-          for (const listener of listeners) listener();
+          for (const listener of listeners2) listener();
         },
         subscribe(listener) {
-          listeners.add(listener);
+          listeners2.add(listener);
           return () => {
-            listeners.delete(listener);
+            listeners2.delete(listener);
           };
         }
       };
@@ -1375,7 +1375,7 @@ window.__ModuleLoader__.load({
     var expand_process_default = expandProcessFeature;
 
     // src/features/delete-session/client.tsx
-    var import_react11 = __toESM(require("react"), 1);
+    var import_react12 = __toESM(require("react"), 1);
 
     // src/features/delete-session/api.ts
     var ENDPOINT2 = "/dsh-all-in-one/sessions";
@@ -1414,6 +1414,37 @@ window.__ModuleLoader__.load({
         window.clearTimeout(timer);
       }
     }
+
+    // src/features/delete-session/confirm-store.ts
+    var listeners = /* @__PURE__ */ new Set();
+    var pending = null;
+    function notify() {
+      for (const listener of [...listeners]) {
+        try {
+          listener();
+        } catch (error) {
+          console.error("[delete-session] \u786E\u8BA4\u5F39\u7A97\u8BA2\u9605\u8005\u5904\u7406\u5931\u8D25:", error);
+        }
+      }
+    }
+    var deleteConfirmStore = {
+      getSnapshot: () => pending,
+      subscribe(listener) {
+        listeners.add(listener);
+        return () => {
+          listeners.delete(listener);
+        };
+      },
+      request(next) {
+        pending = next;
+        notify();
+      },
+      settle() {
+        if (pending === null) return;
+        pending = null;
+        notify();
+      }
+    };
 
     // src/features/delete-session/DeleteSessionButton.tsx
     var import_react10 = __toESM(require("react"), 1);
@@ -1463,52 +1494,89 @@ window.__ModuleLoader__.load({
     function DeleteSessionButton({
       t,
       sessionId,
+      displayTitle,
       resolveSession: resolveSession2,
-      deleteSession
+      requestConfirm
     }) {
-      const [pending, setPending] = (0, import_react10.useState)(false);
-      const [failed, setFailed] = (0, import_react10.useState)(false);
       if (!readDeleteSessionEnabled()) return null;
-      if (sessionId === void 0 || deleteSession === void 0) return null;
+      if (sessionId === void 0 || requestConfirm === void 0) return null;
       const state = resolveSession2?.(sessionId);
       if (state !== void 0 && (state.running || state.isCurrent)) return null;
-      const handleClick = async (event) => {
+      const handleClick = (event) => {
         event.stopPropagation();
-        if (pending) return;
-        setPending(true);
-        try {
-          await deleteSession(sessionId);
-          setFailed(false);
-        } catch (error) {
-          console.error("[delete-session] \u5220\u9664\u4F1A\u8BDD\u5931\u8D25:", error);
-          setFailed(true);
-          const reason = error instanceof Error ? error.message : String(error);
-          window.alert(`${t("deleteFailed")}\uFF1A${reason}`);
-        } finally {
-          setPending(false);
-        }
+        requestConfirm({ sessionId, title: displayTitle ?? sessionId });
       };
       return /* @__PURE__ */ import_react10.default.createElement(
         "button",
         {
           type: "button",
-          "aria-label": pending ? t("deleting") : t("action"),
+          "aria-label": t("action"),
           title: t("action"),
-          disabled: pending,
-          onClick: (event) => {
-            void handleClick(event);
-          },
-          className: cn(
-            "inline-flex h-4 w-4 flex-none cursor-pointer items-center justify-center rounded border-0 bg-transparent p-0 text-secondary transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-default disabled:opacity-50",
-            failed && "text-danger hover:text-danger"
-          )
+          onClick: handleClick,
+          className: "inline-flex h-4 w-4 flex-none cursor-pointer items-center justify-center rounded border-0 bg-transparent p-0 text-secondary transition hover:text-danger focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         },
         /* @__PURE__ */ import_react10.default.createElement(TrashGlyph, null)
       );
     }
 
+    // src/features/delete-session/DeleteSessionDialog.tsx
+    var import_dsh_client_ui_primitives2 = require("@deepseek-ai/dsh-client-ui-primitives");
+    var import_react11 = __toESM(require("react"), 1);
+    var useNoRequest = (() => null);
+    function DeleteSessionDialog({
+      t,
+      useRequest,
+      deleteSession,
+      settle
+    }) {
+      const [pending2, setPending] = (0, import_react11.useState)(false);
+      const [error, setError] = (0, import_react11.useState)(null);
+      const readRequest = useRequest ?? useNoRequest;
+      const request2 = readRequest((value) => value);
+      const activeSessionId = request2?.sessionId;
+      (0, import_react11.useEffect)(() => {
+        setError(null);
+      }, [activeSessionId]);
+      if (request2 === null) return null;
+      const close = () => {
+        if (pending2) return;
+        setError(null);
+        settle?.();
+      };
+      const confirm = async () => {
+        if (pending2) return;
+        setPending(true);
+        setError(null);
+        try {
+          await deleteSession?.(request2.sessionId);
+        } catch (failure) {
+          console.error("[delete-session] \u5220\u9664\u4F1A\u8BDD\u5931\u8D25:", failure);
+          setPending(false);
+          setError(failure instanceof Error ? failure.message : String(failure));
+          return;
+        }
+        setPending(false);
+        settle?.();
+      };
+      return /* @__PURE__ */ import_react11.default.createElement(
+        import_dsh_client_ui_primitives2.Modal,
+        {
+          open: true,
+          onClose: close,
+          closeLabel: t("confirmCancel"),
+          title: t("confirmTitle"),
+          description: t("confirmTarget"),
+          footer: /* @__PURE__ */ import_react11.default.createElement(import_react11.default.Fragment, null, /* @__PURE__ */ import_react11.default.createElement(Button, { variant: "outline", disabled: pending2, onClick: close }, t("confirmCancel")), /* @__PURE__ */ import_react11.default.createElement(Button, { variant: "danger", disabled: pending2, onClick: () => void confirm() }, pending2 ? t("deleting") : t("confirmDelete")))
+        },
+        /* @__PURE__ */ import_react11.default.createElement("p", { className: "mt-1 text-[13px] font-medium leading-5 text-primary" }, request2.title),
+        /* @__PURE__ */ import_react11.default.createElement("p", { className: "mt-3 text-[12px] leading-[18px] text-secondary" }, t("confirmMessage")),
+        error !== null ? /* @__PURE__ */ import_react11.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, `${t("deleteFailed")}\uFF1A${error}`) : null
+      );
+    }
+
     // src/features/delete-session/client.tsx
     var ROW_ACTION_SLOT = "sidebar.workspaces.session.row.action";
+    var OVERLAY_SLOT = "shell.overlay";
     function resolveSession(sessions, sessionId) {
       const summary = sessions.list.getSnapshot().byId[sessionId];
       return {
@@ -1520,6 +1588,10 @@ window.__ModuleLoader__.load({
       ctx.inject(["sessions"], (scoped) => {
         const sessions = scoped.sessions;
         if (sessions === void 0) return;
+        const deleteSession = async (sessionId) => {
+          await requestDeleteSession(sessionId);
+          sessions.handleSessionRemoved?.(sessionId);
+        };
         ctx.slots.inject(
           ROW_ACTION_SLOT,
           () => ctx.slots.register(
@@ -1530,14 +1602,32 @@ window.__ModuleLoader__.load({
               order: 300,
               inject: () => ({
                 resolveSession: (sessionId) => resolveSession(sessions, sessionId),
-                deleteSession: async (sessionId) => {
-                  await requestDeleteSession(sessionId);
-                  sessions.handleSessionRemoved?.(sessionId);
-                }
+                requestConfirm: deleteConfirmStore.request
               })
             },
-            (props) => /* @__PURE__ */ import_react11.default.createElement(
+            (props) => /* @__PURE__ */ import_react12.default.createElement(
               DeleteSessionButton,
+              {
+                ...props,
+                t
+              }
+            )
+          )
+        );
+        ctx.slots.inject(
+          OVERLAY_SLOT,
+          () => ctx.slots.register(
+            {
+              name: OVERLAY_SLOT,
+              id: "delete-session-confirm",
+              inject: () => ({
+                hooks: { request: deleteConfirmStore },
+                deleteSession,
+                settle: deleteConfirmStore.settle
+              })
+            },
+            (props) => /* @__PURE__ */ import_react12.default.createElement(
+              DeleteSessionDialog,
               {
                 ...props,
                 t
@@ -1553,37 +1643,57 @@ window.__ModuleLoader__.load({
       zh: {
         // 开关标题
         title: "\u5220\u9664\u4F1A\u8BDD",
-        // 开关用途说明：解释打开后会话列表里会出现什么、以及为什么需要刷新
-        description: "\u5728\u4F1A\u8BDD\u884C\u7684\u60AC\u505C\u64CD\u4F5C\u91CC\u589E\u52A0\u5220\u9664\u6309\u94AE\uFF0C\u70B9\u51FB\u76F4\u63A5\u5220\u9664\u8BE5\u4F1A\u8BDD\u7684\u672C\u5730\u5386\u53F2\uFF08\u5BBF\u4E3B\u53EA\u63D0\u4F9B\u5F52\u6863\uFF09\u3002\u5207\u6362\u540E\u9875\u9762\u4F1A\u81EA\u52A8\u5237\u65B0\u3002",
+        // 开关用途说明：解释打开后会话列表里会出现什么、删除前会先确认、以及为什么需要刷新
+        description: "\u5728\u4F1A\u8BDD\u884C\u7684\u60AC\u505C\u64CD\u4F5C\u91CC\u589E\u52A0\u5220\u9664\u6309\u94AE\uFF0C\u70B9\u51FB\u540E\u5148\u5728\u5F39\u7A97\u91CC\u786E\u8BA4\uFF0C\u786E\u8BA4\u540E\u624D\u5220\u9664\u8BE5\u4F1A\u8BDD\u7684\u672C\u5730\u5386\u53F2\uFF08\u5BBF\u4E3B\u53EA\u63D0\u4F9B\u5F52\u6863\uFF09\u3002\u5207\u6362\u540E\u9875\u9762\u4F1A\u81EA\u52A8\u5237\u65B0\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 会话行删除按钮的可访问名称与悬停提示
         action: "\u5220\u9664\u4F1A\u8BDD",
-        // 删除进行中的可访问名称
-        deleting: "\u6B63\u5728\u5220\u9664\u4F1A\u8BDD",
+        // 确认弹窗标题
+        confirmTitle: "\u5220\u9664\u4F1A\u8BDD",
+        // 确认弹窗的说明文字，指出弹窗里给出的是哪一条会话
+        confirmTarget: "\u5373\u5C06\u5220\u9664\u4EE5\u4E0B\u4F1A\u8BDD\uFF1A",
+        // 确认弹窗的删除范围说明
+        confirmMessage: "\u5C06\u5220\u9664\u8BE5\u4F1A\u8BDD\u7684\u672C\u5730\u8BB0\u5F55\uFF1A\u5BF9\u8BDD\u6B63\u6587\u3001\u6807\u9898\u7F13\u5B58\u4E0E\u5217\u8868\u8BB0\u5F55\uFF0C\u5220\u9664\u540E\u65E0\u6CD5\u6062\u590D\u3002",
+        // 确认弹窗的取消按钮
+        confirmCancel: "\u53D6\u6D88",
+        // 确认弹窗的确认按钮
+        confirmDelete: "\u5220\u9664",
+        // 删除进行中的按钮与状态文字
+        deleting: "\u6B63\u5728\u5220\u9664",
         // 删除失败时的提示前缀，后面拼接宿主返回的原因
         deleteFailed: "\u5220\u9664\u4F1A\u8BDD\u5931\u8D25"
       },
       en: {
         // Switch title
         title: "Delete sessions",
-        // Switch description explaining the row action and why a reload happens
-        description: "Adds a delete button to each session row\u2019s hover actions, removing that conversation\u2019s local history (the host only offers archive). The page reloads after switching.",
+        // Switch description explaining the row action, the confirmation step, and the reload
+        description: "Adds a delete button to each session row\u2019s hover actions. A dialog confirms first, then the conversation\u2019s local history is removed (the host only offers archive). The page reloads after switching.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions.",
         // Accessible name and hover hint of the row delete button
         action: "Delete session",
-        // Accessible name while the delete request is in flight
-        deleting: "Deleting session",
+        // Confirmation dialog title
+        confirmTitle: "Delete session",
+        // Dialog line introducing the session being deleted
+        confirmTarget: "About to delete:",
+        // Dialog text describing what is removed
+        confirmMessage: "This removes the session\u2019s local records: the conversation log, its title cache, and its list entry. It cannot be undone.",
+        // Cancel button of the confirmation dialog
+        confirmCancel: "Cancel",
+        // Confirming delete button
+        confirmDelete: "Delete",
+        // Button label and status text while deleting
+        deleting: "Deleting",
         // Prefix for a failed delete, followed by the host's reason
         deleteFailed: "Could not delete the session"
       }
     };
 
     // src/features/delete-session/toggle.tsx
-    var import_react12 = __toESM(require("react"), 1);
+    var import_react13 = __toESM(require("react"), 1);
     function TrashIcon() {
-      return /* @__PURE__ */ import_react12.default.createElement(
+      return /* @__PURE__ */ import_react13.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -1596,16 +1706,16 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react12.default.createElement("path", { d: "M4 7h16" }),
-        /* @__PURE__ */ import_react12.default.createElement("path", { d: "M10 4h4" }),
-        /* @__PURE__ */ import_react12.default.createElement("path", { d: "M9 7v11" }),
-        /* @__PURE__ */ import_react12.default.createElement("path", { d: "M15 7v11" }),
-        /* @__PURE__ */ import_react12.default.createElement("path", { d: "M6 7h12l-1 13H7L6 7Z" })
+        /* @__PURE__ */ import_react13.default.createElement("path", { d: "M4 7h16" }),
+        /* @__PURE__ */ import_react13.default.createElement("path", { d: "M10 4h4" }),
+        /* @__PURE__ */ import_react13.default.createElement("path", { d: "M9 7v11" }),
+        /* @__PURE__ */ import_react13.default.createElement("path", { d: "M15 7v11" }),
+        /* @__PURE__ */ import_react13.default.createElement("path", { d: "M6 7h12l-1 13H7L6 7Z" })
       );
     }
     function DeleteSessionToggle({ t }) {
-      const [enabled, setEnabled] = (0, import_react12.useState)(readDeleteSessionEnabled);
-      const [saveFailed, setSaveFailed] = (0, import_react12.useState)(false);
+      const [enabled, setEnabled] = (0, import_react13.useState)(readDeleteSessionEnabled);
+      const [saveFailed, setSaveFailed] = (0, import_react13.useState)(false);
       const handleToggle = () => {
         const next = !enabled;
         if (!writeDeleteSessionEnabled(next)) {
@@ -1616,7 +1726,7 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react12.default.createElement("div", null, /* @__PURE__ */ import_react12.default.createElement(
+      return /* @__PURE__ */ import_react13.default.createElement("div", null, /* @__PURE__ */ import_react13.default.createElement(
         "button",
         {
           type: "button",
@@ -1625,9 +1735,9 @@ window.__ModuleLoader__.load({
           onClick: handleToggle,
           className: "flex w-full items-center gap-3 rounded-xl border border-line4 bg-layer1 px-4 py-3.5 text-left transition hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         },
-        /* @__PURE__ */ import_react12.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, /* @__PURE__ */ import_react12.default.createElement(TrashIcon, null)),
-        /* @__PURE__ */ import_react12.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react12.default.createElement("span", { className: "block text-[13px] font-medium leading-5 text-primary" }, t("title")), /* @__PURE__ */ import_react12.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("description"))),
-        /* @__PURE__ */ import_react12.default.createElement(
+        /* @__PURE__ */ import_react13.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, /* @__PURE__ */ import_react13.default.createElement(TrashIcon, null)),
+        /* @__PURE__ */ import_react13.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react13.default.createElement("span", { className: "block text-[13px] font-medium leading-5 text-primary" }, t("title")), /* @__PURE__ */ import_react13.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("description"))),
+        /* @__PURE__ */ import_react13.default.createElement(
           "span",
           {
             "aria-hidden": "true",
@@ -1636,7 +1746,7 @@ window.__ModuleLoader__.load({
               enabled ? "bg-brand" : "bg-line2"
             )
           },
-          /* @__PURE__ */ import_react12.default.createElement(
+          /* @__PURE__ */ import_react13.default.createElement(
             "span",
             {
               className: cn(
@@ -1646,7 +1756,7 @@ window.__ModuleLoader__.load({
             }
           )
         )
-      ), saveFailed ? /* @__PURE__ */ import_react12.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-danger" }, t("saveFailed")) : null);
+      ), saveFailed ? /* @__PURE__ */ import_react13.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-danger" }, t("saveFailed")) : null);
     }
 
     // src/features/delete-session/index.tsx
@@ -1699,9 +1809,9 @@ window.__ModuleLoader__.load({
     var registry = createFeatureRegistry(featureList);
 
     // src/shell/AllInOnePage.tsx
-    var import_react13 = __toESM(require("react"), 1);
+    var import_react14 = __toESM(require("react"), 1);
     function BackGlyph() {
-      return /* @__PURE__ */ import_react13.default.createElement(
+      return /* @__PURE__ */ import_react14.default.createElement(
         "svg",
         {
           viewBox: "0 0 16 16",
@@ -1714,34 +1824,34 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react13.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
+        /* @__PURE__ */ import_react14.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
       );
     }
     function AllInOnePage({ t }) {
-      const [activeId, setActiveId] = (0, import_react13.useState)(null);
-      const [pageActions, setPageActions] = (0, import_react13.useState)(null);
+      const [activeId, setActiveId] = (0, import_react14.useState)(null);
+      const [pageActions, setPageActions] = (0, import_react14.useState)(null);
       const active = activeId ? registry.find(activeId) : void 0;
       const activePage = active && "page" in active ? active : void 0;
-      const featureTranslate = (0, import_react13.useCallback)(
+      const featureTranslate = (0, import_react14.useCallback)(
         // 网格视图不会调用此函数，activePage 为空时直接返回 key 兜底
         (key) => activePage ? t(`${activePage.id}.${key}`) : key,
         [activePage, t]
       );
       if (activePage) {
         const ActivePage = activePage.page;
-        return /* @__PURE__ */ import_react13.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react13.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react13.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react13.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react13.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react13.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react13.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react13.default.createElement(ActivePage, { t: featureTranslate }))));
+        return /* @__PURE__ */ import_react14.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react14.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react14.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react14.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react14.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react14.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react14.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react14.default.createElement(ActivePage, { t: featureTranslate }))));
       }
-      return /* @__PURE__ */ import_react13.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react13.default.createElement("header", null, /* @__PURE__ */ import_react13.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react13.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
+      return /* @__PURE__ */ import_react14.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react14.default.createElement("header", null, /* @__PURE__ */ import_react14.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react14.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
         // 尚未注册功能时的空态提示
-        /* @__PURE__ */ import_react13.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
-      ) : /* @__PURE__ */ import_react13.default.createElement("div", { className: "mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2" }, registry.list.map((feature) => {
+        /* @__PURE__ */ import_react14.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
+      ) : /* @__PURE__ */ import_react14.default.createElement("div", { className: "mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2" }, registry.list.map((feature) => {
         const featureT = (key) => t(`${feature.id}.${key}`);
         if ("switch" in feature) {
           const SwitchEntry = feature.switch;
-          return /* @__PURE__ */ import_react13.default.createElement("div", { key: feature.id, className: "sm:col-span-2" }, /* @__PURE__ */ import_react13.default.createElement(SwitchEntry, { t: featureT }));
+          return /* @__PURE__ */ import_react14.default.createElement("div", { key: feature.id, className: "sm:col-span-2" }, /* @__PURE__ */ import_react14.default.createElement(SwitchEntry, { t: featureT }));
         }
         const Entry = feature.entry;
-        return /* @__PURE__ */ import_react13.default.createElement(Entry, { key: feature.id, t: featureT, open: () => setActiveId(feature.id) });
+        return /* @__PURE__ */ import_react14.default.createElement(Entry, { key: feature.id, t: featureT, open: () => setActiveId(feature.id) });
       })));
     }
 
@@ -1860,7 +1970,7 @@ window.__ModuleLoader__.load({
         });
         const t = ctx.locale.bind(LOCALE_NAMESPACE);
         installSettingsNavIcon(ctx, t, icon_default);
-        const SettingsSection = () => /* @__PURE__ */ import_react14.default.createElement(AllInOnePage, { t });
+        const SettingsSection = () => /* @__PURE__ */ import_react15.default.createElement(AllInOnePage, { t });
         ctx.slots.inject(
           "settings.section",
           () => ctx.slots.register(
