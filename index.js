@@ -557,7 +557,16 @@ var PRESET_ID_PREFIX = "power-pack-";
 var PRESET_ORDER = 200;
 var PRESET_READ_ATTEMPTS = 12;
 var PRESET_READ_INTERVAL_MS = 250;
-var composed = /* @__PURE__ */ new Map();
+var SHARED_STATE = Symbol.for("dsh-all-in-one.composed-presets");
+function sharedComposed() {
+  const holder = globalThis;
+  const existing = holder[SHARED_STATE];
+  if (existing !== void 0) return existing;
+  const created = /* @__PURE__ */ new Map();
+  holder[SHARED_STATE] = created;
+  return created;
+}
+var composed = sharedComposed();
 function composedPresetId(packId, modeId) {
   return `${PRESET_ID_PREFIX}${packId}@${modeId}`;
 }
@@ -619,17 +628,23 @@ async function ensureComposedPreset(api, modeId, pack, groups) {
   if (modeRows === void 0) {
     throw new Error(`\u65E0\u6CD5\u8BFB\u53D6\u6A21\u5F0F ${modeId} \u7684\u7EC4\u5408\u884C`);
   }
-  const rows = composePackRows(modeRows, pack, groups);
   const id = composedPresetId(pack.id, modeId);
-  const dispose = await api.register({
-    id,
-    name: pack.name,
-    description: pack.description,
-    order: PRESET_ORDER,
-    plugins: rows
-  });
-  composed.set(key, { key, id, dispose });
-  return id;
+  if (readPresetRows(api, id) !== void 0) return id;
+  const rows = composePackRows(modeRows, pack, groups);
+  try {
+    const dispose = await api.register({
+      id,
+      name: pack.name,
+      description: pack.description,
+      order: PRESET_ORDER,
+      plugins: rows
+    });
+    composed.set(key, { key, id, dispose });
+    return id;
+  } catch (error) {
+    if (readPresetRows(api, id) !== void 0) return id;
+    throw error;
+  }
 }
 async function invalidateComposedPreset(packId) {
   const prefix = `${packId}@`;
@@ -1124,6 +1139,7 @@ async function readSkillEntry(path, kind) {
     if (!parsed || !SKILL_NAME_PATTERN.test(parsed.name)) return void 0;
     return { name: parsed.name, description: parsed.description, path, kind };
   } catch (error) {
+    if (error.code === "ENOENT") return void 0;
     console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u6587\u4EF6\u5931\u8D25:", file, error);
     return void 0;
   }

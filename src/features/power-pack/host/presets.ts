@@ -39,8 +39,30 @@ interface ComposedPreset {
   dispose: () => Promise<void>
 }
 
+/** 共享表在 globalThis 上的键。 */
+const SHARED_STATE = Symbol.for('dsh-all-in-one.composed-presets')
+
+/**
+ * 取跨插件实例共享的已注册预设表。
+ *
+ * 插件热重载会重新执行本模块、重建模块级状态，而宿主的预设注册表不会重建：
+ * 表若只存在模块作用域里，新实例既看不见旧注册（重复注册报错），也无法注销
+ * 它们（改了技能包后旧配置继续生效）。因此这张表挂在 globalThis 上共享。
+ * @returns 共享的注册表
+ */
+function sharedComposed(): Map<string, ComposedPreset> {
+  const holder = globalThis as unknown as Record<symbol, Map<string, ComposedPreset> | undefined>
+  const existing = holder[SHARED_STATE]
+  if (existing !== undefined) return existing
+
+  const created = new Map<string, ComposedPreset>()
+  holder[SHARED_STATE] = created
+
+  return created
+}
+
 /** 当前已注册的组合预设，键为 `技能包@模式`。 */
-const composed = new Map<string, ComposedPreset>()
+const composed = sharedComposed()
 
 /**
  * 生成组合预设 id；技能包与模式都参与，界面可以据此反解两个维度的选择。
@@ -175,19 +197,34 @@ export async function ensureComposedPreset(
     throw new Error(`无法读取模式 ${modeId} 的组合行`)
   }
 
+  const id = composedPresetId(pack.id, modeId)
+
+  // 宿主侧的注册表不随插件实例销毁：热重载后本模块的 composed 表已清空，
+  // 旧实例注册的同名预设却还在，直接再注册会被宿主以重复 id 拒绝。
+  // 这里先问宿主是否已持有，持有即视为本次注册成功，跳过重复挂载。
+  if (readPresetRows(api, id) !== undefined) return id
+
   const rows = composePackRows(modeRows, pack, groups)
 
-  const id = composedPresetId(pack.id, modeId)
-  const dispose = await api.register({
-    id,
-    name: pack.name,
-    description: pack.description,
-    order: PRESET_ORDER,
-    plugins: rows as unknown as Record<string, unknown>[],
-  })
+  try {
+    const dispose = await api.register({
+      id,
+      name: pack.name,
+      description: pack.description,
+      order: PRESET_ORDER,
+      plugins: rows as unknown as Record<string, unknown>[],
+    })
 
-  composed.set(key, { key, id, dispose })
-  return id
+    composed.set(key, { key, id, dispose })
+
+    return id
+  } catch (error) {
+    // 注册与旧实例撤销并发时仍可能撞上重复 id；此时宿主已持有该预设，
+    // 按已注册处理即可，否则一次热重载就会让该技能包的会话无法恢复。
+    if (readPresetRows(api, id) !== undefined) return id
+
+    throw error
+  }
 }
 
 /**

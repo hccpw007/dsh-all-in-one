@@ -88,6 +88,10 @@ async function readSkillEntry(path: string, kind: SkillEntry['kind']): Promise<S
 
     return { name: parsed.name, description: parsed.description, path, kind }
   } catch (error) {
+    // 技能根下混放非技能目录是常态（如只放说明文件的占位目录），缺 SKILL.md
+    // 不代表读取失败；当作「不是技能」跳过，否则每个无关目录都会刷一条 ENOENT 栈。
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return undefined
+
     console.error('[power-pack] 读取技能文件失败:', file, error)
     return undefined
   }
