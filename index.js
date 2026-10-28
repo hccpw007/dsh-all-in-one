@@ -1818,8 +1818,6 @@ import { mkdirSync as mkdirSync2, readdirSync, readFileSync as readFileSync2, re
 import { join as join12 } from "node:path";
 var MEMORY_TYPES = ["user", "feedback", "project", "reference"];
 var MEMORY_NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-var MAX_ENTRY_BYTES = 8 * 1024;
-var MAX_TOTAL_BYTES = 24 * 1024;
 function isValidMemoryName(name) {
   return MEMORY_NAME_PATTERN.test(name) && name.length <= 64;
 }
@@ -2006,63 +2004,29 @@ function deleteMemory(dir, name) {
   writeMemoryIndex(dir, removeIndexLine(readMemoryIndex(dir), name));
   return true;
 }
-function truncateBytes(text, limit) {
-  const buffer = Buffer.from(text, "utf8");
-  if (buffer.length <= limit) return text;
-  let end = limit;
-  while (end > 0 && (buffer.readUInt8(end) & 192) === 128) end -= 1;
-  return `${buffer.subarray(0, end).toString("utf8")}
-\u2026\uFF08\u672C\u6761\u8BB0\u5FC6\u8FC7\u957F\uFF0C\u5DF2\u622A\u65AD\uFF09`;
-}
-function renderMemories(dir, index, entries) {
-  if (index.trim() === "" && entries.length === 0) return "";
+function renderMemoryIndex(dir, index) {
   const parts = [
-    `# \u9879\u76EE\u8BB0\u5FC6`,
+    "# \u9879\u76EE\u8BB0\u5FC6",
     "",
-    `\u4EE5\u4E0B\u8BB0\u5FC6\u6765\u81EA ${dir}\uFF0C\u7531\u672C\u9879\u76EE\u7684\u591A\u4E2A\u4F1A\u8BDD\u5171\u4EAB\uFF0C\u63CF\u8FF0\u4E86\u9879\u76EE\u7EA6\u5B9A\u3001\u7528\u6237\u504F\u597D\u4E0E\u65E2\u5F80\u51B3\u5B9A\u3002`,
-    "\u628A\u5B83\u4EEC\u5F53\u4F5C\u80CC\u666F\u4E8B\u5B9E\uFF1B\u4E0E\u5F53\u524D\u7528\u6237\u6307\u4EE4\u51B2\u7A81\u65F6\u4EE5\u7528\u6237\u6307\u4EE4\u4E3A\u51C6\u3002\u8BB0\u5FC6\u6709\u8BEF\u65F6\u5E94\u66F4\u65B0\u6216\u5220\u9664\u5BF9\u5E94\u6761\u76EE\uFF0C\u800C\u4E0D\u662F\u7167\u642C\u3002",
-    "\u6B63\u6587\u91CC\u7684 `[[\u5176\u5B83\u8BB0\u5FC6\u540D]]` \u6307\u5411\u540C\u76EE\u5F55\u4E0B\u7684\u5176\u5B83\u8BB0\u5FC6\uFF0C\u9700\u8981\u65F6\u7528 memory \u5DE5\u5177\u6309\u540D\u8BFB\u53D6\u3002",
+    `\u8BB0\u5FC6\u76EE\u5F55\uFF1A${dir}`,
+    "\u672C\u9879\u76EE\u7684\u8BB0\u5FC6\u6309\u300C\u4E00\u6761\u4E00\u4E2A\u6587\u4EF6\u300D\u653E\u5728\u8BE5\u76EE\u5F55\uFF0C\u4E0B\u9762\u662F MEMORY.md \u7D22\u5F15\uFF1B\u6BCF\u4E00\u884C\u5BF9\u5E94\u4E00\u6761\u8BB0\u5FC6\u3002",
+    "\u7D22\u5F15\u53EA\u7ED9\u6982\u8981\uFF0C\u9700\u8981\u67D0\u6761\u8BB0\u5FC6\u7684\u5168\u6587\u65F6\u7528 memory \u5DE5\u5177 action=read \u8BFB\u53D6\uFF08action=list \u53EF\u5217\u51FA\u5168\u90E8\uFF09\u3002",
+    "\u8BB0\u5FC6\u662F\u672C\u9879\u76EE\u591A\u4E2A\u4F1A\u8BDD\u5171\u4EAB\u7684\u80CC\u666F\u4E8B\u5B9E\uFF0C\u4E0E\u5F53\u524D\u7528\u6237\u6307\u4EE4\u51B2\u7A81\u65F6\u4EE5\u7528\u6237\u6307\u4EE4\u4E3A\u51C6\uFF1B\u53D1\u73B0\u6709\u8BEF\u65F6\u66F4\u65B0\u6216\u5220\u9664\u5BF9\u5E94\u6761\u76EE\uFF0C\u4E0D\u8981\u7167\u642C\u3002",
     ""
   ];
-  if (index.trim() !== "") parts.push("## \u8BB0\u5FC6\u7D22\u5F15", "", index.trim(), "");
-  let used = Buffer.byteLength(parts.join("\n"), "utf8");
-  let included = 0;
-  for (const entry of entries) {
-    const block = [
-      `## ${entry.name}\uFF08${entry.type}\uFF09`,
-      "",
-      entry.description,
-      "",
-      truncateBytes(entry.content.trim(), MAX_ENTRY_BYTES),
-      ""
-    ].join("\n");
-    const size = Buffer.byteLength(block, "utf8");
-    if (used + size > MAX_TOTAL_BYTES) {
-      parts.push(`\uFF08\u5176\u4F59 ${entries.length - included} \u6761\u8BB0\u5FC6\u672A\u5C55\u5F00\uFF0C\u53EF\u7528 memory \u5DE5\u5177\u6309\u540D\u8BFB\u53D6\u3002\uFF09`, "");
-      break;
-    }
-    used += size;
-    included += 1;
-    parts.push(block);
-  }
-  return parts.join("\n").trim();
+  parts.push(index.trim() === "" ? "\uFF08\u5F53\u524D\u8FD8\u6CA1\u6709\u8BB0\u5FC6\u3002\uFF09" : index.trim());
+  return parts.join("\n");
 }
-function memoryFingerprint(dir) {
-  const stamps = [];
+function memoryIndexFingerprint(dir) {
   try {
     const index = statSync2(join12(dir, MEMORY_INDEX_FILE));
-    stamps.push(`${MEMORY_INDEX_FILE}:${index.mtimeMs}:${index.size}`);
-    for (const file of listMemoryFiles(dir)) {
-      const info = statSync2(join12(dir, file));
-      stamps.push(`${file}:${info.mtimeMs}:${info.size}`);
-    }
+    return `${dir}|${index.mtimeMs}|${index.size}`;
   } catch (error) {
     if (error.code !== "ENOENT") {
-      console.error("[project-memory] \u8BFB\u53D6\u8BB0\u5FC6\u6587\u4EF6\u72B6\u6001\u5931\u8D25:", dir, error);
+      console.error("[project-memory] \u8BFB\u53D6\u8BB0\u5FC6\u7D22\u5F15\u72B6\u6001\u5931\u8D25:", dir, error);
     }
     return "";
   }
-  return `${dir}|${stamps.join("|")}`;
 }
 
 // src/features/project-memory/host/prompt.ts
@@ -2070,10 +2034,10 @@ var SECTION_NAME = "project-memory:index";
 var SECTION_ORDER = 9500;
 var caches = /* @__PURE__ */ new Map();
 function memoryText(dir) {
-  const fingerprint = memoryFingerprint(dir);
+  const fingerprint = memoryIndexFingerprint(dir);
   const cached = caches.get(dir);
   if (cached !== void 0 && cached.fingerprint === fingerprint) return cached.text;
-  const text = renderMemories(dir, readMemoryIndex(dir), readMemories(dir));
+  const text = renderMemoryIndex(dir, readMemoryIndex(dir));
   caches.set(dir, { fingerprint, text });
   return text;
 }
@@ -2186,11 +2150,11 @@ function installMemoryRoutes(webServer) {
 // src/features/project-memory/host/tool.ts
 var MEMORY_TOOL_NAME = "memory";
 var TOOL_DESCRIPTION = [
-  "\u8BFB\u5199\u5F53\u524D\u9879\u76EE\u7684\u957F\u671F\u8BB0\u5FC6\u3002",
-  "\u5F53\u7528\u6237\u8981\u6C42\u300C\u8BB0\u4F4F\u300D\u67D0\u4E8B\u3001\u7EA0\u6B63\u4F60\u7684\u505A\u6CD5\u3001\u63D0\u51FA\u957F\u671F\u504F\u597D\uFF0C\u6216\u9879\u76EE\u4E2D\u5F62\u6210\u4E0D\u6613\u4ECE\u4EE3\u7801\u770B\u51FA\u7684\u7EA6\u5B9A\u4E0E\u51B3\u5B9A\u65F6\uFF0C",
-  "\u7528 action=save \u5199\u5165\u4E00\u6761\u8BB0\u5FC6\uFF1B\u8BB0\u5FC6\u4F1A\u5728\u4E4B\u540E\u7684\u4F1A\u8BDD\u91CC\u81EA\u52A8\u8FDB\u5165\u4E0A\u4E0B\u6587\u3002",
-  "\u5199\u5165\u524D\u5148\u7528 action=list \u67E5\u770B\u5DF2\u6709\u8BB0\u5FC6\uFF1A\u540C\u4E00\u4E3B\u9898\u5E94\u66F4\u65B0\u539F\u6761\u76EE\uFF08\u540C\u540D\u5199\u5165\u5373\u8986\u76D6\uFF09\uFF0C\u4E0D\u8981\u91CD\u590D\u65B0\u5EFA\u3002",
-  "action=read \u6309\u540D\u5B57\u8BFB\u53D6\u5168\u6587\uFF0Caction=delete \u5220\u9664\u5DF2\u8FC7\u671F\u6216\u5199\u9519\u7684\u6761\u76EE\u3002"
+  "\u8BFB\u5199\u5F53\u524D\u9879\u76EE\u7684\u957F\u671F\u8BB0\u5FC6\u3002\u8BB0\u5FC6\u6309\u9879\u76EE\u9694\u79BB\uFF0C\u7531\u672C\u9879\u76EE\u7684\u591A\u4E2A\u4F1A\u8BDD\u5171\u4EAB\u3002",
+  "\u7CFB\u7EDF\u63D0\u793A\u8BCD\u91CC\u5DF2\u5E26\u4E0A MEMORY.md \u7D22\u5F15\uFF08\u6BCF\u6761\u4E00\u884C\uFF09\u3002\u8981\u4E86\u89E3\u67D0\u6761\u8BB0\u5FC6\u7684\u5168\u6587\uFF0C\u7528 action=read \u6309\u540D\u8BFB\u53D6\uFF1B",
+  "\u53EA\u5728\u7D22\u5F15\u6307\u51FA\u4E86\u76F8\u5173\u5185\u5BB9\u65F6\u624D\u8BFB\uFF0C\u4E0D\u8981\u4E00\u6B21\u6027\u628A\u6240\u6709\u8BB0\u5FC6\u8BFB\u8FDB\u6765\u3002",
+  "\u5F53\u7528\u6237\u8981\u6C42\u300C\u8BB0\u4F4F\u300D\u67D0\u4E8B\u3001\u7EA0\u6B63\u4F60\u7684\u505A\u6CD5\u3001\u63D0\u51FA\u957F\u671F\u504F\u597D\uFF0C\u6216\u9879\u76EE\u4E2D\u5F62\u6210\u4E0D\u6613\u4ECE\u4EE3\u7801\u770B\u51FA\u7684\u7EA6\u5B9A\u4E0E\u51B3\u5B9A\u65F6\uFF0C\u7528 action=save \u5199\u5165\u4E00\u6761\u8BB0\u5FC6\u3002",
+  "\u5199\u5165\u524D\u5148\u770B\u7D22\u5F15\uFF08\u9700\u8981\u65F6\u7528 action=list\uFF09\uFF1A\u540C\u4E00\u4E3B\u9898\u5E94\u66F4\u65B0\u539F\u6761\u76EE\uFF08\u540C\u540D\u5199\u5165\u5373\u8986\u76D6\uFF09\uFF0C\u4E0D\u8981\u91CD\u590D\u65B0\u5EFA\uFF1B\u6709\u8BEF\u6216\u5DF2\u8FC7\u671F\u7684\u6761\u76EE\u7528 action=delete \u5220\u9664\u3002"
 ].join("");
 var PARAMETERS = {
   type: "object",
@@ -2238,12 +2202,12 @@ function optionalText(value) {
 }
 function runAction(args, dir) {
   const name = optionalText(args.name);
-  const index = () => readMemories(dir).map((entry) => `${entry.name}: ${entry.description}`).join("\n");
+  const index = () => readMemoryIndex(dir);
   if (args.action === "list") {
     const entries = readMemories(dir);
     return {
       ok: true,
-      message: entries.length === 0 ? "\u5F53\u524D\u9879\u76EE\u8FD8\u6CA1\u6709\u8BB0\u5FC6\u3002" : `\u5171 ${entries.length} \u6761\u8BB0\u5FC6\uFF1A${entries.map((entry) => entry.name).join("\u3001")}`,
+      message: entries.length === 0 ? "\u5F53\u524D\u9879\u76EE\u8FD8\u6CA1\u6709\u8BB0\u5FC6\u3002" : `\u5171 ${entries.length} \u6761\u8BB0\u5FC6\uFF1A${entries.map((entry) => `${entry.name}\uFF08${entry.type}\uFF09`).join("\u3001")}`,
       directory: dir,
       index: index(),
       content: ""

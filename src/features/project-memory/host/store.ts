@@ -47,10 +47,6 @@ export interface MemoryEntry {
 /** 记忆名的合法字符集：会拼进文件名与 `[[链接]]`，只允许小写字母、数字与连字符。 */
 const MEMORY_NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
 
-/** 注入上下文的预算：单条与总量都设上限，避免记忆越积越多把提示词撑爆。 */
-const MAX_ENTRY_BYTES = 8 * 1024
-const MAX_TOTAL_BYTES = 24 * 1024
-
 /**
  * 判断记忆名是否合法。
  * @param name 记忆名
@@ -391,103 +387,49 @@ export function deleteMemory(dir: string, name: string): boolean {
 }
 
 /**
- * 按字节上限截断文本，保留可读的截断提示。
- * @param text 原文
- * @param limit 字节上限
- * @returns 截断后的文本
- */
-function truncateBytes(text: string, limit: number): string {
-  const buffer = Buffer.from(text, 'utf8')
-  if (buffer.length <= limit) return text
-
-  let end = limit
-  // 不要把多字节字符切成半个
-  while (end > 0 && (buffer.readUInt8(end) & 0xc0) === 0x80) end -= 1
-
-  return `${buffer.subarray(0, end).toString('utf8')}\n…（本条记忆过长，已截断）`
-}
-
-/**
- * 把记忆渲染成注入提示词的文本。
+ * 把记忆索引渲染成注入提示词的文本。
  *
- * 索引在前、条目在后：索引让模型快速判断哪条相关，全文让它在当前会话里直接可用，
- * 不必再为读记忆多跑一次工具调用。超出预算时按文件顺序截断，并明确告知被截断。
+ * 只注入 `MEMORY.md`：索引里每条记忆一行，足以判断「哪条可能相关」，正文由模型在
+ * 需要时用 memory 工具按名读取。这与 Claude Code 一致——记忆可以持续增长，而每轮请求
+ * 的上下文不能被全部正文占满。
  * @param dir 记忆目录
  * @param index 索引内容
- * @param entries 全部记忆
- * @returns 注入文本；没有任何记忆时返回空串
+ * @returns 注入文本；没有索引时也给出目录与用法，让模型知道可以新增记忆
  */
-export function renderMemories(
-  dir: string,
-  index: string,
-  entries: MemoryEntry[],
-): string {
-  if (index.trim() === '' && entries.length === 0) return ''
-
+export function renderMemoryIndex(dir: string, index: string): string {
   const parts: string[] = [
-    `# 项目记忆`,
+    '# 项目记忆',
     '',
-    `以下记忆来自 ${dir}，由本项目的多个会话共享，描述了项目约定、用户偏好与既往决定。`,
-    '把它们当作背景事实；与当前用户指令冲突时以用户指令为准。记忆有误时应更新或删除对应条目，而不是照搬。',
-    '正文里的 `[[其它记忆名]]` 指向同目录下的其它记忆，需要时用 memory 工具按名读取。',
+    `记忆目录：${dir}`,
+    '本项目的记忆按「一条一个文件」放在该目录，下面是 MEMORY.md 索引；每一行对应一条记忆。',
+    '索引只给概要，需要某条记忆的全文时用 memory 工具 action=read 读取（action=list 可列出全部）。',
+    '记忆是本项目多个会话共享的背景事实，与当前用户指令冲突时以用户指令为准；发现有误时更新或删除对应条目，不要照搬。',
     '',
   ]
 
-  if (index.trim() !== '') parts.push('## 记忆索引', '', index.trim(), '')
+  parts.push(index.trim() === '' ? '（当前还没有记忆。）' : index.trim())
 
-  let used = Buffer.byteLength(parts.join('\n'), 'utf8')
-  let included = 0
-
-  for (const entry of entries) {
-    const block = [
-      `## ${entry.name}（${entry.type}）`,
-      '',
-      entry.description,
-      '',
-      truncateBytes(entry.content.trim(), MAX_ENTRY_BYTES),
-      '',
-    ].join('\n')
-    const size = Buffer.byteLength(block, 'utf8')
-
-    // 超出总预算后不再追加，并在末尾说明还有哪些条目未展开
-    if (used + size > MAX_TOTAL_BYTES) {
-      parts.push(`（其余 ${entries.length - included} 条记忆未展开，可用 memory 工具按名读取。）`, '')
-      break
-    }
-
-    used += size
-    included += 1
-    parts.push(block)
-  }
-
-  return parts.join('\n').trim()
+  return parts.join('\n')
 }
 
 /**
- * 记忆目录的变更指纹：索引与条目文件的 mtime、大小。
+ * 记忆索引的变更指纹：`MEMORY.md` 的 mtime 与大小。
  *
- * 提示词每次装配都会读取记忆，靠指纹跳过没变化时的重复解析。
+ * 提示词每次装配都要注入索引，靠指纹跳过没变化时的重复文件读取。
+ * 只看索引：记忆正文不在上下文里，它单独变化不影响注入内容。
  * @param dir 记忆目录
- * @returns 指纹字符串；目录不存在时返回空串
+ * @returns 指纹字符串；索引不存在时返回空串
  */
-export function memoryFingerprint(dir: string): string {
-  const stamps: string[] = []
-
+export function memoryIndexFingerprint(dir: string): string {
   try {
     const index = statSync(join(dir, MEMORY_INDEX_FILE))
-    stamps.push(`${MEMORY_INDEX_FILE}:${index.mtimeMs}:${index.size}`)
 
-    for (const file of listMemoryFiles(dir)) {
-      const info = statSync(join(dir, file))
-      stamps.push(`${file}:${info.mtimeMs}:${info.size}`)
-    }
+    return `${dir}|${index.mtimeMs}|${index.size}`
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
-      console.error('[project-memory] 读取记忆文件状态失败:', dir, error)
+      console.error('[project-memory] 读取记忆索引状态失败:', dir, error)
     }
 
     return ''
   }
-
-  return `${dir}|${stamps.join('|')}`
 }

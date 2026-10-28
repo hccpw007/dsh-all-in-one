@@ -1,16 +1,20 @@
 /**
  * 「项目记忆」的提示词注入。
  *
- * 记忆在每次装配系统提示词时读取：会话开始时带上全部记忆，记忆被写入或删除后
- * 下一次请求即读到新内容，不必重启宿主。
+ * 只注入索引（`MEMORY.md`）：会话开始时模型就知道「这个项目有哪些记忆」，
+ * 需要某条全文时用 memory 工具按名读取——与 Claude Code 一致，记忆再多也不会
+ * 把每轮请求的上下文占满。
  *
- * 装配每轮都会发生，因此读取结果按记忆目录缓存：文件指纹（mtime + 大小）没变就复用
- * 上次渲染的文本；写入方在落盘后主动失效缓存，让同一轮对话里的下一次请求就能看到。
+ * 索引在每次装配系统提示词时读取，记忆被写入或删除后下一次请求即看到新索引
+ * （开关打开但还没有记忆时注入目录与用法，让模型在用户说「记住…」时知道往哪写）。
+ *
+ * 装配每轮都会发生，因此读取结果按记忆目录缓存：索引指纹（mtime + 大小）没变
+ * 就复用上次的文本；写入方在落盘后主动失效缓存，同一轮对话的下一次请求就能看到。
  */
 import type { HostPluginContext, PromptAssemblyContext } from '../../../types/host'
 import { memoryDirForSession } from './state'
 import { resolveSessionDirectory } from './session-dir'
-import { memoryFingerprint, readMemories, readMemoryIndex, renderMemories } from './store'
+import { memoryIndexFingerprint, readMemoryIndex, renderMemoryIndex } from './store'
 
 /** 段落名：出现在装配结果里，也是技能包隔离按前缀隐藏时的标识。 */
 const SECTION_NAME = 'project-memory:index'
@@ -27,16 +31,16 @@ interface RenderCache {
 const caches = new Map<string, RenderCache>()
 
 /**
- * 取某个记忆目录要注入的文本。
+ * 取某个记忆目录要注入的索引文本。
  * @param dir 记忆目录
- * @returns 注入文本；没有任何记忆时为空串
+ * @returns 注入文本
  */
 function memoryText(dir: string): string {
-  const fingerprint = memoryFingerprint(dir)
+  const fingerprint = memoryIndexFingerprint(dir)
   const cached = caches.get(dir)
   if (cached !== undefined && cached.fingerprint === fingerprint) return cached.text
 
-  const text = renderMemories(dir, readMemoryIndex(dir), readMemories(dir))
+  const text = renderMemoryIndex(dir, readMemoryIndex(dir))
   caches.set(dir, { fingerprint, text })
 
   return text

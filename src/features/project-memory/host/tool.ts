@@ -15,6 +15,7 @@ import {
   isValidMemoryName,
   readMemories,
   readMemory,
+  readMemoryIndex,
   writeMemory,
   type MemoryType,
 } from './store'
@@ -25,13 +26,13 @@ import { memoryDirForSession } from './state'
 /** 工具名，与 Claude Code 的记忆概念保持同一叫法。 */
 const MEMORY_TOOL_NAME = 'memory'
 
-/** 工具说明；写清「何时用」比写清参数更重要，模型据此决定是否调用。 */
+/** 工具说明；写清「何时用」与「索引已在上下文」比只写参数更重要。 */
 const TOOL_DESCRIPTION = [
-  '读写当前项目的长期记忆。',
-  '当用户要求「记住」某事、纠正你的做法、提出长期偏好，或项目中形成不易从代码看出的约定与决定时，',
-  '用 action=save 写入一条记忆；记忆会在之后的会话里自动进入上下文。',
-  '写入前先用 action=list 查看已有记忆：同一主题应更新原条目（同名写入即覆盖），不要重复新建。',
-  'action=read 按名字读取全文，action=delete 删除已过期或写错的条目。',
+  '读写当前项目的长期记忆。记忆按项目隔离，由本项目的多个会话共享。',
+  '系统提示词里已带上 MEMORY.md 索引（每条一行）。要了解某条记忆的全文，用 action=read 按名读取；',
+  '只在索引指出了相关内容时才读，不要一次性把所有记忆读进来。',
+  '当用户要求「记住」某事、纠正你的做法、提出长期偏好，或项目中形成不易从代码看出的约定与决定时，用 action=save 写入一条记忆。',
+  '写入前先看索引（需要时用 action=list）：同一主题应更新原条目（同名写入即覆盖），不要重复新建；有误或已过期的条目用 action=delete 删除。',
 ].join('')
 
 /** 记忆工具的参数，按宿主支持的 JSON Schema 子集书写（required 是对象级的字符串数组）。 */
@@ -111,13 +112,16 @@ function runAction(args: MemoryArgs, dir: string): {
   content: string
 } {
   const name = optionalText(args.name)
-  const index = (): string => readMemories(dir).map((entry) => `${entry.name}: ${entry.description}`).join('\n')
+  // 工具结果里的「当前索引」直接回读 MEMORY.md，与注入上下文的那份保持一致
+  const index = (): string => readMemoryIndex(dir)
 
   if (args.action === 'list') {
     const entries = readMemories(dir)
     return {
       ok: true,
-      message: entries.length === 0 ? '当前项目还没有记忆。' : `共 ${entries.length} 条记忆：${entries.map((entry) => entry.name).join('、')}`,
+      message: entries.length === 0
+        ? '当前项目还没有记忆。'
+        : `共 ${entries.length} 条记忆：${entries.map((entry) => `${entry.name}（${entry.type}）`).join('、')}`,
       directory: dir,
       index: index(),
       content: '',
