@@ -24,6 +24,32 @@ export interface ToolsApi {
   get(name: string, scope?: unknown): unknown
   /** 对当前作用域的继承工具施加允许/拒绝掩码，返回解除函数。 */
   restrict(filter: { allow?: string[]; deny?: string[] }): () => void
+  /** 注册一个工具，返回注销函数；定义形状与宿主 `defineTool` 的产物一致。 */
+  register?(definition: ToolDefinitionLike): () => void
+}
+
+/** 注册工具所需的最小定义形状；参数与输出均为 JSON Schema 子集。 */
+export interface ToolDefinitionLike {
+  name: string
+  description: string
+  parameters: Record<string, unknown>
+  output: {
+    schema: Record<string, unknown>
+    render: (
+      args: Record<string, unknown>,
+      value: Record<string, unknown>,
+    ) => Array<{ type: 'text'; text: string }>
+  }
+  execute: (
+    args: Record<string, unknown>,
+    exec: ToolExecLike,
+  ) => Promise<Record<string, unknown>>
+}
+
+/** 工具执行上下文：只声明本插件用到的字段。 */
+export interface ToolExecLike {
+  /** 调用该工具的 Agent；记忆按 Agent 所属项目定位目录。 */
+  agent?: unknown
 }
 
 /** 宿主侧插件上下文：只声明本插件实际依赖的能力。 */
@@ -40,8 +66,8 @@ export interface HostPluginContext {
   webServer?: WebServerApi
   /** 工具注册表；插件声明依赖后可用，用于枚举全局工具。 */
   tools?: ToolsApi
-  /** 系统提示词服务；插件声明依赖后可用，用于安装最外层包装。 */
-  systemPrompt?: { assemble?: unknown }
+  /** 系统提示词服务；插件声明依赖后可用，用于注册段落与安装最外层包装。 */
+  systemPrompt?: SystemPromptApi
   /** 启动本进程的 profile；缺失时相关功能回退为扫描全部 profile。 */
   profileContext?: ProfileContext
 }
@@ -101,18 +127,23 @@ export interface WebServerApi {
   register(route: WebServerRoute): () => void
 }
 
-/** 系统提示词服务：按作用域追加有序段落。 */
+/** 提示词文本：常量，或按本次装配的上下文计算（用于按会话注入不同内容）。 */
+export type PromptText = string | ((context: PromptAssemblyContext) => string)
+
+/** 系统提示词服务：按作用域注册有序段落。 */
 export interface SystemPromptApi {
   /**
-   * 注册一个提示词段落。
+   * 注册一个提示词段落；`text` 可以按每次装配的上下文求值，用于按会话注入内容。
    * @returns 注销函数
    */
   section(section: {
     name: string
     order: number
-    text: string
+    text: PromptText
     interpolate?: boolean
   }): () => void
+  /** 装配方法；本插件只在技能包里读取它做最外层包装。 */
+  assemble?: unknown
 }
 
 /** preset 内提示词插件收到的宿主上下文。 */
@@ -151,6 +182,9 @@ export interface PromptAssembly {
 
 /** `system-prompt/assemble` 的回调上下文；`scope` 是触发装配的 Agent 作用域。 */
 export interface PromptAssemblyContext {
+  /** 触发装配的 Agent；会话内装配时存在。 */
+  agent?: unknown
+  /** 作用域对象，与 `agent` 指向同一对象。 */
   scope?: unknown
   [key: string]: unknown
 }

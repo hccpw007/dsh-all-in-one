@@ -580,8 +580,8 @@ function splitComposedPresetId(presetId) {
   return { packId: body.slice(0, separator), modeId: body.slice(separator + 1) };
 }
 function delay(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
+  return new Promise((resolve2) => {
+    setTimeout(resolve2, ms);
   });
 }
 async function waitPresetRows(api, modeId) {
@@ -1605,9 +1605,9 @@ async function forgetWorkspaceAccount(dshHome, sessionId) {
   return removed;
 }
 async function forgetSessionRecords(dshHome, sessionId) {
-  const cache = await forgetProjectionCache(dshHome, sessionId);
+  const cache2 = await forgetProjectionCache(dshHome, sessionId);
   const account = await forgetWorkspaceAccount(dshHome, sessionId);
-  return cache + account;
+  return cache2 + account;
 }
 
 // src/features/delete-session/host/delete-session.ts
@@ -1715,15 +1715,690 @@ function apply3(ctx) {
   ctx.effect(() => installDeleteSessionRoutes(webServer), "delete-session: routes");
 }
 
+// src/features/project-memory/host.ts
+var host_exports4 = {};
+__export(host_exports4, {
+  apply: () => apply4,
+  inject: () => inject4
+});
+
+// src/features/project-memory/host/settings.ts
+import { mkdirSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs";
+import { dirname as dirname3, join as join10 } from "node:path";
+var DEFAULT_SETTINGS = { enabled: false, root: "" };
+var cache;
+function memorySettingsFile() {
+  return join10(resolveDshHome(), "all-in-one", "project-memory.json");
+}
+function normalizeSettings(value) {
+  if (typeof value !== "object" || value === null) return { ...DEFAULT_SETTINGS };
+  const candidate = value;
+  return {
+    enabled: candidate.enabled === true,
+    root: typeof candidate.root === "string" ? candidate.root : ""
+  };
+}
+function readMemorySettings() {
+  const file = memorySettingsFile();
+  try {
+    const info = statSync(file);
+    if (cache !== void 0 && cache.mtimeMs === info.mtimeMs && cache.size === info.size) {
+      return cache.value;
+    }
+    const value = normalizeSettings(JSON.parse(readFileSync(file, "utf8")));
+    cache = { mtimeMs: info.mtimeMs, size: info.size, value };
+    return value;
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.error("[project-memory] \u8BFB\u53D6\u8BB0\u5FC6\u8BBE\u7F6E\u5931\u8D25:", file, error);
+    }
+    return { ...DEFAULT_SETTINGS };
+  }
+}
+function writeMemorySettings(next) {
+  const file = memorySettingsFile();
+  const temp = `${file}.tmp`;
+  try {
+    mkdirSync(dirname3(file), { recursive: true });
+    writeFileSync(temp, `${JSON.stringify(next, null, 2)}
+`, "utf8");
+    renameSync(temp, file);
+    cache = void 0;
+  } catch (error) {
+    console.error("[project-memory] \u5199\u5165\u8BB0\u5FC6\u8BBE\u7F6E\u5931\u8D25:", file, error);
+    throw error;
+  }
+}
+
+// src/features/project-memory/host/paths.ts
+import { homedir as homedir3 } from "node:os";
+import { isAbsolute, join as join11, resolve } from "node:path";
+var MEMORY_INDEX_FILE = "MEMORY.md";
+function defaultMemoryRoot() {
+  return join11(resolveDshHome(), "all-in-one", "projects");
+}
+function resolveMemoryRoot(root) {
+  const trimmed = root.trim();
+  if (trimmed === "") return defaultMemoryRoot();
+  const expanded = trimmed === "~" ? homedir3() : trimmed.startsWith("~/") ? join11(homedir3(), trimmed.slice(2)) : trimmed;
+  return isAbsolute(expanded) ? resolve(expanded) : void 0;
+}
+function projectSlug(directory) {
+  return resolve(directory).replace(/[^A-Za-z0-9]/g, "-");
+}
+function projectMemoryDir(root, projectDirectory) {
+  return join11(root, projectSlug(projectDirectory), "memory");
+}
+
+// src/features/project-memory/host/state.ts
+function memoryEnabled() {
+  const settings = readMemorySettings();
+  if (!settings.enabled) return false;
+  return resolveMemoryRoot(settings.root) !== void 0;
+}
+function effectiveMemoryRoot() {
+  const settings = readMemorySettings();
+  return resolveMemoryRoot(settings.root) ?? defaultMemoryRoot();
+}
+function memoryDirForSession(projectDirectory) {
+  if (!memoryEnabled()) return void 0;
+  return projectMemoryDir(effectiveMemoryRoot(), projectDirectory);
+}
+
+// src/features/project-memory/host/session-dir.ts
+import { isAbsolute as isAbsolute2 } from "node:path";
+function resolveSessionDirectory(agent) {
+  const session = agent?.session;
+  const recorded = session?.header?.cwd;
+  return typeof recorded === "string" && isAbsolute2(recorded) ? recorded : void 0;
+}
+
+// src/features/project-memory/host/store.ts
+import { mkdirSync as mkdirSync2, readdirSync, readFileSync as readFileSync2, renameSync as renameSync2, statSync as statSync2, unlinkSync, writeFileSync as writeFileSync2 } from "node:fs";
+import { join as join12 } from "node:path";
+var MEMORY_TYPES = ["user", "feedback", "project", "reference"];
+var MEMORY_NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+var MAX_ENTRY_BYTES = 8 * 1024;
+var MAX_TOTAL_BYTES = 24 * 1024;
+function isValidMemoryName(name) {
+  return MEMORY_NAME_PATTERN.test(name) && name.length <= 64;
+}
+function ensureMemoryDir(dir) {
+  mkdirSync2(dir, { recursive: true });
+}
+function readMemoryIndex(dir) {
+  try {
+    return readFileSync2(join12(dir, MEMORY_INDEX_FILE), "utf8");
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.error("[project-memory] \u8BFB\u53D6\u8BB0\u5FC6\u7D22\u5F15\u5931\u8D25:", dir, error);
+    }
+    return "";
+  }
+}
+function writeMemoryIndex(dir, text) {
+  const file = join12(dir, MEMORY_INDEX_FILE);
+  const temp = `${file}.tmp`;
+  try {
+    writeFileSync2(temp, text, "utf8");
+    renameSync2(temp, file);
+  } catch (error) {
+    console.error("[project-memory] \u5199\u5165\u8BB0\u5FC6\u7D22\u5F15\u5931\u8D25:", file, error);
+    throw error;
+  }
+}
+function listMemoryFiles(dir) {
+  try {
+    return readdirSync(dir).filter((file) => file.endsWith(".md") && file !== MEMORY_INDEX_FILE).sort();
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.error("[project-memory] \u5217\u51FA\u8BB0\u5FC6\u6587\u4EF6\u5931\u8D25:", dir, error);
+    }
+    return [];
+  }
+}
+function parseMemoryFile(file, text) {
+  const fallback = {
+    name: file.replace(/\.md$/, ""),
+    description: "",
+    type: "project",
+    content: text
+  };
+  const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/.exec(text);
+  if (match === null) return fallback;
+  const body = text.slice(match[0].length).replace(/^\r?\n/, "");
+  const fields = {};
+  for (const line of match[1].split(/\r?\n/)) {
+    const separator = line.indexOf(":");
+    if (separator <= 0) continue;
+    fields[line.slice(0, separator).trim()] = line.slice(separator + 1).trim();
+  }
+  const type = MEMORY_TYPES.find((item) => item === fields["type"]) ?? "project";
+  return {
+    name: fields["name"] || fallback.name,
+    description: fields["description"] ?? "",
+    type,
+    content: body
+  };
+}
+function readMemories(dir) {
+  const entries = [];
+  for (const file of listMemoryFiles(dir)) {
+    try {
+      entries.push(parseMemoryFile(file, readFileSync2(join12(dir, file), "utf8")));
+    } catch (error) {
+      console.error("[project-memory] \u8BFB\u53D6\u8BB0\u5FC6\u6587\u4EF6\u5931\u8D25:", file, error);
+    }
+  }
+  return entries;
+}
+function readMemory(dir, name) {
+  if (!isValidMemoryName(name)) return void 0;
+  const file = `${name}.md`;
+  try {
+    return parseMemoryFile(file, readFileSync2(join12(dir, file), "utf8"));
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.error("[project-memory] \u8BFB\u53D6\u8BB0\u5FC6\u5931\u8D25:", file, error);
+    }
+    return void 0;
+  }
+}
+function indexLine(title, name, description) {
+  return `- [${title}](${name}.md) \u2014 ${description}`;
+}
+function upsertIndexLine(index, name, description) {
+  const pattern = new RegExp(`^- \\[([^\\]]*)\\]\\(${name}\\.md\\).*$`, "m");
+  const existing = pattern.exec(index);
+  if (existing !== null) {
+    const title = existing[1] === "" ? name : existing[1];
+    return index.replace(pattern, indexLine(title, name, description));
+  }
+  const trimmed = index.replace(/\s+$/, "");
+  return `${trimmed === "" ? "" : `${trimmed}
+`}${indexLine(name, name, description)}
+`;
+}
+function removeIndexLine(index, name) {
+  const pattern = new RegExp(`^- \\[[^\\]]*\\]\\(${name}\\.md\\).*\\r?\\n?`, "gm");
+  return index.replace(pattern, "");
+}
+function preservedFrontmatter(dir, name) {
+  const result = { before: [], after: [] };
+  let text;
+  try {
+    text = readFileSync2(join12(dir, `${name}.md`), "utf8");
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.error("[project-memory] \u8BFB\u53D6\u5F85\u66F4\u65B0\u8BB0\u5FC6\u5931\u8D25:", name, error);
+    }
+    return result;
+  }
+  const match = /^---\r?\n([\s\S]*?)\r?\n---/.exec(text);
+  if (match === null) return result;
+  let insideMetadata = false;
+  for (const line of match[1].split(/\r?\n/)) {
+    if (line.trim() === "") continue;
+    if (/^\s/.test(line)) {
+      if (insideMetadata) {
+        if (!/^\s+(type|modified):/.test(line)) result.after.push(line);
+      } else {
+        result.before.push(line);
+      }
+      continue;
+    }
+    const separator = line.indexOf(":");
+    if (separator <= 0) continue;
+    const key = line.slice(0, separator).trim();
+    insideMetadata = key === "metadata";
+    if (!insideMetadata && key !== "name" && key !== "description") result.before.push(line);
+  }
+  return result;
+}
+function writeMemory(dir, input) {
+  if (!isValidMemoryName(input.name)) {
+    throw new Error(`\u8BB0\u5FC6\u540D\u4E0D\u5408\u6CD5\uFF1A${input.name}\uFF08\u53EA\u5141\u8BB8\u5C0F\u5199\u5B57\u6BCD\u3001\u6570\u5B57\u4E0E\u8FDE\u5B57\u7B26\uFF09`);
+  }
+  const description = input.description.trim();
+  if (description === "") throw new Error("\u8BB0\u5FC6\u6458\u8981\u4E0D\u80FD\u4E3A\u7A7A");
+  const type = input.type ?? "project";
+  if (!MEMORY_TYPES.includes(type)) throw new Error(`\u8BB0\u5FC6\u7C7B\u578B\u4E0D\u5408\u6CD5\uFF1A${type}`);
+  ensureMemoryDir(dir);
+  const file = join12(dir, `${input.name}.md`);
+  const preserved = preservedFrontmatter(dir, input.name);
+  const text = [
+    "---",
+    `name: ${input.name}`,
+    `description: ${description}`,
+    ...preserved.before,
+    "metadata:",
+    `  type: ${type}`,
+    `  modified: ${(/* @__PURE__ */ new Date()).toISOString()}`,
+    ...preserved.after,
+    "---",
+    "",
+    input.content.trim(),
+    ""
+  ].join("\n");
+  try {
+    writeFileSync2(`${file}.tmp`, text, "utf8");
+    renameSync2(`${file}.tmp`, file);
+  } catch (error) {
+    console.error("[project-memory] \u5199\u5165\u8BB0\u5FC6\u5931\u8D25:", file, error);
+    throw error;
+  }
+  writeMemoryIndex(dir, upsertIndexLine(readMemoryIndex(dir), input.name, description));
+  return file;
+}
+function deleteMemory(dir, name) {
+  if (!isValidMemoryName(name)) return false;
+  const file = join12(dir, `${name}.md`);
+  try {
+    unlinkSync(file);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      writeMemoryIndex(dir, removeIndexLine(readMemoryIndex(dir), name));
+      return false;
+    }
+    console.error("[project-memory] \u5220\u9664\u8BB0\u5FC6\u5931\u8D25:", file, error);
+    throw error;
+  }
+  writeMemoryIndex(dir, removeIndexLine(readMemoryIndex(dir), name));
+  return true;
+}
+function truncateBytes(text, limit) {
+  const buffer = Buffer.from(text, "utf8");
+  if (buffer.length <= limit) return text;
+  let end = limit;
+  while (end > 0 && (buffer.readUInt8(end) & 192) === 128) end -= 1;
+  return `${buffer.subarray(0, end).toString("utf8")}
+\u2026\uFF08\u672C\u6761\u8BB0\u5FC6\u8FC7\u957F\uFF0C\u5DF2\u622A\u65AD\uFF09`;
+}
+function renderMemories(dir, index, entries) {
+  if (index.trim() === "" && entries.length === 0) return "";
+  const parts = [
+    `# \u9879\u76EE\u8BB0\u5FC6`,
+    "",
+    `\u4EE5\u4E0B\u8BB0\u5FC6\u6765\u81EA ${dir}\uFF0C\u7531\u672C\u9879\u76EE\u7684\u591A\u4E2A\u4F1A\u8BDD\u5171\u4EAB\uFF0C\u63CF\u8FF0\u4E86\u9879\u76EE\u7EA6\u5B9A\u3001\u7528\u6237\u504F\u597D\u4E0E\u65E2\u5F80\u51B3\u5B9A\u3002`,
+    "\u628A\u5B83\u4EEC\u5F53\u4F5C\u80CC\u666F\u4E8B\u5B9E\uFF1B\u4E0E\u5F53\u524D\u7528\u6237\u6307\u4EE4\u51B2\u7A81\u65F6\u4EE5\u7528\u6237\u6307\u4EE4\u4E3A\u51C6\u3002\u8BB0\u5FC6\u6709\u8BEF\u65F6\u5E94\u66F4\u65B0\u6216\u5220\u9664\u5BF9\u5E94\u6761\u76EE\uFF0C\u800C\u4E0D\u662F\u7167\u642C\u3002",
+    "\u6B63\u6587\u91CC\u7684 `[[\u5176\u5B83\u8BB0\u5FC6\u540D]]` \u6307\u5411\u540C\u76EE\u5F55\u4E0B\u7684\u5176\u5B83\u8BB0\u5FC6\uFF0C\u9700\u8981\u65F6\u7528 memory \u5DE5\u5177\u6309\u540D\u8BFB\u53D6\u3002",
+    ""
+  ];
+  if (index.trim() !== "") parts.push("## \u8BB0\u5FC6\u7D22\u5F15", "", index.trim(), "");
+  let used = Buffer.byteLength(parts.join("\n"), "utf8");
+  let included = 0;
+  for (const entry of entries) {
+    const block = [
+      `## ${entry.name}\uFF08${entry.type}\uFF09`,
+      "",
+      entry.description,
+      "",
+      truncateBytes(entry.content.trim(), MAX_ENTRY_BYTES),
+      ""
+    ].join("\n");
+    const size = Buffer.byteLength(block, "utf8");
+    if (used + size > MAX_TOTAL_BYTES) {
+      parts.push(`\uFF08\u5176\u4F59 ${entries.length - included} \u6761\u8BB0\u5FC6\u672A\u5C55\u5F00\uFF0C\u53EF\u7528 memory \u5DE5\u5177\u6309\u540D\u8BFB\u53D6\u3002\uFF09`, "");
+      break;
+    }
+    used += size;
+    included += 1;
+    parts.push(block);
+  }
+  return parts.join("\n").trim();
+}
+function memoryFingerprint(dir) {
+  const stamps = [];
+  try {
+    const index = statSync2(join12(dir, MEMORY_INDEX_FILE));
+    stamps.push(`${MEMORY_INDEX_FILE}:${index.mtimeMs}:${index.size}`);
+    for (const file of listMemoryFiles(dir)) {
+      const info = statSync2(join12(dir, file));
+      stamps.push(`${file}:${info.mtimeMs}:${info.size}`);
+    }
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.error("[project-memory] \u8BFB\u53D6\u8BB0\u5FC6\u6587\u4EF6\u72B6\u6001\u5931\u8D25:", dir, error);
+    }
+    return "";
+  }
+  return `${dir}|${stamps.join("|")}`;
+}
+
+// src/features/project-memory/host/prompt.ts
+var SECTION_NAME = "project-memory:index";
+var SECTION_ORDER = 9500;
+var caches = /* @__PURE__ */ new Map();
+function memoryText(dir) {
+  const fingerprint = memoryFingerprint(dir);
+  const cached = caches.get(dir);
+  if (cached !== void 0 && cached.fingerprint === fingerprint) return cached.text;
+  const text = renderMemories(dir, readMemoryIndex(dir), readMemories(dir));
+  caches.set(dir, { fingerprint, text });
+  return text;
+}
+function invalidateMemoryText(dir) {
+  caches.delete(dir);
+}
+function textForAssembly(context) {
+  try {
+    const directory = resolveSessionDirectory(context.agent);
+    if (directory === void 0) return "";
+    const dir = memoryDirForSession(directory);
+    if (dir === void 0) return "";
+    return memoryText(dir);
+  } catch (error) {
+    console.error("[project-memory] \u6E32\u67D3\u8BB0\u5FC6\u5931\u8D25:", error);
+    return "";
+  }
+}
+function installMemoryPrompt(ctx) {
+  const prompt = ctx.systemPrompt;
+  if (prompt === void 0) {
+    console.error("[project-memory] \u672A\u53D6\u5F97 systemPrompt \u670D\u52A1\uFF0C\u8BB0\u5FC6\u4E0D\u4F1A\u8FDB\u5165\u4E0A\u4E0B\u6587");
+    return;
+  }
+  ctx.effect(
+    () => prompt.section({
+      name: SECTION_NAME,
+      order: SECTION_ORDER,
+      // 记忆是用户写入的原文，可能含 `{{...}}` 字样；不参与变量插值
+      interpolate: false,
+      text: textForAssembly
+    }),
+    "project-memory: prompt"
+  );
+}
+
+// src/features/project-memory/host/routes.ts
+var ROUTE_PATH3 = "/dsh-all-in-one/memory";
+var MAX_BODY_BYTES3 = 8 * 1024;
+function buildPayload2() {
+  const settings = readMemorySettings();
+  const resolved = resolveMemoryRoot(settings.root);
+  const fallback = defaultMemoryRoot();
+  return {
+    ...settings,
+    // 根目录填错时界面要能看出来，因此同时给出回退后的实际目录
+    effectiveRoot: resolved ?? fallback,
+    defaultRoot: fallback,
+    settingsPath: memorySettingsFile()
+  };
+}
+function readRequest(body) {
+  if (typeof body !== "object" || body === null) return void 0;
+  const candidate = body;
+  const request = {};
+  if (candidate.enabled !== void 0) {
+    if (typeof candidate.enabled !== "boolean") return void 0;
+    request.enabled = candidate.enabled;
+  }
+  if (candidate.root !== void 0) {
+    if (typeof candidate.root !== "string") return void 0;
+    if (candidate.root.trim() !== "" && resolveMemoryRoot(candidate.root) === void 0) {
+      return void 0;
+    }
+    request.root = candidate.root.trim();
+  }
+  return request;
+}
+function installMemoryRoutes(webServer) {
+  return webServer.register({
+    kind: "exact",
+    path: ROUTE_PATH3,
+    handler: async (request, response) => {
+      if (!isLocalRequest(request)) {
+        sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
+        return;
+      }
+      try {
+        if (request.method === "GET") {
+          sendJson(response, 200, buildPayload2());
+          return;
+        }
+        if (request.method === "POST") {
+          const body = await readJsonBody(request, MAX_BODY_BYTES3);
+          const update = readRequest(body);
+          if (update === void 0) {
+            sendJson(response, 400, { error: "\u8BBE\u7F6E\u5185\u5BB9\u4E0D\u5408\u6CD5" });
+            return;
+          }
+          const current = readMemorySettings();
+          writeMemorySettings({
+            enabled: update.enabled ?? current.enabled,
+            root: update.root ?? current.root
+          });
+          sendJson(response, 200, buildPayload2());
+          return;
+        }
+        response.writeHead(405, { allow: "GET, POST" });
+        response.end();
+      } catch (error) {
+        console.error("[project-memory] \u5904\u7406\u8BBE\u7F6E\u8BF7\u6C42\u5931\u8D25:", error);
+        sendJson(response, 500, {
+          error: error instanceof Error ? error.message : String(error)
+        });
+      }
+    }
+  });
+}
+
+// src/features/project-memory/host/tool.ts
+var MEMORY_TOOL_NAME = "memory";
+var TOOL_DESCRIPTION = [
+  "\u8BFB\u5199\u5F53\u524D\u9879\u76EE\u7684\u957F\u671F\u8BB0\u5FC6\u3002",
+  "\u5F53\u7528\u6237\u8981\u6C42\u300C\u8BB0\u4F4F\u300D\u67D0\u4E8B\u3001\u7EA0\u6B63\u4F60\u7684\u505A\u6CD5\u3001\u63D0\u51FA\u957F\u671F\u504F\u597D\uFF0C\u6216\u9879\u76EE\u4E2D\u5F62\u6210\u4E0D\u6613\u4ECE\u4EE3\u7801\u770B\u51FA\u7684\u7EA6\u5B9A\u4E0E\u51B3\u5B9A\u65F6\uFF0C",
+  "\u7528 action=save \u5199\u5165\u4E00\u6761\u8BB0\u5FC6\uFF1B\u8BB0\u5FC6\u4F1A\u5728\u4E4B\u540E\u7684\u4F1A\u8BDD\u91CC\u81EA\u52A8\u8FDB\u5165\u4E0A\u4E0B\u6587\u3002",
+  "\u5199\u5165\u524D\u5148\u7528 action=list \u67E5\u770B\u5DF2\u6709\u8BB0\u5FC6\uFF1A\u540C\u4E00\u4E3B\u9898\u5E94\u66F4\u65B0\u539F\u6761\u76EE\uFF08\u540C\u540D\u5199\u5165\u5373\u8986\u76D6\uFF09\uFF0C\u4E0D\u8981\u91CD\u590D\u65B0\u5EFA\u3002",
+  "action=read \u6309\u540D\u5B57\u8BFB\u53D6\u5168\u6587\uFF0Caction=delete \u5220\u9664\u5DF2\u8FC7\u671F\u6216\u5199\u9519\u7684\u6761\u76EE\u3002"
+].join("");
+var PARAMETERS = {
+  type: "object",
+  properties: {
+    action: {
+      type: "string",
+      enum: ["save", "list", "read", "delete"],
+      description: "save \u5199\u5165\u6216\u8986\u76D6\u4E00\u6761\u8BB0\u5FC6\uFF1Blist \u5217\u51FA\u5168\u90E8\uFF1Bread \u8BFB\u53D6\u4E00\u6761\uFF1Bdelete \u5220\u9664\u4E00\u6761\u3002"
+    },
+    name: {
+      type: "string",
+      description: "\u8BB0\u5FC6\u540D\uFF0Ckebab-case\uFF08\u5C0F\u5199\u5B57\u6BCD\u3001\u6570\u5B57\u3001\u8FDE\u5B57\u7B26\uFF09\uFF0C\u540C\u65F6\u662F\u6587\u4EF6\u540D\u3002save/read/delete \u5FC5\u586B\u3002"
+    },
+    description: {
+      type: "string",
+      description: "\u4E00\u53E5\u8BDD\u6458\u8981\uFF0C\u7528\u4E8E\u7D22\u5F15\u4E0E\u540E\u7EED\u4F1A\u8BDD\u5224\u65AD\u76F8\u5173\u6027\u3002save \u5FC5\u586B\u3002"
+    },
+    type: {
+      type: "string",
+      enum: [...MEMORY_TYPES],
+      description: "\u8BB0\u5FC6\u7C7B\u578B\uFF1Auser\uFF08\u7528\u6237\u662F\u8C01\u3001\u504F\u597D\uFF09\u3001feedback\uFF08\u5DE5\u4F5C\u65B9\u5F0F\u7684\u7EA0\u6B63\u4E0E\u786E\u8BA4\uFF09\u3001project\uFF08\u8FDB\u884C\u4E2D\u7684\u5DE5\u4F5C\u4E0E\u7EA6\u675F\uFF09\u3001reference\uFF08\u5916\u90E8\u8D44\u6E90\u6307\u9488\uFF09\u3002\u9ED8\u8BA4 project\u3002"
+    },
+    content: {
+      type: "string",
+      description: "\u8BB0\u5FC6\u6B63\u6587\u3002\u5199\u6E05\u4E8B\u5B9E\u672C\u8EAB\uFF1Bfeedback/project \u7C7B\u578B\u8FFD\u52A0\u300CWhy:\u300D\u4E0E\u300CHow to apply:\u300D\u4E24\u884C\u3002save \u5FC5\u586B\u3002"
+    }
+  },
+  required: ["action"],
+  additionalProperties: false
+};
+var OUTPUT_SCHEMA = {
+  type: "object",
+  properties: {
+    ok: { type: "boolean", description: "\u52A8\u4F5C\u662F\u5426\u6210\u529F\u3002" },
+    message: { type: "string", description: "\u7ED9\u6A21\u578B\u7684\u7B80\u77ED\u7ED3\u679C\u8BF4\u660E\u3002" },
+    directory: { type: "string", description: "\u672C\u6B21\u4F7F\u7528\u7684\u8BB0\u5FC6\u76EE\u5F55\u3002" },
+    index: { type: "string", description: "\u7D22\u5F15\u6587\u4EF6\u7684\u5F53\u524D\u5185\u5BB9\u3002" },
+    content: { type: "string", description: "read \u65F6\u4E3A\u8BB0\u5FC6\u5168\u6587\uFF0C\u5176\u4F59\u52A8\u4F5C\u4E3A\u7A7A\u4E32\u3002" }
+  },
+  required: ["ok", "message", "directory", "index", "content"],
+  additionalProperties: false
+};
+function optionalText(value) {
+  return typeof value === "string" ? value.trim() : "";
+}
+function runAction(args, dir) {
+  const name = optionalText(args.name);
+  const index = () => readMemories(dir).map((entry) => `${entry.name}: ${entry.description}`).join("\n");
+  if (args.action === "list") {
+    const entries = readMemories(dir);
+    return {
+      ok: true,
+      message: entries.length === 0 ? "\u5F53\u524D\u9879\u76EE\u8FD8\u6CA1\u6709\u8BB0\u5FC6\u3002" : `\u5171 ${entries.length} \u6761\u8BB0\u5FC6\uFF1A${entries.map((entry) => entry.name).join("\u3001")}`,
+      directory: dir,
+      index: index(),
+      content: ""
+    };
+  }
+  if (!isValidMemoryName(name)) {
+    return {
+      ok: false,
+      message: `\u8BB0\u5FC6\u540D\u4E0D\u5408\u6CD5\uFF1A${name === "" ? "\uFF08\u7A7A\uFF09" : name}\uFF0C\u53EA\u5141\u8BB8\u5C0F\u5199\u5B57\u6BCD\u3001\u6570\u5B57\u4E0E\u8FDE\u5B57\u7B26\u3002`,
+      directory: dir,
+      index: index(),
+      content: ""
+    };
+  }
+  if (args.action === "read") {
+    const entry = readMemory(dir, name);
+    if (entry === void 0) {
+      return { ok: false, message: `\u8BB0\u5FC6 ${name} \u4E0D\u5B58\u5728\u3002`, directory: dir, index: index(), content: "" };
+    }
+    return {
+      ok: true,
+      message: `\u5DF2\u8BFB\u53D6\u8BB0\u5FC6 ${name}\uFF08${entry.type}\uFF09\u3002`,
+      directory: dir,
+      index: index(),
+      content: entry.content.trim()
+    };
+  }
+  if (args.action === "delete") {
+    const removed = deleteMemory(dir, name);
+    return {
+      ok: removed,
+      message: removed ? `\u5DF2\u5220\u9664\u8BB0\u5FC6 ${name}\u3002` : `\u8BB0\u5FC6 ${name} \u4E0D\u5B58\u5728\uFF0C\u5DF2\u6E05\u7406\u7D22\u5F15\u3002`,
+      directory: dir,
+      index: index(),
+      content: ""
+    };
+  }
+  if (args.action === "save") {
+    const description = optionalText(args.description);
+    const content = optionalText(args.content);
+    const type = optionalText(args.type);
+    if (description === "" || content === "") {
+      return {
+        ok: false,
+        message: "save \u9700\u8981\u540C\u65F6\u63D0\u4F9B description \u4E0E content\uFF1A\u524D\u8005\u662F\u4E00\u53E5\u8BDD\u6458\u8981\uFF0C\u540E\u8005\u662F\u8BB0\u5FC6\u6B63\u6587\u3002",
+        directory: dir,
+        index: index(),
+        content: ""
+      };
+    }
+    const savedType = MEMORY_TYPES.find((item) => item === type);
+    const file = writeMemory(dir, { name, description, content, ...savedType ? { type: savedType } : {} });
+    return {
+      ok: true,
+      message: `\u5DF2\u5199\u5165\u8BB0\u5FC6 ${name}\uFF08${savedType ?? "project"}\uFF09\uFF1A${file}`,
+      directory: dir,
+      index: index(),
+      content: ""
+    };
+  }
+  return {
+    ok: false,
+    message: `\u672A\u77E5\u52A8\u4F5C\uFF1A${args.action}`,
+    directory: dir,
+    index: index(),
+    content: ""
+  };
+}
+function createMemoryTool() {
+  return {
+    name: MEMORY_TOOL_NAME,
+    description: TOOL_DESCRIPTION,
+    parameters: PARAMETERS,
+    output: {
+      schema: OUTPUT_SCHEMA,
+      render: (_args, value) => [
+        { type: "text", text: `[project-memory] ${String(value["message"] ?? "")}` }
+      ]
+    },
+    execute: async (rawArgs, exec) => {
+      const args = rawArgs;
+      const directory = resolveSessionDirectory(exec.agent);
+      if (directory === void 0) {
+        return {
+          ok: false,
+          message: "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u5DE5\u4F5C\u76EE\u5F55\uFF0C\u65E0\u6CD5\u5B9A\u4F4D\u9879\u76EE\u8BB0\u5FC6\u3002",
+          directory: "",
+          index: "",
+          content: ""
+        };
+      }
+      const dir = memoryDirForSession(directory);
+      if (dir === void 0) {
+        return {
+          ok: false,
+          message: "\u9879\u76EE\u8BB0\u5FC6\u5DF2\u5173\u95ED\uFF1A\u8BF7\u5728\u300C\u8BBE\u7F6E \u2192 All In One \u2192 \u9879\u76EE\u8BB0\u5FC6\u300D\u91CC\u6253\u5F00\u5F00\u5173\u3002",
+          directory: "",
+          index: "",
+          content: ""
+        };
+      }
+      try {
+        const result = runAction(args, dir);
+        if (args.action === "save" || args.action === "delete") invalidateMemoryText(dir);
+        return result;
+      } catch (error) {
+        console.error("[project-memory] \u8BB0\u5FC6\u5DE5\u5177\u6267\u884C\u5931\u8D25:", error);
+        throw error;
+      }
+    }
+  };
+}
+function installMemoryTool(ctx) {
+  const tools = ctx.tools;
+  if (tools?.register === void 0) {
+    console.error("[project-memory] \u5BBF\u4E3B\u5DE5\u5177\u6CE8\u518C\u8868\u4E0D\u652F\u6301 register\uFF0C\u8BB0\u5FC6\u5DE5\u5177\u4E0D\u4F1A\u6302\u8F7D");
+    return;
+  }
+  ctx.effect(() => {
+    try {
+      return tools.register?.(createMemoryTool()) ?? (() => void 0);
+    } catch (error) {
+      console.error("[project-memory] \u6CE8\u518C memory \u5DE5\u5177\u5931\u8D25:", error);
+      return () => void 0;
+    }
+  }, "project-memory: tool");
+}
+
+// src/features/project-memory/host.ts
+var inject4 = ["systemPrompt", "tools", "webServer"];
+function apply4(ctx) {
+  installMemoryPrompt(ctx);
+  installMemoryTool(ctx);
+  const webServer = ctx.webServer;
+  if (webServer === void 0) {
+    console.error("[project-memory] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u8BBE\u7F6E\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
+    return;
+  }
+  ctx.effect(() => installMemoryRoutes(webServer), "project-memory: routes");
+}
+
 // src/features/host.ts
-var featureHosts = [host_exports2, host_exports3, host_exports];
+var featureHosts = [
+  host_exports2,
+  host_exports3,
+  host_exports4,
+  host_exports
+];
 
 // src/index.ts
-var inject4 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
-function apply4(ctx) {
+var inject5 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
+function apply5(ctx) {
   for (const feature of featureHosts) feature.apply(ctx);
 }
 export {
-  apply4 as apply,
-  inject4 as inject
+  apply5 as apply,
+  inject5 as inject
 };

@@ -3,6 +3,7 @@ import type { FeatureDefinition } from '../shell/registry'
 import powerPack from './power-pack'
 import expandProcess from './expand-process'
 import deleteSession from './delete-session'
+import projectMemory from './project-memory'
 
 /**
  * 所有已注册的 feature。
@@ -15,4 +16,9 @@ import deleteSession from './delete-session'
  *
  * 新增开关型功能：提供 switch 组件即可，网格中直接渲染开关，没有独立页面。
  */
-export const featureList: FeatureDefinition[] = [expandProcess, deleteSession, powerPack]
+export const featureList: FeatureDefinition[] = [
+  expandProcess,
+  deleteSession,
+  projectMemory,
+  powerPack,
+]
