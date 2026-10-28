@@ -83,6 +83,10 @@ export interface AgentPresetApi {
   select?(agent: unknown, id: string): Promise<string>
   /** 为未发布的 Agent 绑定预设。 */
   mount?(ctx: unknown, id?: string): Promise<{ id: string }>
+  /** 以带 `isDefault` 的结构读出预设名单；宿主对客户端的正式入口。 */
+  remoteExportList?(): Promise<unknown>
+  /** 读出预设名单的原始形态；不带默认标记。 */
+  list?(): Promise<unknown>
 }
 
 /** Web 服务器的一条路由。 */

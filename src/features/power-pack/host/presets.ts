@@ -17,7 +17,9 @@ import type { AgentPresetApi } from '../../../types/host'
 import type { GlobalToolGroup, PowerPack } from '../types'
 
 import { composePackRows } from './compose'
+import { readComposeState } from './compose-state'
 import { readPresetRows } from './preset-source'
+import { readPacks } from './store'
 
 /** 组合预设 id 的前缀，与宿主内置预设区分。 */
 const PRESET_ID_PREFIX = 'power-pack-'
@@ -106,6 +108,48 @@ async function disposeOne(preset: ComposedPreset): Promise<void> {
   } catch (error) {
     console.error('[power-pack] 注销组合预设失败:', preset.id, error)
   }
+}
+
+/**
+ * 判断一个组合预设当前是否已注册。
+ * @param presetId 组合预设 id
+ * @returns 已注册时返回 true
+ */
+function hasComposedPreset(presetId: string): boolean {
+  for (const preset of composed.values()) {
+    if (preset.id === presetId) return true
+  }
+
+  return false
+}
+
+/**
+ * 列出「记录里存在、但当前尚未注册」的组合预设元数据。
+ *
+ * 按需注册让这些组合不在宿主名单里，而会话标题旁的预设标签要从名单查名字，
+ * 查不到就退回显示原始 id。这里只给出名称与描述供名单补齐，不触发任何挂载。
+ * @returns 未注册组合的展示元数据，键为组合预设 id
+ */
+export async function pendingComposedMeta(): Promise<Map<string, { name: string; description: string }>> {
+  const selections = await readComposeState()
+  if (selections.length === 0) return new Map()
+
+  const document = await readPacks()
+  const byId = new Map(document.packs.map((pack) => [pack.id, pack]))
+  const result = new Map<string, { name: string; description: string }>()
+
+  for (const selection of selections) {
+    const pack = byId.get(selection.pack)
+    if (pack === undefined) continue
+
+    const id = composedPresetId(selection.pack, selection.mode)
+    // 已注册的组合由宿主名单自己给出，重复补会覆盖宿主的权威结果
+    if (hasComposedPreset(id)) continue
+
+    result.set(id, { name: pack.name, description: pack.description })
+  }
+
+  return result
 }
 
 /**

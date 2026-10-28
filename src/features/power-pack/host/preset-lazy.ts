@@ -8,12 +8,21 @@
  * 因此这里不预先注册，改为包装宿主解析预设 id 的入口：会话创建、恢复、冷会话读
  * 技能都会先经过它们，命中组合 id 时才现场重建那一条。启动期只多一层函数包装，
  * 未被访问的历史会话不产生任何挂载开销。
+ *
+ * 代价是未重建的组合不在宿主的预设名单里，而会话标题旁的预设标签按名单查名字，
+ * 查不到会退回显示原始 id。因此名单接口也要包装：只补名称与描述，不触发挂载。
  */
 import type { AgentPresetApi, ToolsApi } from '../../../types/host'
 import type { GlobalToolGroup } from '../types'
 
 import { listGlobalToolGroups } from './global-catalog'
-import { ensureComposedPreset, isComposedPresetId, splitComposedPresetId, waitPresetRows } from './presets'
+import {
+  ensureComposedPreset,
+  isComposedPresetId,
+  pendingComposedMeta,
+  splitComposedPresetId,
+  waitPresetRows,
+} from './presets'
 import { readPacks } from './store'
 
 /** 需要包住的宿主方法：它们都在真正使用预设前解析预设 id。 */
@@ -30,6 +39,9 @@ const PRESET_ARG_INDEX: Record<GuardedMethod, number> = {
   mount: 1,
 }
 
+/** 预设名单的读取方法：优先包带 `isDefault` 的名单,缺失时退回纯列表。 */
+const LIST_METHODS = ['remoteExportList', 'list'] as const
+
 /** 包装层挂在服务方法上的标记，用来判断是否已经包过。 */
 const WRAPPED = Symbol.for('dsh-all-in-one.preset-lazy')
 
@@ -44,6 +56,13 @@ interface MarkedMethod extends HostMethod {
   [WRAPPED]?: true
 }
 
+/** 宿主名单的一行；只声明本插件补齐时用到的字段。 */
+interface RosterRow {
+  id: string
+  name?: string
+  description?: string
+  [key: string]: unknown
+}
 /** 安装所需的宿主上下文。 */
 export interface LazyPresetDeps {
   /** 宿主 Agent 预设服务。 */
@@ -125,6 +144,83 @@ function guardMethod(method: GuardedMethod, original: HostMethod, deps: LazyPres
 }
 
 /**
+ * 把未注册的组合预设补进宿主名单。
+ *
+ * 只补名称与描述，不改变「是否已挂载」这一事实。补齐行必须带齐宿主 schema 的
+ * 必填字段：`remoteExportList` 的结果按严格 schema 校验，`isDefault` 是必填项，
+ * 漏掉会让整个名单被拒、界面直接空掉。
+ * @param result 宿主名单方法的返回值
+ * @param meta 未注册组合的展示元数据
+ * @returns 补齐后的名单；结构不符合预期时原样返回
+ */
+function mergeRoster(result: unknown, meta: Map<string, { name: string; description: string }>): unknown {
+  if (result === null || typeof result !== 'object') return result
+
+  const holder = result as { presets?: unknown }
+  if (!Array.isArray(holder.presets)) return result
+
+  const rows = holder.presets as RosterRow[]
+  const present = new Set(rows.map((row) => row?.id).filter((id): id is string => typeof id === 'string'))
+
+  const missing: RosterRow[] = []
+  for (const [id, entry] of meta) {
+    if (present.has(id)) continue
+    // 组合预设永远不会成为新会话默认，与宿主名单里其他非默认行一致
+    missing.push({ id, name: entry.name, description: entry.description, isDefault: false })
+  }
+
+  if (missing.length === 0) return result
+
+  return { ...holder, presets: [...rows, ...missing] }
+}
+
+/**
+ * 包装名单方法：在宿主结果上补齐未注册的组合预设，让会话标题旁显示技能包名。
+ * @param original 宿主原方法
+ * @returns 包装后的方法
+ */
+function guardList(original: HostMethod): MarkedMethod {
+  const wrapped: MarkedMethod = async function (this: unknown, ...args: unknown[]): Promise<unknown> {
+    const result = await original.apply(this, args)
+
+    try {
+      return mergeRoster(result, await pendingComposedMeta())
+    } catch (error) {
+      // 补齐只是展示层：读盘失败时照常返回宿主名单，标签退回显示 id
+      console.error('[power-pack] 补齐组合预设名单失败:', error)
+      return result
+    }
+  }
+
+  wrapped[WRAPPED] = true
+  return wrapped
+}
+
+/**
+ * 把一个包装方法写到服务对象上。
+ * @param api 宿主预设服务
+ * @param method 方法名
+ * @param wrapped 包装后的方法
+ * @returns 写入成功时返回 true
+ */
+function attachMethod(api: AgentPresetApi, method: string, wrapped: MarkedMethod): boolean {
+  const existing = Object.getOwnPropertyDescriptor(api, method)
+
+  try {
+    Object.defineProperty(api, method, {
+      configurable: true,
+      enumerable: existing?.enumerable ?? true,
+      writable: true,
+      value: wrapped,
+    })
+    return true
+  } catch (error) {
+    console.error('[power-pack] 安装预设服务包装失败:', method, error)
+    return false
+  }
+}
+
+/**
  * 安装按需注册包装。
  *
  * 宿主每次读服务方法都返回新的 traceable 代理，因此包装直接写在服务对象上，
@@ -143,16 +239,18 @@ export function installLazyPresets(deps: LazyPresetDeps): void {
     const existing = Object.getOwnPropertyDescriptor(deps.api, method)
     if ((existing?.value as MarkedMethod | undefined)?.[WRAPPED] === true) continue
 
-    try {
-      Object.defineProperty(deps.api, method, {
-        configurable: true,
-        enumerable: existing?.enumerable ?? true,
-        writable: true,
-        value: guardMethod(method, current as HostMethod, deps),
-      })
-    } catch (error) {
-      // 服务对象不可配置时放弃按需注册，历史组合需用户重新选择后才会出现
-      console.error('[power-pack] 安装组合预设按需注册失败:', method, error)
-    }
+    attachMethod(deps.api, method, guardMethod(method, current as HostMethod, deps))
   }
+
+  // 名单补齐是展示层的兜底：两个方法都在时装带 isDefault 的那个
+  const listMethod = LIST_METHODS.find((method) => typeof deps.api[method] === 'function')
+  if (listMethod === undefined) {
+    console.warn('[power-pack] 宿主预设服务缺少名单方法，会话标题旁的技能包名不会补齐')
+    return
+  }
+
+  const existing = Object.getOwnPropertyDescriptor(deps.api, listMethod)
+  if ((existing?.value as MarkedMethod | undefined)?.[WRAPPED] === true) return
+
+  attachMethod(deps.api, listMethod, guardList(deps.api[listMethod] as HostMethod))
 }
