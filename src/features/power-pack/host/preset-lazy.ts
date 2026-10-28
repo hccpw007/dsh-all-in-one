@@ -15,6 +15,7 @@
 import type { AgentPresetApi, ToolsApi } from '../../../types/host'
 import type { GlobalToolGroup } from '../types'
 
+import { isInactiveContextError } from './context-error'
 import { listGlobalToolGroups } from './global-catalog'
 import {
   ensureComposedPreset,
@@ -99,8 +100,10 @@ async function rebuildOnce(deps: LazyPresetDeps, presetId: string): Promise<stri
     try {
       groups = await listGlobalToolGroups(deps.tools(), deps.profileDir)
     } catch (error) {
-      // 能力组只影响隔离行：扫描失败时退回「不隔离」，不能让会话恢复整体失败
-      console.error('[power-pack] 重建组合预设时枚举全局能力失败:', presetId, error)
+      // 上下文失效是热重载瞬态，隔离行退回「不隔离」即可；其余失败留日志便于排查
+      if (!isInactiveContextError(error)) {
+        console.error('[power-pack] 重建组合预设时枚举全局能力失败:', presetId, error)
+      }
     }
 
     return ensureComposedPreset(deps.api, modeId, pack, groups)

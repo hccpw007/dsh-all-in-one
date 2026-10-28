@@ -23,6 +23,7 @@ import type {
   PromptAssemblyContext,
 } from '../../../types/host'
 
+import { isInactiveContextError } from './context-error'
 import { isolationState } from './prompt-overlay'
 
 /** 装配 waterfall 的事件名，与宿主 `dsh-system-prompt` 一致。 */
@@ -190,7 +191,10 @@ function installToolIsolation(
           try {
             lift()
           } catch (error) {
-            console.error('[power-pack] 撤销工具掩码失败:', error)
+            // 上下文失效时撤销本身也会失败，属热重载收尾噪音，不必再报
+            if (!isInactiveContextError(error)) {
+              console.error('[power-pack] 撤销工具掩码失败:', error)
+            }
           }
           lift = undefined
         }
@@ -203,7 +207,10 @@ function installToolIsolation(
           try {
             return ctx.tools.get(name) !== undefined
           } catch (error) {
-            console.error('[power-pack] 读取全局工具失败:', name, error)
+            if (!isInactiveContextError(error)) {
+              console.error('[power-pack] 读取全局工具失败:', name, error)
+            }
+
             return false
           }
         })
@@ -212,8 +219,12 @@ function installToolIsolation(
         try {
           lift = ctx.tools.restrict({ deny: existing })
         } catch (error) {
-          // 名字校验失败不该拖垮会话，留下日志即可
-          console.error('[power-pack] 应用工具掩码失败:', error)
+          // 名字校验失败不该拖垮会话，留下日志即可；
+          // 上下文失效是热重载时旧 fiber 已销毁的正常收尾，跳过以免刷屏
+          if (!isInactiveContextError(error)) {
+            console.error('[power-pack] 应用工具掩码失败:', error)
+          }
+
           lift = undefined
         }
       } finally {
@@ -230,7 +241,9 @@ function installToolIsolation(
       try {
         lift()
       } catch (error) {
-        console.error('[power-pack] 释放工具掩码失败:', error)
+        if (!isInactiveContextError(error)) {
+          console.error('[power-pack] 释放工具掩码失败:', error)
+        }
       }
       lift = undefined
     }

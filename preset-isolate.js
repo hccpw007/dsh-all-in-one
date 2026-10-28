@@ -3,6 +3,16 @@ import { appendFileSync, mkdirSync, statSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 
+// src/features/power-pack/host/context-error.ts
+var INACTIVE_CODES = /* @__PURE__ */ new Set(["INACTIVE_EFFECT", "INACTIVE_CONTEXT"]);
+function isInactiveContextError(error) {
+  if (typeof error !== "object" || error === null) return false;
+  const code = error.code;
+  if (typeof code === "string" && INACTIVE_CODES.has(code)) return true;
+  const message = error.message;
+  return typeof message === "string" && message.includes("inactive context");
+}
+
 // src/features/power-pack/host/prompt-overlay.ts
 var SHARED_KEY = Symbol.for("dsh-all-in-one.prompt-isolation");
 var OVERLAY_INNER = Symbol.for("dsh-all-in-one.prompt-overlay.inner");
@@ -88,7 +98,9 @@ function installToolIsolation(ctx, deny, mcpServers) {
           try {
             lift();
           } catch (error) {
-            console.error("[power-pack] \u64A4\u9500\u5DE5\u5177\u63A9\u7801\u5931\u8D25:", error);
+            if (!isInactiveContextError(error)) {
+              console.error("[power-pack] \u64A4\u9500\u5DE5\u5177\u63A9\u7801\u5931\u8D25:", error);
+            }
           }
           lift = void 0;
         }
@@ -97,7 +109,9 @@ function installToolIsolation(ctx, deny, mcpServers) {
           try {
             return ctx.tools.get(name) !== void 0;
           } catch (error) {
-            console.error("[power-pack] \u8BFB\u53D6\u5168\u5C40\u5DE5\u5177\u5931\u8D25:", name, error);
+            if (!isInactiveContextError(error)) {
+              console.error("[power-pack] \u8BFB\u53D6\u5168\u5C40\u5DE5\u5177\u5931\u8D25:", name, error);
+            }
             return false;
           }
         });
@@ -105,7 +119,9 @@ function installToolIsolation(ctx, deny, mcpServers) {
         try {
           lift = ctx.tools.restrict({ deny: existing });
         } catch (error) {
-          console.error("[power-pack] \u5E94\u7528\u5DE5\u5177\u63A9\u7801\u5931\u8D25:", error);
+          if (!isInactiveContextError(error)) {
+            console.error("[power-pack] \u5E94\u7528\u5DE5\u5177\u63A9\u7801\u5931\u8D25:", error);
+          }
           lift = void 0;
         }
       } finally {
@@ -120,7 +136,9 @@ function installToolIsolation(ctx, deny, mcpServers) {
       try {
         lift();
       } catch (error) {
-        console.error("[power-pack] \u91CA\u653E\u5DE5\u5177\u63A9\u7801\u5931\u8D25:", error);
+        if (!isInactiveContextError(error)) {
+          console.error("[power-pack] \u91CA\u653E\u5DE5\u5177\u63A9\u7801\u5931\u8D25:", error);
+        }
       }
       lift = void 0;
     };

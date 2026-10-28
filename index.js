@@ -659,6 +659,16 @@ async function disposePackPresets() {
   }
 }
 
+// src/features/power-pack/host/context-error.ts
+var INACTIVE_CODES = /* @__PURE__ */ new Set(["INACTIVE_EFFECT", "INACTIVE_CONTEXT"]);
+function isInactiveContextError(error) {
+  if (typeof error !== "object" || error === null) return false;
+  const code = error.code;
+  if (typeof code === "string" && INACTIVE_CODES.has(code)) return true;
+  const message = error.message;
+  return typeof message === "string" && message.includes("inactive context");
+}
+
 // src/features/power-pack/host/catalog.ts
 import { readdir, readFile as readFile3 } from "node:fs/promises";
 import { join as join5 } from "node:path";
@@ -880,7 +890,9 @@ async function rebuildOnce(deps, presetId) {
     try {
       groups = await listGlobalToolGroups(deps.tools(), deps.profileDir);
     } catch (error) {
-      console.error("[power-pack] \u91CD\u5EFA\u7EC4\u5408\u9884\u8BBE\u65F6\u679A\u4E3E\u5168\u5C40\u80FD\u529B\u5931\u8D25:", presetId, error);
+      if (!isInactiveContextError(error)) {
+        console.error("[power-pack] \u91CD\u5EFA\u7EC4\u5408\u9884\u8BBE\u65F6\u679A\u4E3E\u5168\u5C40\u80FD\u529B\u5931\u8D25:", presetId, error);
+      }
     }
     return ensureComposedPreset(deps.api, modeId, pack, groups);
   })();
