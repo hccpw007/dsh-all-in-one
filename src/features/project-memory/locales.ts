@@ -11,9 +11,7 @@ export const projectMemoryLocales: FeatureLocales = {
     loadFailed: '读取设置失败，请检查宿主是否已加载本插件。',
     // 保存开关状态失败时的提示
     saveFailed: '保存失败',
-    // 打开记忆路径设置的按钮
-    pathAction: '记忆路径',
-    // 记忆路径弹窗标题
+    // 记忆路径页面标题
     pathTitle: '记忆路径',
     // 路径输入框标签
     pathLabel: '记忆根目录',
@@ -32,16 +30,14 @@ export const projectMemoryLocales: FeatureLocales = {
     pathInvalid: '路径需要是绝对路径，或以 ~/ 开头。',
     // 装饰性说明：记忆文件名规则
     namingHint: '记忆名只允许小写字母、数字与连字符，例如 dsh-plugin-project。',
-    // 弹窗里的保存按钮
+    // 页面里的保存按钮
     save: '保存',
     // 保存进行中的按钮文字
     saving: '保存中',
-    // 弹窗里的取消按钮
-    cancel: '取消',
     // 恢复默认目录的按钮
     reset: '恢复默认',
-    // 关闭弹窗按钮的可访问名称
-    close: '关闭',
+    // 保存成功后的提示
+    saved: '已保存',
   },
   en: {
     // Switch title
@@ -52,9 +48,7 @@ export const projectMemoryLocales: FeatureLocales = {
     loadFailed: 'Could not read settings. Check that the host loaded this plugin.',
     // Shown when the switch state cannot be saved
     saveFailed: 'Could not save',
-    // Button that opens the memory path dialog
-    pathAction: 'Memory path',
-    // Memory path dialog title
+    // Memory path page title
     pathTitle: 'Memory path',
     // Label of the root path input
     pathLabel: 'Memory root',
@@ -73,15 +67,13 @@ export const projectMemoryLocales: FeatureLocales = {
     pathInvalid: 'The path must be absolute or start with ~/.',
     // Naming rule for memory files
     namingHint: 'Memory names allow lowercase letters, digits and hyphens, e.g. dsh-plugin-project.',
-    // Save button in the dialog
+    // Save button on the page
     save: 'Save',
     // Button text while saving
     saving: 'Saving',
-    // Cancel button in the dialog
-    cancel: 'Cancel',
     // Button that restores the default directory
     reset: 'Use default',
-    // Accessible name of the dialog close button
-    close: 'Close',
+    // Shown after the settings are saved
+    saved: 'Saved',
   },
 }

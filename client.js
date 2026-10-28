@@ -42,7 +42,7 @@ window.__ModuleLoader__.load({
     var import_react17 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.static{position:static}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.top-0{top:0}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-9{height:2.25rem}.h-full{height:100%}.max-h-72{max-height:18rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-0\\.5,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[18px\\]{--tw-translate-x:18px}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-dashed{border-style:dashed}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[18px\\]{line-height:18px}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}@media (min-width:640px){.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
+    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.static{position:static}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.top-0{top:0}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-9{height:2.25rem}.h-full{height:100%}.max-h-72{max-height:18rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-0\\.5,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[18px\\]{--tw-translate-x:18px}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-dashed{border-style:dashed}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[18px\\]{line-height:18px}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}@media (min-width:640px){.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -1769,92 +1769,8 @@ window.__ModuleLoader__.load({
     };
     var delete_session_default = deleteSessionFeature;
 
-    // src/features/project-memory/locales.ts
-    var projectMemoryLocales = {
-      zh: {
-        // 开关标题
-        title: "\u9879\u76EE\u8BB0\u5FC6",
-        // 开关用途说明：说明打开后记忆会写入文件，并在对话开始时进入上下文
-        description: "\u8BA9\u5BF9\u8BDD\u8BB0\u4F4F\u9879\u76EE\u7EA6\u5B9A\u4E0E\u504F\u597D\uFF0C\u8BB0\u5FC6\u5199\u5165\u6587\u4EF6\u5E76\u5728\u4E4B\u540E\u7684\u5BF9\u8BDD\u91CC\u81EA\u52A8\u5E26\u4E0A\u3002",
-        // 读取设置失败时的提示，卡片仍显示为关闭
-        loadFailed: "\u8BFB\u53D6\u8BBE\u7F6E\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u5BBF\u4E3B\u662F\u5426\u5DF2\u52A0\u8F7D\u672C\u63D2\u4EF6\u3002",
-        // 保存开关状态失败时的提示
-        saveFailed: "\u4FDD\u5B58\u5931\u8D25",
-        // 打开记忆路径设置的按钮
-        pathAction: "\u8BB0\u5FC6\u8DEF\u5F84",
-        // 记忆路径弹窗标题
-        pathTitle: "\u8BB0\u5FC6\u8DEF\u5F84",
-        // 路径输入框标签
-        pathLabel: "\u8BB0\u5FC6\u6839\u76EE\u5F55",
-        // 路径输入框占位提示
-        pathPlaceholder: "~/.claude/projects",
-        // 说明根目录的用途与默认值
-        pathHint: "\u6BCF\u4E2A\u9879\u76EE\u5728\u6839\u76EE\u5F55\u4E0B\u6709\u4E00\u4E2A\u72EC\u7ACB\u5B50\u76EE\u5F55\uFF0C\u8BB0\u5FC6\u6587\u4EF6\u4E0E Claude Code \u5B8C\u5168\u4E00\u81F4\u3002\u586B ~/.claude/projects \u5373\u53EF\u4E0E Claude Code \u5171\u7528\u540C\u4E00\u5957\u8BB0\u5FC6\uFF1B\u7559\u7A7A\u4F7F\u7528\u63D2\u4EF6\u9ED8\u8BA4\u76EE\u5F55\u3002",
-        // 当前实际使用的目录
-        effectivePath: "\u5F53\u524D\u4F7F\u7528",
-        // 默认目录标签
-        defaultPath: "\u9ED8\u8BA4\u76EE\u5F55",
-        // 设置文件的存放位置
-        settingsFile: "\u8BBE\u7F6E\u6587\u4EF6",
-        // 路径不合法时的提示
-        pathInvalid: "\u8DEF\u5F84\u9700\u8981\u662F\u7EDD\u5BF9\u8DEF\u5F84\uFF0C\u6216\u4EE5 ~/ \u5F00\u5934\u3002",
-        // 装饰性说明：记忆文件名规则
-        namingHint: "\u8BB0\u5FC6\u540D\u53EA\u5141\u8BB8\u5C0F\u5199\u5B57\u6BCD\u3001\u6570\u5B57\u4E0E\u8FDE\u5B57\u7B26\uFF0C\u4F8B\u5982 dsh-plugin-project\u3002",
-        // 弹窗里的保存按钮
-        save: "\u4FDD\u5B58",
-        // 保存进行中的按钮文字
-        saving: "\u4FDD\u5B58\u4E2D",
-        // 弹窗里的取消按钮
-        cancel: "\u53D6\u6D88",
-        // 恢复默认目录的按钮
-        reset: "\u6062\u590D\u9ED8\u8BA4",
-        // 关闭弹窗按钮的可访问名称
-        close: "\u5173\u95ED"
-      },
-      en: {
-        // Switch title
-        title: "Project memory",
-        // Switch description: memories are written to files and injected into later conversations
-        description: "Remembers project conventions and preferences in files that are loaded into later conversations.",
-        // Shown when settings cannot be read
-        loadFailed: "Could not read settings. Check that the host loaded this plugin.",
-        // Shown when the switch state cannot be saved
-        saveFailed: "Could not save",
-        // Button that opens the memory path dialog
-        pathAction: "Memory path",
-        // Memory path dialog title
-        pathTitle: "Memory path",
-        // Label of the root path input
-        pathLabel: "Memory root",
-        // Placeholder of the root path input
-        pathPlaceholder: "~/.claude/projects",
-        // Explains the root directory and its default
-        pathHint: "Each project gets its own subdirectory under the root, with the same files Claude Code uses. Point it at ~/.claude/projects to share one set of memories; leave empty to use the plugin default.",
-        // Currently effective directory
-        effectivePath: "In use",
-        // Label of the default directory
-        defaultPath: "Default",
-        // Where the settings file lives
-        settingsFile: "Settings file",
-        // Shown for an unusable path
-        pathInvalid: "The path must be absolute or start with ~/.",
-        // Naming rule for memory files
-        namingHint: "Memory names allow lowercase letters, digits and hyphens, e.g. dsh-plugin-project.",
-        // Save button in the dialog
-        save: "Save",
-        // Button text while saving
-        saving: "Saving",
-        // Cancel button in the dialog
-        cancel: "Cancel",
-        // Button that restores the default directory
-        reset: "Use default",
-        // Accessible name of the dialog close button
-        close: "Close"
-      }
-    };
-
-    // src/features/project-memory/toggle.tsx
-    var import_react15 = __toESM(require("react"), 1);
+    // src/features/project-memory/entry.tsx
+    var import_react14 = __toESM(require("react"), 1);
 
     // src/features/project-memory/api.ts
     var ENDPOINT3 = "/dsh-all-in-one/memory";
@@ -1899,69 +1815,9 @@ window.__ModuleLoader__.load({
       });
     }
 
-    // src/features/project-memory/MemoryPathDialog.tsx
-    var import_dsh_client_ui_primitives3 = require("@deepseek-ai/dsh-client-ui-primitives");
-    var import_react14 = __toESM(require("react"), 1);
-    var INPUT_CLASS2 = "w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand";
-    function MemoryPathDialog({ open, payload, onClose, onSaved, t }) {
-      const [draft, setDraft] = (0, import_react14.useState)("");
-      const [saving, setSaving] = (0, import_react14.useState)(false);
-      const [error, setError] = (0, import_react14.useState)(null);
-      (0, import_react14.useEffect)(() => {
-        if (!open) return;
-        setDraft(payload?.root ?? "");
-        setError(null);
-      }, [open, payload]);
-      const handleSave = async () => {
-        if (saving) return;
-        const trimmed = draft.trim();
-        if (trimmed !== "" && !trimmed.startsWith("/") && !trimmed.startsWith("~/") && trimmed !== "~") {
-          setError(t("pathInvalid"));
-          return;
-        }
-        setSaving(true);
-        setError(null);
-        try {
-          const next = await saveMemorySettings({ root: trimmed });
-          onSaved(next);
-          onClose();
-        } catch (failure) {
-          console.error("[project-memory] \u4FDD\u5B58\u8BB0\u5FC6\u8DEF\u5F84\u5931\u8D25:", failure);
-          setError(failure instanceof Error ? failure.message : String(failure));
-        } finally {
-          setSaving(false);
-        }
-      };
-      if (!open) return null;
-      return /* @__PURE__ */ import_react14.default.createElement(
-        import_dsh_client_ui_primitives3.Modal,
-        {
-          open: true,
-          onClose,
-          closeLabel: t("close"),
-          title: t("pathTitle"),
-          description: t("pathHint"),
-          footer: /* @__PURE__ */ import_react14.default.createElement(import_react14.default.Fragment, null, /* @__PURE__ */ import_react14.default.createElement(Button, { variant: "outline", disabled: saving, onClick: onClose }, t("cancel")), /* @__PURE__ */ import_react14.default.createElement(Button, { variant: "outline", disabled: saving, onClick: () => void handleSave() }, saving ? t("saving") : t("save")))
-        },
-        /* @__PURE__ */ import_react14.default.createElement("label", { className: "mt-1 block" }, /* @__PURE__ */ import_react14.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("pathLabel")), /* @__PURE__ */ import_react14.default.createElement(
-          "input",
-          {
-            value: draft,
-            placeholder: t("pathPlaceholder"),
-            onChange: (event) => setDraft(event.target.value),
-            className: INPUT_CLASS2
-          }
-        )),
-        /* @__PURE__ */ import_react14.default.createElement("div", { className: "mt-2" }, /* @__PURE__ */ import_react14.default.createElement(Button, { variant: "ghost", disabled: saving, onClick: () => setDraft("") }, t("reset"))),
-        /* @__PURE__ */ import_react14.default.createElement("dl", { className: "mt-3 space-y-1 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react14.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react14.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("effectivePath")), /* @__PURE__ */ import_react14.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.effectiveRoot || "\u2014")), /* @__PURE__ */ import_react14.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react14.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("defaultPath")), /* @__PURE__ */ import_react14.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.defaultRoot || "\u2014")), /* @__PURE__ */ import_react14.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react14.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("settingsFile")), /* @__PURE__ */ import_react14.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.settingsPath || "\u2014"))),
-        /* @__PURE__ */ import_react14.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-secondary" }, t("namingHint")),
-        error !== null ? /* @__PURE__ */ import_react14.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null
-      );
-    }
-
-    // src/features/project-memory/toggle.tsx
+    // src/features/project-memory/entry.tsx
     function MemoryIcon() {
-      return /* @__PURE__ */ import_react15.default.createElement(
+      return /* @__PURE__ */ import_react14.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -1974,8 +1830,8 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react15.default.createElement("path", { d: "M6 4h12v17l-6-4-6 4V4Z" }),
-        /* @__PURE__ */ import_react15.default.createElement("path", { d: "M9.5 9h5" })
+        /* @__PURE__ */ import_react14.default.createElement("path", { d: "M6 4h12v17l-6-4-6 4V4Z" }),
+        /* @__PURE__ */ import_react14.default.createElement("path", { d: "M9.5 9h5" })
       );
     }
     var EMPTY_PAYLOAD = {
@@ -1985,14 +1841,13 @@ window.__ModuleLoader__.load({
       defaultRoot: "",
       settingsPath: ""
     };
-    function ProjectMemoryToggle({ t }) {
-      const [payload, setPayload] = (0, import_react15.useState)(null);
-      const [error, setError] = (0, import_react15.useState)(null);
-      const [saving, setSaving] = (0, import_react15.useState)(false);
-      const [dialogOpen, setDialogOpen] = (0, import_react15.useState)(false);
-      const translate = (0, import_react15.useRef)(t);
+    function ProjectMemoryEntry({ t, open }) {
+      const [payload, setPayload] = (0, import_react14.useState)(null);
+      const [error, setError] = (0, import_react14.useState)(null);
+      const [saving, setSaving] = (0, import_react14.useState)(false);
+      const translate = (0, import_react14.useRef)(t);
       translate.current = t;
-      (0, import_react15.useEffect)(() => {
+      (0, import_react14.useEffect)(() => {
         let active = true;
         void loadMemorySettings().then((next) => {
           if (active) setPayload(next);
@@ -2021,54 +1876,208 @@ window.__ModuleLoader__.load({
           setSaving(false);
         }
       };
-      return /* @__PURE__ */ import_react15.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react15.default.createElement(
-        "button",
-        {
-          type: "button",
-          role: "switch",
-          "aria-checked": enabled,
-          disabled: payload === null || saving,
-          onClick: () => void handleToggle(),
-          className: "flex w-full flex-1 items-center gap-3 rounded-xl border border-line4 bg-layer1 px-4 py-3.5 text-left transition hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-        },
-        /* @__PURE__ */ import_react15.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, /* @__PURE__ */ import_react15.default.createElement(MemoryIcon, null)),
-        /* @__PURE__ */ import_react15.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react15.default.createElement("span", { className: "block text-[13px] font-medium leading-5 text-primary" }, t("title")), /* @__PURE__ */ import_react15.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("description"))),
-        /* @__PURE__ */ import_react15.default.createElement(
-          "span",
+      return (
+        // 卡片容器：主体按钮与开关是并列的两个交互区，不能互相嵌套
+        /* @__PURE__ */ import_react14.default.createElement("div", { className: "flex w-full items-start gap-3 rounded-xl border border-line4 bg-layer1 px-4 py-3.5 transition hover:bg-layer2" }, /* @__PURE__ */ import_react14.default.createElement(
+          "button",
           {
-            "aria-hidden": "true",
+            type: "button",
+            onClick: open,
+            className: "flex min-w-0 flex-1 items-start gap-3 rounded-lg text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          },
+          /* @__PURE__ */ import_react14.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, /* @__PURE__ */ import_react14.default.createElement(MemoryIcon, null)),
+          /* @__PURE__ */ import_react14.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react14.default.createElement("span", { className: "block text-[13px] font-medium leading-5 text-primary" }, t("title")), /* @__PURE__ */ import_react14.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react14.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null)
+        ), /* @__PURE__ */ import_react14.default.createElement(
+          "button",
+          {
+            type: "button",
+            role: "switch",
+            "aria-checked": enabled,
+            "aria-label": t("title"),
+            disabled: payload === null || saving,
+            onClick: () => void handleToggle(),
             className: cn(
-              "relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition",
-              enabled ? "bg-brand" : "bg-line2"
+              "mt-1 flex h-5 w-9 shrink-0 items-center rounded-full transition",
+              enabled ? "bg-brand" : "bg-line2",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
             )
           },
-          /* @__PURE__ */ import_react15.default.createElement(
+          /* @__PURE__ */ import_react14.default.createElement(
             "span",
             {
+              "aria-hidden": "true",
               className: cn(
                 "h-4 w-4 rounded-full bg-base shadow transition-transform",
                 enabled ? "translate-x-[18px]" : "translate-x-0.5"
               )
             }
           )
-        )
-      ), /* @__PURE__ */ import_react15.default.createElement("div", { className: "mt-1.5 flex items-center justify-between gap-2" }, /* @__PURE__ */ import_react15.default.createElement(Button, { variant: "ghost", onClick: () => setDialogOpen(true) }, t("pathAction")), error !== null ? /* @__PURE__ */ import_react15.default.createElement("p", { className: "min-w-0 truncate text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null), /* @__PURE__ */ import_react15.default.createElement(
-        MemoryPathDialog,
-        {
-          open: dialogOpen,
-          payload,
-          onClose: () => setDialogOpen(false),
-          onSaved: setPayload,
-          t
+        ))
+      );
+    }
+
+    // src/features/project-memory/locales.ts
+    var projectMemoryLocales = {
+      zh: {
+        // 开关标题
+        title: "\u9879\u76EE\u8BB0\u5FC6",
+        // 开关用途说明：说明打开后记忆会写入文件，并在对话开始时进入上下文
+        description: "\u8BA9\u5BF9\u8BDD\u8BB0\u4F4F\u9879\u76EE\u7EA6\u5B9A\u4E0E\u504F\u597D\uFF0C\u8BB0\u5FC6\u5199\u5165\u6587\u4EF6\u5E76\u5728\u4E4B\u540E\u7684\u5BF9\u8BDD\u91CC\u81EA\u52A8\u5E26\u4E0A\u3002",
+        // 读取设置失败时的提示，卡片仍显示为关闭
+        loadFailed: "\u8BFB\u53D6\u8BBE\u7F6E\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u5BBF\u4E3B\u662F\u5426\u5DF2\u52A0\u8F7D\u672C\u63D2\u4EF6\u3002",
+        // 保存开关状态失败时的提示
+        saveFailed: "\u4FDD\u5B58\u5931\u8D25",
+        // 记忆路径页面标题
+        pathTitle: "\u8BB0\u5FC6\u8DEF\u5F84",
+        // 路径输入框标签
+        pathLabel: "\u8BB0\u5FC6\u6839\u76EE\u5F55",
+        // 路径输入框占位提示
+        pathPlaceholder: "~/.claude/projects",
+        // 说明根目录的用途与默认值
+        pathHint: "\u6BCF\u4E2A\u9879\u76EE\u5728\u6839\u76EE\u5F55\u4E0B\u6709\u4E00\u4E2A\u72EC\u7ACB\u5B50\u76EE\u5F55\uFF0C\u8BB0\u5FC6\u6587\u4EF6\u4E0E Claude Code \u5B8C\u5168\u4E00\u81F4\u3002\u586B ~/.claude/projects \u5373\u53EF\u4E0E Claude Code \u5171\u7528\u540C\u4E00\u5957\u8BB0\u5FC6\uFF1B\u7559\u7A7A\u4F7F\u7528\u63D2\u4EF6\u9ED8\u8BA4\u76EE\u5F55\u3002",
+        // 当前实际使用的目录
+        effectivePath: "\u5F53\u524D\u4F7F\u7528",
+        // 默认目录标签
+        defaultPath: "\u9ED8\u8BA4\u76EE\u5F55",
+        // 设置文件的存放位置
+        settingsFile: "\u8BBE\u7F6E\u6587\u4EF6",
+        // 路径不合法时的提示
+        pathInvalid: "\u8DEF\u5F84\u9700\u8981\u662F\u7EDD\u5BF9\u8DEF\u5F84\uFF0C\u6216\u4EE5 ~/ \u5F00\u5934\u3002",
+        // 装饰性说明：记忆文件名规则
+        namingHint: "\u8BB0\u5FC6\u540D\u53EA\u5141\u8BB8\u5C0F\u5199\u5B57\u6BCD\u3001\u6570\u5B57\u4E0E\u8FDE\u5B57\u7B26\uFF0C\u4F8B\u5982 dsh-plugin-project\u3002",
+        // 页面里的保存按钮
+        save: "\u4FDD\u5B58",
+        // 保存进行中的按钮文字
+        saving: "\u4FDD\u5B58\u4E2D",
+        // 恢复默认目录的按钮
+        reset: "\u6062\u590D\u9ED8\u8BA4",
+        // 保存成功后的提示
+        saved: "\u5DF2\u4FDD\u5B58"
+      },
+      en: {
+        // Switch title
+        title: "Project memory",
+        // Switch description: memories are written to files and injected into later conversations
+        description: "Remembers project conventions and preferences in files that are loaded into later conversations.",
+        // Shown when settings cannot be read
+        loadFailed: "Could not read settings. Check that the host loaded this plugin.",
+        // Shown when the switch state cannot be saved
+        saveFailed: "Could not save",
+        // Memory path page title
+        pathTitle: "Memory path",
+        // Label of the root path input
+        pathLabel: "Memory root",
+        // Placeholder of the root path input
+        pathPlaceholder: "~/.claude/projects",
+        // Explains the root directory and its default
+        pathHint: "Each project gets its own subdirectory under the root, with the same files Claude Code uses. Point it at ~/.claude/projects to share one set of memories; leave empty to use the plugin default.",
+        // Currently effective directory
+        effectivePath: "In use",
+        // Label of the default directory
+        defaultPath: "Default",
+        // Where the settings file lives
+        settingsFile: "Settings file",
+        // Shown for an unusable path
+        pathInvalid: "The path must be absolute or start with ~/.",
+        // Naming rule for memory files
+        namingHint: "Memory names allow lowercase letters, digits and hyphens, e.g. dsh-plugin-project.",
+        // Save button on the page
+        save: "Save",
+        // Button text while saving
+        saving: "Saving",
+        // Button that restores the default directory
+        reset: "Use default",
+        // Shown after the settings are saved
+        saved: "Saved"
+      }
+    };
+
+    // src/features/project-memory/page.tsx
+    var import_react15 = __toESM(require("react"), 1);
+    var INPUT_CLASS2 = "w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand";
+    function isValidRoot(value) {
+      const trimmed = value.trim();
+      return trimmed === "" || trimmed === "~" || trimmed.startsWith("/") || trimmed.startsWith("~/");
+    }
+    function ProjectMemoryPage({ t }) {
+      const [payload, setPayload] = (0, import_react15.useState)(null);
+      const [draft, setDraft] = (0, import_react15.useState)("");
+      const [loading, setLoading] = (0, import_react15.useState)(true);
+      const [saving, setSaving] = (0, import_react15.useState)(false);
+      const [error, setError] = (0, import_react15.useState)(null);
+      const [saved, setSaved] = (0, import_react15.useState)(false);
+      (0, import_react15.useEffect)(() => {
+        let active = true;
+        void loadMemorySettings().then((next) => {
+          if (!active) return;
+          setPayload(next);
+          setDraft(next.root);
+        }).catch((failure) => {
+          if (!active) return;
+          console.error("[project-memory] \u8BFB\u53D6\u8BBE\u7F6E\u5931\u8D25:", failure);
+          setError(`${t("loadFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
+        }).finally(() => {
+          if (active) setLoading(false);
+        });
+        return () => {
+          active = false;
+        };
+      }, [t]);
+      const handleSave = async () => {
+        if (saving) return;
+        const trimmed = draft.trim();
+        if (!isValidRoot(trimmed)) {
+          setError(t("pathInvalid"));
+          setSaved(false);
+          return;
         }
-      ));
+        setSaving(true);
+        setError(null);
+        setSaved(false);
+        try {
+          const next = await saveMemorySettings({ root: trimmed });
+          setPayload(next);
+          setDraft(next.root);
+          setSaved(true);
+        } catch (failure) {
+          console.error("[project-memory] \u4FDD\u5B58\u8BB0\u5FC6\u8DEF\u5F84\u5931\u8D25:", failure);
+          setError(failure instanceof Error ? failure.message : String(failure));
+        } finally {
+          setSaving(false);
+        }
+      };
+      return /* @__PURE__ */ import_react15.default.createElement("div", null, /* @__PURE__ */ import_react15.default.createElement("h2", { className: "text-[15px] font-semibold leading-6 text-primary" }, t("pathTitle")), /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-secondary" }, t("pathHint")), /* @__PURE__ */ import_react15.default.createElement("section", { className: "mt-4 rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react15.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react15.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("pathLabel")), /* @__PURE__ */ import_react15.default.createElement(
+        "input",
+        {
+          value: draft,
+          placeholder: t("pathPlaceholder"),
+          disabled: loading || saving,
+          onChange: (event) => {
+            setDraft(event.target.value);
+            setSaved(false);
+          },
+          className: INPUT_CLASS2
+        }
+      )), /* @__PURE__ */ import_react15.default.createElement("div", { className: "mt-2 flex items-center gap-2" }, /* @__PURE__ */ import_react15.default.createElement(
+        Button,
+        {
+          variant: "ghost",
+          disabled: loading || saving,
+          onClick: () => {
+            setDraft("");
+            setSaved(false);
+          }
+        },
+        t("reset")
+      ), /* @__PURE__ */ import_react15.default.createElement(Button, { variant: "outline", disabled: loading || saving, onClick: () => void handleSave() }, saving ? t("saving") : t("save")), saved ? /* @__PURE__ */ import_react15.default.createElement("span", { className: "text-[12px] leading-[18px] text-secondary" }, t("saved")) : null), /* @__PURE__ */ import_react15.default.createElement("dl", { className: "mt-3 space-y-1 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react15.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react15.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("effectivePath")), /* @__PURE__ */ import_react15.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.effectiveRoot || "\u2014")), /* @__PURE__ */ import_react15.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react15.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("defaultPath")), /* @__PURE__ */ import_react15.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.defaultRoot || "\u2014")), /* @__PURE__ */ import_react15.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react15.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("settingsFile")), /* @__PURE__ */ import_react15.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.settingsPath || "\u2014"))), /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-secondary" }, t("namingHint")), error !== null ? /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null));
     }
 
     // src/features/project-memory/index.tsx
     var projectMemoryFeature = {
       id: "project-memory",
       order: 30,
-      switch: ProjectMemoryToggle,
+      entry: ProjectMemoryEntry,
+      page: ProjectMemoryPage,
       locales: projectMemoryLocales
     };
     var project_memory_default = projectMemoryFeature;

@@ -1,17 +1,20 @@
 import type { FeatureDefinition } from '../../shell/registry'
+import { ProjectMemoryEntry } from './entry'
 import { projectMemoryLocales } from './locales'
-import { ProjectMemoryToggle } from './toggle'
+import { ProjectMemoryPage } from './page'
 
 /**
- * 「项目记忆」开关的注册定义。
+ * 「项目记忆」的注册定义。
  *
- * 开关型 feature：网格里是开关，打开后对话会把项目记忆带进上下文，
- * 模型也可以用 `memory` 工具把新事实写进记忆文件（宿主侧实现）。
+ * 页面型 feature：网格卡片上是启用开关，点卡片主体进入页面配置记忆根目录。
+ * 打开后对话会把项目记忆带进上下文，模型也可以用 `memory` 工具把新事实写进记忆文件
+ * （宿主侧实现）。
  */
 const projectMemoryFeature: FeatureDefinition = {
   id: 'project-memory',
   order: 30,
-  switch: ProjectMemoryToggle,
+  entry: ProjectMemoryEntry,
+  page: ProjectMemoryPage,
   locales: projectMemoryLocales,
 }
 
