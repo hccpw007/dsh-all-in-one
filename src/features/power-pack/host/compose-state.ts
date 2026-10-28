@@ -13,7 +13,7 @@ import { dirname, join } from 'node:path'
 
 import type { ComposedSelection } from '../types'
 
-import { resolveDshHome } from './skill-catalog'
+import { resolveDshHome } from '../../../common/dsh-home'
 import { isValidPackId } from './store'
 
 /** 记录文件的结构版本。 */

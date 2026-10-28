@@ -9,7 +9,7 @@ import { dirname, join } from 'node:path'
 
 import type { PowerPack, PowerPackDocument, ResourceRule, RuleMode } from '../types'
 
-import { resolveDshHome } from './skill-catalog'
+import { resolveDshHome } from '../../../common/dsh-home'
 
 /** 规则模式白名单，防止客户端写入未知值。 */
 const RULE_MODES: RuleMode[] = ['all', 'include', 'exclude']

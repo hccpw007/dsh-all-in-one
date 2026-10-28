@@ -10,7 +10,8 @@ import { join } from 'node:path'
 
 import type { ResourceRule } from '../types'
 
-import { resolveDshHome, type SkillEntry } from './skill-catalog'
+import { resolveDshHome } from '../../../common/dsh-home'
+import type { SkillEntry } from './skill-catalog'
 
 /** 技能包数据与技能链接目录的根，全部位于 `$DSH_HOME/all-in-one/power-packs`。 */
 export function powerPacksRoot(): string {

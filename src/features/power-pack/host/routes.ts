@@ -4,11 +4,10 @@
  * 客户端设置页通过同源 fetch 读写技能包。所有写入都要求来自本机回环地址：
  * 技能包会改变后续会话的可用工具与技能，属于敏感配置，不能由远程访客修改。
  */
-import type { IncomingMessage, ServerResponse } from 'node:http'
-
 import type { AgentPresetApi, ToolsApi, WebServerApi } from '../../../types/host'
 import type { PowerPack, PowerPackComposeResponse, PowerPackWriteRequest, PowerPacksPayload } from '../types'
 
+import { isLocalRequest, readJsonBody, sendJson } from '../../../common/http-route'
 import { listPluginItems } from './catalog'
 import { forgetComposedPack, readComposeState, rememberComposed } from './compose-state'
 import { collectGlobalToolNames, listGlobalToolGroups } from './global-catalog'
@@ -27,59 +26,6 @@ const ROUTE_PATH = '/dsh-all-in-one/power-packs'
 
 /** 请求体上限；一份技能包配置远小于该值，超出说明请求异常。 */
 const MAX_BODY_BYTES = 1024 * 1024
-
-/** 回环地址集合，用于确认请求来自本机。 */
-const LOOPBACK_ADDRESSES = new Set(['127.0.0.1', '::1', '::ffff:127.0.0.1'])
-
-/**
- * 判断请求是否来自本机。
- * @param request 入站请求
- * @returns 只有回环地址返回 true
- */
-function isLocalRequest(request: IncomingMessage): boolean {
-  const address = request.socket.remoteAddress ?? ''
-  return LOOPBACK_ADDRESSES.has(address)
-}
-
-/**
- * 写 JSON 响应。
- * @param response 响应对象
- * @param status HTTP 状态码
- * @param body 响应体
- */
-function sendJson(response: ServerResponse, status: number, body: unknown): void {
-  const text = JSON.stringify(body)
-  response.writeHead(status, {
-    'content-type': 'application/json; charset=utf-8',
-    'cache-control': 'no-store',
-    'content-length': Buffer.byteLength(text),
-  })
-  response.end(text)
-}
-
-/**
- * 读取请求体并解析 JSON。
- * @param request 入站请求
- * @returns 解析结果；超出上限或不是合法 JSON 时返回 undefined
- */
-async function readJsonBody(request: IncomingMessage): Promise<unknown> {
-  const chunks: Buffer[] = []
-  let size = 0
-
-  for await (const chunk of request) {
-    const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)
-    size += buffer.length
-    if (size > MAX_BODY_BYTES) return undefined
-    chunks.push(buffer)
-  }
-
-  try {
-    return JSON.parse(Buffer.concat(chunks).toString('utf8')) as unknown
-  } catch (error) {
-    console.error('[power-pack] 解析请求体失败:', error)
-    return undefined
-  }
-}
 
 /**
  * 宿主侧共用的读取上下文：profile 决定插件清单范围，工具注册表用于枚举全局能力。
@@ -292,7 +238,7 @@ export function installPowerPackRoutes(
         }
 
         if (request.method === 'POST') {
-          const body = await readJsonBody(request)
+          const body = await readJsonBody(request, MAX_BODY_BYTES)
           if (!body || typeof body !== 'object') {
             sendJson(response, 400, { error: '请求体不是合法 JSON' })
             return

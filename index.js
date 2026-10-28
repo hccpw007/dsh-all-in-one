@@ -15,103 +15,13 @@ __export(host_exports, {
 import { mkdir, rm, symlink } from "node:fs/promises";
 import { join as join2 } from "node:path";
 
-// src/features/power-pack/host/skill-catalog.ts
-import { readdir, readFile, stat } from "node:fs/promises";
+// src/common/dsh-home.ts
 import { homedir } from "node:os";
 import { join } from "node:path";
 function resolveDshHome() {
   const configured = process.env.DSH_HOME?.trim();
   if (configured) return configured;
   return join(homedir(), ".dsh");
-}
-function resolveAgentsHome() {
-  const configured = process.env.DSH_AGENTS_HOME?.trim();
-  if (configured) return configured;
-  return join(homedir(), ".agents");
-}
-var SKILL_NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-function parseFrontmatter(raw) {
-  const firstLineEnd = raw.indexOf("\n");
-  if (firstLineEnd < 0) return void 0;
-  if (raw.slice(0, firstLineEnd).replace(/\r$/, "") !== "---") return void 0;
-  const closing = raw.indexOf("\n---", firstLineEnd);
-  if (closing < 0) return void 0;
-  const lines = raw.slice(firstLineEnd + 1, closing).split("\n");
-  const values = {};
-  for (let index = 0; index < lines.length; index += 1) {
-    const match = /^(name|description):\s*(.*)$/.exec(lines[index].replace(/\r$/, ""));
-    if (!match) continue;
-    const [, key, rest] = match;
-    if (rest === ">" || rest === ">-" || rest === "|" || rest === "|-") {
-      const block = [];
-      while (index + 1 < lines.length && /^\s+.+/.test(lines[index + 1])) {
-        index += 1;
-        block.push(lines[index].trim());
-      }
-      values[key] = block.join(" ");
-      continue;
-    }
-    values[key] = rest.replace(/^['"]|['"]$/g, "");
-  }
-  if (!values.name || !values.description) return void 0;
-  return { name: values.name, description: values.description };
-}
-async function readSkillEntry(path, kind) {
-  const file = kind === "directory" ? join(path, "SKILL.md") : path;
-  try {
-    const raw = await readFile(file, "utf8");
-    const parsed = parseFrontmatter(raw);
-    if (!parsed || !SKILL_NAME_PATTERN.test(parsed.name)) return void 0;
-    return { name: parsed.name, description: parsed.description, path, kind };
-  } catch (error) {
-    console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u6587\u4EF6\u5931\u8D25:", file, error);
-    return void 0;
-  }
-}
-async function scanRoot(root) {
-  let entries;
-  try {
-    entries = await readdir(root, { withFileTypes: true });
-  } catch (error) {
-    if (error.code === "ENOENT") return [];
-    console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u6839\u76EE\u5F55\u5931\u8D25:", root, error);
-    return [];
-  }
-  const skills = [];
-  for (const entry of entries) {
-    if (entry.name.startsWith(".")) continue;
-    const path = join(root, entry.name);
-    let kind;
-    if (entry.isDirectory()) kind = "directory";
-    else if (entry.isFile() && entry.name.endsWith(".md")) kind = "file";
-    else if (entry.isSymbolicLink()) {
-      try {
-        const info = await stat(path);
-        if (info.isDirectory()) kind = "directory";
-        else if (info.isFile() && entry.name.endsWith(".md")) kind = "file";
-      } catch (error) {
-        console.error("[power-pack] \u8DDF\u968F\u6280\u80FD\u7B26\u53F7\u94FE\u63A5\u5931\u8D25:", path, error);
-        kind = void 0;
-      }
-    }
-    if (!kind) continue;
-    const skill = await readSkillEntry(path, kind);
-    if (skill) skills.push(skill);
-  }
-  return skills;
-}
-async function listSkillEntries() {
-  const roots = [join(resolveDshHome(), "skills"), join(resolveAgentsHome(), "skills")];
-  const seen = /* @__PURE__ */ new Set();
-  const result = [];
-  for (const root of roots) {
-    for (const skill of await scanRoot(root)) {
-      if (seen.has(skill.name)) continue;
-      seen.add(skill.name);
-      result.push(skill);
-    }
-  }
-  return result.sort((left, right) => left.name.localeCompare(right.name));
 }
 
 // src/features/power-pack/host/skill-links.ts
@@ -490,11 +400,11 @@ function composePackRows(modeRows, pack, groups) {
 }
 
 // src/features/power-pack/host/compose-state.ts
-import { mkdir as mkdir3, readFile as readFile3, rename as rename2, writeFile as writeFile2 } from "node:fs/promises";
+import { mkdir as mkdir3, readFile as readFile2, rename as rename2, writeFile as writeFile2 } from "node:fs/promises";
 import { dirname as dirname2, join as join4 } from "node:path";
 
 // src/features/power-pack/host/store.ts
-import { mkdir as mkdir2, readFile as readFile2, rename, writeFile } from "node:fs/promises";
+import { mkdir as mkdir2, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname, join as join3 } from "node:path";
 var RULE_MODES = ["all", "include", "exclude"];
 var LEGACY_FILE_NAMES = ["skill-packs.json", "chat-styles.json"];
@@ -532,7 +442,7 @@ function normalizePack(value) {
 }
 async function parsePackFile(file) {
   try {
-    const raw = await readFile2(file, "utf8");
+    const raw = await readFile(file, "utf8");
     const parsed = JSON.parse(raw);
     const list = Array.isArray(parsed.packs) ? parsed.packs : parsed.styles;
     const packs = Array.isArray(list) ? list.map(normalizePack).filter((pack) => pack !== void 0) : [];
@@ -587,7 +497,7 @@ function normalizeSelection(value) {
 async function readComposeState() {
   const file = composeStateFile();
   try {
-    const raw = await readFile3(file, "utf8");
+    const raw = await readFile2(file, "utf8");
     const parsed = JSON.parse(raw);
     const list = Array.isArray(parsed.recent) ? parsed.recent : [];
     const seen = /* @__PURE__ */ new Set();
@@ -735,13 +645,13 @@ async function disposePackPresets() {
 }
 
 // src/features/power-pack/host/catalog.ts
-import { readdir as readdir2, readFile as readFile4 } from "node:fs/promises";
+import { readdir, readFile as readFile3 } from "node:fs/promises";
 import { join as join5 } from "node:path";
 var SELF_PACKAGE = "dsh-all-in-one";
 async function collectProfilePlugins(dir, names) {
   const manifestPath = join5(dir, "package.json");
   try {
-    const manifest = JSON.parse(await readFile4(manifestPath, "utf8"));
+    const manifest = JSON.parse(await readFile3(manifestPath, "utf8"));
     const enabled = Array.isArray(manifest.dsh?.profile?.bundles) ? new Set(manifest.dsh.profile.bundles) : /* @__PURE__ */ new Set();
     for (const name of Object.keys(manifest.dependencies ?? {})) {
       if (name.startsWith("@deepseek-ai/") || name === SELF_PACKAGE) continue;
@@ -755,7 +665,7 @@ async function resolveProfileDirs(currentProfileDir2) {
   if (currentProfileDir2 !== void 0 && currentProfileDir2 !== "") return [currentProfileDir2];
   const profilesRoot = join5(resolveDshHome(), "profiles");
   try {
-    const profiles = await readdir2(profilesRoot, { withFileTypes: true });
+    const profiles = await readdir(profilesRoot, { withFileTypes: true });
     return profiles.filter((profile) => profile.isDirectory() && profile.name !== "node_modules").map((profile) => join5(profilesRoot, profile.name));
   } catch (error) {
     if (error.code === "ENOENT") return [];
@@ -791,7 +701,7 @@ async function listPluginItems(currentProfileDir2) {
 }
 
 // src/features/power-pack/host/package-scan.ts
-import { readFile as readFile5, readdir as readdir3 } from "node:fs/promises";
+import { readFile as readFile4, readdir as readdir2 } from "node:fs/promises";
 import { join as join6 } from "node:path";
 var SCAN_MAX_FILES = 120;
 var SCAN_MAX_BYTES = 4 * 1024 * 1024;
@@ -810,7 +720,7 @@ function hasPrefix(name, prefixes) {
 async function resolveScanRoots(dir, packageName) {
   const roots = /* @__PURE__ */ new Set([join6(dir, "lib"), join6(dir, "dist")]);
   try {
-    const manifest = JSON.parse(await readFile5(join6(dir, "package.json"), "utf8"));
+    const manifest = JSON.parse(await readFile4(join6(dir, "package.json"), "utf8"));
     if (typeof manifest.main === "string" && manifest.main !== "") {
       roots.add(join6(dir, manifest.main.replace(/\/[^/]+$/, "")));
     }
@@ -820,7 +730,7 @@ async function resolveScanRoots(dir, packageName) {
   const existing = [];
   for (const root of roots) {
     try {
-      await readdir3(root);
+      await readdir2(root);
       existing.push(root);
     } catch (error) {
       if (error.code !== "ENOENT") {
@@ -838,7 +748,7 @@ async function scanOwnedTools(roots, candidates) {
   for (const root of roots) {
     let entries;
     try {
-      entries = await readdir3(root, { recursive: true, withFileTypes: true });
+      entries = await readdir2(root, { recursive: true, withFileTypes: true });
     } catch (error) {
       console.error("[power-pack] \u9012\u5F52\u8BFB\u53D6\u63D2\u4EF6\u4EA7\u7269\u5931\u8D25:", root, error);
       continue;
@@ -849,7 +759,7 @@ async function scanOwnedTools(roots, candidates) {
       if (!SCAN_SUFFIXES.some((suffix) => entry.name.endsWith(suffix))) continue;
       const file = join6(entry.parentPath ?? root, entry.name);
       try {
-        const text = await readFile5(file, { encoding: "utf8" });
+        const text = await readFile4(file, { encoding: "utf8" });
         files += 1;
         bytes += text.length;
         if (text.length > SCAN_MAX_FILE_BYTES) continue;
@@ -1138,9 +1048,7 @@ function installPromptOverlay(ctx) {
   }, "power-pack: prompt overlay");
 }
 
-// src/features/power-pack/host/routes.ts
-var ROUTE_PATH = "/dsh-all-in-one/power-packs";
-var MAX_BODY_BYTES = 1024 * 1024;
+// src/common/http-route.ts
 var LOOPBACK_ADDRESSES = /* @__PURE__ */ new Set(["127.0.0.1", "::1", "::ffff:127.0.0.1"]);
 function isLocalRequest(request) {
   const address = request.socket.remoteAddress ?? "";
@@ -1155,22 +1063,120 @@ function sendJson(response, status, body) {
   });
   response.end(text);
 }
-async function readJsonBody(request) {
+async function readJsonBody(request, maxBytes) {
   const chunks = [];
   let size = 0;
   for await (const chunk of request) {
     const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
     size += buffer.length;
-    if (size > MAX_BODY_BYTES) return void 0;
+    if (size > maxBytes) return void 0;
     chunks.push(buffer);
   }
   try {
     return JSON.parse(Buffer.concat(chunks).toString("utf8"));
   } catch (error) {
-    console.error("[power-pack] \u89E3\u6790\u8BF7\u6C42\u4F53\u5931\u8D25:", error);
+    console.error("[all-in-one] \u89E3\u6790\u8BF7\u6C42\u4F53\u5931\u8D25:", error);
     return void 0;
   }
 }
+
+// src/features/power-pack/host/skill-catalog.ts
+import { readdir as readdir3, readFile as readFile5, stat } from "node:fs/promises";
+import { homedir as homedir2 } from "node:os";
+import { join as join7 } from "node:path";
+function resolveAgentsHome() {
+  const configured = process.env.DSH_AGENTS_HOME?.trim();
+  if (configured) return configured;
+  return join7(homedir2(), ".agents");
+}
+var SKILL_NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+function parseFrontmatter(raw) {
+  const firstLineEnd = raw.indexOf("\n");
+  if (firstLineEnd < 0) return void 0;
+  if (raw.slice(0, firstLineEnd).replace(/\r$/, "") !== "---") return void 0;
+  const closing = raw.indexOf("\n---", firstLineEnd);
+  if (closing < 0) return void 0;
+  const lines = raw.slice(firstLineEnd + 1, closing).split("\n");
+  const values = {};
+  for (let index = 0; index < lines.length; index += 1) {
+    const match = /^(name|description):\s*(.*)$/.exec(lines[index].replace(/\r$/, ""));
+    if (!match) continue;
+    const [, key, rest] = match;
+    if (rest === ">" || rest === ">-" || rest === "|" || rest === "|-") {
+      const block = [];
+      while (index + 1 < lines.length && /^\s+.+/.test(lines[index + 1])) {
+        index += 1;
+        block.push(lines[index].trim());
+      }
+      values[key] = block.join(" ");
+      continue;
+    }
+    values[key] = rest.replace(/^['"]|['"]$/g, "");
+  }
+  if (!values.name || !values.description) return void 0;
+  return { name: values.name, description: values.description };
+}
+async function readSkillEntry(path, kind) {
+  const file = kind === "directory" ? join7(path, "SKILL.md") : path;
+  try {
+    const raw = await readFile5(file, "utf8");
+    const parsed = parseFrontmatter(raw);
+    if (!parsed || !SKILL_NAME_PATTERN.test(parsed.name)) return void 0;
+    return { name: parsed.name, description: parsed.description, path, kind };
+  } catch (error) {
+    console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u6587\u4EF6\u5931\u8D25:", file, error);
+    return void 0;
+  }
+}
+async function scanRoot(root) {
+  let entries;
+  try {
+    entries = await readdir3(root, { withFileTypes: true });
+  } catch (error) {
+    if (error.code === "ENOENT") return [];
+    console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u6839\u76EE\u5F55\u5931\u8D25:", root, error);
+    return [];
+  }
+  const skills = [];
+  for (const entry of entries) {
+    if (entry.name.startsWith(".")) continue;
+    const path = join7(root, entry.name);
+    let kind;
+    if (entry.isDirectory()) kind = "directory";
+    else if (entry.isFile() && entry.name.endsWith(".md")) kind = "file";
+    else if (entry.isSymbolicLink()) {
+      try {
+        const info = await stat(path);
+        if (info.isDirectory()) kind = "directory";
+        else if (info.isFile() && entry.name.endsWith(".md")) kind = "file";
+      } catch (error) {
+        console.error("[power-pack] \u8DDF\u968F\u6280\u80FD\u7B26\u53F7\u94FE\u63A5\u5931\u8D25:", path, error);
+        kind = void 0;
+      }
+    }
+    if (!kind) continue;
+    const skill = await readSkillEntry(path, kind);
+    if (skill) skills.push(skill);
+  }
+  return skills;
+}
+async function listSkillEntries() {
+  const roots = [join7(resolveDshHome(), "skills"), join7(resolveAgentsHome(), "skills")];
+  const seen = /* @__PURE__ */ new Set();
+  const result = [];
+  for (const root of roots) {
+    for (const skill of await scanRoot(root)) {
+      if (seen.has(skill.name)) continue;
+      seen.add(skill.name);
+      result.push(skill);
+    }
+  }
+  return result.sort((left, right) => left.name.localeCompare(right.name));
+}
+
+// src/features/power-pack/host/routes.ts
+var ROUTE_PATH = "/dsh-all-in-one/power-packs";
+var MAX_BODY_BYTES = 1024 * 1024;
 async function buildPayload(host) {
   const document = await readPacks();
   const skills = await listSkillEntries();
@@ -1284,7 +1290,7 @@ function installPowerPackRoutes(webServer, api, host) {
           return;
         }
         if (request.method === "POST") {
-          const body = await readJsonBody(request);
+          const body = await readJsonBody(request, MAX_BODY_BYTES);
           if (!body || typeof body !== "object") {
             sendJson(response, 400, { error: "\u8BF7\u6C42\u4F53\u4E0D\u662F\u5408\u6CD5 JSON" });
             return;
@@ -1463,15 +1469,233 @@ function apply2(ctx) {
   );
 }
 
+// src/features/delete-session/host.ts
+var host_exports3 = {};
+__export(host_exports3, {
+  apply: () => apply3,
+  inject: () => inject3
+});
+
+// src/features/delete-session/host/delete-session.ts
+import { readdir as readdir4, rm as rm3, stat as stat3 } from "node:fs/promises";
+import { join as join9 } from "node:path";
+
+// src/features/delete-session/host/session-records.ts
+import { readFile as readFile6, rename as rename3, rm as rm2, stat as stat2, unlink, writeFile as writeFile3 } from "node:fs/promises";
+import { join as join8 } from "node:path";
+var WORKSPACE_STORAGE_PATH = ["storages", "workspace.json"];
+var GLOBAL_SESSION_LISTS = ["archivedSessionIds", "pinnedSessionIds"];
+function isEnoent(error) {
+  return error.code === "ENOENT";
+}
+function isRecord(value) {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+function dropId(value, sessionId) {
+  if (!Array.isArray(value)) return { list: value, removed: false };
+  const next = value.filter((item) => item !== sessionId);
+  return { list: next, removed: next.length !== value.length };
+}
+async function forgetProjectionCache(dshHome, sessionId) {
+  const dir = join8(dshHome, "storages", "session_projcache", "sessions");
+  const plainId = sessionId.replace(/^session-/, "");
+  const candidates = /* @__PURE__ */ new Set([`${sessionId}.json`, `${plainId}.json`]);
+  let removed = 0;
+  for (const name of candidates) {
+    try {
+      await unlink(join8(dir, name));
+      removed += 1;
+    } catch (error) {
+      if (isEnoent(error)) continue;
+      console.error("[delete-session] \u5220\u9664\u6295\u5F71\u7F13\u5B58\u5931\u8D25:", name, error);
+      throw error;
+    }
+  }
+  return removed;
+}
+async function forgetWorkspaceAccount(dshHome, sessionId) {
+  const file = join8(dshHome, ...WORKSPACE_STORAGE_PATH);
+  let before;
+  try {
+    before = await stat2(file);
+  } catch (error) {
+    if (isEnoent(error)) return 0;
+    console.error("[delete-session] \u8BFB\u53D6\u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u72B6\u6001\u5931\u8D25:", error);
+    throw error;
+  }
+  let document;
+  try {
+    document = JSON.parse(await readFile6(file, "utf8"));
+  } catch (error) {
+    console.error("[delete-session] \u89E3\u6790\u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u5931\u8D25:", file, error);
+    return 0;
+  }
+  if (!isRecord(document)) {
+    console.warn("[delete-session] \u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u7ED3\u6784\u4E0D\u662F\u5BF9\u8C61\uFF0C\u8DF3\u8FC7\u6E05\u7406:", file);
+    return 0;
+  }
+  let removed = 0;
+  const global = isRecord(document["global"]) ? document["global"] : void 0;
+  if (global !== void 0) {
+    for (const key of GLOBAL_SESSION_LISTS) {
+      const result = dropId(global[key], sessionId);
+      if (!result.removed) continue;
+      global[key] = result.list;
+      removed += 1;
+    }
+  }
+  const tables = isRecord(document["tables"]) ? document["tables"] : void 0;
+  const workspaces = tables !== void 0 && isRecord(tables["workspaces"]) ? tables["workspaces"] : void 0;
+  if (workspaces !== void 0) {
+    for (const record of Object.values(workspaces)) {
+      if (!isRecord(record)) continue;
+      const result = dropId(record["sessionIds"], sessionId);
+      if (!result.removed) continue;
+      record["sessionIds"] = result.list;
+      removed += 1;
+    }
+  }
+  if (removed === 0) return 0;
+  const after = await stat2(file);
+  if (after.mtimeMs !== before.mtimeMs || after.size !== before.size) {
+    console.warn("[delete-session] \u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u521A\u88AB\u5BBF\u4E3B\u6539\u5199\uFF0C\u8DF3\u8FC7\u672C\u6B21\u6E05\u7406:", file);
+    return 0;
+  }
+  const temporary = `${file}.${process.pid}.tmp`;
+  try {
+    await writeFile3(temporary, `${JSON.stringify(document, null, 2)}
+`, {
+      encoding: "utf8",
+      mode: before.mode
+    });
+    await rename3(temporary, file);
+  } catch (error) {
+    console.error("[delete-session] \u5199\u56DE\u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u5931\u8D25:", file, error);
+    await rm2(temporary, { force: true });
+    return 0;
+  }
+  return removed;
+}
+async function forgetSessionRecords(dshHome, sessionId) {
+  const cache = await forgetProjectionCache(dshHome, sessionId);
+  const account = await forgetWorkspaceAccount(dshHome, sessionId);
+  return cache + account;
+}
+
+// src/features/delete-session/host/delete-session.ts
+var SESSION_ID_PATTERN = /^session-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+function isValidSessionId(value) {
+  return typeof value === "string" && SESSION_ID_PATTERN.test(value);
+}
+async function findSessionDirs(sessionId) {
+  const root = join9(resolveDshHome(), "sessions");
+  let projects;
+  try {
+    const entries = await readdir4(root, { withFileTypes: true });
+    projects = entries.filter((entry) => entry.isDirectory()).map((entry) => join9(root, entry.name));
+  } catch (error) {
+    console.error("[delete-session] \u679A\u4E3E\u4F1A\u8BDD\u6839\u76EE\u5F55\u5931\u8D25:", error);
+    throw error;
+  }
+  const found = [];
+  for (const project of projects) {
+    const candidate = join9(project, sessionId);
+    try {
+      const info = await stat3(candidate);
+      if (info.isDirectory()) found.push(candidate);
+    } catch (error) {
+      if (error.code === "ENOENT") continue;
+      console.error("[delete-session] \u68C0\u67E5\u4F1A\u8BDD\u76EE\u5F55\u5931\u8D25:", candidate, error);
+      throw error;
+    }
+  }
+  return found;
+}
+async function deleteStoredSession(sessionId) {
+  const dirs = await findSessionDirs(sessionId);
+  for (const dir of dirs) {
+    try {
+      await rm3(dir, { recursive: true, force: true });
+    } catch (error) {
+      console.error("[delete-session] \u5220\u9664\u4F1A\u8BDD\u76EE\u5F55\u5931\u8D25:", dir, error);
+      throw error;
+    }
+  }
+  let records = 0;
+  try {
+    records = await forgetSessionRecords(resolveDshHome(), sessionId);
+  } catch (error) {
+    console.error("[delete-session] \u6E05\u7406\u4F1A\u8BDD\u6D3E\u751F\u8BB0\u5F55\u5931\u8D25:", sessionId, error);
+  }
+  if (dirs.length > 0) console.info("[delete-session] \u5DF2\u5220\u9664\u4F1A\u8BDD:", sessionId, dirs.length, records);
+  return { directories: dirs.length, records };
+}
+
+// src/features/delete-session/host/routes.ts
+var ROUTE_PATH2 = "/dsh-all-in-one/sessions";
+var MAX_BODY_BYTES2 = 8 * 1024;
+function readSessionId(body) {
+  if (typeof body !== "object" || body === null) return void 0;
+  const candidate = body.sessionId;
+  return isValidSessionId(candidate) ? candidate : void 0;
+}
+function installDeleteSessionRoutes(webServer) {
+  return webServer.register({
+    kind: "prefix",
+    path: ROUTE_PATH2,
+    handler: async (request, response) => {
+      if (!isLocalRequest(request)) {
+        sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
+        return;
+      }
+      try {
+        if (request.method !== "POST") {
+          response.writeHead(405, { allow: "POST" });
+          response.end();
+          return;
+        }
+        const body = await readJsonBody(request, MAX_BODY_BYTES2);
+        const sessionId = readSessionId(body);
+        if (sessionId === void 0) {
+          sendJson(response, 400, { error: "\u4F1A\u8BDD\u6807\u8BC6\u4E0D\u5408\u6CD5" });
+          return;
+        }
+        const report = await deleteStoredSession(sessionId);
+        if (report.directories === 0 && report.records === 0) {
+          sendJson(response, 404, { error: "\u4F1A\u8BDD\u4E0D\u5B58\u5728\u6216\u5DF2\u88AB\u5220\u9664" });
+          return;
+        }
+        sendJson(response, 200, { deleted: true });
+      } catch (error) {
+        console.error("[delete-session] \u5904\u7406\u5220\u9664\u8BF7\u6C42\u5931\u8D25:", error);
+        sendJson(response, 500, {
+          error: error instanceof Error ? error.message : String(error)
+        });
+      }
+    }
+  });
+}
+
+// src/features/delete-session/host.ts
+var inject3 = ["webServer"];
+function apply3(ctx) {
+  const webServer = ctx.webServer;
+  if (webServer === void 0) {
+    console.error("[delete-session] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u5220\u9664\u4F1A\u8BDD\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
+    return;
+  }
+  ctx.effect(() => installDeleteSessionRoutes(webServer), "delete-session: routes");
+}
+
 // src/features/host.ts
-var featureHosts = [host_exports2, host_exports];
+var featureHosts = [host_exports2, host_exports3, host_exports];
 
 // src/index.ts
-var inject3 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
-function apply3(ctx) {
+var inject4 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
+function apply4(ctx) {
   for (const feature of featureHosts) feature.apply(ctx);
 }
 export {
-  apply3 as apply,
-  inject3 as inject
+  apply4 as apply,
+  inject4 as inject
 };

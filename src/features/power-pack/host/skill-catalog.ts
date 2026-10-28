@@ -11,20 +11,14 @@ import { join } from 'node:path'
 
 import type { SkillCatalogItem } from '../types'
 
+import { resolveDshHome } from '../../../common/dsh-home'
+
 /** 技能目录扫描结果，额外保留源路径供符号链接使用。 */
 export interface SkillEntry extends SkillCatalogItem {
   /** 技能条目本身的路径：目录型为技能目录，flat 文件为 Markdown 文件。 */
   path: string
   /** 目录型技能需要链接整个目录，flat 技能只链接文件。 */
   kind: 'directory' | 'file'
-}
-
-/** 解析 DSH 主目录，与宿主一致：显式配置 → `$DSH_HOME` → `~/.dsh`。 */
-export function resolveDshHome(): string {
-  const configured = process.env.DSH_HOME?.trim()
-  if (configured) return configured
-
-  return join(homedir(), '.dsh')
 }
 
 /** 解析共享 agent 主目录：`$DSH_AGENTS_HOME` → `~/.agents`。 */

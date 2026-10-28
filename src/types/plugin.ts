@@ -66,14 +66,23 @@ export interface AgentPresetsRemote {
 export interface SessionSummary {
   id: string
   blank?: boolean
+  /** Agent 是否正在执行任务；运行中的会话不能删除。 */
+  running?: boolean
+  /** 当前被哪些界面持有；`mainView` 大于 0 表示这是正在浏览的对话。 */
+  retainedBy?: { mainView?: number }
   projectionValues?: { agentPreset?: unknown }
 }
 
-/** 会话服务：只读取列表快照，用于确认当前会话与预设。 */
+/** 会话服务：读取列表快照，并在删除后让快照丢掉对应行。 */
 export interface SessionsApi {
   list: {
     getSnapshot(): { byId: Record<string, SessionSummary> }
   }
+  /**
+   * 本地摘掉一条会话（宿主列表快照层的移除入口）。
+   * 宿主不提供时调用方跳过即可，其它功能不受影响。
+   */
+  handleSessionRemoved?(sessionId: string): void
 }
 
 /** 插件上下文：只声明本插件实际依赖的宿主能力。 */

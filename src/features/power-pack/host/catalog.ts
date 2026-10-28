@@ -10,7 +10,7 @@ import { join } from 'node:path'
 
 import type { PluginCatalogItem } from '../types'
 
-import { resolveDshHome } from './skill-catalog'
+import { resolveDshHome } from '../../../common/dsh-home'
 import { STANDARD_PLUGIN_ITEMS, type StandardPluginItem } from './standard-rows'
 
 /** 本插件自身不进入可选插件清单，避免预设重复加载设置页。 */
