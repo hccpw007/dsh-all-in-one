@@ -71,6 +71,18 @@ export interface AgentPresetApi {
    * @returns 注销函数，随插件卸载或技能包更新时调用
    */
   register(definition: AgentPresetDefinition): Promise<() => Promise<void>>
+  /**
+   * 解析预设身份；会话创建与恢复时调用。
+   *
+   * 以下四个读取方法都是宿主版本敏感的可选项：宿主改签名时包装层会跳过它们。
+   */
+  resolve?(id?: string): Promise<{ id: string }>
+  /** 取一个预设修订的临时作用域；读取冷会话的技能等能力时调用。 */
+  acquireScope?(id?: string): Promise<unknown>
+  /** 把尚未开始的会话切到指定预设。 */
+  select?(agent: unknown, id: string): Promise<string>
+  /** 为未发布的 Agent 绑定预设。 */
+  mount?(ctx: unknown, id?: string): Promise<{ id: string }>
 }
 
 /** Web 服务器的一条路由。 */

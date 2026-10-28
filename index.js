@@ -489,159 +489,93 @@ function composePackRows(modeRows, pack, groups) {
   return rows;
 }
 
-// src/features/power-pack/host/compose-state.ts
-import { mkdir as mkdir3, readFile as readFile3, rename as rename2, writeFile as writeFile2 } from "node:fs/promises";
-import { dirname as dirname2, join as join4 } from "node:path";
+// src/features/power-pack/host/preset-source.ts
+function readPresetRows(api, presetId) {
+  const internals = api;
+  const rows = internals.definitions?.get(presetId)?.config?.plugins;
+  if (!Array.isArray(rows)) return void 0;
+  return rows;
+}
 
-// src/features/power-pack/host/store.ts
-import { mkdir as mkdir2, readFile as readFile2, rename, writeFile } from "node:fs/promises";
-import { dirname, join as join3 } from "node:path";
-var RULE_MODES = ["all", "include", "exclude"];
-var LEGACY_FILE_NAMES = ["skill-packs.json", "chat-styles.json"];
-var PACK_ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
-function powerPacksFile() {
-  return join3(resolveDshHome(), "all-in-one", "power-packs.json");
+// src/features/power-pack/host/presets.ts
+var PRESET_ID_PREFIX = "power-pack-";
+var PRESET_ORDER = 200;
+var PRESET_READ_ATTEMPTS = 12;
+var PRESET_READ_INTERVAL_MS = 250;
+var composed = /* @__PURE__ */ new Map();
+function composedPresetId(packId, modeId) {
+  return `${PRESET_ID_PREFIX}${packId}@${modeId}`;
 }
-function isValidPackId(id) {
-  return PACK_ID_PATTERN.test(id);
+function isComposedPresetId(presetId) {
+  return presetId.startsWith(PRESET_ID_PREFIX);
 }
-function stringList(value) {
-  return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
+function splitComposedPresetId(presetId) {
+  const body = presetId.slice(PRESET_ID_PREFIX.length);
+  const separator = body.indexOf("@");
+  if (separator < 0) return { packId: body, modeId: "" };
+  return { packId: body.slice(0, separator), modeId: body.slice(separator + 1) };
 }
-function normalizeRule(value) {
-  if (typeof value !== "object" || value === null) return { mode: "all", items: [] };
-  const candidate = value;
-  const mode = RULE_MODES.find((item) => item === candidate.mode) ?? "all";
-  return { mode, items: stringList(candidate.items) };
+function delay(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 }
-function normalizePack(value) {
-  if (typeof value !== "object" || value === null) return void 0;
-  const candidate = value;
-  const id = typeof candidate.id === "string" ? candidate.id.trim() : "";
-  const name = typeof candidate.name === "string" ? candidate.name.trim() : "";
-  if (!PACK_ID_PATTERN.test(id) || name === "") return void 0;
-  return {
+async function waitPresetRows(api, modeId) {
+  for (let attempt = 0; attempt < PRESET_READ_ATTEMPTS; attempt += 1) {
+    if (readPresetRows(api, modeId) !== void 0) return true;
+    await delay(PRESET_READ_INTERVAL_MS);
+  }
+  return false;
+}
+async function disposeOne(preset) {
+  composed.delete(preset.key);
+  try {
+    await preset.dispose();
+  } catch (error) {
+    console.error("[power-pack] \u6CE8\u9500\u7EC4\u5408\u9884\u8BBE\u5931\u8D25:", preset.id, error);
+  }
+}
+async function ensureComposedPreset(api, modeId, pack, groups) {
+  const key = `${pack.id}@${modeId}`;
+  const existing = composed.get(key);
+  if (existing !== void 0) return existing.id;
+  const modeRows = readPresetRows(api, modeId);
+  if (modeRows === void 0) {
+    throw new Error(`\u65E0\u6CD5\u8BFB\u53D6\u6A21\u5F0F ${modeId} \u7684\u7EC4\u5408\u884C`);
+  }
+  const rows = composePackRows(modeRows, pack, groups);
+  const id = composedPresetId(pack.id, modeId);
+  const dispose = await api.register({
     id,
-    name,
-    description: typeof candidate.description === "string" ? candidate.description : "",
-    systemPrompt: typeof candidate.systemPrompt === "string" ? candidate.systemPrompt : "",
-    skills: normalizeRule(candidate.skills),
-    plugins: normalizeRule(candidate.plugins),
-    mcp: normalizeRule(candidate.mcp)
-  };
+    name: pack.name,
+    description: pack.description,
+    order: PRESET_ORDER,
+    plugins: rows
+  });
+  composed.set(key, { key, id, dispose });
+  return id;
 }
-async function parsePackFile(file) {
-  try {
-    const raw = await readFile2(file, "utf8");
-    const parsed = JSON.parse(raw);
-    const list = Array.isArray(parsed.packs) ? parsed.packs : parsed.styles;
-    const packs = Array.isArray(list) ? list.map(normalizePack).filter((pack) => pack !== void 0) : [];
-    const defaultPackId = typeof parsed.defaultPackId === "string" && packs.some((pack) => pack.id === parsed.defaultPackId) ? parsed.defaultPackId : "";
-    return { version: 1, packs, defaultPackId };
-  } catch (error) {
-    if (error.code !== "ENOENT") {
-      console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u5305\u914D\u7F6E\u5931\u8D25:", file, error);
-    }
-    return void 0;
+async function invalidateComposedPreset(packId) {
+  const prefix = `${packId}@`;
+  for (const preset of [...composed.values()]) {
+    if (!preset.key.startsWith(prefix)) continue;
+    await disposeOne(preset);
   }
 }
-async function readPacks() {
-  const current = await parsePackFile(powerPacksFile());
-  if (current !== void 0) return current;
-  for (const name of LEGACY_FILE_NAMES) {
-    const migrated = await parsePackFile(join3(resolveDshHome(), "all-in-one", name));
-    if (migrated === void 0) continue;
-    await writePacks(migrated);
-    return migrated;
+async function disposePackPresets() {
+  for (const preset of [...composed.values()]) {
+    await disposeOne(preset);
   }
-  return { version: 1, packs: [], defaultPackId: "" };
-}
-async function writePacks(document) {
-  const file = powerPacksFile();
-  const temp = `${file}.tmp`;
-  try {
-    await mkdir2(dirname(file), { recursive: true });
-    await writeFile(temp, `${JSON.stringify(document, null, 2)}
-`, "utf8");
-    await rename(temp, file);
-  } catch (error) {
-    console.error("[power-pack] \u5199\u5165\u6280\u80FD\u5305\u914D\u7F6E\u5931\u8D25:", file, error);
-    throw error;
-  }
-}
-
-// src/features/power-pack/host/compose-state.ts
-var STATE_VERSION = 1;
-var MAX_RECENT = 24;
-function composeStateFile() {
-  return join4(resolveDshHome(), "all-in-one", "compose-state.json");
-}
-function normalizeSelection(value) {
-  if (typeof value !== "object" || value === null) return void 0;
-  const candidate = value;
-  const pack = typeof candidate.pack === "string" ? candidate.pack.trim() : "";
-  const mode = typeof candidate.mode === "string" ? candidate.mode.trim() : "";
-  if (!isValidPackId(pack) || mode === "") return void 0;
-  return { pack, mode };
-}
-async function readComposeState() {
-  const file = composeStateFile();
-  try {
-    const raw = await readFile3(file, "utf8");
-    const parsed = JSON.parse(raw);
-    const list = Array.isArray(parsed.recent) ? parsed.recent : [];
-    const seen = /* @__PURE__ */ new Set();
-    const result = [];
-    for (const item of list) {
-      const selection = normalizeSelection(item);
-      if (selection === void 0) continue;
-      const key = `${selection.pack}@${selection.mode}`;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      result.push(selection);
-    }
-    return result;
-  } catch (error) {
-    if (error.code !== "ENOENT") {
-      console.error("[power-pack] \u8BFB\u53D6\u7EC4\u5408\u8BB0\u5F55\u5931\u8D25:", file, error);
-    }
-    return [];
-  }
-}
-async function writeComposeState(recent) {
-  const file = composeStateFile();
-  const temp = `${file}.tmp`;
-  const document = { version: STATE_VERSION, recent: recent.slice(0, MAX_RECENT) };
-  try {
-    await mkdir3(dirname2(file), { recursive: true });
-    await writeFile2(temp, `${JSON.stringify(document, null, 2)}
-`, "utf8");
-    await rename2(temp, file);
-  } catch (error) {
-    console.error("[power-pack] \u5199\u5165\u7EC4\u5408\u8BB0\u5F55\u5931\u8D25:", file, error);
-  }
-}
-async function rememberComposed(packId, modeId) {
-  const recent = await readComposeState();
-  const key = `${packId}@${modeId}`;
-  const rest = recent.filter((item) => `${item.pack}@${item.mode}` !== key);
-  await writeComposeState([{ pack: packId, mode: modeId }, ...rest]);
-}
-async function forgetComposedPack(packId) {
-  const recent = await readComposeState();
-  const kept = recent.filter((item) => item.pack !== packId);
-  if (kept.length === recent.length) return;
-  await writeComposeState(kept);
 }
 
 // src/features/power-pack/host/catalog.ts
-import { readdir as readdir2, readFile as readFile4 } from "node:fs/promises";
-import { join as join5 } from "node:path";
+import { readdir as readdir2, readFile as readFile2 } from "node:fs/promises";
+import { join as join3 } from "node:path";
 var SELF_PACKAGE = "dsh-all-in-one";
 async function collectProfilePlugins(dir, names) {
-  const manifestPath = join5(dir, "package.json");
+  const manifestPath = join3(dir, "package.json");
   try {
-    const manifest = JSON.parse(await readFile4(manifestPath, "utf8"));
+    const manifest = JSON.parse(await readFile2(manifestPath, "utf8"));
     const enabled = Array.isArray(manifest.dsh?.profile?.bundles) ? new Set(manifest.dsh.profile.bundles) : /* @__PURE__ */ new Set();
     for (const name of Object.keys(manifest.dependencies ?? {})) {
       if (name.startsWith("@deepseek-ai/") || name === SELF_PACKAGE) continue;
@@ -653,10 +587,10 @@ async function collectProfilePlugins(dir, names) {
 }
 async function resolveProfileDirs(currentProfileDir2) {
   if (currentProfileDir2 !== void 0 && currentProfileDir2 !== "") return [currentProfileDir2];
-  const profilesRoot = join5(resolveDshHome(), "profiles");
+  const profilesRoot = join3(resolveDshHome(), "profiles");
   try {
     const profiles = await readdir2(profilesRoot, { withFileTypes: true });
-    return profiles.filter((profile) => profile.isDirectory() && profile.name !== "node_modules").map((profile) => join5(profilesRoot, profile.name));
+    return profiles.filter((profile) => profile.isDirectory() && profile.name !== "node_modules").map((profile) => join3(profilesRoot, profile.name));
   } catch (error) {
     if (error.code === "ENOENT") return [];
     console.error("[power-pack] \u8BFB\u53D6 profile \u76EE\u5F55\u5931\u8D25:", profilesRoot, error);
@@ -691,8 +625,8 @@ async function listPluginItems(currentProfileDir2) {
 }
 
 // src/features/power-pack/host/package-scan.ts
-import { readFile as readFile5, readdir as readdir3 } from "node:fs/promises";
-import { join as join6 } from "node:path";
+import { readFile as readFile3, readdir as readdir3 } from "node:fs/promises";
+import { join as join4 } from "node:path";
 var SCAN_MAX_FILES = 120;
 var SCAN_MAX_BYTES = 4 * 1024 * 1024;
 var SCAN_MAX_FILE_BYTES = 512 * 1024;
@@ -708,11 +642,11 @@ function hasPrefix(name, prefixes) {
   );
 }
 async function resolveScanRoots(dir, packageName) {
-  const roots = /* @__PURE__ */ new Set([join6(dir, "lib"), join6(dir, "dist")]);
+  const roots = /* @__PURE__ */ new Set([join4(dir, "lib"), join4(dir, "dist")]);
   try {
-    const manifest = JSON.parse(await readFile5(join6(dir, "package.json"), "utf8"));
+    const manifest = JSON.parse(await readFile3(join4(dir, "package.json"), "utf8"));
     if (typeof manifest.main === "string" && manifest.main !== "") {
-      roots.add(join6(dir, manifest.main.replace(/\/[^/]+$/, "")));
+      roots.add(join4(dir, manifest.main.replace(/\/[^/]+$/, "")));
     }
   } catch (error) {
     console.error("[power-pack] \u8BFB\u53D6\u63D2\u4EF6\u6E05\u5355\u5931\u8D25:", packageName, error);
@@ -747,9 +681,9 @@ async function scanOwnedTools(roots, candidates) {
       if (files >= SCAN_MAX_FILES || bytes >= SCAN_MAX_BYTES) break;
       if (!entry.isFile()) continue;
       if (!SCAN_SUFFIXES.some((suffix) => entry.name.endsWith(suffix))) continue;
-      const file = join6(entry.parentPath ?? root, entry.name);
+      const file = join4(entry.parentPath ?? root, entry.name);
       try {
-        const text = await readFile5(file, { encoding: "utf8" });
+        const text = await readFile3(file, { encoding: "utf8" });
         files += 1;
         bytes += text.length;
         if (text.length > SCAN_MAX_FILE_BYTES) continue;
@@ -769,7 +703,7 @@ async function ownedTools(packageName, globalNames, profileDir) {
   const remaining = globalNames.filter((name) => !byPrefix.includes(name));
   const roots = [];
   for (const dir of await resolveProfileDirs(profileDir)) {
-    roots.push(...await resolveScanRoots(join6(dir, "node_modules", packageName), packageName));
+    roots.push(...await resolveScanRoots(join4(dir, "node_modules", packageName), packageName));
   }
   const scanned = await scanOwnedTools(roots, remaining);
   return [.../* @__PURE__ */ new Set([...byPrefix, ...scanned])].sort((left, right) => left.localeCompare(right));
@@ -828,102 +762,154 @@ async function listGlobalToolGroups(tools, profileDir) {
   return groups;
 }
 
-// src/features/power-pack/host/preset-source.ts
-function readPresetRows(api, presetId) {
-  const internals = api;
-  const rows = internals.definitions?.get(presetId)?.config?.plugins;
-  if (!Array.isArray(rows)) return void 0;
-  return rows;
+// src/features/power-pack/host/store.ts
+import { mkdir as mkdir2, readFile as readFile4, rename, writeFile } from "node:fs/promises";
+import { dirname, join as join5 } from "node:path";
+var RULE_MODES = ["all", "include", "exclude"];
+var LEGACY_FILE_NAMES = ["skill-packs.json", "chat-styles.json"];
+var PACK_ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
+function powerPacksFile() {
+  return join5(resolveDshHome(), "all-in-one", "power-packs.json");
+}
+function isValidPackId(id) {
+  return PACK_ID_PATTERN.test(id);
+}
+function stringList(value) {
+  return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
+}
+function normalizeRule(value) {
+  if (typeof value !== "object" || value === null) return { mode: "all", items: [] };
+  const candidate = value;
+  const mode = RULE_MODES.find((item) => item === candidate.mode) ?? "all";
+  return { mode, items: stringList(candidate.items) };
+}
+function normalizePack(value) {
+  if (typeof value !== "object" || value === null) return void 0;
+  const candidate = value;
+  const id = typeof candidate.id === "string" ? candidate.id.trim() : "";
+  const name = typeof candidate.name === "string" ? candidate.name.trim() : "";
+  if (!PACK_ID_PATTERN.test(id) || name === "") return void 0;
+  return {
+    id,
+    name,
+    description: typeof candidate.description === "string" ? candidate.description : "",
+    systemPrompt: typeof candidate.systemPrompt === "string" ? candidate.systemPrompt : "",
+    skills: normalizeRule(candidate.skills),
+    plugins: normalizeRule(candidate.plugins),
+    mcp: normalizeRule(candidate.mcp)
+  };
+}
+async function parsePackFile(file) {
+  try {
+    const raw = await readFile4(file, "utf8");
+    const parsed = JSON.parse(raw);
+    const list = Array.isArray(parsed.packs) ? parsed.packs : parsed.styles;
+    const packs = Array.isArray(list) ? list.map(normalizePack).filter((pack) => pack !== void 0) : [];
+    const defaultPackId = typeof parsed.defaultPackId === "string" && packs.some((pack) => pack.id === parsed.defaultPackId) ? parsed.defaultPackId : "";
+    return { version: 1, packs, defaultPackId };
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u5305\u914D\u7F6E\u5931\u8D25:", file, error);
+    }
+    return void 0;
+  }
+}
+async function readPacks() {
+  const current = await parsePackFile(powerPacksFile());
+  if (current !== void 0) return current;
+  for (const name of LEGACY_FILE_NAMES) {
+    const migrated = await parsePackFile(join5(resolveDshHome(), "all-in-one", name));
+    if (migrated === void 0) continue;
+    await writePacks(migrated);
+    return migrated;
+  }
+  return { version: 1, packs: [], defaultPackId: "" };
+}
+async function writePacks(document) {
+  const file = powerPacksFile();
+  const temp = `${file}.tmp`;
+  try {
+    await mkdir2(dirname(file), { recursive: true });
+    await writeFile(temp, `${JSON.stringify(document, null, 2)}
+`, "utf8");
+    await rename(temp, file);
+  } catch (error) {
+    console.error("[power-pack] \u5199\u5165\u6280\u80FD\u5305\u914D\u7F6E\u5931\u8D25:", file, error);
+    throw error;
+  }
 }
 
-// src/features/power-pack/host/presets.ts
-var PRESET_ID_PREFIX = "power-pack-";
-var PRESET_ORDER = 200;
-var RESTORE_ATTEMPTS = 12;
-var RESTORE_INTERVAL_MS = 250;
-var composed = /* @__PURE__ */ new Map();
-function composedPresetId(packId, modeId) {
-  return `${PRESET_ID_PREFIX}${packId}@${modeId}`;
+// src/features/power-pack/host/preset-lazy.ts
+var GUARDED_METHODS = ["resolve", "acquireScope", "select", "mount"];
+var PRESET_ARG_INDEX = {
+  resolve: 0,
+  acquireScope: 0,
+  select: 1,
+  mount: 1
+};
+var WRAPPED = Symbol.for("dsh-all-in-one.preset-lazy");
+var rebuilding = /* @__PURE__ */ new Map();
+async function rebuildOnce(deps, presetId) {
+  const running = rebuilding.get(presetId);
+  if (running !== void 0) return running;
+  const task = (async () => {
+    const { packId, modeId } = splitComposedPresetId(presetId);
+    if (packId === "" || modeId === "") throw new Error(`\u7EC4\u5408\u9884\u8BBE ${presetId} \u7F3A\u5C11\u6280\u80FD\u5305\u6216\u6A21\u5F0F\u4FE1\u606F`);
+    const { packs } = await readPacks();
+    const pack = packs.find((item) => item.id === packId);
+    if (pack === void 0) throw new Error(`\u6280\u80FD\u5305 ${packId} \u5DF2\u4E0D\u5B58\u5728\uFF0C\u65E0\u6CD5\u91CD\u5EFA\u7EC4\u5408\u9884\u8BBE ${presetId}`);
+    if (!await waitPresetRows(deps.api, modeId)) {
+      throw new Error(`\u6A21\u5F0F ${modeId} \u4E0D\u53EF\u7528\uFF0C\u65E0\u6CD5\u91CD\u5EFA\u7EC4\u5408\u9884\u8BBE ${presetId}`);
+    }
+    let groups = [];
+    try {
+      groups = await listGlobalToolGroups(deps.tools(), deps.profileDir);
+    } catch (error) {
+      console.error("[power-pack] \u91CD\u5EFA\u7EC4\u5408\u9884\u8BBE\u65F6\u679A\u4E3E\u5168\u5C40\u80FD\u529B\u5931\u8D25:", presetId, error);
+    }
+    return ensureComposedPreset(deps.api, modeId, pack, groups);
+  })();
+  rebuilding.set(presetId, task);
+  const release = () => {
+    if (rebuilding.get(presetId) === task) rebuilding.delete(presetId);
+  };
+  task.then(release, release);
+  return task;
 }
-function delay(ms) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
+function guardMethod(method, original, deps) {
+  const wrapped = async function(...args) {
+    const wanted = args[PRESET_ARG_INDEX[method]];
+    if (typeof wanted === "string" && isComposedPresetId(wanted)) {
+      try {
+        await rebuildOnce(deps, wanted);
+      } catch (error) {
+        console.error("[power-pack] \u6309\u9700\u91CD\u5EFA\u7EC4\u5408\u9884\u8BBE\u5931\u8D25:", wanted, error);
+      }
+    }
+    return original.apply(this, args);
+  };
+  wrapped[WRAPPED] = true;
+  return wrapped;
 }
-async function waitPresetRows(api, modeId) {
-  for (let attempt = 0; attempt < RESTORE_ATTEMPTS; attempt += 1) {
-    if (readPresetRows(api, modeId) !== void 0) return true;
-    await delay(RESTORE_INTERVAL_MS);
-  }
-  return false;
-}
-async function disposeOne(preset) {
-  composed.delete(preset.key);
-  try {
-    await preset.dispose();
-  } catch (error) {
-    console.error("[power-pack] \u6CE8\u9500\u7EC4\u5408\u9884\u8BBE\u5931\u8D25:", preset.id, error);
-  }
-}
-async function ensureComposedPreset(api, modeId, pack, groups) {
-  const key = `${pack.id}@${modeId}`;
-  const existing = composed.get(key);
-  if (existing !== void 0) return existing.id;
-  const modeRows = readPresetRows(api, modeId);
-  if (modeRows === void 0) {
-    throw new Error(`\u65E0\u6CD5\u8BFB\u53D6\u6A21\u5F0F ${modeId} \u7684\u7EC4\u5408\u884C`);
-  }
-  const rows = composePackRows(modeRows, pack, groups);
-  const id = composedPresetId(pack.id, modeId);
-  const dispose = await api.register({
-    id,
-    name: pack.name,
-    description: pack.description,
-    order: PRESET_ORDER,
-    plugins: rows
-  });
-  composed.set(key, { key, id, dispose });
-  return id;
-}
-async function invalidateComposedPreset(packId) {
-  const prefix = `${packId}@`;
-  for (const preset of [...composed.values()]) {
-    if (!preset.key.startsWith(prefix)) continue;
-    await disposeOne(preset);
-  }
-}
-async function disposePackPresets() {
-  for (const preset of [...composed.values()]) {
-    await disposeOne(preset);
-  }
-}
-async function restoreComposedPresets(api, tools, profileDir) {
-  const selections = await readComposeState();
-  if (selections.length === 0) return;
-  const document = await readPacks();
-  const packs = new Map(document.packs.map((pack) => [pack.id, pack]));
-  const known = selections.filter((selection) => packs.has(selection.pack));
-  if (known.length !== selections.length) await writeComposeState(known);
-  if (known.length === 0) return;
-  const groups = await listGlobalToolGroups(tools, profileDir);
-  const failed = /* @__PURE__ */ new Set();
-  for (const selection of known) {
-    const pack = packs.get(selection.pack);
-    if (pack === void 0) continue;
-    const ready = await waitPresetRows(api, selection.mode);
-    if (!ready) {
-      console.warn("[power-pack] \u542F\u52A8\u91CD\u5EFA\u7EC4\u5408\u9884\u8BBE\u65F6\u6A21\u5F0F\u4E0D\u53EF\u7528:", selection.mode);
+function installLazyPresets(deps) {
+  for (const method of GUARDED_METHODS) {
+    const current = deps.api[method];
+    if (typeof current !== "function") {
+      console.warn("[power-pack] \u5BBF\u4E3B\u9884\u8BBE\u670D\u52A1\u7F3A\u5C11\u65B9\u6CD5\uFF0C\u8DF3\u8FC7\u6309\u9700\u6CE8\u518C:", method);
       continue;
     }
+    const existing = Object.getOwnPropertyDescriptor(deps.api, method);
+    if (existing?.value?.[WRAPPED] === true) continue;
     try {
-      await ensureComposedPreset(api, selection.mode, pack, groups);
+      Object.defineProperty(deps.api, method, {
+        configurable: true,
+        enumerable: existing?.enumerable ?? true,
+        writable: true,
+        value: guardMethod(method, current, deps)
+      });
     } catch (error) {
-      console.error("[power-pack] \u542F\u52A8\u91CD\u5EFA\u7EC4\u5408\u9884\u8BBE\u5931\u8D25:", selection.pack, selection.mode, error);
-      failed.add(`${selection.pack}@${selection.mode}`);
+      console.error("[power-pack] \u5B89\u88C5\u7EC4\u5408\u9884\u8BBE\u6309\u9700\u6CE8\u518C\u5931\u8D25:", method, error);
     }
-  }
-  if (failed.size > 0) {
-    console.warn("[power-pack] \u672A\u91CD\u5EFA\u7684\u7EC4\u5408\u9884\u8BBE:", [...failed].join(", "));
   }
 }
 
@@ -1019,6 +1005,72 @@ function installPromptOverlay(ctx) {
       clearInterval(timer);
     };
   }, "power-pack: prompt overlay");
+}
+
+// src/features/power-pack/host/compose-state.ts
+import { mkdir as mkdir3, readFile as readFile5, rename as rename2, writeFile as writeFile2 } from "node:fs/promises";
+import { dirname as dirname2, join as join6 } from "node:path";
+var STATE_VERSION = 1;
+var MAX_RECENT = 24;
+function composeStateFile() {
+  return join6(resolveDshHome(), "all-in-one", "compose-state.json");
+}
+function normalizeSelection(value) {
+  if (typeof value !== "object" || value === null) return void 0;
+  const candidate = value;
+  const pack = typeof candidate.pack === "string" ? candidate.pack.trim() : "";
+  const mode = typeof candidate.mode === "string" ? candidate.mode.trim() : "";
+  if (!isValidPackId(pack) || mode === "") return void 0;
+  return { pack, mode };
+}
+async function readComposeState() {
+  const file = composeStateFile();
+  try {
+    const raw = await readFile5(file, "utf8");
+    const parsed = JSON.parse(raw);
+    const list = Array.isArray(parsed.recent) ? parsed.recent : [];
+    const seen = /* @__PURE__ */ new Set();
+    const result = [];
+    for (const item of list) {
+      const selection = normalizeSelection(item);
+      if (selection === void 0) continue;
+      const key = `${selection.pack}@${selection.mode}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      result.push(selection);
+    }
+    return result;
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.error("[power-pack] \u8BFB\u53D6\u7EC4\u5408\u8BB0\u5F55\u5931\u8D25:", file, error);
+    }
+    return [];
+  }
+}
+async function writeComposeState(recent) {
+  const file = composeStateFile();
+  const temp = `${file}.tmp`;
+  const document = { version: STATE_VERSION, recent: recent.slice(0, MAX_RECENT) };
+  try {
+    await mkdir3(dirname2(file), { recursive: true });
+    await writeFile2(temp, `${JSON.stringify(document, null, 2)}
+`, "utf8");
+    await rename2(temp, file);
+  } catch (error) {
+    console.error("[power-pack] \u5199\u5165\u7EC4\u5408\u8BB0\u5F55\u5931\u8D25:", file, error);
+  }
+}
+async function rememberComposed(packId, modeId) {
+  const recent = await readComposeState();
+  const key = `${packId}@${modeId}`;
+  const rest = recent.filter((item) => `${item.pack}@${item.mode}` !== key);
+  await writeComposeState([{ pack: packId, mode: modeId }, ...rest]);
+}
+async function forgetComposedPack(packId) {
+  const recent = await readComposeState();
+  const kept = recent.filter((item) => item.pack !== packId);
+  if (kept.length === recent.length) return;
+  await writeComposeState(kept);
 }
 
 // src/features/power-pack/host/routes.ts
@@ -1206,12 +1258,7 @@ function apply(ctx) {
   ctx.effect(() => () => {
     void disposePackPresets();
   }, "power-pack: presets");
-  ctx.effect(() => {
-    void restoreComposedPresets(api, ctx.tools, profileDir).catch((error) => {
-      console.error("[power-pack] \u542F\u52A8\u91CD\u5EFA\u7EC4\u5408\u9884\u8BBE\u5931\u8D25:", error);
-    });
-    return () => void 0;
-  }, "power-pack: restore");
+  installLazyPresets({ api, tools: () => ctx.tools, profileDir });
   ctx.inject(["webServer"], (host) => {
     host.effect(
       () => installPowerPackRoutes(resolveWebServer(host), api, { profileDir, tools: host.tools }),

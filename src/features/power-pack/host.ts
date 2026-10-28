@@ -1,12 +1,14 @@
 /**
  * 「技能包」的宿主侧扩展。
  *
- * 技能包不预注册成预设——它要叠加在用户选择的模式之上，只在新建会话选定组合时
- * 才合成并注册。这里负责登记路由，并在插件卸载时撤销组合预设。
+ * 技能包不预注册成预设——它要叠加在用户选择的模式之上，只在会话真正用到某个
+ * 组合时才合成并注册。这里负责登记路由、安装按需注册包装，并在插件卸载时
+ * 撤销已注册的组合预设。
  */
 import type { HostPluginContext } from '../../types/host'
 
-import { disposePackPresets, restoreComposedPresets } from './host/presets'
+import { disposePackPresets } from './host/presets'
+import { installLazyPresets } from './host/preset-lazy'
 import { installPromptOverlay } from './host/prompt-overlay'
 import { installPowerPackRoutes } from './host/routes'
 
@@ -37,15 +39,9 @@ export function apply(ctx: HostPluginContext): void {
     void disposePackPresets()
   }, 'power-pack: presets')
 
-  // 组合预设只活在宿主内存里：启动时按记录重建，旧会话的预设 id 才不会失效。
-  // 重建出的预设同样由上面那条 effect 统一注销，这里不需要额外的清理动作。
-  ctx.effect(() => {
-    void restoreComposedPresets(api, ctx.tools, profileDir).catch((error: unknown) => {
-      console.error('[power-pack] 启动重建组合预设失败:', error)
-    })
-
-    return () => undefined
-  }, 'power-pack: restore')
+  // 组合预设只活在宿主内存里；按需注册让历史会话仍能按记录恢复，
+  // 而不必在启动时把每条组合都挂载成一棵完整的预设行树。
+  installLazyPresets({ api, tools: () => ctx.tools, profileDir })
 
   ctx.inject(['webServer'], (host) => {
     host.effect(
