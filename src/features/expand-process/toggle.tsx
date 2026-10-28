@@ -51,14 +51,14 @@ export function ExpandProcessToggle({ t }: FeatureSwitchProps) {
   }
 
   return (
-    <div>
-      {/* 开关入口：整行可点击，开关语义由 role 与 aria-checked 表达 */}
+    <div className="flex h-full flex-col">
+      {/* 开关入口：撑满卡片宽度与行高、整块可点击，开关语义由 role 与 aria-checked 表达 */}
       <button
         type="button"
         role="switch"
         aria-checked={enabled}
         onClick={handleToggle}
-        className="flex w-full items-center gap-3 rounded-xl border border-line4 bg-layer1 px-4 py-3.5 text-left transition hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        className="flex w-full flex-1 items-center gap-3 rounded-xl border border-line4 bg-layer1 px-4 py-3.5 text-left transition hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
       >
         {/* 入口图标 */}
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand">

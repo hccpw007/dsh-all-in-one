@@ -23,7 +23,8 @@
   ],
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "npm run typecheck && tsx build.ts"
+    "build": "npm run typecheck && tsx build.ts",
+    "dev": "tsx build.ts --watch"
   },
   "dsh": {
     "bundle": {

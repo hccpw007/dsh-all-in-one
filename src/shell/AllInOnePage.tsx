@@ -109,12 +109,13 @@ export function AllInOnePage({ t }: AllInOnePageProps) {
           {registry.list.map((feature) => {
             const featureT = (key: string) => t(`${feature.id}.${key}`)
 
-            // 开关型 feature 直接在网格中渲染开关并占满整行，没有独立功能页
+            // 开关型 feature 与入口卡片同列渲染（各占一半宽度），没有独立功能页；
+            // 外层撑满整行高度，让同一行的两个开关卡片等高
             if ('switch' in feature) {
               const SwitchEntry = feature.switch
 
               return (
-                <div key={feature.id} className="sm:col-span-2">
+                <div key={feature.id} className="min-w-0">
                   <SwitchEntry t={featureT} />
                 </div>
               )

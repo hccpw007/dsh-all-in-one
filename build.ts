@@ -4,13 +4,16 @@
  * 宿主按 package.json 的 exports 直接加载根目录的 index.js（必须是 JS），
  * 因此宿主侧源码写在 src/index.ts，由这里产出同名产物，与 client.js 一起入库。
  * 用 tsx 执行本脚本，无需额外的编译步骤。
+ *
+ * 传 `--watch` 进入监听模式：源码变化后只重建受影响的产物，交给宿主热重载取用，
+ * 不再逐次重启进程；此时跳过 tsc 全量类型检查，改由开发者在提交前单独执行。
  */
-import { execFileSync } from 'node:child_process'
+import { execFileSync, spawn } from 'node:child_process'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-import { build, type BuildResult } from 'esbuild'
+import { build, context, type BuildContext, type BuildOptions, type BuildResult } from 'esbuild'
 
 /** 工程根目录。 */
 const ROOT = dirname(fileURLToPath(import.meta.url))
@@ -18,6 +21,8 @@ const ROOT = dirname(fileURLToPath(import.meta.url))
 const BUILD_DIR = join(ROOT, '.build')
 /** Tailwind 输出的样式表，会被当作字符串打进 client.js。 */
 const STYLE_FILE = join(BUILD_DIR, 'styles.css')
+/** 是否监听源码变化持续重建；宿主侧的 HMR 会据此重新挂载插件。 */
+const WATCH = process.argv.includes('--watch')
 
 /**
  * 把多行文本整体缩进，便于嵌入 ModuleLoader 的工厂函数。
@@ -47,36 +52,94 @@ function firstOutputText(result: BuildResult): string {
 
 /** 步骤一：Tailwind 扫描源码，只生成实际用到的类。 */
 function buildStyles(): void {
-  execFileSync(
-    process.execPath,
-    [
-      join(ROOT, 'node_modules/tailwindcss/lib/cli.js'),
-      '--config',
-      join(ROOT, 'tailwind.config.ts'),
-      '--input',
-      join(ROOT, 'src/styles/input.css'),
-      '--output',
-      STYLE_FILE,
-      '--minify',
+  const args = [
+    join(ROOT, 'node_modules/tailwindcss/lib/cli.js'),
+    '--config',
+    join(ROOT, 'tailwind.config.ts'),
+    '--input',
+    join(ROOT, 'src/styles/input.css'),
+    '--output',
+    STYLE_FILE,
+    '--minify',
+  ]
+
+  // 两种模式都先同步生成一次：entry.tsx 直接 import 该文件，首次打包时缺文件会立即失败。
+  execFileSync(process.execPath, args, { cwd: ROOT, stdio: 'inherit' })
+
+  if (!WATCH) return
+
+  // 后端持续改写样式表；esbuild 的依赖图包含该文件，样式变化会连带重建 client.js。
+  const watcher = spawn(process.execPath, [...args, '--watch'], { cwd: ROOT, stdio: 'inherit' })
+  watcher.on('error', (error) => console.error('[build] Tailwind 监听启动失败:', error))
+}
+
+/**
+ * 编译一个入口：普通模式立即构建并写出；监听模式交给 esbuild 持续重建，
+ * 每次重建成功后调用 write 写出产物。
+ * @param options esbuild 配置（必须 write: false，产物从内存取）
+ * @param write 产物写出函数
+ * @param label 产物名，仅用于监听模式下的重建日志
+ * @returns 监听模式下的 esbuild context，普通模式返回 undefined
+ */
+async function compile(
+  options: BuildOptions,
+  write: (code: string) => void,
+  label: string,
+): Promise<BuildContext | undefined> {
+  if (!WATCH) {
+    write(firstOutputText(await build(options)))
+
+    return undefined
+  }
+
+  const ctx = await context({
+    ...options,
+    plugins: [
+      ...(options.plugins ?? []),
+      {
+        name: 'write-bundle',
+        setup(build) {
+          build.onEnd((result) => {
+            // 重建失败时保留上一份产物，避免热重载读到写了一半的模块。
+            if (result.errors.length > 0) {
+              console.error('[build] 重建失败:', result.errors.map((item) => item.text).join('; '))
+
+              return
+            }
+
+            try {
+              write(firstOutputText(result))
+              // 成功时 esbuild 静默，这里补一行日志，让开发者知道热重载已经拿到新产物。
+              console.log(`[build] 已重建 ${label}`)
+            } catch (error) {
+              console.error('[build] 写出产物失败:', error)
+            }
+          })
+        },
+      },
     ],
-    { cwd: ROOT, stdio: 'inherit' },
-  )
+  })
+  await ctx.watch()
+
+  return ctx
 }
 
 /** 步骤二：打包宿主侧入口，产出根目录的 index.js。 */
 async function buildHostEntry(): Promise<void> {
-  const result = await build({
-    entryPoints: [join(ROOT, 'src/index.ts')],
-    bundle: true,
-    write: false,
-    format: 'esm',
-    platform: 'node',
-    target: ['node20'],
-    legalComments: 'none',
-    logLevel: 'warning',
-  })
-
-  writeFileSync(join(ROOT, 'index.js'), firstOutputText(result))
+  await compile(
+    {
+      entryPoints: [join(ROOT, 'src/index.ts')],
+      bundle: true,
+      write: false,
+      format: 'esm',
+      platform: 'node',
+      target: ['node20'],
+      legalComments: 'none',
+      logLevel: 'warning',
+    },
+    (code) => writeFileSync(join(ROOT, 'index.js'), code),
+    'index.js',
+  )
 }
 
 /**
@@ -89,41 +152,45 @@ async function buildHostEntry(): Promise<void> {
  * @param output 产物文件名
  */
 async function buildPresetEntry(entry: string, output: string): Promise<void> {
-  const result = await build({
-    entryPoints: [join(ROOT, entry)],
-    bundle: true,
-    write: false,
-    format: 'esm',
-    platform: 'node',
-    target: ['node20'],
-    legalComments: 'none',
-    logLevel: 'warning',
-  })
-
-  writeFileSync(join(ROOT, output), firstOutputText(result))
+  await compile(
+    {
+      entryPoints: [join(ROOT, entry)],
+      bundle: true,
+      write: false,
+      format: 'esm',
+      platform: 'node',
+      target: ['node20'],
+      legalComments: 'none',
+      logLevel: 'warning',
+    },
+    (code) => writeFileSync(join(ROOT, output), code),
+    output,
+  )
 }
 
 /**
  * 步骤三：打包浏览器端入口。
  * React 保持 external，由 ModuleLoader 工厂的 require 参数提供。
  */
-async function buildScript(): Promise<string> {
-  const result = await build({
-    entryPoints: [join(ROOT, 'src/entry.tsx')],
-    bundle: true,
-    write: false,
-    format: 'cjs',
-    platform: 'neutral',
-    target: ['chrome110'],
-    jsx: 'transform',
-    external: ['react', '@deepseek-ai/dsh-client-ui-primitives'],
-    loader: { '.css': 'text', '.svg': 'text' },
-    legalComments: 'none',
-    define: { 'process.env.NODE_ENV': '"production"' },
-    logLevel: 'warning',
-  })
-
-  return firstOutputText(result)
+async function buildScript(): Promise<void> {
+  await compile(
+    {
+      entryPoints: [join(ROOT, 'src/entry.tsx')],
+      bundle: true,
+      write: false,
+      format: 'cjs',
+      platform: 'neutral',
+      target: ['chrome110'],
+      jsx: 'transform',
+      external: ['react', '@deepseek-ai/dsh-client-ui-primitives'],
+      loader: { '.css': 'text', '.svg': 'text' },
+      legalComments: 'none',
+      define: { 'process.env.NODE_ENV': '"production"' },
+      logLevel: 'warning',
+    },
+    writeClient,
+    'client.js',
+  )
 }
 
 /**
@@ -155,9 +222,12 @@ async function main(): Promise<void> {
     await buildHostEntry()
     await buildPresetEntry('src/features/power-pack/preset-entry.ts', 'preset-pack.js')
     await buildPresetEntry('src/features/power-pack/host/isolate-entry.ts', 'preset-isolate.js')
-    const code = await buildScript()
-    writeClient(code)
-    console.log('[build] 已生成 index.js、preset-pack.js、preset-isolate.js 与 client.js')
+    await buildScript()
+    console.log(
+      WATCH
+        ? '[build] 监听中：源码变化后自动重建，产物由宿主热重载接管'
+        : '[build] 已生成 index.js、preset-pack.js、preset-isolate.js 与 client.js',
+    )
   } catch (error) { // 构建失败必须以非零码退出，避免带着旧产物继续
     console.error('[build] 构建失败:', error)
     process.exitCode = 1
