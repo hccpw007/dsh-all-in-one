@@ -3,7 +3,6 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import { Button } from '../../components/Button'
 import { PageActionsContext } from '../../shell/page-actions'
 import type { Translate } from '../../types/plugin'
-import { McpServerEditor, isValidServerId } from './McpServerEditor'
 import { ResourceRuleField, type RuleOption } from './ResourceRuleField'
 import type { PowerPack, PowerPackCatalog, ResourceRule } from './types'
 
@@ -31,8 +30,8 @@ interface PackEditorProps {
 /**
  * 单个技能包的编辑表单。
  *
- * 编辑器只维护草稿，保存动作交给页面；保存前的必填与 MCP 标识校验在这里
- * 完成，避免宿主静默丢弃非法服务器条目。保存按钮投放到外壳头部，与返回按钮同行。
+ * 编辑器只维护草稿，保存动作交给页面；保存前的必填校验在这里完成。
+ * 保存按钮投放到外壳头部，与返回按钮同行。
  * @param props 草稿、清单与回调
  */
 export function PackEditor({ initial, catalog, saving, error, onSave, t }: PackEditorProps) {
@@ -63,7 +62,8 @@ export function PackEditor({ initial, catalog, saving, error, onSave, t }: PackE
     ...plugin.kind === 'installed' ? { badge: t('installedBadge') } : {},
   }))
 
-  // 全局 MCP 也出现在 MCP 规则里：它已在宿主启动时连接，勾选表示保留在会话中。
+  // MCP 服务器由宿主配置文件声明并在启动时连接，这里只列出已连接的服务器，
+  // 勾选结果决定是否在本技能包的会话里屏蔽它们。
   // 宿主进程可能仍是未重载的旧版本，此时清单字段缺失，按「没有全局 MCP」处理。
   const globalMcpOptions: RuleOption[] = (catalog.globalGroups ?? [])
     .filter((group) => group.kind === 'global-mcp')
@@ -84,13 +84,6 @@ export function PackEditor({ initial, catalog, saving, error, onSave, t }: PackE
   /** 保存前校验，返回错误文案或 undefined。 */
   const validate = useCallback((): string | undefined => {
     if (draft.name.trim() === '') return t('nameRequired')
-
-    const ids = new Set<string>()
-    for (const server of draft.mcpServers) {
-      if (!isValidServerId(server.id)) return t('mcpIdInvalid')
-      if (ids.has(server.id)) return t('mcpIdDuplicate')
-      ids.add(server.id)
-    }
 
     return undefined
   }, [draft, t])
@@ -176,26 +169,17 @@ export function PackEditor({ initial, catalog, saving, error, onSave, t }: PackE
         </div>
 
         <div className={`flex flex-col gap-3 ${GROUP_CLASS}`}>
-          {/* MCP 分组标签：服务器定义与启用规则同属一组，不再各自带标题 */}
+          {/* MCP 分组标签：只保留已安装服务器的取舍规则 */}
           <span className="text-[12px] font-semibold text-primary">{t('mcpTitle')}</span>
-          <McpServerEditor
-            servers={draft.mcpServers}
-            onChange={(mcpServers) => patch({ mcpServers })}
-            t={t}
-          />
           <ResourceRuleField
             rule={draft.mcp}
-            options={[
-              ...draft.mcpServers.map((server) => ({
-                id: server.id,
-                label: server.label || server.id,
-              })),
-              ...globalMcpOptions,
-            ]}
+            options={globalMcpOptions}
             modeLabels={modeLabels}
             emptyText={t('mcpEmpty')}
             onChange={(rule) => patchRule('mcp', rule)}
           />
+          {/* 「仅排除」会按会话屏蔽未勾选的已安装 MCP，这里说明它的作用范围 */}
+          <p className="text-[12px] leading-[18px] text-secondary">{t('mcpGlobalHint')}</p>
         </div>
 
         <label className={`block ${GROUP_CLASS}`}>

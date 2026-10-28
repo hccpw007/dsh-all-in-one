@@ -30,7 +30,6 @@ function createDraft(): PowerPack {
     skills: { mode: 'all', items: [] },
     plugins: { mode: 'all', items: [] },
     mcp: { mode: 'all', items: [] },
-    mcpServers: [],
   }
 }
 
@@ -228,10 +227,11 @@ export function PowerPackPage({ t }: FeaturePageProps) {
                       {pack.description}
                     </p>
                   ) : null}
-                  {/* 规则摘要：技能与 MCP 的启用范围 */}
+                  {/* 规则摘要：技能、插件与已安装 MCP 的启用范围 */}
                   <p className="mt-1 text-[12px] text-secondary">
                     {t('skillsTitle')}: {modeLabel(pack.skills.mode, t)} · {t('pluginsTitle')}:{' '}
-                    {modeLabel(pack.plugins.mode, t)} · {t('mcpTitle')}: {pack.mcpServers.length}
+                    {modeLabel(pack.plugins.mode, t)} · {t('mcpTitle')}:{' '}
+                    {modeLabel(pack.mcp.mode, t)}
                   </p>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">

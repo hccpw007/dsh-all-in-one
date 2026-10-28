@@ -163,38 +163,6 @@ var PROMPT_ROW_NAME = "dsh-all-in-one/preset-pack";
 var ISOLATE_ROW_NAME = "dsh-all-in-one/preset-isolate";
 var SKILL_FILESYSTEM_ROW = "@deepseek-ai/dsh-skill-filesystem";
 var TOOL_SKILL_ROW = "@deepseek-ai/dsh-tool-skill";
-var MCP_CLIENT_ROW = "@deepseek-ai/dsh-mcp-client";
-function mcpRowConfig(server) {
-  const base = { serverName: server.id };
-  if (server.transport === "stdio") {
-    return {
-      ...base,
-      transport: "stdio",
-      command: server.command,
-      args: server.args.filter((arg) => arg !== ""),
-      ...Object.keys(server.env).length > 0 ? { env: server.env } : {}
-    };
-  }
-  return {
-    ...base,
-    transport: "streamable-http",
-    url: server.url,
-    ...Object.keys(server.headers).length > 0 ? { headers: server.headers } : {}
-  };
-}
-function selectMcpServers(pack) {
-  const selected = new Set(pack.mcp.items);
-  switch (pack.mcp.mode) {
-    case "all":
-      return pack.mcpServers;
-    case "include":
-      return pack.mcpServers.filter((server) => selected.has(server.id));
-    case "exclude":
-      return pack.mcpServers.filter((server) => !selected.has(server.id));
-    default:
-      return [];
-  }
-}
 function buildPackRows(pack, isolate) {
   const rows = [];
   if (isolate !== void 0) {
@@ -210,9 +178,6 @@ function buildPackRows(pack, isolate) {
   const skillConfig = pack.skills.mode === "all" ? { includeDefaultRoots: true } : { includeDefaultRoots: false, customSkillDirs: [packSkillDir(pack.id)] };
   rows.push({ id: "skill-filesystem", name: SKILL_FILESYSTEM_ROW, config: skillConfig });
   rows.push({ id: "tool-skill", name: TOOL_SKILL_ROW });
-  for (const server of selectMcpServers(pack)) {
-    rows.push({ id: `mcp-${server.id}`, name: MCP_CLIENT_ROW, config: mcpRowConfig(server) });
-  }
   return rows;
 }
 
@@ -543,40 +508,11 @@ function isValidPackId(id) {
 function stringList(value) {
   return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
 }
-function stringDict(value) {
-  if (typeof value !== "object" || value === null || Array.isArray(value)) return {};
-  const result = {};
-  for (const [key, item] of Object.entries(value)) {
-    if (typeof item === "string") result[key] = item;
-  }
-  return result;
-}
 function normalizeRule(value) {
   if (typeof value !== "object" || value === null) return { mode: "all", items: [] };
   const candidate = value;
   const mode = RULE_MODES.find((item) => item === candidate.mode) ?? "all";
   return { mode, items: stringList(candidate.items) };
-}
-function normalizeMcpServer(value) {
-  if (typeof value !== "object" || value === null) return void 0;
-  const candidate = value;
-  const id = typeof candidate.id === "string" ? candidate.id.trim() : "";
-  if (!/^[A-Za-z0-9_-]{1,32}$/.test(id)) return void 0;
-  const transport = candidate.transport === "streamable-http" ? "streamable-http" : "stdio";
-  const command = typeof candidate.command === "string" ? candidate.command : "";
-  const url = typeof candidate.url === "string" ? candidate.url : "";
-  if (transport === "stdio" && command.trim() === "") return void 0;
-  if (transport === "streamable-http" && url.trim() === "") return void 0;
-  return {
-    id,
-    label: typeof candidate.label === "string" ? candidate.label : id,
-    transport,
-    command,
-    args: stringList(candidate.args),
-    env: stringDict(candidate.env),
-    url,
-    headers: stringDict(candidate.headers)
-  };
 }
 function normalizePack(value) {
   if (typeof value !== "object" || value === null) return void 0;
@@ -584,12 +520,6 @@ function normalizePack(value) {
   const id = typeof candidate.id === "string" ? candidate.id.trim() : "";
   const name = typeof candidate.name === "string" ? candidate.name.trim() : "";
   if (!PACK_ID_PATTERN.test(id) || name === "") return void 0;
-  const seenServers = /* @__PURE__ */ new Set();
-  const mcpServers = Array.isArray(candidate.mcpServers) ? candidate.mcpServers.map(normalizeMcpServer).filter((server) => {
-    if (server === void 0 || seenServers.has(server.id)) return false;
-    seenServers.add(server.id);
-    return true;
-  }) : [];
   return {
     id,
     name,
@@ -597,8 +527,7 @@ function normalizePack(value) {
     systemPrompt: typeof candidate.systemPrompt === "string" ? candidate.systemPrompt : "",
     skills: normalizeRule(candidate.skills),
     plugins: normalizeRule(candidate.plugins),
-    mcp: normalizeRule(candidate.mcp),
-    mcpServers
+    mcp: normalizeRule(candidate.mcp)
   };
 }
 async function parsePackFile(file) {

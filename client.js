@@ -39,10 +39,10 @@ window.__ModuleLoader__.load({
       default: () => entry_default
     });
     module.exports = __toCommonJS(entry_exports);
-    var import_react12 = __toESM(require("react"), 1);
+    var import_react11 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.static{position:static}.relative{position:relative}.sticky{position:sticky}.top-0{top:0}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-9{height:2.25rem}.max-h-72{max-height:18rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-0\\.5,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[18px\\]{--tw-translate-x:18px}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-dashed{border-style:dashed}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.p-0{padding:0}.p-3{padding:.75rem}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[18px\\]{line-height:18px}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}@media (min-width:640px){.sm\\:col-span-2{grid-column:span 2/span 2}.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
+    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.static{position:static}.relative{position:relative}.sticky{position:sticky}.top-0{top:0}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-9{height:2.25rem}.max-h-72{max-height:18rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-0\\.5,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[18px\\]{--tw-translate-x:18px}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-dashed{border-style:dashed}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[18px\\]{line-height:18px}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}@media (min-width:640px){.sm\\:col-span-2{grid-column:span 2/span 2}.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -513,10 +513,6 @@ window.__ModuleLoader__.load({
         save: "\u4FDD\u5B58",
         // 保存中的按钮文案
         saving: "\u4FDD\u5B58\u4E2D\u2026",
-        // MCP 服务器标识非法时的提示
-        mcpIdInvalid: "\u6807\u8BC6\u53EA\u80FD\u5305\u542B\u5B57\u6BCD\u3001\u6570\u5B57\u3001\u4E0B\u5212\u7EBF\u548C\u77ED\u6A2A\u7EBF\uFF0C\u957F\u5EA6 1\u201332\u3002",
-        // MCP 服务器标识重复时的提示
-        mcpIdDuplicate: "MCP \u670D\u52A1\u5668\u6807\u8BC6\u4E0D\u80FD\u91CD\u590D\u3002",
         // 删除确认提示
         confirmDelete: "\u5220\u9664\u540E\u8BE5\u6280\u80FD\u5305\u4E0D\u518D\u51FA\u73B0\u5728\u65B0\u5EFA\u4EFB\u52A1\u7684\u4E0B\u62C9\u5217\u8868\u4E2D\uFF0C\u786E\u5B9A\u5220\u9664\uFF1F",
         // 加载失败提示
@@ -563,32 +559,10 @@ window.__ModuleLoader__.load({
         globalMcpBadge: "\u5168\u5C40 MCP",
         // 全局 MCP 的工具数量说明；{count} 由界面替换成实际个数
         globalMcpTools: "\u5DF2\u5728\u5BBF\u4E3B\u542F\u52A8\u65F6\u8FDE\u63A5\uFF0C\u5171 {count} \u4E2A\u5DE5\u5177\uFF1B\u52FE\u9009\u4FDD\u7559\u5728\u4F1A\u8BDD\u4E2D\uFF0C\u53D6\u6D88\u52FE\u9009\u6309\u4F1A\u8BDD\u5C4F\u853D\u3002",
-        // 添加 MCP 服务器按钮
-        addMcp: "\u6DFB\u52A0 MCP \u670D\u52A1\u5668",
-        // 尚未配置 MCP 时的提示
-        mcpEmpty: "\u8FD8\u6CA1\u6709\u914D\u7F6E MCP \u670D\u52A1\u5668\u3002",
-        // MCP 标识字段
-        mcpIdLabel: "\u6807\u8BC6",
-        // MCP 展示名字段
-        mcpLabelLabel: "\u540D\u79F0",
-        // MCP 传输方式字段
-        mcpTransportLabel: "\u4F20\u8F93\u65B9\u5F0F",
-        // stdio 传输选项
-        mcpStdio: "\u547D\u4EE4\uFF08stdio\uFF09",
-        // HTTP 传输选项
-        mcpHttp: "HTTP",
-        // MCP 启动命令字段
-        mcpCommandLabel: "\u547D\u4EE4",
-        // MCP 命令参数说明
-        mcpArgsLabel: "\u53C2\u6570\uFF08\u6BCF\u884C\u4E00\u4E2A\uFF09",
-        // MCP 环境变量说明
-        mcpEnvLabel: "\u73AF\u5883\u53D8\u91CF\uFF08\u6BCF\u884C KEY=VALUE\uFF09",
-        // MCP 地址字段
-        mcpUrlLabel: "\u5730\u5740",
-        // MCP 请求头说明
-        mcpHeadersLabel: "\u8BF7\u6C42\u5934\uFF08\u6BCF\u884C KEY=VALUE\uFF09",
-        // 移除 MCP 服务器按钮
-        remove: "\u79FB\u9664",
+        // 宿主没有已连接的全局 MCP 时的提示
+        mcpEmpty: "\u5BBF\u4E3B\u5F53\u524D\u6CA1\u6709\u5DF2\u8FDE\u63A5\u7684 MCP \u670D\u52A1\u5668\u3002",
+        // MCP 分组的说明：服务器在宿主配置文件里声明，此处只决定会话内是否屏蔽
+        mcpGlobalHint: "MCP \u670D\u52A1\u5668\u5728\u5BBF\u4E3B\u7684\u914D\u7F6E\u6587\u4EF6\u91CC\u58F0\u660E\u3001\u542F\u52A8\u65F6\u8FDE\u63A5\uFF1A\u52FE\u9009\u8868\u793A\u4FDD\u7559\u5728\u4F1A\u8BDD\u91CC\uFF0C\u672A\u52FE\u9009\u8868\u793A\u5728\u8BE5\u6280\u80FD\u5305\u7684\u4F1A\u8BDD\u91CC\u5C4F\u853D\u5B83\u7684\u5DE5\u5177\u4E0E\u63D0\u793A\u8BCD\u6CE8\u5165\u3002",
         // 必填校验提示
         nameRequired: "\u8BF7\u586B\u5199\u6280\u80FD\u5305\u540D\u79F0\u3002",
         // 存储位置说明
@@ -645,10 +619,6 @@ window.__ModuleLoader__.load({
         save: "Save",
         // Save-in-progress label
         saving: "Saving\u2026",
-        // Invalid MCP server id
-        mcpIdInvalid: "ID may contain letters, digits, underscores and hyphens, 1\u201332 characters.",
-        // Duplicate MCP server id
-        mcpIdDuplicate: "MCP server IDs must be unique.",
         // Delete confirmation
         confirmDelete: "This power pack will no longer appear in the new-task dropdown. Delete it?",
         // Load failure
@@ -695,32 +665,10 @@ window.__ModuleLoader__.load({
         globalMcpBadge: "Global MCP",
         // Global MCP tool-count hint; {count} is replaced with the actual number
         globalMcpTools: "Connected at host startup with {count} tools; keep it checked to retain it in this session, clear it to mask it per session.",
-        // Add MCP server button
-        addMcp: "Add MCP server",
-        // Empty MCP hint
-        mcpEmpty: "No MCP servers configured yet.",
-        // MCP id field
-        mcpIdLabel: "ID",
-        // MCP label field
-        mcpLabelLabel: "Name",
-        // MCP transport field
-        mcpTransportLabel: "Transport",
-        // stdio option
-        mcpStdio: "Command (stdio)",
-        // HTTP option
-        mcpHttp: "HTTP",
-        // MCP command field
-        mcpCommandLabel: "Command",
-        // MCP args hint
-        mcpArgsLabel: "Arguments (one per line)",
-        // MCP env hint
-        mcpEnvLabel: "Environment (KEY=VALUE per line)",
-        // MCP URL field
-        mcpUrlLabel: "URL",
-        // MCP headers hint
-        mcpHeadersLabel: "Headers (KEY=VALUE per line)",
-        // Remove MCP server
-        remove: "Remove",
+        // Empty hint when the host has no connected global MCP server
+        mcpEmpty: "The host has no connected MCP servers.",
+        // MCP group hint: servers come from the host config file; this only masks them per session
+        mcpGlobalHint: "MCP servers are declared in the host config file and connect at startup: checked keeps one in the session, unchecked masks its tools and prompt injection inside this power pack session.",
         // Required name message
         nameRequired: "Enter a power pack name.",
         // Storage location hint
@@ -753,7 +701,7 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/power-pack/page.tsx
-    var import_react9 = __toESM(require("react"), 1);
+    var import_react8 = __toESM(require("react"), 1);
 
     // src/components/Button.tsx
     var import_react4 = __toESM(require("react"), 1);
@@ -789,133 +737,14 @@ window.__ModuleLoader__.load({
     }
 
     // src/features/power-pack/PackEditor.tsx
-    var import_react8 = __toESM(require("react"), 1);
+    var import_react7 = __toESM(require("react"), 1);
 
     // src/shell/page-actions.ts
     var import_react5 = require("react");
     var PageActionsContext = (0, import_react5.createContext)(null);
 
-    // src/features/power-pack/McpServerEditor.tsx
-    var import_react6 = __toESM(require("react"), 1);
-    var INPUT_CLASS = "w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand";
-    var SERVER_ID_PATTERN = /^[A-Za-z0-9_-]{1,32}$/;
-    function formatPairs(dict) {
-      return Object.entries(dict).map(([key, value]) => `${key}=${value}`).join("\n");
-    }
-    function parsePairs(text) {
-      const result = {};
-      for (const line of text.split("\n")) {
-        const trimmed = line.trim();
-        if (trimmed === "") continue;
-        const index = trimmed.indexOf("=");
-        if (index <= 0) continue;
-        result[trimmed.slice(0, index).trim()] = trimmed.slice(index + 1);
-      }
-      return result;
-    }
-    function createServer(index) {
-      return {
-        id: `mcp-${index}`,
-        label: `MCP ${index}`,
-        transport: "stdio",
-        command: "",
-        args: [],
-        env: {},
-        url: "",
-        headers: {}
-      };
-    }
-    function McpServerEditor({ servers, onChange, t }) {
-      const patch = (index, change) => {
-        onChange(servers.map((server, current) => current === index ? { ...server, ...change } : server));
-      };
-      const add = () => {
-        let index = servers.length + 1;
-        while (servers.some((server) => server.id === `mcp-${index}`)) index += 1;
-        onChange([...servers, createServer(index)]);
-      };
-      const remove = (index) => {
-        onChange(servers.filter((_, current) => current !== index));
-      };
-      return /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex flex-col gap-3" }, servers.length === 0 ? (
-        // 尚未配置任何服务器时的提示
-        /* @__PURE__ */ import_react6.default.createElement("p", { className: "text-[12px] text-secondary" }, t("mcpEmpty"))
-      ) : null, servers.map((server, index) => /* @__PURE__ */ import_react6.default.createElement("div", { key: `${server.id}-${index}`, className: "rounded-lg border border-line4 bg-base p-3" }, /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex items-center justify-between gap-2" }, /* @__PURE__ */ import_react6.default.createElement("span", { className: "text-[12px] font-medium text-primary" }, server.label || server.id), /* @__PURE__ */ import_react6.default.createElement(Button, { variant: "ghost", onClick: () => remove(index) }, t("remove"))), /* @__PURE__ */ import_react6.default.createElement("div", { className: "mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2" }, /* @__PURE__ */ import_react6.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react6.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpIdLabel")), /* @__PURE__ */ import_react6.default.createElement(
-        "input",
-        {
-          value: server.id,
-          onChange: (event) => patch(index, { id: event.target.value.trim() }),
-          className: INPUT_CLASS
-        }
-      ), SERVER_ID_PATTERN.test(server.id) ? null : (
-        // 标识不合法时立即提示，保存按钮会拦截
-        /* @__PURE__ */ import_react6.default.createElement("span", { className: "mt-1 block text-[12px] text-danger" }, t("mcpIdInvalid"))
-      )), /* @__PURE__ */ import_react6.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react6.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpLabelLabel")), /* @__PURE__ */ import_react6.default.createElement(
-        "input",
-        {
-          value: server.label,
-          onChange: (event) => patch(index, { label: event.target.value }),
-          className: INPUT_CLASS
-        }
-      )), /* @__PURE__ */ import_react6.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react6.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpTransportLabel")), /* @__PURE__ */ import_react6.default.createElement(
-        "select",
-        {
-          value: server.transport,
-          onChange: (event) => patch(index, {
-            transport: event.target.value === "streamable-http" ? "streamable-http" : "stdio"
-          }),
-          className: INPUT_CLASS
-        },
-        /* @__PURE__ */ import_react6.default.createElement("option", { value: "stdio" }, t("mcpStdio")),
-        /* @__PURE__ */ import_react6.default.createElement("option", { value: "streamable-http" }, t("mcpHttp"))
-      ))), server.transport === "stdio" ? /* @__PURE__ */ import_react6.default.createElement("div", { className: "mt-2 flex flex-col gap-2" }, /* @__PURE__ */ import_react6.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react6.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpCommandLabel")), /* @__PURE__ */ import_react6.default.createElement(
-        "input",
-        {
-          value: server.command,
-          onChange: (event) => patch(index, { command: event.target.value }),
-          className: INPUT_CLASS
-        }
-      )), /* @__PURE__ */ import_react6.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react6.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpArgsLabel")), /* @__PURE__ */ import_react6.default.createElement(
-        "textarea",
-        {
-          value: server.args.join("\n"),
-          onChange: (event) => patch(index, {
-            args: event.target.value.split("\n").filter((arg) => arg.trim() !== "")
-          }),
-          rows: 3,
-          className: INPUT_CLASS
-        }
-      )), /* @__PURE__ */ import_react6.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react6.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpEnvLabel")), /* @__PURE__ */ import_react6.default.createElement(
-        "textarea",
-        {
-          value: formatPairs(server.env),
-          onChange: (event) => patch(index, { env: parsePairs(event.target.value) }),
-          rows: 3,
-          className: INPUT_CLASS
-        }
-      ))) : /* @__PURE__ */ import_react6.default.createElement("div", { className: "mt-2 flex flex-col gap-2" }, /* @__PURE__ */ import_react6.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react6.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpUrlLabel")), /* @__PURE__ */ import_react6.default.createElement(
-        "input",
-        {
-          value: server.url,
-          onChange: (event) => patch(index, { url: event.target.value }),
-          className: INPUT_CLASS
-        }
-      )), /* @__PURE__ */ import_react6.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react6.default.createElement("span", { className: "mb-1 block text-[12px] text-secondary" }, t("mcpHeadersLabel")), /* @__PURE__ */ import_react6.default.createElement(
-        "textarea",
-        {
-          value: formatPairs(server.headers),
-          onChange: (event) => patch(index, { headers: parsePairs(event.target.value) }),
-          rows: 3,
-          className: INPUT_CLASS
-        }
-      ))))), /* @__PURE__ */ import_react6.default.createElement("div", null, /* @__PURE__ */ import_react6.default.createElement(Button, { variant: "outline", onClick: add }, t("addMcp"))));
-    }
-    function isValidServerId(id) {
-      return SERVER_ID_PATTERN.test(id);
-    }
-
     // src/features/power-pack/ResourceRuleField.tsx
-    var import_react7 = __toESM(require("react"), 1);
+    var import_react6 = __toESM(require("react"), 1);
     var MODE_ORDER = ["all", "include", "exclude"];
     var SEARCH_CLASS = "w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand";
     function ResourceRuleField({
@@ -927,9 +756,9 @@ window.__ModuleLoader__.load({
       searchPlaceholder,
       onChange
     }) {
-      const [query, setQuery] = (0, import_react7.useState)("");
-      const selected = (0, import_react7.useMemo)(() => new Set(rule.items), [rule.items]);
-      const visibleOptions = (0, import_react7.useMemo)(() => {
+      const [query, setQuery] = (0, import_react6.useState)("");
+      const selected = (0, import_react6.useMemo)(() => new Set(rule.items), [rule.items]);
+      const visibleOptions = (0, import_react6.useMemo)(() => {
         const keyword = query.trim().toLowerCase();
         if (keyword === "") return options;
         return options.filter(
@@ -944,12 +773,12 @@ window.__ModuleLoader__.load({
         const unknown = [...next].filter((item) => !options.some((option) => option.id === item));
         onChange({ mode: rule.mode, items: [...ordered, ...unknown] });
       };
-      return /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex flex-col gap-2" }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex flex-wrap items-center gap-3" }, title ? (
+      return /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex flex-col gap-2" }, /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex flex-wrap items-center gap-3" }, title ? (
         // 分组标签
-        /* @__PURE__ */ import_react7.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, title)
-      ) : null, /* @__PURE__ */ import_react7.default.createElement("div", { className: "ml-auto flex items-center gap-2" }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "inline-flex", role: "group" }, MODE_ORDER.map((mode, index) => {
+        /* @__PURE__ */ import_react6.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, title)
+      ) : null, /* @__PURE__ */ import_react6.default.createElement("div", { className: "ml-auto flex items-center gap-2" }, /* @__PURE__ */ import_react6.default.createElement("div", { className: "inline-flex", role: "group" }, MODE_ORDER.map((mode, index) => {
         const active = rule.mode === mode;
-        return /* @__PURE__ */ import_react7.default.createElement(
+        return /* @__PURE__ */ import_react6.default.createElement(
           "button",
           {
             key: mode,
@@ -969,7 +798,7 @@ window.__ModuleLoader__.load({
           },
           modeLabels[mode]
         );
-      })), selected.size > 0 ? /* @__PURE__ */ import_react7.default.createElement("span", { className: "text-[11px] text-secondary" }, selected.size) : null)), rule.mode === "all" ? null : /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex flex-col gap-2" }, searchPlaceholder ? /* @__PURE__ */ import_react7.default.createElement(
+      })), selected.size > 0 ? /* @__PURE__ */ import_react6.default.createElement("span", { className: "text-[11px] text-secondary" }, selected.size) : null)), rule.mode === "all" ? null : /* @__PURE__ */ import_react6.default.createElement("div", { className: "flex flex-col gap-2" }, searchPlaceholder ? /* @__PURE__ */ import_react6.default.createElement(
         "input",
         {
           type: "search",
@@ -980,10 +809,10 @@ window.__ModuleLoader__.load({
         }
       ) : null, visibleOptions.length === 0 ? (
         // 没有可选项或搜索无结果时的提示
-        /* @__PURE__ */ import_react7.default.createElement("p", { className: "py-2 text-[12px] text-secondary" }, emptyText)
-      ) : /* @__PURE__ */ import_react7.default.createElement("ul", { className: "max-h-72 overflow-y-auto" }, visibleOptions.map((option) => {
+        /* @__PURE__ */ import_react6.default.createElement("p", { className: "py-2 text-[12px] text-secondary" }, emptyText)
+      ) : /* @__PURE__ */ import_react6.default.createElement("ul", { className: "max-h-72 overflow-y-auto" }, visibleOptions.map((option) => {
         const checked = selected.has(option.id);
-        return /* @__PURE__ */ import_react7.default.createElement("li", { key: option.id }, /* @__PURE__ */ import_react7.default.createElement(
+        return /* @__PURE__ */ import_react6.default.createElement("li", { key: option.id }, /* @__PURE__ */ import_react6.default.createElement(
           "label",
           {
             className: cn(
@@ -991,7 +820,7 @@ window.__ModuleLoader__.load({
               checked ? "bg-layer2" : "hover:bg-layer2"
             )
           },
-          /* @__PURE__ */ import_react7.default.createElement(
+          /* @__PURE__ */ import_react6.default.createElement(
             "input",
             {
               type: "checkbox",
@@ -1000,27 +829,27 @@ window.__ModuleLoader__.load({
               className: "mt-0.5 h-3.5 w-3.5 shrink-0 accent-brand"
             }
           ),
-          /* @__PURE__ */ import_react7.default.createElement("span", { className: "min-w-0" }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "flex flex-wrap items-center gap-1.5" }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "text-[12px] font-medium text-primary" }, option.label), option.badge ? (
+          /* @__PURE__ */ import_react6.default.createElement("span", { className: "min-w-0" }, /* @__PURE__ */ import_react6.default.createElement("span", { className: "flex flex-wrap items-center gap-1.5" }, /* @__PURE__ */ import_react6.default.createElement("span", { className: "text-[12px] font-medium text-primary" }, option.label), option.badge ? (
             // 条目来源标记，如「已安装插件」
-            /* @__PURE__ */ import_react7.default.createElement("span", { className: "rounded border border-line4 px-1 py-px text-[10px] text-secondary" }, option.badge)
+            /* @__PURE__ */ import_react6.default.createElement("span", { className: "rounded border border-line4 px-1 py-px text-[10px] text-secondary" }, option.badge)
           ) : null), option.description ? (
             // 条目说明
-            /* @__PURE__ */ import_react7.default.createElement("span", { className: "mt-0.5 block text-[12px] leading-[18px] text-secondary" }, option.description)
+            /* @__PURE__ */ import_react6.default.createElement("span", { className: "mt-0.5 block text-[12px] leading-[18px] text-secondary" }, option.description)
           ) : null, checked && option.warning ? (
             // 选中后才提示的风险，避免干扰普通浏览
-            /* @__PURE__ */ import_react7.default.createElement("span", { className: "mt-0.5 block text-[12px] leading-[18px] text-warn" }, option.warning)
+            /* @__PURE__ */ import_react6.default.createElement("span", { className: "mt-0.5 block text-[12px] leading-[18px] text-warn" }, option.warning)
           ) : null)
         ));
       }))));
     }
 
     // src/features/power-pack/PackEditor.tsx
-    var INPUT_CLASS2 = "w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand";
+    var INPUT_CLASS = "w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand";
     var GROUP_CLASS = "border-t border-line4 pt-4";
     function PackEditor({ initial, catalog, saving, error, onSave, t }) {
-      const [draft, setDraft] = (0, import_react8.useState)(initial);
-      const [localError, setLocalError] = (0, import_react8.useState)(null);
-      const setPageActions = (0, import_react8.useContext)(PageActionsContext);
+      const [draft, setDraft] = (0, import_react7.useState)(initial);
+      const [localError, setLocalError] = (0, import_react7.useState)(null);
+      const setPageActions = (0, import_react7.useContext)(PageActionsContext);
       const patch = (change) => {
         setDraft((current) => ({ ...current, ...change }));
       };
@@ -1049,17 +878,11 @@ window.__ModuleLoader__.load({
         include: t("modeInclude"),
         exclude: t("modeExclude")
       };
-      const validate = (0, import_react8.useCallback)(() => {
+      const validate = (0, import_react7.useCallback)(() => {
         if (draft.name.trim() === "") return t("nameRequired");
-        const ids = /* @__PURE__ */ new Set();
-        for (const server of draft.mcpServers) {
-          if (!isValidServerId(server.id)) return t("mcpIdInvalid");
-          if (ids.has(server.id)) return t("mcpIdDuplicate");
-          ids.add(server.id);
-        }
         return void 0;
       }, [draft, t]);
-      const handleSave = (0, import_react8.useCallback)(() => {
+      const handleSave = (0, import_react7.useCallback)(() => {
         const message = validate();
         if (message) {
           setLocalError(message);
@@ -1068,32 +891,32 @@ window.__ModuleLoader__.load({
         setLocalError(null);
         onSave({ ...draft, name: draft.name.trim(), description: draft.description.trim() });
       }, [draft, onSave, validate]);
-      const saveAction = (0, import_react8.useMemo)(
-        () => /* @__PURE__ */ import_react8.default.createElement(Button, { variant: "outline", disabled: saving, onClick: handleSave }, saving ? t("saving") : t("save")),
+      const saveAction = (0, import_react7.useMemo)(
+        () => /* @__PURE__ */ import_react7.default.createElement(Button, { variant: "outline", disabled: saving, onClick: handleSave }, saving ? t("saving") : t("save")),
         [handleSave, saving, t]
       );
-      (0, import_react8.useEffect)(() => {
+      (0, import_react7.useEffect)(() => {
         if (!setPageActions) return;
         setPageActions(saveAction);
         return () => setPageActions(null);
       }, [saveAction, setPageActions]);
-      return /* @__PURE__ */ import_react8.default.createElement("div", { className: "rounded-xl border border-line4 bg-layer1" }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex flex-col gap-4 p-4" }, /* @__PURE__ */ import_react8.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react8.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("nameLabel")), /* @__PURE__ */ import_react8.default.createElement(
+      return /* @__PURE__ */ import_react7.default.createElement("div", { className: "rounded-xl border border-line4 bg-layer1" }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex flex-col gap-4 p-4" }, /* @__PURE__ */ import_react7.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("nameLabel")), /* @__PURE__ */ import_react7.default.createElement(
         "input",
         {
           value: draft.name,
           placeholder: t("namePlaceholder"),
           onChange: (event) => patch({ name: event.target.value }),
-          className: INPUT_CLASS2
+          className: INPUT_CLASS
         }
-      )), /* @__PURE__ */ import_react8.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react8.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("descriptionLabel")), /* @__PURE__ */ import_react8.default.createElement(
+      )), /* @__PURE__ */ import_react7.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("descriptionLabel")), /* @__PURE__ */ import_react7.default.createElement(
         "input",
         {
           value: draft.description,
           placeholder: t("descriptionPlaceholder"),
           onChange: (event) => patch({ description: event.target.value }),
-          className: INPUT_CLASS2
+          className: INPUT_CLASS
         }
-      )), /* @__PURE__ */ import_react8.default.createElement("div", { className: GROUP_CLASS }, /* @__PURE__ */ import_react8.default.createElement(
+      )), /* @__PURE__ */ import_react7.default.createElement("div", { className: GROUP_CLASS }, /* @__PURE__ */ import_react7.default.createElement(
         ResourceRuleField,
         {
           title: t("skillsTitle"),
@@ -1104,7 +927,7 @@ window.__ModuleLoader__.load({
           searchPlaceholder: t("searchSkills"),
           onChange: (rule) => patchRule("skills", rule)
         }
-      )), /* @__PURE__ */ import_react8.default.createElement("div", { className: GROUP_CLASS }, /* @__PURE__ */ import_react8.default.createElement(
+      )), /* @__PURE__ */ import_react7.default.createElement("div", { className: GROUP_CLASS }, /* @__PURE__ */ import_react7.default.createElement(
         ResourceRuleField,
         {
           title: t("pluginsTitle"),
@@ -1114,38 +937,25 @@ window.__ModuleLoader__.load({
           emptyText: t("noSkills"),
           onChange: (rule) => patchRule("plugins", rule)
         }
-      ), /* @__PURE__ */ import_react8.default.createElement("p", { className: "text-[12px] leading-[18px] text-secondary" }, t("pluginsGlobalHint"))), /* @__PURE__ */ import_react8.default.createElement("div", { className: `flex flex-col gap-3 ${GROUP_CLASS}` }, /* @__PURE__ */ import_react8.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, t("mcpTitle")), /* @__PURE__ */ import_react8.default.createElement(
-        McpServerEditor,
-        {
-          servers: draft.mcpServers,
-          onChange: (mcpServers) => patch({ mcpServers }),
-          t
-        }
-      ), /* @__PURE__ */ import_react8.default.createElement(
+      ), /* @__PURE__ */ import_react7.default.createElement("p", { className: "text-[12px] leading-[18px] text-secondary" }, t("pluginsGlobalHint"))), /* @__PURE__ */ import_react7.default.createElement("div", { className: `flex flex-col gap-3 ${GROUP_CLASS}` }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, t("mcpTitle")), /* @__PURE__ */ import_react7.default.createElement(
         ResourceRuleField,
         {
           rule: draft.mcp,
-          options: [
-            ...draft.mcpServers.map((server) => ({
-              id: server.id,
-              label: server.label || server.id
-            })),
-            ...globalMcpOptions
-          ],
+          options: globalMcpOptions,
           modeLabels,
           emptyText: t("mcpEmpty"),
           onChange: (rule) => patchRule("mcp", rule)
         }
-      )), /* @__PURE__ */ import_react8.default.createElement("label", { className: `block ${GROUP_CLASS}` }, /* @__PURE__ */ import_react8.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("systemPromptLabel")), /* @__PURE__ */ import_react8.default.createElement(
+      ), /* @__PURE__ */ import_react7.default.createElement("p", { className: "text-[12px] leading-[18px] text-secondary" }, t("mcpGlobalHint"))), /* @__PURE__ */ import_react7.default.createElement("label", { className: `block ${GROUP_CLASS}` }, /* @__PURE__ */ import_react7.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("systemPromptLabel")), /* @__PURE__ */ import_react7.default.createElement(
         "textarea",
         {
           value: draft.systemPrompt,
           placeholder: t("systemPromptPlaceholder"),
           onChange: (event) => patch({ systemPrompt: event.target.value }),
           rows: 15,
-          className: INPUT_CLASS2
+          className: INPUT_CLASS
         }
-      )), localError ?? error ? /* @__PURE__ */ import_react8.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, localError ?? error) : null));
+      )), localError ?? error ? /* @__PURE__ */ import_react7.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, localError ?? error) : null));
     }
 
     // src/features/power-pack/page.tsx
@@ -1162,17 +972,16 @@ window.__ModuleLoader__.load({
         systemPrompt: "",
         skills: { mode: "all", items: [] },
         plugins: { mode: "all", items: [] },
-        mcp: { mode: "all", items: [] },
-        mcpServers: []
+        mcp: { mode: "all", items: [] }
       };
     }
     function PowerPackPage({ t }) {
-      const [payload, setPayload] = (0, import_react9.useState)(null);
-      const [editing, setEditing] = (0, import_react9.useState)(null);
-      const [loading, setLoading] = (0, import_react9.useState)(true);
-      const [saving, setSaving] = (0, import_react9.useState)(false);
-      const [defaulting, setDefaulting] = (0, import_react9.useState)(false);
-      const [error, setError] = (0, import_react9.useState)(null);
+      const [payload, setPayload] = (0, import_react8.useState)(null);
+      const [editing, setEditing] = (0, import_react8.useState)(null);
+      const [loading, setLoading] = (0, import_react8.useState)(true);
+      const [saving, setSaving] = (0, import_react8.useState)(false);
+      const [defaulting, setDefaulting] = (0, import_react8.useState)(false);
+      const [error, setError] = (0, import_react8.useState)(null);
       const reload = async () => {
         try {
           setPayload(await loadPowerPacks());
@@ -1184,7 +993,7 @@ window.__ModuleLoader__.load({
           setLoading(false);
         }
       };
-      (0, import_react9.useEffect)(() => {
+      (0, import_react8.useEffect)(() => {
         let active = true;
         void (async () => {
           try {
@@ -1206,7 +1015,7 @@ window.__ModuleLoader__.load({
           active = false;
         };
       }, [t]);
-      const handleSave = (0, import_react9.useCallback)(async (pack) => {
+      const handleSave = (0, import_react8.useCallback)(async (pack) => {
         setSaving(true);
         try {
           setPayload(await savePowerPack(pack));
@@ -1219,7 +1028,7 @@ window.__ModuleLoader__.load({
           setSaving(false);
         }
       }, [t]);
-      const submitDraft = (0, import_react9.useCallback)((pack) => {
+      const submitDraft = (0, import_react8.useCallback)((pack) => {
         void handleSave(pack);
       }, [handleSave]);
       const handleDelete = async (id) => {
@@ -1249,7 +1058,7 @@ window.__ModuleLoader__.load({
         }
       };
       if (editing && payload) {
-        return /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react9.default.createElement("header", null, /* @__PURE__ */ import_react9.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react9.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("pageDescription"))), /* @__PURE__ */ import_react9.default.createElement(
+        return /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react8.default.createElement("header", null, /* @__PURE__ */ import_react8.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react8.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("pageDescription"))), /* @__PURE__ */ import_react8.default.createElement(
           PackEditor,
           {
             initial: editing,
@@ -1261,7 +1070,7 @@ window.__ModuleLoader__.load({
           }
         ));
       }
-      return /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react9.default.createElement("header", { className: "flex flex-wrap items-start justify-between gap-3" }, /* @__PURE__ */ import_react9.default.createElement("div", null, /* @__PURE__ */ import_react9.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react9.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("pageDescription"))), /* @__PURE__ */ import_react9.default.createElement(
+      return /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react8.default.createElement("header", { className: "flex flex-wrap items-start justify-between gap-3" }, /* @__PURE__ */ import_react8.default.createElement("div", null, /* @__PURE__ */ import_react8.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react8.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("pageDescription"))), /* @__PURE__ */ import_react8.default.createElement(
         Button,
         {
           variant: "outline",
@@ -1272,7 +1081,7 @@ window.__ModuleLoader__.load({
           }
         },
         t("newPack")
-      )), error ? /* @__PURE__ */ import_react9.default.createElement("p", { className: "rounded-lg border border-line4 bg-layer1 px-3 py-2 text-[12px] text-danger", role: "alert" }, error, /* @__PURE__ */ import_react9.default.createElement(
+      )), error ? /* @__PURE__ */ import_react8.default.createElement("p", { className: "rounded-lg border border-line4 bg-layer1 px-3 py-2 text-[12px] text-danger", role: "alert" }, error, /* @__PURE__ */ import_react8.default.createElement(
         "button",
         {
           type: "button",
@@ -1282,19 +1091,19 @@ window.__ModuleLoader__.load({
         t("retry")
       )) : null, loading ? (
         // 首次加载中的占位
-        /* @__PURE__ */ import_react9.default.createElement("p", { className: "text-[12px] text-secondary" }, "\u2026")
+        /* @__PURE__ */ import_react8.default.createElement("p", { className: "text-[12px] text-secondary" }, "\u2026")
       ) : (payload?.packs.length ?? 0) === 0 ? (
         // 尚未创建技能包时的空态
-        /* @__PURE__ */ import_react9.default.createElement("p", { className: "rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("empty"))
-      ) : /* @__PURE__ */ import_react9.default.createElement("ul", { className: "flex flex-col gap-3" }, payload?.packs.map((pack) => /* @__PURE__ */ import_react9.default.createElement(
+        /* @__PURE__ */ import_react8.default.createElement("p", { className: "rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("empty"))
+      ) : /* @__PURE__ */ import_react8.default.createElement("ul", { className: "flex flex-col gap-3" }, payload?.packs.map((pack) => /* @__PURE__ */ import_react8.default.createElement(
         "li",
         {
           key: pack.id,
           className: "rounded-xl border border-line4 bg-layer1 px-4 py-3"
         },
-        /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex flex-wrap items-start justify-between gap-2" }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react9.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, pack.name), pack.description ? /* @__PURE__ */ import_react9.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, pack.description) : null, /* @__PURE__ */ import_react9.default.createElement("p", { className: "mt-1 text-[12px] text-secondary" }, t("skillsTitle"), ": ", modeLabel(pack.skills.mode, t), " \xB7 ", t("pluginsTitle"), ":", " ", modeLabel(pack.plugins.mode, t), " \xB7 ", t("mcpTitle"), ": ", pack.mcpServers.length)), /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex shrink-0 items-center gap-2" }, payload?.defaultPackId === pack.id ? (
+        /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex flex-wrap items-start justify-between gap-2" }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react8.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, pack.name), pack.description ? /* @__PURE__ */ import_react8.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, pack.description) : null, /* @__PURE__ */ import_react8.default.createElement("p", { className: "mt-1 text-[12px] text-secondary" }, t("skillsTitle"), ": ", modeLabel(pack.skills.mode, t), " \xB7 ", t("pluginsTitle"), ":", " ", modeLabel(pack.plugins.mode, t), " \xB7 ", t("mcpTitle"), ":", " ", modeLabel(pack.mcp.mode, t))), /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex shrink-0 items-center gap-2" }, payload?.defaultPackId === pack.id ? (
           // 默认技能包标识：绿色描边与打钩，和可点击的「设为默认」按钮区分开
-          /* @__PURE__ */ import_react9.default.createElement("span", { className: "inline-flex items-center gap-1 rounded-lg border border-success px-3 py-1.5 text-[12px] text-success" }, /* @__PURE__ */ import_react9.default.createElement(
+          /* @__PURE__ */ import_react8.default.createElement("span", { className: "inline-flex items-center gap-1 rounded-lg border border-success px-3 py-1.5 text-[12px] text-success" }, /* @__PURE__ */ import_react8.default.createElement(
             "svg",
             {
               viewBox: "0 0 24 24",
@@ -1307,11 +1116,11 @@ window.__ModuleLoader__.load({
               strokeLinecap: "round",
               strokeLinejoin: "round"
             },
-            /* @__PURE__ */ import_react9.default.createElement("path", { d: "M20 6 9 17l-5-5" })
+            /* @__PURE__ */ import_react8.default.createElement("path", { d: "M20 6 9 17l-5-5" })
           ), t("defaultBadge"))
         ) : (
           // 设为默认按钮：新建会话时自动预选该技能包
-          /* @__PURE__ */ import_react9.default.createElement(
+          /* @__PURE__ */ import_react8.default.createElement(
             Button,
             {
               variant: "outline",
@@ -1320,7 +1129,7 @@ window.__ModuleLoader__.load({
             },
             t("setDefault")
           )
-        ), /* @__PURE__ */ import_react9.default.createElement(
+        ), /* @__PURE__ */ import_react8.default.createElement(
           Button,
           {
             variant: "outline",
@@ -1330,8 +1139,8 @@ window.__ModuleLoader__.load({
             }
           },
           t("edit")
-        ), /* @__PURE__ */ import_react9.default.createElement(Button, { variant: "danger", onClick: () => void handleDelete(pack.id) }, t("delete"))))
-      ))), payload ? /* @__PURE__ */ import_react9.default.createElement("p", { className: "text-[12px] text-secondary" }, t("storageHint"), ": ", /* @__PURE__ */ import_react9.default.createElement("code", { className: "break-all" }, payload.storagePath)) : null);
+        ), /* @__PURE__ */ import_react8.default.createElement(Button, { variant: "danger", onClick: () => void handleDelete(pack.id) }, t("delete"))))
+      ))), payload ? /* @__PURE__ */ import_react8.default.createElement("p", { className: "text-[12px] text-secondary" }, t("storageHint"), ": ", /* @__PURE__ */ import_react8.default.createElement("code", { className: "break-all" }, payload.storagePath)) : null);
     }
 
     // src/features/power-pack/index.tsx
@@ -1366,7 +1175,7 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/expand-process/toggle.tsx
-    var import_react10 = __toESM(require("react"), 1);
+    var import_react9 = __toESM(require("react"), 1);
 
     // src/features/expand-process/expand-process.ts
     var EXPAND_PROCESS_STORAGE_KEY = "dsh-all-in-one:expand-process";
@@ -1493,7 +1302,7 @@ window.__ModuleLoader__.load({
 
     // src/features/expand-process/toggle.tsx
     function ExpandIcon() {
-      return /* @__PURE__ */ import_react10.default.createElement(
+      return /* @__PURE__ */ import_react9.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -1506,13 +1315,13 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react10.default.createElement("path", { d: "m7 9 5-5 5 5" }),
-        /* @__PURE__ */ import_react10.default.createElement("path", { d: "m7 15 5 5 5-5" })
+        /* @__PURE__ */ import_react9.default.createElement("path", { d: "m7 9 5-5 5 5" }),
+        /* @__PURE__ */ import_react9.default.createElement("path", { d: "m7 15 5 5 5-5" })
       );
     }
     function ExpandProcessToggle({ t }) {
-      const [enabled, setEnabled] = (0, import_react10.useState)(readExpandProcessEnabled);
-      const [saveFailed, setSaveFailed] = (0, import_react10.useState)(false);
+      const [enabled, setEnabled] = (0, import_react9.useState)(readExpandProcessEnabled);
+      const [saveFailed, setSaveFailed] = (0, import_react9.useState)(false);
       const handleToggle = () => {
         const next = !enabled;
         if (!writeExpandProcessEnabled(next)) {
@@ -1523,7 +1332,7 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react10.default.createElement("div", null, /* @__PURE__ */ import_react10.default.createElement(
+      return /* @__PURE__ */ import_react9.default.createElement("div", null, /* @__PURE__ */ import_react9.default.createElement(
         "button",
         {
           type: "button",
@@ -1532,9 +1341,9 @@ window.__ModuleLoader__.load({
           onClick: handleToggle,
           className: "flex w-full items-center gap-3 rounded-xl border border-line4 bg-layer1 px-4 py-3.5 text-left transition hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         },
-        /* @__PURE__ */ import_react10.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, /* @__PURE__ */ import_react10.default.createElement(ExpandIcon, null)),
-        /* @__PURE__ */ import_react10.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[13px] font-medium leading-5 text-primary" }, t("title")), /* @__PURE__ */ import_react10.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("description"))),
-        /* @__PURE__ */ import_react10.default.createElement(
+        /* @__PURE__ */ import_react9.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, /* @__PURE__ */ import_react9.default.createElement(ExpandIcon, null)),
+        /* @__PURE__ */ import_react9.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react9.default.createElement("span", { className: "block text-[13px] font-medium leading-5 text-primary" }, t("title")), /* @__PURE__ */ import_react9.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("description"))),
+        /* @__PURE__ */ import_react9.default.createElement(
           "span",
           {
             "aria-hidden": "true",
@@ -1543,7 +1352,7 @@ window.__ModuleLoader__.load({
               enabled ? "bg-brand" : "bg-line2"
             )
           },
-          /* @__PURE__ */ import_react10.default.createElement(
+          /* @__PURE__ */ import_react9.default.createElement(
             "span",
             {
               className: cn(
@@ -1553,7 +1362,7 @@ window.__ModuleLoader__.load({
             }
           )
         )
-      ), saveFailed ? /* @__PURE__ */ import_react10.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-danger" }, t("saveFailed")) : null);
+      ), saveFailed ? /* @__PURE__ */ import_react9.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-danger" }, t("saveFailed")) : null);
     }
 
     // src/features/expand-process/index.tsx
@@ -1605,9 +1414,9 @@ window.__ModuleLoader__.load({
     var registry = createFeatureRegistry(featureList);
 
     // src/shell/AllInOnePage.tsx
-    var import_react11 = __toESM(require("react"), 1);
+    var import_react10 = __toESM(require("react"), 1);
     function BackGlyph() {
-      return /* @__PURE__ */ import_react11.default.createElement(
+      return /* @__PURE__ */ import_react10.default.createElement(
         "svg",
         {
           viewBox: "0 0 16 16",
@@ -1620,34 +1429,34 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react11.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
+        /* @__PURE__ */ import_react10.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
       );
     }
     function AllInOnePage({ t }) {
-      const [activeId, setActiveId] = (0, import_react11.useState)(null);
-      const [pageActions, setPageActions] = (0, import_react11.useState)(null);
+      const [activeId, setActiveId] = (0, import_react10.useState)(null);
+      const [pageActions, setPageActions] = (0, import_react10.useState)(null);
       const active = activeId ? registry.find(activeId) : void 0;
       const activePage = active && "page" in active ? active : void 0;
-      const featureTranslate = (0, import_react11.useCallback)(
+      const featureTranslate = (0, import_react10.useCallback)(
         // 网格视图不会调用此函数，activePage 为空时直接返回 key 兜底
         (key) => activePage ? t(`${activePage.id}.${key}`) : key,
         [activePage, t]
       );
       if (activePage) {
         const ActivePage = activePage.page;
-        return /* @__PURE__ */ import_react11.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react11.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react11.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react11.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react11.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react11.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react11.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react11.default.createElement(ActivePage, { t: featureTranslate }))));
+        return /* @__PURE__ */ import_react10.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react10.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react10.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react10.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react10.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react10.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react10.default.createElement(ActivePage, { t: featureTranslate }))));
       }
-      return /* @__PURE__ */ import_react11.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react11.default.createElement("header", null, /* @__PURE__ */ import_react11.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react11.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
+      return /* @__PURE__ */ import_react10.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react10.default.createElement("header", null, /* @__PURE__ */ import_react10.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react10.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
         // 尚未注册功能时的空态提示
-        /* @__PURE__ */ import_react11.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
-      ) : /* @__PURE__ */ import_react11.default.createElement("div", { className: "mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2" }, registry.list.map((feature) => {
+        /* @__PURE__ */ import_react10.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
+      ) : /* @__PURE__ */ import_react10.default.createElement("div", { className: "mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2" }, registry.list.map((feature) => {
         const featureT = (key) => t(`${feature.id}.${key}`);
         if ("switch" in feature) {
           const SwitchEntry = feature.switch;
-          return /* @__PURE__ */ import_react11.default.createElement("div", { key: feature.id, className: "sm:col-span-2" }, /* @__PURE__ */ import_react11.default.createElement(SwitchEntry, { t: featureT }));
+          return /* @__PURE__ */ import_react10.default.createElement("div", { key: feature.id, className: "sm:col-span-2" }, /* @__PURE__ */ import_react10.default.createElement(SwitchEntry, { t: featureT }));
         }
         const Entry = feature.entry;
-        return /* @__PURE__ */ import_react11.default.createElement(Entry, { key: feature.id, t: featureT, open: () => setActiveId(feature.id) });
+        return /* @__PURE__ */ import_react10.default.createElement(Entry, { key: feature.id, t: featureT, open: () => setActiveId(feature.id) });
       })));
     }
 
@@ -1766,7 +1575,7 @@ window.__ModuleLoader__.load({
         });
         const t = ctx.locale.bind(LOCALE_NAMESPACE);
         installSettingsNavIcon(ctx, t, icon_default);
-        const SettingsSection = () => /* @__PURE__ */ import_react12.default.createElement(AllInOnePage, { t });
+        const SettingsSection = () => /* @__PURE__ */ import_react11.default.createElement(AllInOnePage, { t });
         ctx.slots.inject(
           "settings.section",
           () => ctx.slots.register(

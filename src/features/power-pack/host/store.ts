@@ -7,7 +7,7 @@
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 
-import type { PowerPack, PowerPackDocument, McpServerConfig, ResourceRule, RuleMode } from '../types'
+import type { PowerPack, PowerPackDocument, ResourceRule, RuleMode } from '../types'
 
 import { resolveDshHome } from './skill-catalog'
 
@@ -42,18 +42,6 @@ function stringList(value: unknown): string[] {
   return Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : []
 }
 
-/** 收窄为字符串字典，忽略非字符串值。 */
-function stringDict(value: unknown): Record<string, string> {
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) return {}
-
-  const result: Record<string, string> = {}
-  for (const [key, item] of Object.entries(value)) {
-    if (typeof item === 'string') result[key] = item
-  }
-
-  return result
-}
-
 /** 校验并补全资源规则。 */
 function normalizeRule(value: unknown): ResourceRule {
   if (typeof value !== 'object' || value === null) return { mode: 'all', items: [] }
@@ -62,34 +50,6 @@ function normalizeRule(value: unknown): ResourceRule {
   const mode = RULE_MODES.find((item) => item === candidate.mode) ?? 'all'
 
   return { mode, items: stringList(candidate.items) }
-}
-
-/** 校验 MCP 服务器定义，非法条目返回 undefined。 */
-function normalizeMcpServer(value: unknown): McpServerConfig | undefined {
-  if (typeof value !== 'object' || value === null) return undefined
-
-  const candidate = value as Record<string, unknown>
-  const id = typeof candidate.id === 'string' ? candidate.id.trim() : ''
-  if (!/^[A-Za-z0-9_-]{1,32}$/.test(id)) return undefined
-
-  const transport = candidate.transport === 'streamable-http' ? 'streamable-http' : 'stdio'
-  const command = typeof candidate.command === 'string' ? candidate.command : ''
-  const url = typeof candidate.url === 'string' ? candidate.url : ''
-
-  // 两种传输各自必需一个连接目标，缺失的条目无法挂载
-  if (transport === 'stdio' && command.trim() === '') return undefined
-  if (transport === 'streamable-http' && url.trim() === '') return undefined
-
-  return {
-    id,
-    label: typeof candidate.label === 'string' ? candidate.label : id,
-    transport,
-    command,
-    args: stringList(candidate.args),
-    env: stringDict(candidate.env),
-    url,
-    headers: stringDict(candidate.headers),
-  }
 }
 
 /** 校验并补全单个技能包。 */
@@ -101,18 +61,6 @@ export function normalizePack(value: unknown): PowerPack | undefined {
   const name = typeof candidate.name === 'string' ? candidate.name.trim() : ''
   if (!PACK_ID_PATTERN.test(id) || name === '') return undefined
 
-  // MCP 标识重复会让预设行 id 冲突，保留第一个
-  const seenServers = new Set<string>()
-  const mcpServers = Array.isArray(candidate.mcpServers)
-    ? candidate.mcpServers
-        .map(normalizeMcpServer)
-        .filter((server): server is McpServerConfig => {
-          if (server === undefined || seenServers.has(server.id)) return false
-          seenServers.add(server.id)
-          return true
-        })
-    : []
-
   return {
     id,
     name,
@@ -121,7 +69,6 @@ export function normalizePack(value: unknown): PowerPack | undefined {
     skills: normalizeRule(candidate.skills),
     plugins: normalizeRule(candidate.plugins),
     mcp: normalizeRule(candidate.mcp),
-    mcpServers,
   }
 }
 

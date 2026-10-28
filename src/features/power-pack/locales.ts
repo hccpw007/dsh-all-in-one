@@ -30,10 +30,6 @@ export const powerPackLocales: FeatureLocales = {
     save: '保存',
     // 保存中的按钮文案
     saving: '保存中…',
-    // MCP 服务器标识非法时的提示
-    mcpIdInvalid: '标识只能包含字母、数字、下划线和短横线，长度 1–32。',
-    // MCP 服务器标识重复时的提示
-    mcpIdDuplicate: 'MCP 服务器标识不能重复。',
     // 删除确认提示
     confirmDelete: '删除后该技能包不再出现在新建任务的下拉列表中，确定删除？',
     // 加载失败提示
@@ -80,32 +76,10 @@ export const powerPackLocales: FeatureLocales = {
     globalMcpBadge: '全局 MCP',
     // 全局 MCP 的工具数量说明；{count} 由界面替换成实际个数
     globalMcpTools: '已在宿主启动时连接，共 {count} 个工具；勾选保留在会话中，取消勾选按会话屏蔽。',
-    // 添加 MCP 服务器按钮
-    addMcp: '添加 MCP 服务器',
-    // 尚未配置 MCP 时的提示
-    mcpEmpty: '还没有配置 MCP 服务器。',
-    // MCP 标识字段
-    mcpIdLabel: '标识',
-    // MCP 展示名字段
-    mcpLabelLabel: '名称',
-    // MCP 传输方式字段
-    mcpTransportLabel: '传输方式',
-    // stdio 传输选项
-    mcpStdio: '命令（stdio）',
-    // HTTP 传输选项
-    mcpHttp: 'HTTP',
-    // MCP 启动命令字段
-    mcpCommandLabel: '命令',
-    // MCP 命令参数说明
-    mcpArgsLabel: '参数（每行一个）',
-    // MCP 环境变量说明
-    mcpEnvLabel: '环境变量（每行 KEY=VALUE）',
-    // MCP 地址字段
-    mcpUrlLabel: '地址',
-    // MCP 请求头说明
-    mcpHeadersLabel: '请求头（每行 KEY=VALUE）',
-    // 移除 MCP 服务器按钮
-    remove: '移除',
+    // 宿主没有已连接的全局 MCP 时的提示
+    mcpEmpty: '宿主当前没有已连接的 MCP 服务器。',
+    // MCP 分组的说明：服务器在宿主配置文件里声明，此处只决定会话内是否屏蔽
+    mcpGlobalHint: 'MCP 服务器在宿主的配置文件里声明、启动时连接：勾选表示保留在会话里，未勾选表示在该技能包的会话里屏蔽它的工具与提示词注入。',
     // 必填校验提示
     nameRequired: '请填写技能包名称。',
     // 存储位置说明
@@ -167,10 +141,6 @@ export const powerPackLocales: FeatureLocales = {
     save: 'Save',
     // Save-in-progress label
     saving: 'Saving…',
-    // Invalid MCP server id
-    mcpIdInvalid: 'ID may contain letters, digits, underscores and hyphens, 1–32 characters.',
-    // Duplicate MCP server id
-    mcpIdDuplicate: 'MCP server IDs must be unique.',
     // Delete confirmation
     confirmDelete: 'This power pack will no longer appear in the new-task dropdown. Delete it?',
     // Load failure
@@ -217,32 +187,10 @@ export const powerPackLocales: FeatureLocales = {
     globalMcpBadge: 'Global MCP',
     // Global MCP tool-count hint; {count} is replaced with the actual number
     globalMcpTools: 'Connected at host startup with {count} tools; keep it checked to retain it in this session, clear it to mask it per session.',
-    // Add MCP server button
-    addMcp: 'Add MCP server',
-    // Empty MCP hint
-    mcpEmpty: 'No MCP servers configured yet.',
-    // MCP id field
-    mcpIdLabel: 'ID',
-    // MCP label field
-    mcpLabelLabel: 'Name',
-    // MCP transport field
-    mcpTransportLabel: 'Transport',
-    // stdio option
-    mcpStdio: 'Command (stdio)',
-    // HTTP option
-    mcpHttp: 'HTTP',
-    // MCP command field
-    mcpCommandLabel: 'Command',
-    // MCP args hint
-    mcpArgsLabel: 'Arguments (one per line)',
-    // MCP env hint
-    mcpEnvLabel: 'Environment (KEY=VALUE per line)',
-    // MCP URL field
-    mcpUrlLabel: 'URL',
-    // MCP headers hint
-    mcpHeadersLabel: 'Headers (KEY=VALUE per line)',
-    // Remove MCP server
-    remove: 'Remove',
+    // Empty hint when the host has no connected global MCP server
+    mcpEmpty: 'The host has no connected MCP servers.',
+    // MCP group hint: servers come from the host config file; this only masks them per session
+    mcpGlobalHint: 'MCP servers are declared in the host config file and connect at startup: checked keeps one in the session, unchecked masks its tools and prompt injection inside this power pack session.',
     // Required name message
     nameRequired: 'Enter a power pack name.',
     // Storage location hint

@@ -15,22 +15,6 @@ export interface ResourceRule {
   items: string[]
 }
 
-/** 技能包内维护的 MCP 服务器定义，对应宿主 mcp-client 的一行。 */
-export interface McpServerConfig {
-  /** 稳定标识，同时用于行 id 与 serverName。 */
-  id: string
-  /** 界面展示名。 */
-  label: string
-  transport: 'stdio' | 'streamable-http'
-  /** stdio 启动命令。 */
-  command: string
-  args: string[]
-  env: Record<string, string>
-  /** streamable-http 地址。 */
-  url: string
-  headers: Record<string, string>
-}
-
 /** 一个可保存的技能包。 */
 export interface PowerPack {
   /** 稳定标识，注册预设时加 `pack-` 前缀。 */
@@ -49,11 +33,12 @@ export interface PowerPack {
    */
   plugins: ResourceRule
   /**
-   * MCP 服务器的取舍，勾选项同时包含技能包自有服务器 id 与全局 MCP `mcp:<服务器名>`。
-   * 自有服务器决定是否挂载 mcp-client 行；全局 MCP 只能按会话屏蔽其工具。
+   * 已安装 MCP 服务器的取舍，勾选项是全局 MCP 的 `mcp:<服务器名>`。
+   *
+   * MCP 服务器由宿主的配置文件声明、启动时连接；预设层无法卸载已连接的服务器，
+   * 因此这里只决定「是否在本技能包的会话里屏蔽它的工具与提示词注入」。
    */
   mcp: ResourceRule
-  mcpServers: McpServerConfig[]
 }
 
 /** 一组全局能力：一个已装插件的工具集合，或一台全局 MCP 服务器。 */

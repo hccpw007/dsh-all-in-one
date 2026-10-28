@@ -1,10 +1,11 @@
 /**
  * 把一个技能包翻译成叠加在模式之上的组合行。
  *
- * 技能包只提供自己的部分：系统提示词、技能提供者与 MCP 服务器。工具行不在这里
- * 生成——它们由技能包的三态规则从模式自身的行里筛选，见 `compose.ts`。
+ * 技能包只提供自己的部分：系统提示词、技能提供者与隔离行。工具行不在这里
+ * 生成——它们由技能包的三态规则从模式自身的行里筛选，见 `compose.ts`；
+ * MCP 服务器同理，只按会话屏蔽，不在这里挂载 mcp-client 行。
  */
-import type { PowerPack, McpServerConfig } from '../types'
+import type { PowerPack } from '../types'
 
 import { packSkillDir } from './skill-links'
 import type { PresetRow } from './standard-rows'
@@ -20,51 +21,6 @@ export const SKILL_FILESYSTEM_ROW = '@deepseek-ai/dsh-skill-filesystem'
 
 /** 模型侧的技能目录与加载工具行。 */
 export const TOOL_SKILL_ROW = '@deepseek-ai/dsh-tool-skill'
-
-/** MCP 客户端行。 */
-const MCP_CLIENT_ROW = '@deepseek-ai/dsh-mcp-client'
-
-/** 生成 MCP 客户端行的配置；空字段不写入，避免覆盖宿主默认值。 */
-function mcpRowConfig(server: McpServerConfig): Record<string, unknown> {
-  const base = { serverName: server.id }
-
-  if (server.transport === 'stdio') {
-    return {
-      ...base,
-      transport: 'stdio',
-      command: server.command,
-      args: server.args.filter((arg) => arg !== ''),
-      ...Object.keys(server.env).length > 0 ? { env: server.env } : {},
-    }
-  }
-
-  return {
-    ...base,
-    transport: 'streamable-http',
-    url: server.url,
-    ...Object.keys(server.headers).length > 0 ? { headers: server.headers } : {},
-  }
-}
-
-/**
- * 按三态规则选出该技能包启用的 MCP 服务器。
- * @param pack 技能包定义
- * @returns 启用的服务器
- */
-function selectMcpServers(pack: PowerPack): McpServerConfig[] {
-  const selected = new Set(pack.mcp.items)
-
-  switch (pack.mcp.mode) {
-    case 'all':
-      return pack.mcpServers
-    case 'include':
-      return pack.mcpServers.filter((server) => selected.has(server.id))
-    case 'exclude':
-      return pack.mcpServers.filter((server) => !selected.has(server.id))
-    default:
-      return []
-  }
-}
 
 /** 隔离行配置：只包含需要被屏蔽的内容，空配置不注册该行。 */
 export interface IsolatePlan {
@@ -85,7 +41,7 @@ export interface IsolatePlan {
 }
 
 /**
- * 组装技能包自己追加的行：提示词、技能提供者、MCP 服务器与隔离行。
+ * 组装技能包自己追加的行：提示词、技能提供者与隔离行。
  * @param pack 技能包定义
  * @param isolate 全局能力隔离计划；没有可隔离内容时省略
  * @returns 要接在模式行之后的组合行
@@ -115,10 +71,6 @@ export function buildPackRows(pack: PowerPack, isolate?: IsolatePlan): PresetRow
 
   rows.push({ id: 'skill-filesystem', name: SKILL_FILESYSTEM_ROW, config: skillConfig })
   rows.push({ id: 'tool-skill', name: TOOL_SKILL_ROW })
-
-  for (const server of selectMcpServers(pack)) {
-    rows.push({ id: `mcp-${server.id}`, name: MCP_CLIENT_ROW, config: mcpRowConfig(server) })
-  }
 
   return rows
 }
