@@ -2574,6 +2574,9 @@ function installAutoCompactRoutes(webServer) {
   });
 }
 
+// src/features/auto-compact/host/watcher.ts
+import { appendFileSync } from "node:fs";
+
 // src/features/auto-compact/host/region.ts
 function toolCallDelta(event) {
   if (event.type === "tool/result") return -1;
@@ -2647,6 +2650,11 @@ function installAutoCompactWatcher(ctx) {
   const attemptedAt = /* @__PURE__ */ new Map();
   const check = async (agent, signal) => {
     const settings = readAutoCompactSettings();
+    appendFileSync(
+      "/tmp/ac-debug.log",
+      `${(/* @__PURE__ */ new Date()).toISOString()} pid=${process.pid} session=${agent.session.id} enabled=${settings.enabled} threshold=${settings.thresholdPercent} retain=${settings.retainPercent} engine=${String(ctx.compaction?.compactRegion !== void 0)} meter=${String(ctx.tokenMeter !== void 0)} projections=${String(ctx.sessionProjections !== void 0)} pressure=${JSON.stringify(readContextPressure(ctx, agent.session))}
+`
+    );
     if (!settings.enabled) return;
     const session = agent.session;
     if (compacting.has(session.id)) return;
@@ -2664,10 +2672,14 @@ function installAutoCompactWatcher(ctx) {
         pressure.contextWindow,
         settings.retainPercent
       );
+      appendFileSync("/tmp/ac-debug.log", `${(/* @__PURE__ */ new Date()).toISOString()} decision=${JSON.stringify(decision)}
+`);
       if (decision.kind === "skipped") {
         console.error("[auto-compact] \u81EA\u52A8\u538B\u7F29\u5DF2\u8DF3\u8FC7:", decision.reason);
       }
     } catch (error) {
+      appendFileSync("/tmp/ac-debug.log", `${(/* @__PURE__ */ new Date()).toISOString()} error=${String(error)}
+`);
       console.error("[auto-compact] \u81EA\u52A8\u538B\u7F29\u5931\u8D25:", error);
     } finally {
       compacting.delete(session.id);
