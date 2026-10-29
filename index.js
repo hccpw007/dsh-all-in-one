@@ -1524,12 +1524,19 @@ var CONTENT_TYPES = {
 var ATTACHMENT_OBJECT_DIR = join8("attachments", "v1", "objects");
 var ATTACHMENT_OBJECT_NAME = /^[0-9a-f]{64}$/;
 var ATTACHMENT_SHARD_NAME = /^[0-9a-f]{2}$/;
+var ATTACHMENT_ID_PATTERN = /^(?:sha256:)?([0-9a-f]{64})$/;
 function isAttachmentObject(filePath) {
   const root = join8(resolveDshHome(), ATTACHMENT_OBJECT_DIR);
   const resolvedPath = resolve(filePath);
   if (!resolvedPath.startsWith(`${resolve(root)}${sep}`)) return false;
   if (!ATTACHMENT_OBJECT_NAME.test(basename(resolvedPath))) return false;
   return ATTACHMENT_SHARD_NAME.test(basename(dirname3(resolvedPath)));
+}
+function resolveAttachmentPath(attachmentId) {
+  const matched = ATTACHMENT_ID_PATTERN.exec(attachmentId);
+  if (matched === null) return void 0;
+  const hash = matched[1];
+  return join8(resolveDshHome(), ATTACHMENT_OBJECT_DIR, hash.slice(0, 2), hash);
 }
 function detectImageType(data) {
   const PNG_SIGNATURE = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
@@ -1611,9 +1618,19 @@ function installImagePreviewRoutes(webServer) {
         return;
       }
       const url = new URL(request.url ?? ROUTE_PATH2, "http://localhost");
+      const attachmentId = url.searchParams.get("attachment");
+      if (attachmentId !== null) {
+        const attachmentPath = resolveAttachmentPath(attachmentId);
+        if (attachmentPath === void 0) {
+          sendJson(response, 400, { error: "\u9644\u4EF6 ID \u683C\u5F0F\u4E0D\u6B63\u786E" });
+          return;
+        }
+        await sendImage(request, response, attachmentPath);
+        return;
+      }
       const rawPath = url.searchParams.get("path");
       if (rawPath === null || rawPath === "") {
-        sendJson(response, 400, { error: "\u7F3A\u5C11 path \u53C2\u6570" });
+        sendJson(response, 400, { error: "\u7F3A\u5C11 path \u6216 attachment \u53C2\u6570" });
         return;
       }
       const filePath = rawPath.startsWith("~/") ? join8(homedir3(), rawPath.slice(2)) : rawPath;

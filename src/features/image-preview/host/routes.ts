@@ -1,10 +1,12 @@
 /**
  * 「会话图片预览」的图片读取路由。
  *
- * 只读、只允许本机访问，路径分两类受理：
+ * 只读、只允许本机访问，请求分两类受理：
  *   - 常规图片：扩展名必须在白名单内；
  *   - 宿主附件对象：`<DSH_HOME>/attachments/v1/objects/<两位>/<64 位哈希>`，没有扩展名，
  *     由文件头探测真实类型。这类文件是宿主持久化的附件，正是最需要长期预览的来源。
+ * 附件对象也可以只给附件 ID（`sha256:<64 位哈希>`）：工具输出里只有 ID，没有路径，
+ * 换算成附件库路径的工作放在宿主侧，浏览器端不需要知道 DSH 主目录。
  *
  * 响应统一带 nosniff 与 CSP，避免把任意文件读成可执行资源。
  */
@@ -46,6 +48,9 @@ const ATTACHMENT_OBJECT_NAME = /^[0-9a-f]{64}$/
 /** 附件对象的分片目录名：哈希前两位。 */
 const ATTACHMENT_SHARD_NAME = /^[0-9a-f]{2}$/
 
+/** 附件 ID：`sha256:<64 位内容哈希>`；裸哈希也接受，宿主的部分输出会省略前缀。 */
+const ATTACHMENT_ID_PATTERN = /^(?:sha256:)?([0-9a-f]{64})$/
+
 /**
  * 判断路径是否是宿主附件对象。
  *
@@ -62,6 +67,22 @@ function isAttachmentObject(filePath: string): boolean {
   if (!ATTACHMENT_OBJECT_NAME.test(basename(resolvedPath))) return false
 
   return ATTACHMENT_SHARD_NAME.test(basename(dirname(resolvedPath)))
+}
+
+/**
+ * 把附件 ID 换算成附件库对象路径。
+ *
+ * 只按内容寻址规则拼路径，不读取任何索引：ID 就是文件名，分片目录取哈希前两位，
+ * 因此不会因为索引缺失而预览不到附件。
+ * @param attachmentId 附件 ID，可带 `sha256:` 前缀
+ * @returns 附件库对象绝对路径；ID 形态非法时返回 undefined
+ */
+function resolveAttachmentPath(attachmentId: string): string | undefined {
+  const matched = ATTACHMENT_ID_PATTERN.exec(attachmentId)
+  if (matched === null) return undefined
+
+  const hash = matched[1]
+  return join(resolveDshHome(), ATTACHMENT_OBJECT_DIR, hash.slice(0, 2), hash)
 }
 
 /**
@@ -190,10 +211,24 @@ export function installImagePreviewRoutes(webServer: WebServerApi): () => void {
       }
 
       const url = new URL(request.url ?? ROUTE_PATH, 'http://localhost')
+
+      // 附件 ID 优先：工具输出里只有 ID，没有可用的文件路径
+      const attachmentId = url.searchParams.get('attachment')
+      if (attachmentId !== null) {
+        const attachmentPath = resolveAttachmentPath(attachmentId)
+        if (attachmentPath === undefined) {
+          sendJson(response, 400, { error: '附件 ID 格式不正确' })
+          return
+        }
+
+        await sendImage(request, response, attachmentPath)
+        return
+      }
+
       const rawPath = url.searchParams.get('path')
 
       if (rawPath === null || rawPath === '') {
-        sendJson(response, 400, { error: '缺少 path 参数' })
+        sendJson(response, 400, { error: '缺少 path 或 attachment 参数' })
         return
       }
 

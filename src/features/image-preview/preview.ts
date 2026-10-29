@@ -1,5 +1,5 @@
 /**
- * 会话中本地图片路径的识别与预览插入。
+ * 会话中本地图片与附件 ID 的识别与预览插入。
  *
  * 会话正文由宿主渲染成普通 DOM，本功能只在旁边追加预览节点：
  *   - 不修改宿主节点、不拦截事件、不读写会话数据；
@@ -63,6 +63,14 @@ const TABLE_TAGS = new Set(['TABLE', 'TBODY', 'THEAD', 'TFOOT', 'TR', 'TD', 'TH'
 const IMAGE_EXTENSION_PATTERN = /\.(?:png|jpe?g|gif|webp|bmp|avif|svg|ico)$/i
 
 /**
+ * 宿主附件 ID 形态：`sha256:<64 位内容哈希>`。
+ *
+ * MCP 截图等工具的输出里只有这个 ID，没有文件路径；浏览器端不知道 DSH 主目录在哪，
+ * 只把 ID 原样交给宿主侧路由换算成附件库对象。
+ */
+const ATTACHMENT_ID_PATTERN = /^sha256:[0-9a-f]{64}$/
+
+/**
  * 宿主附件对象路径：`<DSH_HOME>/attachments/v1/objects/<两位>/<64 位哈希>`。
  *
  * 这类文件按内容哈希命名、没有扩展名，但它们是宿主持久化的附件（不会自动清理），
@@ -104,9 +112,9 @@ export function collectImagePaths(text: string): string[] {
 }
 
 /**
- * 把 token 收敛成可请求的绝对路径。
+ * 把 token 收敛成可请求的来源。
  * @param raw 文本切分出的原始 token
- * @returns 合法图片路径；不是本地绝对路径或扩展名不受支持时返回 undefined
+ * @returns 本地图片绝对路径或宿主附件 ID；两者都不是时返回 undefined
  */
 function normalizeCandidate(raw: string): string | undefined {
   if (raw === '') return undefined
@@ -127,7 +135,8 @@ function normalizeCandidate(raw: string): string | undefined {
   // `~/` 交给宿主侧展开，浏览器本身不知道用户主目录
   const isAbsolute =
     decoded.startsWith('/') || decoded.startsWith('~/') || /^[A-Za-z]:[\\/]/.test(decoded)
-  if (!isAbsolute) return undefined
+  // 工具输出（MCP 截图等）只有附件 ID，没有文件路径，按 ID 原样保留
+  if (!isAbsolute) return ATTACHMENT_ID_PATTERN.test(decoded) ? decoded : undefined
 
   // 常规图片按扩展名识别；宿主附件对象没有扩展名，按目录形状识别
   if (IMAGE_EXTENSION_PATTERN.test(decoded)) return decoded
@@ -202,14 +211,28 @@ export function syncBlockPreviews(block: Element, paths: string[]): void {
 }
 
 /**
+ * 把识别到的来源拼成图片读取地址。
+ * @param source 本地图片绝对路径或宿主附件 ID
+ * @returns 同源的读取地址
+ */
+function toImageUrl(source: string): string {
+  // 附件 ID 不是文件路径，交给宿主侧按 DSH 主目录换算成附件库对象
+  if (source.startsWith('sha256:')) {
+    return `${IMAGE_ROUTE}?attachment=${encodeURIComponent(source)}`
+  }
+
+  return `${IMAGE_ROUTE}?path=${encodeURIComponent(source)}`
+}
+
+/**
  * 创建一个预览图节点。
- * @param path 本地图片路径
+ * @param path 本地图片路径或宿主附件 ID
  * @param container 预览容器；图片失败后容器为空时一并隐藏
  * @returns img 元素
  */
 function createPreviewImage(path: string, container: HTMLElement): HTMLImageElement {
   const image = document.createElement('img')
-  image.src = `${IMAGE_ROUTE}?path=${encodeURIComponent(path)}`
+  image.src = toImageUrl(path)
   // 用路径作无障碍说明，避免空 alt 让读屏软件跳过预览图
   image.alt = path
   image.loading = 'lazy'
