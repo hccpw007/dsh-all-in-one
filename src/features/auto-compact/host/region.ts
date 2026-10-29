@@ -107,11 +107,16 @@ function selectRange(
 
 /**
  * 把较早的历史压缩成摘要，保留最近约 `retainPercent` 的上下文。
+ *
+ * 保留比例是「压缩后总占用的目标」，不是「近期尾部的预算」：请求里还有工具定义
+ * 这类完全不可压缩的固定开销，它同样占窗口。先把固定开销从目标里扣掉，剩下的
+ * 才是可以留给原文尾部的预算，否则压缩后总占用会稳定高出设定值一截。
  * @param engine 压缩服务
  * @param meter token 计价服务
  * @param agent 会话所属 Agent
  * @param signal 本轮取消信号
  * @param contextWindow 当前模型的上下文窗口容量
+ * @param usedTokens 当前请求实际占用的 token 数
  * @param retainPercent 压缩后要保留的窗口百分比
  * @returns 压缩结果，或跳过原因
  */
@@ -121,11 +126,16 @@ export async function compactOlderHistory(
   agent: AgentLike,
   signal: AbortSignal,
   contextWindow: number,
+  usedTokens: number,
   retainPercent: number,
 ): Promise<CompactionDecision> {
   const session = agent.session
   const measurement = meter.measure(session)
-  const retainTokens = Math.floor((contextWindow * retainPercent) / 100)
+  const measuredTokens = measurement.nodes.reduce((sum, node) => sum + node.tokens, 0)
+  // 实际请求量减去表面计价，就是工具定义等不随压缩变化的固定开销
+  const fixedTokens = Math.max(0, usedTokens - measuredTokens)
+  const targetTokens = Math.floor((contextWindow * retainPercent) / 100)
+  const retainTokens = Math.max(0, targetTokens - fixedTokens)
   const range = selectRange(session, measurement.nodes, retainTokens)
   if (range === null) return { kind: 'skipped', reason: '没有可安全压缩的历史' }
 
