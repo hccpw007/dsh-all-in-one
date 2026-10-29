@@ -2656,9 +2656,8 @@ function selectRange(session, priced, retainTokens) {
   if (keepFromIdx <= firstIdx) return null;
   return { start: surfaceNodes[firstIdx], end: surfaceNodes[keepFromIdx - 1] };
 }
-async function compactOlderHistory(engine, meter, agent, signal, contextWindow, retainPercent) {
+async function compactOlderHistory(engine, measurement, agent, signal, contextWindow, retainPercent) {
   const session = agent.session;
-  const measurement = meter.measure(session);
   const fixedTokens = Math.max(0, measurement.totalTokens - measurement.surfaceTokens);
   const targetTokens = Math.floor(contextWindow * retainPercent / 100);
   const retainTokens = Math.max(0, targetTokens - fixedTokens);
@@ -2701,15 +2700,14 @@ function readFromScope(scope, name) {
 function readService(agent, name) {
   return readFromScope(agent.ctx, name) ?? readFromScope(findServiceScope(agent, name), name);
 }
-function readContextPressure(agent) {
+function readContextWindow(agent) {
   const projections = readService(agent, "sessionProjections");
   if (projections === void 0) return void 0;
   const values = projections.snapshot(agent.session, ["contextPressure"]).values;
   const pressure = values.contextPressure;
-  const used = pressure?.projectedTokens ?? pressure?.pressureTokens;
   const contextWindow = pressure?.contextWindow;
-  if (used === void 0 || contextWindow === void 0 || contextWindow <= 0) return void 0;
-  return { ratio: used / contextWindow, contextWindow };
+  if (contextWindow === void 0 || contextWindow <= 0) return void 0;
+  return contextWindow;
 }
 function installAutoCompactWatcher(ctx) {
   const compacting = /* @__PURE__ */ new Set();
@@ -2719,14 +2717,16 @@ function installAutoCompactWatcher(ctx) {
     if (!settings.enabled) return;
     const session = agent.session;
     if (compacting.has(session.id)) return;
-    const pressure = readContextPressure(agent);
-    if (pressure === void 0 || pressure.ratio * 100 < settings.thresholdPercent) return;
+    const contextWindow = readContextWindow(agent);
+    if (contextWindow === void 0) return;
     const engine = readService(agent, "compaction");
     const meter = readService(agent, "tokenMeter");
     if (engine?.compactRegion === void 0 || meter === void 0) {
       console.error("[auto-compact] \u5BBF\u4E3B\u672A\u63D0\u4F9B\u5206\u6BB5\u538B\u7F29\u80FD\u529B\uFF0C\u8DF3\u8FC7\u672C\u6B21\u68C0\u67E5");
       return;
     }
+    const measurement = meter.measure(session);
+    if (measurement.totalTokens / contextWindow * 100 < settings.thresholdPercent) return;
     const lastAttempt = attemptedAt.get(session.id);
     if (lastAttempt !== void 0 && Date.now() - lastAttempt < RETRY_COOLDOWN_MS) return;
     compacting.add(session.id);
@@ -2734,10 +2734,10 @@ function installAutoCompactWatcher(ctx) {
     try {
       const decision = await compactOlderHistory(
         engine,
-        meter,
+        measurement,
         agent,
         signal,
-        pressure.contextWindow,
+        contextWindow,
         settings.retainPercent
       );
       if (decision.kind === "skipped") {

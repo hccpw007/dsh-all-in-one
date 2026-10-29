@@ -20,14 +20,6 @@ import { readAutoCompactSettings } from './settings'
 /** 同一会话两次压缩尝试之间的最短间隔；压缩失败时避免每一步都重试。 */
 const RETRY_COOLDOWN_MS = 30_000
 
-/** 一次检查读到的上下文占用。 */
-interface ContextPressure {
-  /** 占用比例，0-1。 */
-  ratio: number
-  /** 模型上下文窗口容量。 */
-  contextWindow: number
-}
-
 /** Cordis fiber 的最小结构：只需要它自己的作用域。 */
 interface FiberLike {
   ctx?: HostPluginContext
@@ -107,22 +99,20 @@ function readService<T>(agent: AgentLike, name: string): T | undefined {
 }
 
 /**
- * 读取会话当前的上下文窗口占用。
+ * 读取会话当前模型的上下文窗口容量。
  * @param agent 触发本步的 Agent
- * @returns 占用比例与窗口容量；缺少窗口容量或用量时返回 undefined
+ * @returns 窗口容量；投影里没有有效容量时返回 undefined
  */
-function readContextPressure(agent: AgentLike): ContextPressure | undefined {
+function readContextWindow(agent: AgentLike): number | undefined {
   const projections = readService<SessionProjectionsApi>(agent, 'sessionProjections')
   if (projections === undefined) return undefined
 
   const values = projections.snapshot(agent.session, ['contextPressure']).values
   const pressure = values.contextPressure as ContextPressureView | undefined
-  // 优先使用推算的下一轮占用，取不到时回退到最近一次请求的实际用量
-  const used = pressure?.projectedTokens ?? pressure?.pressureTokens
   const contextWindow = pressure?.contextWindow
-  if (used === undefined || contextWindow === undefined || contextWindow <= 0) return undefined
+  if (contextWindow === undefined || contextWindow <= 0) return undefined
 
-  return { ratio: used / contextWindow, contextWindow }
+  return contextWindow
 }
 
 /**
@@ -148,8 +138,8 @@ export function installAutoCompactWatcher(ctx: HostPluginContext): () => void {
     const session = agent.session
     if (compacting.has(session.id)) return
 
-    const pressure = readContextPressure(agent)
-    if (pressure === undefined || pressure.ratio * 100 < settings.thresholdPercent) return
+    const contextWindow = readContextWindow(agent)
+    if (contextWindow === undefined) return
 
     const engine = readService<CompactionApi>(agent, 'compaction')
     const meter = readService<TokenMeterApi>(agent, 'tokenMeter')
@@ -157,6 +147,11 @@ export function installAutoCompactWatcher(ctx: HostPluginContext): () => void {
       console.error('[auto-compact] 宿主未提供分段压缩能力，跳过本次检查')
       return
     }
+
+    // 占用与预算都取自这一次测量：上下文投影里的推算是本轮请求前的旧值，
+    // 压缩后它仍停留在压缩前，照着它判断会立刻再压一次并把预算算得过小。
+    const measurement = meter.measure(session)
+    if ((measurement.totalTokens / contextWindow) * 100 < settings.thresholdPercent) return
 
     const lastAttempt = attemptedAt.get(session.id)
     if (lastAttempt !== undefined && Date.now() - lastAttempt < RETRY_COOLDOWN_MS) return
@@ -167,10 +162,10 @@ export function installAutoCompactWatcher(ctx: HostPluginContext): () => void {
     try {
       const decision = await compactOlderHistory(
         engine,
-        meter,
+        measurement,
         agent,
         signal,
-        pressure.contextWindow,
+        contextWindow,
         settings.retainPercent,
       )
       if (decision.kind === 'skipped') {

@@ -14,7 +14,7 @@ import type {
   CompactionApi,
   SessionEventLike,
   SessionLike,
-  TokenMeterApi,
+  TokenMeterMeasurement,
 } from '../../../types/host'
 
 /** 一个表面节点的计价结果。 */
@@ -117,7 +117,7 @@ function selectRange(
  * 无关。不能改用上下文投影里的推算用量——那里含着对下一轮的预估，扣掉它会把
  * 预算压得过小而压掉过多历史。
  * @param engine 压缩服务
- * @param meter token 计价服务
+ * @param measurement 本次检查的表面计价（调用方已测量，压缩前后都用它判断）
  * @param agent 会话所属 Agent
  * @param signal 本轮取消信号
  * @param contextWindow 当前模型的上下文窗口容量
@@ -126,14 +126,13 @@ function selectRange(
  */
 export async function compactOlderHistory(
   engine: CompactionApi,
-  meter: TokenMeterApi,
+  measurement: TokenMeterMeasurement,
   agent: AgentLike,
   signal: AbortSignal,
   contextWindow: number,
   retainPercent: number,
 ): Promise<CompactionDecision> {
   const session = agent.session
-  const measurement = meter.measure(session)
   const fixedTokens = Math.max(0, measurement.totalTokens - measurement.surfaceTokens)
   const targetTokens = Math.floor((contextWindow * retainPercent) / 100)
   const retainTokens = Math.max(0, targetTokens - fixedTokens)
