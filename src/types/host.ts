@@ -58,6 +58,8 @@ export interface HostPluginContext {
   effect(effect: () => () => void, label?: string): void
   /** 订阅 index.html 注入事件，返回取消订阅函数。 */
   on(event: 'webserver/index-inject', listener: (table: IndexInjectTable) => void): () => void
+  /** 订阅 Agent 状态切换；自动压缩在会话结束时检查上下文占用。 */
+  on(event: 'agent/status', listener: (payload: AgentStatusEvent) => void): () => void
   /** 在依赖服务就绪后执行回调，回调拿到带对应服务的子上下文。 */
   inject(names: string[], callback: (ctx: HostPluginContext) => void): void
   /** Agent 预设服务；插件声明依赖后可用。 */
@@ -68,8 +70,58 @@ export interface HostPluginContext {
   tools?: ToolsApi
   /** 系统提示词服务；插件声明依赖后可用，用于注册段落与安装最外层包装。 */
   systemPrompt?: SystemPromptApi
+  /** 在线 Agent 服务；声明依赖后可用。 */
+  agents?: AgentsApi
+  /** 命令服务；声明依赖后可用，用于执行 `/compact`。 */
+  commands?: CommandsApi
+  /** 会话投影服务；声明依赖后可用，用于读取上下文占用。 */
+  sessionProjections?: SessionProjectionsApi
   /** 启动本进程的 profile；缺失时相关功能回退为扫描全部 profile。 */
   profileContext?: ProfileContext
+}
+
+/** Agent 状态事件负载：Agent 在 idle 与 running 之间切换时发出。 */
+export interface AgentStatusEvent {
+  agent: AgentLike
+  status: 'idle' | 'running'
+}
+
+/** 在线 Agent 的最小形状：会话与 Agent 一一对应。 */
+export interface AgentLike {
+  session: SessionLike
+}
+
+/** 会话的最小形状：读投影与防重复触发只需要标识与日志序号。 */
+export interface SessionLike {
+  /** 会话标识，与 Agent 标识相同。 */
+  id: string
+  /** 当前日志序号；一轮结束后递增，用于避免同一轮重复触发。 */
+  seq: number
+}
+
+/** 在线 Agent 服务。 */
+export interface AgentsApi {
+  list(): AgentLike[]
+}
+
+/** 命令执行结果；`kind` 为 `error` 时 `text` 是宿主给出的原因。 */
+export interface CommandExecution {
+  result: { kind: string; text?: string }
+}
+
+/** 命令服务。 */
+export interface CommandsApi {
+  execute(
+    agent: AgentLike,
+    line: string,
+    submittedAttachments: unknown[],
+    signal: AbortSignal,
+  ): Promise<CommandExecution | undefined>
+}
+
+/** 会话投影服务：按会话读取已注册的投影值。 */
+export interface SessionProjectionsApi {
+  snapshot(session: SessionLike, keys?: string[]): { values: Record<string, unknown> }
 }
 
 /** 宿主报告的 profile 信息。 */

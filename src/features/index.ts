@@ -4,6 +4,7 @@ import powerPack from './power-pack'
 import expandProcess from './expand-process'
 import deleteSession from './delete-session'
 import projectMemory from './project-memory'
+import autoCompact from './auto-compact'
 
 /**
  * 所有已注册的 feature。
@@ -21,4 +22,5 @@ export const featureList: FeatureDefinition[] = [
   deleteSession,
   projectMemory,
   powerPack,
+  autoCompact,
 ]

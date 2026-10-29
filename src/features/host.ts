@@ -4,6 +4,7 @@ import * as powerPack from './power-pack/host'
 import * as expandProcess from './expand-process/host'
 import * as deleteSession from './delete-session/host'
 import * as projectMemory from './project-memory/host'
+import * as autoCompact from './auto-compact/host'
 
 /**
  * 所有 feature 提供的宿主侧扩展，由 src/index.ts 统一注册。
@@ -16,4 +17,5 @@ export const featureHosts: FeatureHostExtension[] = [
   deleteSession,
   projectMemory,
   powerPack,
+  autoCompact,
 ]

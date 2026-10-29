@@ -39,10 +39,10 @@ window.__ModuleLoader__.load({
       default: () => entry_default
     });
     module.exports = __toCommonJS(entry_exports);
-    var import_react17 = __toESM(require("react"), 1);
+    var import_react18 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.static{position:static}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.top-0{top:0}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-9{height:2.25rem}.h-full{height:100%}.max-h-72{max-height:18rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-0\\.5,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[18px\\]{--tw-translate-x:18px}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.self-stretch{align-self:stretch}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-dashed{border-style:dashed}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[18px\\]{line-height:18px}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}@media (min-width:640px){.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
+    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.static{position:static}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.top-0{top:0}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-9{height:2.25rem}.h-full{height:100%}.max-h-72{max-height:18rem}.w-12{width:3rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-9{width:2.25rem}.w-full{width:100%}.min-w-0{min-width:0}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-0\\.5,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[18px\\]{--tw-translate-x:18px}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.self-stretch{align-self:stretch}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-dashed{border-style:dashed}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0\\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\\.5{padding-top:.875rem;padding-bottom:.875rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}@media (min-width:640px){.sm\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}";
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -1532,12 +1532,12 @@ window.__ModuleLoader__.load({
       const [pending2, setPending] = (0, import_react11.useState)(false);
       const [error, setError] = (0, import_react11.useState)(null);
       const readRequest = useRequest ?? useNoRequest;
-      const request3 = readRequest((value) => value);
-      const activeSessionId = request3?.sessionId;
+      const request4 = readRequest((value) => value);
+      const activeSessionId = request4?.sessionId;
       (0, import_react11.useEffect)(() => {
         setError(null);
       }, [activeSessionId]);
-      if (request3 === null) return null;
+      if (request4 === null) return null;
       const close = () => {
         if (pending2) return;
         setError(null);
@@ -1548,7 +1548,7 @@ window.__ModuleLoader__.load({
         setPending(true);
         setError(null);
         try {
-          await deleteSession?.(request3.sessionId);
+          await deleteSession?.(request4.sessionId);
         } catch (failure) {
           console.error("[delete-session] \u5220\u9664\u4F1A\u8BDD\u5931\u8D25:", failure);
           setPending(false);
@@ -1568,7 +1568,7 @@ window.__ModuleLoader__.load({
           description: t("confirmTarget"),
           footer: /* @__PURE__ */ import_react11.default.createElement(import_react11.default.Fragment, null, /* @__PURE__ */ import_react11.default.createElement(Button, { variant: "outline", disabled: pending2, onClick: close }, t("confirmCancel")), /* @__PURE__ */ import_react11.default.createElement(Button, { variant: "danger", disabled: pending2, onClick: () => void confirm() }, pending2 ? t("deleting") : t("confirmDelete")))
         },
-        /* @__PURE__ */ import_react11.default.createElement("p", { className: "mt-1 text-[13px] font-medium leading-5 text-primary" }, request3.title),
+        /* @__PURE__ */ import_react11.default.createElement("p", { className: "mt-1 text-[13px] font-medium leading-5 text-primary" }, request4.title),
         /* @__PURE__ */ import_react11.default.createElement("p", { className: "mt-3 text-[12px] leading-[18px] text-secondary" }, t("confirmMessage")),
         error !== null ? /* @__PURE__ */ import_react11.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, `${t("deleteFailed")}\uFF1A${error}`) : null
       );
@@ -2117,12 +2117,238 @@ window.__ModuleLoader__.load({
     };
     var project_memory_default = projectMemoryFeature;
 
+    // src/features/auto-compact/locales.ts
+    var autoCompactLocales = {
+      zh: {
+        // 开关标题
+        title: "\u81EA\u52A8\u538B\u7F29\u4F1A\u8BDD",
+        // 开关用途说明
+        description: "\u81EA\u52A8\u538B\u7F29\u4F1A\u8BDD\uFF0C\u907F\u514D\u8D8A\u804A\u8D8A\u6162\u3002",
+        // 阈值输入框的标签
+        thresholdLabel: "\u9608\u503C",
+        // 阈值输入框的单位
+        thresholdUnit: "%",
+        // 读取配置失败时的提示
+        loadFailed: "\u8BFB\u53D6\u81EA\u52A8\u538B\u7F29\u8BBE\u7F6E\u5931\u8D25",
+        // 保存配置失败时的提示
+        saveFailed: "\u4FDD\u5B58\u81EA\u52A8\u538B\u7F29\u8BBE\u7F6E\u5931\u8D25",
+        // 阈值超出 1-100 时的提示
+        thresholdInvalid: "\u9608\u503C\u9700\u8981\u662F 1 \u5230 100 \u4E4B\u95F4\u7684\u6574\u6570"
+      },
+      en: {
+        // Switch title
+        title: "Auto-compact sessions",
+        // Switch description
+        description: "Compact sessions automatically so long chats stay fast.",
+        // Label of the threshold input
+        thresholdLabel: "Threshold",
+        // Unit shown after the threshold input
+        thresholdUnit: "%",
+        // Shown when the settings cannot be loaded
+        loadFailed: "Could not load the auto-compact settings",
+        // Shown when the settings cannot be saved
+        saveFailed: "Could not save the auto-compact settings",
+        // Shown when the threshold is outside 1-100
+        thresholdInvalid: "The threshold must be an integer between 1 and 100"
+      }
+    };
+
+    // src/features/auto-compact/toggle.tsx
+    var import_react16 = __toESM(require("react"), 1);
+
+    // src/features/auto-compact/api.ts
+    var ENDPOINT4 = "/dsh-all-in-one/auto-compact";
+    var REQUEST_TIMEOUT_MS4 = 1e4;
+    async function request3(init = {}) {
+      const controller = new AbortController();
+      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS4);
+      try {
+        const response = await fetch(new URL(ENDPOINT4, window.location.origin).toString(), {
+          credentials: "same-origin",
+          cache: "no-store",
+          ...init,
+          signal: controller.signal
+        });
+        if (!response.ok) {
+          const text = await response.text();
+          let message = text;
+          try {
+            const parsed = JSON.parse(text);
+            if (typeof parsed.error === "string") message = parsed.error;
+          } catch (error) {
+            console.error("[auto-compact] \u89E3\u6790\u9519\u8BEF\u54CD\u5E94\u5931\u8D25:", error);
+          }
+          throw new Error(message || `HTTP ${response.status}`);
+        }
+        return await response.json();
+      } catch (error) {
+        console.error("[auto-compact] \u8BF7\u6C42\u81EA\u52A8\u538B\u7F29\u8BBE\u7F6E\u5931\u8D25:", error);
+        throw error;
+      } finally {
+        window.clearTimeout(timer);
+      }
+    }
+    function loadAutoCompactSettings() {
+      return request3();
+    }
+    function saveAutoCompactSettings(update) {
+      return request3({
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(update)
+      });
+    }
+
+    // src/features/auto-compact/toggle.tsx
+    var MIN_THRESHOLD_PERCENT = 1;
+    var MAX_THRESHOLD_PERCENT = 100;
+    var INPUT_CLASS3 = "w-12 rounded-md border border-line4 bg-base px-1 py-0.5 text-[11px] text-primary outline-none focus:border-brand";
+    function CompactIcon() {
+      return /* @__PURE__ */ import_react16.default.createElement(
+        "svg",
+        {
+          viewBox: "0 0 24 24",
+          width: "18",
+          height: "18",
+          "aria-hidden": "true",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: "1.8",
+          strokeLinecap: "round",
+          strokeLinejoin: "round"
+        },
+        /* @__PURE__ */ import_react16.default.createElement("path", { d: "M4 9a8 8 0 0 1 13.7-4.3L20 7" }),
+        /* @__PURE__ */ import_react16.default.createElement("path", { d: "M20 4v3.5h-3.5" }),
+        /* @__PURE__ */ import_react16.default.createElement("path", { d: "M20 15a8 8 0 0 1-13.7 4.3L4 17" }),
+        /* @__PURE__ */ import_react16.default.createElement("path", { d: "M4 20v-3.5h3.5" })
+      );
+    }
+    function AutoCompactToggle({ t }) {
+      const [settings, setSettings] = (0, import_react16.useState)(null);
+      const [thresholdDraft, setThresholdDraft] = (0, import_react16.useState)("");
+      const [error, setError] = (0, import_react16.useState)(null);
+      const latestRequest = (0, import_react16.useRef)(0);
+      (0, import_react16.useEffect)(() => {
+        let active = true;
+        void loadAutoCompactSettings().then((next) => {
+          if (!active) return;
+          setSettings(next);
+          setThresholdDraft(String(next.thresholdPercent));
+        }).catch((failure) => {
+          if (!active) return;
+          console.error("[auto-compact] \u8BFB\u53D6\u81EA\u52A8\u538B\u7F29\u8BBE\u7F6E\u5931\u8D25:", failure);
+          setError(`${t("loadFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
+        });
+        return () => {
+          active = false;
+        };
+      }, [t]);
+      const persist = async (patch) => {
+        latestRequest.current += 1;
+        const request4 = latestRequest.current;
+        setError(null);
+        try {
+          const next = await saveAutoCompactSettings(patch);
+          if (latestRequest.current !== request4) return;
+          setSettings(next);
+          setThresholdDraft(String(next.thresholdPercent));
+        } catch (failure) {
+          if (latestRequest.current !== request4) return;
+          console.error("[auto-compact] \u4FDD\u5B58\u81EA\u52A8\u538B\u7F29\u8BBE\u7F6E\u5931\u8D25:", failure);
+          setError(`${t("saveFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
+        }
+      };
+      const handleToggle = () => {
+        if (settings === null) return;
+        void persist({ enabled: !settings.enabled });
+      };
+      const commitThreshold = () => {
+        if (settings === null) return;
+        const parsed = Number(thresholdDraft.trim());
+        if (!Number.isInteger(parsed) || parsed < MIN_THRESHOLD_PERCENT || parsed > MAX_THRESHOLD_PERCENT) {
+          setError(t("thresholdInvalid"));
+          setThresholdDraft(String(settings.thresholdPercent));
+          return;
+        }
+        if (parsed === settings.thresholdPercent) return;
+        void persist({ thresholdPercent: parsed });
+      };
+      const enabled = settings?.enabled === true;
+      return (
+        // 卡片容器：主体按钮、开关与阈值输入是并列的交互区，不能互相嵌套
+        /* @__PURE__ */ import_react16.default.createElement("div", { className: "flex w-full items-start gap-3 rounded-xl border border-line4 bg-layer1 px-4 py-3.5 transition hover:bg-layer2" }, /* @__PURE__ */ import_react16.default.createElement(
+          "button",
+          {
+            type: "button",
+            "aria-label": t("title"),
+            disabled: settings === null,
+            onClick: handleToggle,
+            className: "flex min-w-0 flex-1 items-start gap-3 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-default"
+          },
+          /* @__PURE__ */ import_react16.default.createElement("span", { className: "flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand" }, /* @__PURE__ */ import_react16.default.createElement(CompactIcon, null)),
+          /* @__PURE__ */ import_react16.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react16.default.createElement("span", { className: "block text-[13px] font-medium leading-5 text-primary" }, t("title")), /* @__PURE__ */ import_react16.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react16.default.createElement("span", { className: "mt-1 block text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null)
+        ), /* @__PURE__ */ import_react16.default.createElement("div", { className: "flex shrink-0 flex-col items-end justify-between gap-2 self-stretch" }, /* @__PURE__ */ import_react16.default.createElement(
+          "button",
+          {
+            type: "button",
+            role: "switch",
+            "aria-checked": enabled,
+            "aria-label": t("title"),
+            disabled: settings === null,
+            onClick: handleToggle,
+            className: cn(
+              "flex h-5 w-9 shrink-0 items-center rounded-full border-0 p-0 transition",
+              enabled ? "bg-brand" : "bg-line2",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-default"
+            )
+          },
+          /* @__PURE__ */ import_react16.default.createElement(
+            "span",
+            {
+              "aria-hidden": "true",
+              className: cn(
+                "h-4 w-4 rounded-full bg-base shadow transition-transform",
+                enabled ? "translate-x-[18px]" : "translate-x-0.5"
+              )
+            }
+          )
+        ), enabled ? /* @__PURE__ */ import_react16.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react16.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, t("thresholdLabel")), /* @__PURE__ */ import_react16.default.createElement(
+          "input",
+          {
+            type: "number",
+            inputMode: "numeric",
+            min: MIN_THRESHOLD_PERCENT,
+            max: MAX_THRESHOLD_PERCENT,
+            step: 1,
+            value: thresholdDraft,
+            "aria-label": t("thresholdLabel"),
+            onChange: (event) => setThresholdDraft(event.target.value),
+            onBlur: commitThreshold,
+            onKeyDown: (event) => {
+              if (event.key === "Enter") commitThreshold();
+            },
+            className: INPUT_CLASS3
+          }
+        ), /* @__PURE__ */ import_react16.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, t("thresholdUnit"))) : null))
+      );
+    }
+
+    // src/features/auto-compact/index.tsx
+    var autoCompactFeature = {
+      id: "auto-compact",
+      order: 40,
+      switch: AutoCompactToggle,
+      locales: autoCompactLocales
+    };
+    var auto_compact_default = autoCompactFeature;
+
     // src/features/index.ts
     var featureList = [
       expand_process_default,
       delete_session_default,
       project_memory_default,
-      power_pack_default
+      power_pack_default,
+      auto_compact_default
     ];
 
     // src/shell/registry.ts
@@ -2162,9 +2388,9 @@ window.__ModuleLoader__.load({
     var registry = createFeatureRegistry(featureList);
 
     // src/shell/AllInOnePage.tsx
-    var import_react16 = __toESM(require("react"), 1);
+    var import_react17 = __toESM(require("react"), 1);
     function BackGlyph() {
-      return /* @__PURE__ */ import_react16.default.createElement(
+      return /* @__PURE__ */ import_react17.default.createElement(
         "svg",
         {
           viewBox: "0 0 16 16",
@@ -2177,34 +2403,34 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react16.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
+        /* @__PURE__ */ import_react17.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
       );
     }
     function AllInOnePage({ t }) {
-      const [activeId, setActiveId] = (0, import_react16.useState)(null);
-      const [pageActions, setPageActions] = (0, import_react16.useState)(null);
+      const [activeId, setActiveId] = (0, import_react17.useState)(null);
+      const [pageActions, setPageActions] = (0, import_react17.useState)(null);
       const active = activeId ? registry.find(activeId) : void 0;
       const activePage = active && "page" in active ? active : void 0;
-      const featureTranslate = (0, import_react16.useCallback)(
+      const featureTranslate = (0, import_react17.useCallback)(
         // 网格视图不会调用此函数，activePage 为空时直接返回 key 兜底
         (key) => activePage ? t(`${activePage.id}.${key}`) : key,
         [activePage, t]
       );
       if (activePage) {
         const ActivePage = activePage.page;
-        return /* @__PURE__ */ import_react16.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react16.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react16.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react16.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react16.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react16.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react16.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react16.default.createElement(ActivePage, { t: featureTranslate }))));
+        return /* @__PURE__ */ import_react17.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react17.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react17.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react17.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react17.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react17.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react17.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react17.default.createElement(ActivePage, { t: featureTranslate }))));
       }
-      return /* @__PURE__ */ import_react16.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react16.default.createElement("header", null, /* @__PURE__ */ import_react16.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react16.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
+      return /* @__PURE__ */ import_react17.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react17.default.createElement("header", null, /* @__PURE__ */ import_react17.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react17.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
         // 尚未注册功能时的空态提示
-        /* @__PURE__ */ import_react16.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
-      ) : /* @__PURE__ */ import_react16.default.createElement("div", { className: "mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2" }, registry.list.map((feature) => {
+        /* @__PURE__ */ import_react17.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
+      ) : /* @__PURE__ */ import_react17.default.createElement("div", { className: "mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2" }, registry.list.map((feature) => {
         const featureT = (key) => t(`${feature.id}.${key}`);
         if ("switch" in feature) {
           const SwitchEntry = feature.switch;
-          return /* @__PURE__ */ import_react16.default.createElement("div", { key: feature.id, className: "min-w-0" }, /* @__PURE__ */ import_react16.default.createElement(SwitchEntry, { t: featureT }));
+          return /* @__PURE__ */ import_react17.default.createElement("div", { key: feature.id, className: "min-w-0" }, /* @__PURE__ */ import_react17.default.createElement(SwitchEntry, { t: featureT }));
         }
         const Entry = feature.entry;
-        return /* @__PURE__ */ import_react16.default.createElement(Entry, { key: feature.id, t: featureT, open: () => setActiveId(feature.id) });
+        return /* @__PURE__ */ import_react17.default.createElement(Entry, { key: feature.id, t: featureT, open: () => setActiveId(feature.id) });
       })));
     }
 
@@ -2323,7 +2549,7 @@ window.__ModuleLoader__.load({
         });
         const t = ctx.locale.bind(LOCALE_NAMESPACE);
         installSettingsNavIcon(ctx, t, icon_default);
-        const SettingsSection = () => /* @__PURE__ */ import_react17.default.createElement(AllInOnePage, { t });
+        const SettingsSection = () => /* @__PURE__ */ import_react18.default.createElement(AllInOnePage, { t });
         ctx.slots.inject(
           "settings.section",
           () => ctx.slots.register(
