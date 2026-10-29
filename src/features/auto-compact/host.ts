@@ -36,6 +36,12 @@ export function apply(ctx: HostPluginContext): void {
 
   ctx.effect(() => installAutoCompactRoutes(webServer), 'auto-compact: routes')
 
+  // 临时调试：确认 agent/pre-step 事件是否到达本插件
+  ctx.on('agent/pre-step', async (_payload, next) => {
+    appendFileSync('/tmp/ac-debug.log', `${new Date().toISOString()} pre-step-reached\n`)
+    return next()
+  })
+
   ctx.inject(['compaction', 'tokenMeter', 'sessionProjections'], (scoped) => {
     appendFileSync('/tmp/ac-debug.log', `${new Date().toISOString()} inject-satisfied\n`)
     scoped.effect(() => installAutoCompactWatcher(scoped), 'auto-compact: watcher')
