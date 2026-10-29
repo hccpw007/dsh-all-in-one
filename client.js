@@ -1501,7 +1501,7 @@ window.__ModuleLoader__.load({
       if (!readDeleteSessionEnabled()) return null;
       if (sessionId === void 0 || requestConfirm === void 0) return null;
       const state = resolveSession2?.(sessionId);
-      if (state !== void 0 && (state.running || state.isCurrent)) return null;
+      if (state !== void 0 && state.running) return null;
       const handleClick = (event) => {
         event.stopPropagation();
         requestConfirm({ sessionId, title: displayTitle ?? sessionId });
@@ -1588,9 +1588,20 @@ window.__ModuleLoader__.load({
       ctx.inject(["sessions"], (scoped) => {
         const sessions = scoped.sessions;
         if (sessions === void 0) return;
+        let openNewSession;
+        scoped.inject(["uiWorkspace"], (withWorkspace) => {
+          const uiWorkspace = withWorkspace.uiWorkspace;
+          if (uiWorkspace?.startSession === void 0) return;
+          openNewSession = () => uiWorkspace.startSession?.();
+          return () => {
+            openNewSession = void 0;
+          };
+        });
         const deleteSession = async (sessionId) => {
+          const wasCurrent = resolveSession(sessions, sessionId).isCurrent;
           await requestDeleteSession(sessionId);
           sessions.handleSessionRemoved?.(sessionId);
+          if (wasCurrent) openNewSession?.();
         };
         ctx.slots.inject(
           ROW_ACTION_SLOT,

@@ -73,6 +73,15 @@ export interface SessionSummary {
   projectionValues?: { agentPreset?: unknown }
 }
 
+/** 工作区服务：宿主用它决定主视图打开哪一条会话。 */
+export interface UiWorkspaceApi {
+  /**
+   * 打开默认工作区的新会话页面：新建或复用一条空白会话并切到主视图。
+   * 宿主没有任何可用工作区时回到新会话屏幕。
+   */
+  startSession?(workspaceId?: string): void
+}
+
 /** 会话服务：读取列表快照，并在删除后让快照丢掉对应行。 */
 export interface SessionsApi {
   list: {
@@ -90,11 +99,13 @@ export interface PluginContext {
   /** 注册随插件生命周期自动清理的副作用，回调返回清理函数。 */
   effect(effect: () => () => void, label?: string): void
   /** 在依赖服务就绪后执行回调；服务缺失时回调不会执行，也不阻断插件主体。 */
-  inject(names: string[], callback: (ctx: PluginContext) => void): void
+  inject(names: string[], callback: (ctx: PluginContext) => void | (() => void)): void
   locale: LocaleApi
   slots: SlotsApi
   /** 会话列表服务；声明依赖后可用。 */
   sessions?: SessionsApi
+  /** 工作区服务；声明依赖后可用。 */
+  uiWorkspace?: UiWorkspaceApi
   /** 远程服务；声明 `remote.agentPresets` 依赖后可用。 */
   remote?: { agentPresets?: AgentPresetsRemote }
 }

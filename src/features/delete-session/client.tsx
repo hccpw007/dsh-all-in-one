@@ -6,6 +6,9 @@
  *     点击只写入待确认请求；
  *   - 宿主浮层（`shell.overlay`）里的确认弹窗，用户确认后才请求宿主删除磁盘
  *     上的会话记录，并让客户端列表立刻丢掉这一行。
+ *
+ * 当前正在浏览的会话也能删除；删掉它之后由宿主的工作区服务打开默认新会话
+ * 页面，界面不会停在一条已经不存在的会话上。
  */
 import React from 'react'
 
@@ -48,11 +51,29 @@ export function apply(ctx: PluginContext, t: Translate): void {
     const sessions = scoped.sessions
     if (sessions === undefined) return
 
+    // 当前对话被删掉后主视图仍指向它，需要工作区的「新会话」入口把界面切走；
+    // 服务缺失时删除照常可用，只是不会自动切到新会话页面
+    let openNewSession: (() => void) | undefined
+    scoped.inject(['uiWorkspace'], (withWorkspace) => {
+      const uiWorkspace = withWorkspace.uiWorkspace
+      if (uiWorkspace?.startSession === undefined) return
+
+      openNewSession = () => uiWorkspace.startSession?.()
+      return () => {
+        openNewSession = undefined
+      }
+    })
+
     /** 请求宿主删除并同步客户端列表；确认弹窗与行按钮共用这一份实现。 */
     const deleteSession = async (sessionId: string) => {
+      // 删除前判断是不是当前对话：删除后列表快照里已经没有这一行
+      const wasCurrent = resolveSession(sessions, sessionId).isCurrent
+
       await requestDeleteSession(sessionId)
       // 磁盘上的会话已删除，但客户端快照仍留着这条：同步摘掉，行立即消失
       sessions.handleSessionRemoved?.(sessionId)
+      // 删掉的是当前对话：切到默认新会话页面，避免界面停在一条不存在的会话上
+      if (wasCurrent) openNewSession?.()
     }
 
     ctx.slots.inject(ROW_ACTION_SLOT, () =>

@@ -54,7 +54,8 @@ function TrashGlyph() {
 /**
  * 会话行的删除按钮。
  *
- * 点击后只发起确认请求；运行中的会话与当前正在浏览的对话不提供入口。
+ * 点击后只发起确认请求；运行中的会话仍由宿主持有写句柄，不提供入口。
+ * 当前正在浏览的对话可以删除，删除后由客户端扩展切到默认新会话页面。
  * @param props 插槽注入的会话信息与确认请求入口
  */
 export function DeleteSessionButton({
@@ -69,9 +70,8 @@ export function DeleteSessionButton({
   if (sessionId === undefined || requestConfirm === undefined) return null
 
   const state = resolveSession?.(sessionId)
-  // 运行中的会话仍由宿主持有写句柄，删文件会破坏这次运行；当前打开的对话
-  // 删除后界面会停在一条不存在的会话上，因此这两种情况都不给入口
-  if (state !== undefined && (state.running || state.isCurrent)) return null
+  // 运行中的会话仍由宿主持有写句柄，删文件会破坏这次运行，因此不给入口
+  if (state !== undefined && state.running) return null
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     // 行本身可点击进入会话，按钮只发起确认请求

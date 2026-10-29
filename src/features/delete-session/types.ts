@@ -18,8 +18,8 @@ export interface DeleteSessionResponse {
 
 /** 一条会话当前能不能删：运行中与会话列表的判定都由宿主列表快照给出。 */
 export interface SessionDeletableState {
-  /** 该会话的 Agent 是否正在执行任务。 */
+  /** 该会话的 Agent 是否正在执行任务；运行中的会话不能删除。 */
   running: boolean
-  /** 该会话是否是当前正在浏览的对话；删除当前对话会立刻打断界面。 */
+  /** 该会话是否是当前正在浏览的对话；删除后需要切到默认新会话页面。 */
   isCurrent: boolean
 }
