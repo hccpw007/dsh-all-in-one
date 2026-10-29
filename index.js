@@ -1497,19 +1497,118 @@ function apply2(ctx) {
   );
 }
 
-// src/features/delete-session/host.ts
+// src/features/image-preview/host.ts
 var host_exports3 = {};
 __export(host_exports3, {
   apply: () => apply3,
   inject: () => inject3
 });
 
+// src/features/image-preview/host/routes.ts
+import { readFile as readFile6, stat as stat2 } from "node:fs/promises";
+import { extname, isAbsolute } from "node:path";
+var ROUTE_PATH2 = "/dsh-all-in-one/image";
+var MAX_FILE_BYTES = 32 * 1024 * 1024;
+var CONTENT_TYPES = {
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".gif": "image/gif",
+  ".webp": "image/webp",
+  ".bmp": "image/bmp",
+  ".avif": "image/avif",
+  ".svg": "image/svg+xml",
+  ".ico": "image/x-icon"
+};
+async function sendImage(request, response, filePath) {
+  const contentType = CONTENT_TYPES[extname(filePath).toLowerCase()];
+  if (contentType === void 0) {
+    sendJson(response, 415, { error: "\u53EA\u5141\u8BB8\u8BFB\u53D6\u56FE\u7247\u6587\u4EF6" });
+    return;
+  }
+  try {
+    const info = await stat2(filePath);
+    if (!info.isFile()) {
+      sendJson(response, 404, { error: "\u4E0D\u662F\u6587\u4EF6" });
+      return;
+    }
+    if (info.size > MAX_FILE_BYTES) {
+      sendJson(response, 413, { error: "\u56FE\u7247\u4F53\u79EF\u8D85\u8FC7\u4E0A\u9650" });
+      return;
+    }
+    const data = await readFile6(filePath);
+    response.writeHead(200, {
+      "content-type": contentType,
+      "content-length": data.length,
+      // 文件可能被同名覆盖（例如截图工具复用文件名），每次重新读取
+      "cache-control": "no-cache",
+      "x-content-type-options": "nosniff",
+      // SVG 直接打开时可能带脚本，用 CSP 禁掉资源加载与脚本执行
+      "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'"
+    });
+    response.end(request.method === "HEAD" ? void 0 : data);
+  } catch (error) {
+    console.warn("[image-preview] \u8BFB\u53D6\u56FE\u7247\u5931\u8D25:", filePath, error);
+    if (response.headersSent) {
+      response.end();
+      return;
+    }
+    sendJson(response, 404, { error: "\u56FE\u7247\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BFB" });
+  }
+}
+function installImagePreviewRoutes(webServer) {
+  return webServer.register({
+    kind: "prefix",
+    path: ROUTE_PATH2,
+    handler: async (request, response) => {
+      if (!isLocalRequest(request)) {
+        sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
+        return;
+      }
+      if (request.method !== "GET" && request.method !== "HEAD") {
+        response.writeHead(405, { allow: "GET, HEAD" });
+        response.end();
+        return;
+      }
+      const url = new URL(request.url ?? ROUTE_PATH2, "http://localhost");
+      const filePath = url.searchParams.get("path");
+      if (filePath === null || filePath === "") {
+        sendJson(response, 400, { error: "\u7F3A\u5C11 path \u53C2\u6570" });
+        return;
+      }
+      if (!isAbsolute(filePath)) {
+        sendJson(response, 400, { error: "\u53EA\u63A5\u53D7\u7EDD\u5BF9\u8DEF\u5F84" });
+        return;
+      }
+      await sendImage(request, response, filePath);
+    }
+  });
+}
+
+// src/features/image-preview/host.ts
+var inject3 = ["webServer"];
+function apply3(ctx) {
+  const webServer = ctx.webServer;
+  if (webServer === void 0) {
+    console.error("[image-preview] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u56FE\u7247\u9884\u89C8\u8DEF\u7531\u4E0D\u4F1A\u6CE8\u518C");
+    return;
+  }
+  ctx.effect(() => installImagePreviewRoutes(webServer), "image-preview: routes");
+}
+
+// src/features/delete-session/host.ts
+var host_exports4 = {};
+__export(host_exports4, {
+  apply: () => apply4,
+  inject: () => inject4
+});
+
 // src/features/delete-session/host/delete-session.ts
-import { readdir as readdir4, rm as rm3, stat as stat3 } from "node:fs/promises";
+import { readdir as readdir4, rm as rm3, stat as stat4 } from "node:fs/promises";
 import { join as join9 } from "node:path";
 
 // src/features/delete-session/host/session-records.ts
-import { readFile as readFile6, rename as rename3, rm as rm2, stat as stat2, unlink, writeFile as writeFile3 } from "node:fs/promises";
+import { readFile as readFile7, rename as rename3, rm as rm2, stat as stat3, unlink, writeFile as writeFile3 } from "node:fs/promises";
 import { join as join8 } from "node:path";
 var WORKSPACE_STORAGE_PATH = ["storages", "workspace.json"];
 var GLOBAL_SESSION_LISTS = ["archivedSessionIds", "pinnedSessionIds"];
@@ -1545,7 +1644,7 @@ async function forgetWorkspaceAccount(dshHome, sessionId) {
   const file = join8(dshHome, ...WORKSPACE_STORAGE_PATH);
   let before;
   try {
-    before = await stat2(file);
+    before = await stat3(file);
   } catch (error) {
     if (isEnoent(error)) return 0;
     console.error("[delete-session] \u8BFB\u53D6\u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u72B6\u6001\u5931\u8D25:", error);
@@ -1553,7 +1652,7 @@ async function forgetWorkspaceAccount(dshHome, sessionId) {
   }
   let document;
   try {
-    document = JSON.parse(await readFile6(file, "utf8"));
+    document = JSON.parse(await readFile7(file, "utf8"));
   } catch (error) {
     console.error("[delete-session] \u89E3\u6790\u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u5931\u8D25:", file, error);
     return 0;
@@ -1584,7 +1683,7 @@ async function forgetWorkspaceAccount(dshHome, sessionId) {
     }
   }
   if (removed === 0) return 0;
-  const after = await stat2(file);
+  const after = await stat3(file);
   if (after.mtimeMs !== before.mtimeMs || after.size !== before.size) {
     console.warn("[delete-session] \u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u521A\u88AB\u5BBF\u4E3B\u6539\u5199\uFF0C\u8DF3\u8FC7\u672C\u6B21\u6E05\u7406:", file);
     return 0;
@@ -1629,7 +1728,7 @@ async function findSessionDirs(sessionId) {
   for (const project of projects) {
     const candidate = join9(project, sessionId);
     try {
-      const info = await stat3(candidate);
+      const info = await stat4(candidate);
       if (info.isDirectory()) found.push(candidate);
     } catch (error) {
       if (error.code === "ENOENT") continue;
@@ -1660,7 +1759,7 @@ async function deleteStoredSession(sessionId) {
 }
 
 // src/features/delete-session/host/routes.ts
-var ROUTE_PATH2 = "/dsh-all-in-one/sessions";
+var ROUTE_PATH3 = "/dsh-all-in-one/sessions";
 var MAX_BODY_BYTES2 = 8 * 1024;
 function readSessionId(body) {
   if (typeof body !== "object" || body === null) return void 0;
@@ -1670,7 +1769,7 @@ function readSessionId(body) {
 function installDeleteSessionRoutes(webServer) {
   return webServer.register({
     kind: "prefix",
-    path: ROUTE_PATH2,
+    path: ROUTE_PATH3,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
         sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
@@ -1705,8 +1804,8 @@ function installDeleteSessionRoutes(webServer) {
 }
 
 // src/features/delete-session/host.ts
-var inject3 = ["webServer"];
-function apply3(ctx) {
+var inject4 = ["webServer"];
+function apply4(ctx) {
   const webServer = ctx.webServer;
   if (webServer === void 0) {
     console.error("[delete-session] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u5220\u9664\u4F1A\u8BDD\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
@@ -1716,10 +1815,10 @@ function apply3(ctx) {
 }
 
 // src/features/project-memory/host.ts
-var host_exports4 = {};
-__export(host_exports4, {
-  apply: () => apply4,
-  inject: () => inject4
+var host_exports5 = {};
+__export(host_exports5, {
+  apply: () => apply5,
+  inject: () => inject5
 });
 
 // src/features/project-memory/host/settings.ts
@@ -1772,7 +1871,7 @@ function writeMemorySettings(next) {
 
 // src/features/project-memory/host/paths.ts
 import { homedir as homedir3 } from "node:os";
-import { isAbsolute, join as join11, resolve } from "node:path";
+import { isAbsolute as isAbsolute2, join as join11, resolve } from "node:path";
 var MEMORY_INDEX_FILE = "MEMORY.md";
 function defaultMemoryRoot() {
   return join11(resolveDshHome(), "all-in-one", "projects");
@@ -1781,7 +1880,7 @@ function resolveMemoryRoot(root) {
   const trimmed = root.trim();
   if (trimmed === "") return defaultMemoryRoot();
   const expanded = trimmed === "~" ? homedir3() : trimmed.startsWith("~/") ? join11(homedir3(), trimmed.slice(2)) : trimmed;
-  return isAbsolute(expanded) ? resolve(expanded) : void 0;
+  return isAbsolute2(expanded) ? resolve(expanded) : void 0;
 }
 function projectSlug(directory) {
   return resolve(directory).replace(/[^A-Za-z0-9]/g, "-");
@@ -1806,11 +1905,11 @@ function memoryDirForSession(projectDirectory) {
 }
 
 // src/features/project-memory/host/session-dir.ts
-import { isAbsolute as isAbsolute2 } from "node:path";
+import { isAbsolute as isAbsolute3 } from "node:path";
 function resolveSessionDirectory(agent) {
   const session = agent?.session;
   const recorded = session?.header?.cwd;
-  return typeof recorded === "string" && isAbsolute2(recorded) ? recorded : void 0;
+  return typeof recorded === "string" && isAbsolute3(recorded) ? recorded : void 0;
 }
 
 // src/features/project-memory/host/store.ts
@@ -2075,7 +2174,7 @@ function installMemoryPrompt(ctx) {
 }
 
 // src/features/project-memory/host/routes.ts
-var ROUTE_PATH3 = "/dsh-all-in-one/memory";
+var ROUTE_PATH4 = "/dsh-all-in-one/memory";
 var MAX_BODY_BYTES3 = 8 * 1024;
 function buildPayload2() {
   const settings = readMemorySettings();
@@ -2109,7 +2208,7 @@ function readRequest(body) {
 function installMemoryRoutes(webServer) {
   return webServer.register({
     kind: "exact",
-    path: ROUTE_PATH3,
+    path: ROUTE_PATH4,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
         sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
@@ -2337,8 +2436,8 @@ function installMemoryTool(ctx) {
 }
 
 // src/features/project-memory/host.ts
-var inject4 = ["systemPrompt", "tools", "webServer"];
-function apply4(ctx) {
+var inject5 = ["systemPrompt", "tools", "webServer"];
+function apply5(ctx) {
   installMemoryPrompt(ctx);
   installMemoryTool(ctx);
   const webServer = ctx.webServer;
@@ -2350,41 +2449,54 @@ function apply4(ctx) {
 }
 
 // src/features/auto-compact/host.ts
-var host_exports5 = {};
-__export(host_exports5, {
-  apply: () => apply5,
-  inject: () => inject5
+var host_exports6 = {};
+__export(host_exports6, {
+  apply: () => apply6,
+  inject: () => inject6
 });
 
 // src/features/auto-compact/host/settings.ts
 import { mkdirSync as mkdirSync3, readFileSync as readFileSync3, renameSync as renameSync3, statSync as statSync3, writeFileSync as writeFileSync3 } from "node:fs";
 import { dirname as dirname4, join as join13 } from "node:path";
-var DEFAULT_SETTINGS2 = { enabled: false, thresholdPercent: 80 };
-var MIN_THRESHOLD_PERCENT = 1;
-var MAX_THRESHOLD_PERCENT = 100;
+var DEFAULT_SETTINGS2 = {
+  enabled: false,
+  thresholdPercent: 80,
+  retainPercent: 16
+};
+var MIN_PERCENT = 1;
+var MAX_PERCENT = 100;
 var cache2;
 function autoCompactSettingsFile() {
   return join13(resolveDshHome(), "all-in-one", "auto-compact.json");
 }
-function normalizeThreshold(value) {
+function normalizePercent(value, fallback) {
   const parsed = typeof value === "number" ? value : Number.NaN;
-  if (!Number.isFinite(parsed)) return DEFAULT_SETTINGS2.thresholdPercent;
-  return Math.min(MAX_THRESHOLD_PERCENT, Math.max(MIN_THRESHOLD_PERCENT, Math.round(parsed)));
+  if (!Number.isFinite(parsed)) return fallback;
+  return Math.min(MAX_PERCENT, Math.max(MIN_PERCENT, Math.round(parsed)));
+}
+function clampRetain(retainPercent, thresholdPercent) {
+  return Math.min(retainPercent, Math.max(MIN_PERCENT, thresholdPercent - 1));
 }
 function normalizeSettings2(value) {
   if (typeof value !== "object" || value === null) return { ...DEFAULT_SETTINGS2 };
   const candidate = value;
+  const thresholdPercent = normalizePercent(candidate.thresholdPercent, DEFAULT_SETTINGS2.thresholdPercent);
+  const retainPercent = normalizePercent(candidate.retainPercent, DEFAULT_SETTINGS2.retainPercent);
   return {
     enabled: candidate.enabled === true,
-    thresholdPercent: normalizeThreshold(candidate.thresholdPercent)
+    thresholdPercent,
+    retainPercent: clampRetain(retainPercent, thresholdPercent)
   };
 }
 function applyPatch(current, patch) {
   if (typeof patch !== "object" || patch === null) return { ...current };
   const candidate = patch;
+  const thresholdPercent = candidate.thresholdPercent === void 0 ? current.thresholdPercent : normalizePercent(candidate.thresholdPercent, current.thresholdPercent);
+  const retainPercent = candidate.retainPercent === void 0 ? current.retainPercent : normalizePercent(candidate.retainPercent, current.retainPercent);
   return {
     enabled: typeof candidate.enabled === "boolean" ? candidate.enabled : current.enabled,
-    thresholdPercent: candidate.thresholdPercent === void 0 ? current.thresholdPercent : normalizeThreshold(candidate.thresholdPercent)
+    thresholdPercent,
+    retainPercent: clampRetain(retainPercent, thresholdPercent)
   };
 }
 function readAutoCompactSettings() {
@@ -2425,12 +2537,12 @@ function updateAutoCompactSettings(patch) {
 }
 
 // src/features/auto-compact/host/routes.ts
-var ROUTE_PATH4 = "/dsh-all-in-one/auto-compact";
+var ROUTE_PATH5 = "/dsh-all-in-one/auto-compact";
 var MAX_BODY_BYTES4 = 4 * 1024;
 function installAutoCompactRoutes(webServer) {
   return webServer.register({
     kind: "prefix",
-    path: ROUTE_PATH4,
+    path: ROUTE_PATH5,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
         sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
@@ -2462,8 +2574,65 @@ function installAutoCompactRoutes(webServer) {
   });
 }
 
+// src/features/auto-compact/host/region.ts
+function toolCallDelta(event) {
+  if (event.type === "tool/result") return -1;
+  if (event.type !== "assistant/message") return 0;
+  const content = event.data?.message?.content ?? [];
+  return content.filter((block) => block.type === "tool-call").length;
+}
+function balancedCuts(session, nodes) {
+  const cuts = [true];
+  let open = 0;
+  for (const seq of nodes) {
+    const event = session.eventAt(seq);
+    open += event === void 0 ? 0 : toolCallDelta(event);
+    if (open < 0) open = 0;
+    cuts.push(open === 0);
+  }
+  return cuts;
+}
+function selectRange(session, priced, retainTokens) {
+  const surfaceNodes = session.surface.nodes;
+  if (priced.length !== surfaceNodes.length) {
+    throw new Error(
+      `[auto-compact] \u8868\u9762\u8BA1\u4EF7\u4E0E\u5F53\u524D\u8868\u9762\u4E0D\u4E00\u81F4\uFF1A${priced.length} \u4E2A\u8282\u70B9\u5BF9 ${surfaceNodes.length} \u4E2A\u8868\u9762\u8282\u70B9`
+    );
+  }
+  if (surfaceNodes.length === 0) return null;
+  const head = session.eventAt(surfaceNodes[0]);
+  const firstIdx = head?.type === "system/message" ? 1 : 0;
+  let accumulated = 0;
+  let keepFromIdx = priced.length;
+  for (let index = priced.length - 1; index >= 0; index -= 1) {
+    accumulated += priced[index].tokens;
+    keepFromIdx = index;
+    if (accumulated >= retainTokens) break;
+  }
+  if (keepFromIdx <= firstIdx) return null;
+  const cuts = balancedCuts(session, surfaceNodes);
+  while (keepFromIdx > firstIdx && !cuts[keepFromIdx]) keepFromIdx -= 1;
+  if (keepFromIdx <= firstIdx) return null;
+  return { start: surfaceNodes[firstIdx], end: surfaceNodes[keepFromIdx - 1] };
+}
+async function compactOlderHistory(ctx, agent, signal, contextWindow, retainPercent) {
+  const engine = ctx.compaction;
+  const meter = ctx.tokenMeter;
+  if (engine?.compactRegion === void 0 || meter === void 0) {
+    return { kind: "skipped", reason: "\u5BBF\u4E3B\u672A\u63D0\u4F9B\u5206\u6BB5\u538B\u7F29\u80FD\u529B" };
+  }
+  const session = agent.session;
+  const measurement = meter.measure(session);
+  const retainTokens = Math.floor(contextWindow * retainPercent / 100);
+  const range = selectRange(session, measurement.nodes, retainTokens);
+  if (range === null) return { kind: "skipped", reason: "\u6CA1\u6709\u53EF\u5B89\u5168\u538B\u7F29\u7684\u5386\u53F2" };
+  await engine.compactRegion(range.start, range.end, agent, signal);
+  return { kind: "compacted" };
+}
+
 // src/features/auto-compact/host/watcher.ts
-function readPressureRatio(ctx, session) {
+var RETRY_COOLDOWN_MS = 3e4;
+function readContextPressure(ctx, session) {
   const projections = ctx.sessionProjections;
   if (projections === void 0) return void 0;
   const values = projections.snapshot(session, ["contextPressure"]).values;
@@ -2471,59 +2640,60 @@ function readPressureRatio(ctx, session) {
   const used = pressure?.projectedTokens ?? pressure?.pressureTokens;
   const contextWindow = pressure?.contextWindow;
   if (used === void 0 || contextWindow === void 0 || contextWindow <= 0) return void 0;
-  return used / contextWindow;
-}
-async function runCompact(ctx, agent) {
-  const commands = ctx.commands;
-  if (commands === void 0) return;
-  try {
-    const execution = await commands.execute(agent, "/compact", [], new AbortController().signal);
-    if (execution === void 0) {
-      console.error("[auto-compact] \u5BBF\u4E3B\u672A\u6CE8\u518C /compact \u547D\u4EE4\uFF0C\u81EA\u52A8\u538B\u7F29\u672A\u6267\u884C");
-      return;
-    }
-    if (execution.result.kind === "error") {
-      console.error("[auto-compact] \u81EA\u52A8\u538B\u7F29\u672A\u5B8C\u6210:", execution.result.text ?? "\u672A\u77E5\u539F\u56E0");
-    }
-  } catch (error) {
-    console.error("[auto-compact] \u81EA\u52A8\u538B\u7F29\u5931\u8D25:", error);
-  }
+  return { ratio: used / contextWindow, contextWindow };
 }
 function installAutoCompactWatcher(ctx) {
   const compacting = /* @__PURE__ */ new Set();
-  const attemptedSeq = /* @__PURE__ */ new Map();
-  const dispose = ctx.on("agent/status", (event) => {
-    if (event.status !== "idle") return;
+  const attemptedAt = /* @__PURE__ */ new Map();
+  const check = async (agent, signal) => {
     const settings = readAutoCompactSettings();
     if (!settings.enabled) return;
-    const session = event.agent.session;
+    const session = agent.session;
     if (compacting.has(session.id)) return;
-    if (attemptedSeq.get(session.id) === session.seq) return;
-    const ratio = readPressureRatio(ctx, session);
-    if (ratio === void 0 || ratio * 100 < settings.thresholdPercent) return;
+    const pressure = readContextPressure(ctx, session);
+    if (pressure === void 0 || pressure.ratio * 100 < settings.thresholdPercent) return;
+    const lastAttempt = attemptedAt.get(session.id);
+    if (lastAttempt !== void 0 && Date.now() - lastAttempt < RETRY_COOLDOWN_MS) return;
     compacting.add(session.id);
-    attemptedSeq.set(session.id, session.seq);
-    void runCompact(ctx, event.agent).finally(() => {
+    attemptedAt.set(session.id, Date.now());
+    try {
+      const decision = await compactOlderHistory(
+        ctx,
+        agent,
+        signal,
+        pressure.contextWindow,
+        settings.retainPercent
+      );
+      if (decision.kind === "skipped") {
+        console.error("[auto-compact] \u81EA\u52A8\u538B\u7F29\u5DF2\u8DF3\u8FC7:", decision.reason);
+      }
+    } catch (error) {
+      console.error("[auto-compact] \u81EA\u52A8\u538B\u7F29\u5931\u8D25:", error);
+    } finally {
       compacting.delete(session.id);
-    });
+    }
+  };
+  const dispose = ctx.on("agent/pre-step", async ({ agent, signal }, next) => {
+    if (!signal.aborted) await check(agent, signal);
+    return next();
   });
   return () => {
     dispose();
     compacting.clear();
-    attemptedSeq.clear();
+    attemptedAt.clear();
   };
 }
 
 // src/features/auto-compact/host.ts
-var inject5 = ["webServer"];
-function apply5(ctx) {
+var inject6 = ["webServer"];
+function apply6(ctx) {
   const webServer = ctx.webServer;
   if (webServer === void 0) {
     console.error("[auto-compact] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u8BBE\u7F6E\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
     return;
   }
   ctx.effect(() => installAutoCompactRoutes(webServer), "auto-compact: routes");
-  ctx.inject(["agents", "commands", "sessionProjections"], (scoped) => {
+  ctx.inject(["compaction", "tokenMeter", "sessionProjections"], (scoped) => {
     ctx.effect(() => installAutoCompactWatcher(scoped), "auto-compact: watcher");
   });
 }
@@ -2533,16 +2703,17 @@ var featureHosts = [
   host_exports2,
   host_exports3,
   host_exports4,
+  host_exports5,
   host_exports,
-  host_exports5
+  host_exports6
 ];
 
 // src/index.ts
-var inject6 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
-function apply6(ctx) {
+var inject7 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
+function apply7(ctx) {
   for (const feature of featureHosts) feature.apply(ctx);
 }
 export {
-  apply6 as apply,
-  inject6 as inject
+  apply7 as apply,
+  inject7 as inject
 };

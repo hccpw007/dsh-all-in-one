@@ -2,10 +2,10 @@
  * 「自动压缩会话」的宿主侧扩展。
  *
  * 两件事都只在宿主侧成立：
- *   1. 提供设置页读写开关与阈值的本地路由；
- *   2. 在每轮结束后检查上下文占用，达到阈值时执行 `/compact`。
+ *   1. 提供设置页读写开关与两个百分比的本地路由；
+ *   2. 在每步派发模型请求前检查上下文占用，达到阈值就压缩较早的历史。
  *
- * 事件监听依赖会话投影与命令服务，用嵌套 inject 按需注册：宿主缺少其中
+ * 事件监听依赖压缩、计价与投影服务，用嵌套 inject 按需注册：宿主缺少其中
  * 任一项时只是自动压缩不生效，设置路由仍可正常使用。
  */
 import type { HostPluginContext } from '../../types/host'
@@ -29,7 +29,7 @@ export function apply(ctx: HostPluginContext): void {
 
   ctx.effect(() => installAutoCompactRoutes(webServer), 'auto-compact: routes')
 
-  ctx.inject(['agents', 'commands', 'sessionProjections'], (scoped) => {
+  ctx.inject(['compaction', 'tokenMeter', 'sessionProjections'], (scoped) => {
     ctx.effect(() => installAutoCompactWatcher(scoped), 'auto-compact: watcher')
   })
 }

@@ -1,21 +1,36 @@
 /**
  * 「自动压缩会话」的触发逻辑。
  *
- * 宿主每轮结束时会把 Agent 状态切回 idle，这里在该时刻读取会话的
- * `contextPressure` 投影：上下文窗口占用达到阈值就执行 `/compact`，由宿主
- * 自己完成历史压缩。压缩动作放在空闲之后，避免打断正在执行的回合。
+ * 宿主在一轮里每次派发模型请求前都会发出 `agent/pre-step`，这里在该时刻读取
+ * 会话的 `contextPressure` 投影：上下文窗口占用达到阈值就把较早的历史压成
+ * 摘要，然后让本轮继续。因此长会话在回合中间也会被压缩，不必等到整轮结束。
  */
-import type { AgentLike, HostPluginContext, SessionLike } from '../../../types/host'
+import type { AgentLike, AgentPreStepEvent, HostPluginContext } from '../../../types/host'
 import type { ContextPressureView } from '../types'
+import { compactOlderHistory } from './region'
 import { readAutoCompactSettings } from './settings'
 
+/** 同一会话两次压缩尝试之间的最短间隔；压缩失败时避免每一步都重试。 */
+const RETRY_COOLDOWN_MS = 30_000
+
+/** 一次检查读到的上下文占用。 */
+interface ContextPressure {
+  /** 占用比例，0-1。 */
+  ratio: number
+  /** 模型上下文窗口容量。 */
+  contextWindow: number
+}
+
 /**
- * 读取会话当前的上下文窗口占用比例。
+ * 读取会话当前的上下文窗口占用。
  * @param ctx 宿主插件上下文
  * @param session 会话
- * @returns 占用比例；缺少窗口容量或用量时返回 undefined
+ * @returns 占用比例与窗口容量；缺少窗口容量或用量时返回 undefined
  */
-function readPressureRatio(ctx: HostPluginContext, session: SessionLike): number | undefined {
+function readContextPressure(
+  ctx: HostPluginContext,
+  session: AgentLike['session'],
+): ContextPressure | undefined {
   const projections = ctx.sessionProjections
   if (projections === undefined) return undefined
 
@@ -26,69 +41,68 @@ function readPressureRatio(ctx: HostPluginContext, session: SessionLike): number
   const contextWindow = pressure?.contextWindow
   if (used === undefined || contextWindow === undefined || contextWindow <= 0) return undefined
 
-  return used / contextWindow
+  return { ratio: used / contextWindow, contextWindow }
 }
 
 /**
- * 执行一次 `/compact`；失败只记日志，不影响后续回合。
- * @param ctx 宿主插件上下文
- * @param agent 要压缩的会话所属 Agent
- */
-async function runCompact(ctx: HostPluginContext, agent: AgentLike): Promise<void> {
-  const commands = ctx.commands
-  if (commands === undefined) return
-
-  try {
-    const execution = await commands.execute(agent, '/compact', [], new AbortController().signal)
-    if (execution === undefined) {
-      console.error('[auto-compact] 宿主未注册 /compact 命令，自动压缩未执行')
-      return
-    }
-
-    // 宿主拒绝时（压缩忙、没有可压缩历史等）只记录原因，下一轮再判断
-    if (execution.result.kind === 'error') {
-      console.error('[auto-compact] 自动压缩未完成:', execution.result.text ?? '未知原因')
-    }
-  } catch (error) {
-    console.error('[auto-compact] 自动压缩失败:', error)
-  }
-}
-
-/**
- * 注册空闲时机检查，返回取消订阅函数。
+ * 注册每步前的检查，返回取消订阅函数。
  * @param ctx 宿主插件上下文
  * @returns 取消订阅函数
  */
 export function installAutoCompactWatcher(ctx: HostPluginContext): () => void {
-  // 正在压缩的会话：压缩过程本身也会触发状态切换，必须挡住重复触发
+  // 正在压缩的会话：压缩过程本身会推进会话，必须挡住重复触发
   const compacting = new Set<string>()
-  // 最近一次尝试触发时的会话日志序号：同一轮只尝试一次，失败也等下一轮
-  const attemptedSeq = new Map<string, number>()
+  // 每个会话最近一次尝试的时间，用于失败冷却
+  const attemptedAt = new Map<string, number>()
 
-  const dispose = ctx.on('agent/status', (event) => {
-    if (event.status !== 'idle') return
-
+  /**
+   * 达到阈值时压缩一段较早的历史；任何失败都只记日志，不影响本轮继续。
+   * @param agent 触发本步的 Agent
+   * @param signal 本轮取消信号
+   */
+  const check = async (agent: AgentLike, signal: AbortSignal): Promise<void> => {
     const settings = readAutoCompactSettings()
     if (!settings.enabled) return
 
-    const session = event.agent.session
+    const session = agent.session
     if (compacting.has(session.id)) return
-    if (attemptedSeq.get(session.id) === session.seq) return
 
-    const ratio = readPressureRatio(ctx, session)
-    if (ratio === undefined || ratio * 100 < settings.thresholdPercent) return
+    const pressure = readContextPressure(ctx, session)
+    if (pressure === undefined || pressure.ratio * 100 < settings.thresholdPercent) return
+
+    const lastAttempt = attemptedAt.get(session.id)
+    if (lastAttempt !== undefined && Date.now() - lastAttempt < RETRY_COOLDOWN_MS) return
 
     compacting.add(session.id)
-    attemptedSeq.set(session.id, session.seq)
+    attemptedAt.set(session.id, Date.now())
 
-    void runCompact(ctx, event.agent).finally(() => {
+    try {
+      const decision = await compactOlderHistory(
+        ctx,
+        agent,
+        signal,
+        pressure.contextWindow,
+        settings.retainPercent,
+      )
+      if (decision.kind === 'skipped') {
+        console.error('[auto-compact] 自动压缩已跳过:', decision.reason)
+      }
+    } catch (error) {
+      console.error('[auto-compact] 自动压缩失败:', error)
+    } finally {
       compacting.delete(session.id)
-    })
+    }
+  }
+
+  const dispose = ctx.on('agent/pre-step', async ({ agent, signal }: AgentPreStepEvent, next) => {
+    if (!signal.aborted) await check(agent, signal)
+
+    return next()
   })
 
   return () => {
     dispose()
     compacting.clear()
-    attemptedSeq.clear()
+    attemptedAt.clear()
   }
 }

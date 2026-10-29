@@ -105,7 +105,7 @@ export function AllInOnePage({ t }: AllInOnePageProps) {
           {t('shell.empty')}
         </p>
       ) : (
-        <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="aio-card-grid mt-5 grid auto-rows-fr grid-cols-1 gap-3 sm:grid-cols-2">
           {registry.list.map((feature) => {
             const featureT = (key: string) => t(`${feature.id}.${key}`)
 

@@ -58,8 +58,16 @@ export interface HostPluginContext {
   effect(effect: () => () => void, label?: string): void
   /** 订阅 index.html 注入事件，返回取消订阅函数。 */
   on(event: 'webserver/index-inject', listener: (table: IndexInjectTable) => void): () => void
-  /** 订阅 Agent 状态切换；自动压缩在会话结束时检查上下文占用。 */
-  on(event: 'agent/status', listener: (payload: AgentStatusEvent) => void): () => void
+  /**
+   * 订阅每次向模型派发请求前的钩子；自动压缩在该时刻检查上下文占用。
+   *
+   * 这是 waterfall 事件：listener 必须在最后调用 `next()` 把流程交回宿主，
+   * 在调用之前可以异步做自己的事（例如压缩），宿主会等它完成再发请求。
+   */
+  on(
+    event: 'agent/pre-step',
+    listener: (payload: AgentPreStepEvent, next: () => Promise<unknown>) => Promise<unknown>,
+  ): () => void
   /** 在依赖服务就绪后执行回调，回调拿到带对应服务的子上下文。 */
   inject(names: string[], callback: (ctx: HostPluginContext) => void): void
   /** Agent 预设服务；插件声明依赖后可用。 */
@@ -70,20 +78,21 @@ export interface HostPluginContext {
   tools?: ToolsApi
   /** 系统提示词服务；插件声明依赖后可用，用于注册段落与安装最外层包装。 */
   systemPrompt?: SystemPromptApi
-  /** 在线 Agent 服务；声明依赖后可用。 */
-  agents?: AgentsApi
-  /** 命令服务；声明依赖后可用，用于执行 `/compact`。 */
-  commands?: CommandsApi
+  /** 压缩服务；声明依赖后可用，用于把较早的历史替换成摘要。 */
+  compaction?: CompactionApi
+  /** token 计价服务；声明依赖后可用，用于按表面节点测量占用。 */
+  tokenMeter?: TokenMeterApi
   /** 会话投影服务；声明依赖后可用，用于读取上下文占用。 */
   sessionProjections?: SessionProjectionsApi
   /** 启动本进程的 profile；缺失时相关功能回退为扫描全部 profile。 */
   profileContext?: ProfileContext
 }
 
-/** Agent 状态事件负载：Agent 在 idle 与 running 之间切换时发出。 */
-export interface AgentStatusEvent {
+/** `agent/pre-step` 事件负载：一轮里每次派发模型请求前发出。 */
+export interface AgentPreStepEvent {
   agent: AgentLike
-  status: 'idle' | 'running'
+  /** 本轮取消信号；压缩过程也跟随它取消。 */
+  signal: AbortSignal
 }
 
 /** 在线 Agent 的最小形状：会话与 Agent 一一对应。 */
@@ -91,32 +100,66 @@ export interface AgentLike {
   session: SessionLike
 }
 
-/** 会话的最小形状：读投影与防重复触发只需要标识与日志序号。 */
+/** 会话的最小形状：读投影、选择压缩范围都需要它。 */
 export interface SessionLike {
   /** 会话标识，与 Agent 标识相同。 */
   id: string
-  /** 当前日志序号；一轮结束后递增，用于避免同一轮重复触发。 */
+  /** 当前日志序号。 */
   seq: number
+  /** 当前会话表面：参与模型请求的日志序号序列，索引即位置。 */
+  surface: SessionSurfaceLike
+  /** 按序号读取日志事件；序号越界时返回 undefined。 */
+  eventAt(seq: number): SessionEventLike | undefined
 }
 
-/** 在线 Agent 服务。 */
-export interface AgentsApi {
-  list(): AgentLike[]
+/** 会话表面：`nodes` 的顺序就是模型看到的历史顺序。 */
+export interface SessionSurfaceLike {
+  nodes: number[]
 }
 
-/** 命令执行结果；`kind` 为 `error` 时 `text` 是宿主给出的原因。 */
-export interface CommandExecution {
-  result: { kind: string; text?: string }
+/** 自动压缩只需要判读事件类型与助手消息里的工具调用块。 */
+export interface SessionEventLike {
+  type: string
+  data?: {
+    message?: {
+      content?: Array<{ type?: string }>
+    }
+  }
 }
 
-/** 命令服务。 */
-export interface CommandsApi {
-  execute(
+/** 一次表面计价：总占用与逐节点估值。 */
+export interface TokenMeterMeasurement {
+  /** 整份请求的估算占用。 */
+  totalTokens: number
+  /** 逐表面节点的估值，顺序与 `session.surface.nodes` 一致。 */
+  nodes: Array<{ seq: number; tokens: number }>
+}
+
+/** token 计价服务。 */
+export interface TokenMeterApi {
+  measure(session: SessionLike): TokenMeterMeasurement
+}
+
+/**
+ * 压缩服务。
+ *
+ * 只有基础引擎（`dsh-compaction-basic`）实现了 `compactRegion`；换成其他
+ * 后端时该能力缺失，自动压缩会跳过并记录原因。
+ */
+export interface CompactionApi {
+  /**
+   * 把一段表面区间替换成摘要。
+   * @param start 区间首个表面节点序号（含）
+   * @param end 区间末个表面节点序号（含）
+   * @param agent 会话所属 Agent，摘要调用用它解析模型
+   * @param signal 取消信号
+   */
+  compactRegion?(
+    start: number,
+    end: number,
     agent: AgentLike,
-    line: string,
-    submittedAttachments: unknown[],
-    signal: AbortSignal,
-  ): Promise<CommandExecution | undefined>
+    signal?: AbortSignal,
+  ): Promise<unknown>
 }
 
 /** 会话投影服务：按会话读取已注册的投影值。 */

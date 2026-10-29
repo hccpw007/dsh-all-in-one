@@ -41,3 +41,11 @@
 :where(.dsh-aio-root) :where(textarea) {
   resize: vertical;
 }
+
+/*
+ * 功能网格里各卡片的说明长度不一，卡片会被内容撑成不同高度。
+ * 行高由网格统一定义后，这里把卡片本身拉满，所有入口卡片看上去一样高。
+ */
+.aio-card-grid > * > * {
+  height: 100%;
+}

@@ -5,15 +5,59 @@ import type { FeatureSwitchProps } from '../../shell/registry'
 import { loadAutoCompactSettings, saveAutoCompactSettings } from './api'
 import type { AutoCompactSettings } from './types'
 
-/** 阈值允许的最小百分比。 */
-const MIN_THRESHOLD_PERCENT = 1
+/** 百分比允许的最小值。 */
+const MIN_PERCENT = 1
 
-/** 阈值允许的最大百分比。 */
-const MAX_THRESHOLD_PERCENT = 100
+/** 百分比允许的最大值。 */
+const MAX_PERCENT = 100
 
-/** 阈值输入框样式，宽度按两位百分比预留，紧挨在开关轨道下方。 */
+/** 百分比输入框样式，宽度按两位数字预留，紧挨在开关轨道下方。 */
 const INPUT_CLASS =
   'w-12 rounded-md border border-line4 bg-base px-1 py-0.5 text-[11px] text-primary outline-none focus:border-brand'
+
+/** 一个百分比输入行：标签、输入框与单位。 */
+interface PercentFieldProps {
+  /** 输入行标签，如「阈值」「保留」。 */
+  label: string
+  /** 输入框单位，如 `%`。 */
+  unit: string
+  /** 输入框的当前草稿值。 */
+  value: string
+  /** 草稿变化时回写。 */
+  onChange: (value: string) => void
+  /** 失焦或回车时提交。 */
+  onCommit: () => void
+}
+
+/**
+ * 渲染一个百分比输入行。
+ * @param props 字段属性
+ */
+function PercentField({ label, unit, value, onChange, onCommit }: PercentFieldProps) {
+  return (
+    <label className="flex items-center gap-1">
+      {/* 输入行标签 */}
+      <span className="text-[11px] leading-[16px] text-secondary">{label}</span>
+      <input
+        type="number"
+        inputMode="numeric"
+        min={MIN_PERCENT}
+        max={MAX_PERCENT}
+        step={1}
+        value={value}
+        aria-label={label}
+        onChange={(event) => onChange(event.target.value)}
+        onBlur={onCommit}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter') onCommit()
+        }}
+        className={INPUT_CLASS}
+      />
+      {/* 输入框单位 */}
+      <span className="text-[11px] leading-[16px] text-secondary">{unit}</span>
+    </label>
+  )
+}
 
 /** 开关入口图标：循环箭头，表达把历史压缩成摘要。 */
 function CompactIcon() {
@@ -49,6 +93,8 @@ export function AutoCompactToggle({ t }: FeatureSwitchProps) {
   const [settings, setSettings] = useState<AutoCompactSettings | null>(null)
   // 阈值输入草稿；与已保存的值分开，输入过程中不改动开关状态
   const [thresholdDraft, setThresholdDraft] = useState('')
+  // 压缩后保留比例的输入草稿，处理方式同上
+  const [retainDraft, setRetainDraft] = useState('')
   // 读取或保存失败时的提示
   const [error, setError] = useState<string | null>(null)
   // 最近一次提交的序号：输入框失焦与开关点击可能先后发起请求，只让最后一次响应落到界面
@@ -64,6 +110,7 @@ export function AutoCompactToggle({ t }: FeatureSwitchProps) {
 
         setSettings(next)
         setThresholdDraft(String(next.thresholdPercent))
+        setRetainDraft(String(next.retainPercent))
       })
       .catch((failure: unknown) => {
         if (!active) return
@@ -96,6 +143,7 @@ export function AutoCompactToggle({ t }: FeatureSwitchProps) {
 
       setSettings(next)
       setThresholdDraft(String(next.thresholdPercent))
+      setRetainDraft(String(next.retainPercent))
     } catch (failure) {
       if (latestRequest.current !== request) return
 
@@ -117,11 +165,7 @@ export function AutoCompactToggle({ t }: FeatureSwitchProps) {
     if (settings === null) return
 
     const parsed = Number(thresholdDraft.trim())
-    if (
-      !Number.isInteger(parsed)
-      || parsed < MIN_THRESHOLD_PERCENT
-      || parsed > MAX_THRESHOLD_PERCENT
-    ) {
+    if (!Number.isInteger(parsed) || parsed < MIN_PERCENT || parsed > MAX_PERCENT) {
       setError(t('thresholdInvalid'))
       setThresholdDraft(String(settings.thresholdPercent))
 
@@ -131,6 +175,25 @@ export function AutoCompactToggle({ t }: FeatureSwitchProps) {
     if (parsed === settings.thresholdPercent) return
 
     void persist({ thresholdPercent: parsed })
+  }
+
+  /**
+   * 校验并提交保留比例草稿：必须低于阈值，否则压缩后仍在阈值之上会反复触发。
+   */
+  const commitRetain = () => {
+    if (settings === null) return
+
+    const parsed = Number(retainDraft.trim())
+    if (!Number.isInteger(parsed) || parsed < MIN_PERCENT || parsed >= settings.thresholdPercent) {
+      setError(t('retainInvalid'))
+      setRetainDraft(String(settings.retainPercent))
+
+      return
+    }
+
+    if (parsed === settings.retainPercent) return
+
+    void persist({ retainPercent: parsed })
   }
 
   const enabled = settings?.enabled === true
@@ -189,29 +252,24 @@ export function AutoCompactToggle({ t }: FeatureSwitchProps) {
             )}
           />
         </button>
-        {/* 阈值：只在开关打开后出现 */}
+        {/* 阈值与保留比例：只在开关打开后出现，紧挨在开关轨道下方 */}
         {enabled ? (
-          <label className="flex items-center gap-1">
-            {/* 阈值输入框的标签 */}
-            <span className="text-[11px] leading-[16px] text-secondary">{t('thresholdLabel')}</span>
-            <input
-              type="number"
-              inputMode="numeric"
-              min={MIN_THRESHOLD_PERCENT}
-              max={MAX_THRESHOLD_PERCENT}
-              step={1}
+          <>
+            <PercentField
+              label={t('thresholdLabel')}
+              unit={t('thresholdUnit')}
               value={thresholdDraft}
-              aria-label={t('thresholdLabel')}
-              onChange={(event) => setThresholdDraft(event.target.value)}
-              onBlur={commitThreshold}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') commitThreshold()
-              }}
-              className={INPUT_CLASS}
+              onChange={setThresholdDraft}
+              onCommit={commitThreshold}
             />
-            {/* 阈值的单位：上下文窗口占用百分比 */}
-            <span className="text-[11px] leading-[16px] text-secondary">{t('thresholdUnit')}</span>
-          </label>
+            <PercentField
+              label={t('retainLabel')}
+              unit={t('thresholdUnit')}
+              value={retainDraft}
+              onChange={setRetainDraft}
+              onCommit={commitRetain}
+            />
+          </>
         ) : null}
       </div>
     </div>
