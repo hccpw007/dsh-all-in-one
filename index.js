@@ -2656,11 +2656,10 @@ function selectRange(session, priced, retainTokens) {
   if (keepFromIdx <= firstIdx) return null;
   return { start: surfaceNodes[firstIdx], end: surfaceNodes[keepFromIdx - 1] };
 }
-async function compactOlderHistory(engine, meter, agent, signal, contextWindow, usedTokens, retainPercent) {
+async function compactOlderHistory(engine, meter, agent, signal, contextWindow, retainPercent) {
   const session = agent.session;
   const measurement = meter.measure(session);
-  const measuredTokens = measurement.nodes.reduce((sum, node) => sum + node.tokens, 0);
-  const fixedTokens = Math.max(0, usedTokens - measuredTokens);
+  const fixedTokens = Math.max(0, measurement.totalTokens - measurement.surfaceTokens);
   const targetTokens = Math.floor(contextWindow * retainPercent / 100);
   const retainTokens = Math.max(0, targetTokens - fixedTokens);
   const range = selectRange(session, measurement.nodes, retainTokens);
@@ -2710,7 +2709,7 @@ function readContextPressure(agent) {
   const used = pressure?.projectedTokens ?? pressure?.pressureTokens;
   const contextWindow = pressure?.contextWindow;
   if (used === void 0 || contextWindow === void 0 || contextWindow <= 0) return void 0;
-  return { ratio: used / contextWindow, contextWindow, used };
+  return { ratio: used / contextWindow, contextWindow };
 }
 function installAutoCompactWatcher(ctx) {
   const compacting = /* @__PURE__ */ new Set();
@@ -2739,7 +2738,6 @@ function installAutoCompactWatcher(ctx) {
         agent,
         signal,
         pressure.contextWindow,
-        pressure.used,
         settings.retainPercent
       );
       if (decision.kind === "skipped") {

@@ -138,8 +138,10 @@ export interface SessionEventLike {
 
 /** 一次表面计价：总占用与逐节点估值。 */
 export interface TokenMeterMeasurement {
-  /** 整份请求的估算占用。 */
+  /** 整份请求的估算占用，含工具定义等不随压缩变化的部分。 */
   totalTokens: number
+  /** 表面原文的计价总和，不含工具定义。 */
+  surfaceTokens: number
   /** 逐表面节点的估值，顺序与 `session.surface.nodes` 一致。 */
   nodes: Array<{ seq: number; tokens: number }>
 }

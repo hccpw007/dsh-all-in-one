@@ -26,8 +26,6 @@ interface ContextPressure {
   ratio: number
   /** 模型上下文窗口容量。 */
   contextWindow: number
-  /** 当前请求实际占用的 token 数。 */
-  used: number
 }
 
 /** Cordis fiber 的最小结构：只需要它自己的作用域。 */
@@ -124,7 +122,7 @@ function readContextPressure(agent: AgentLike): ContextPressure | undefined {
   const contextWindow = pressure?.contextWindow
   if (used === undefined || contextWindow === undefined || contextWindow <= 0) return undefined
 
-  return { ratio: used / contextWindow, contextWindow, used }
+  return { ratio: used / contextWindow, contextWindow }
 }
 
 /**
@@ -173,7 +171,6 @@ export function installAutoCompactWatcher(ctx: HostPluginContext): () => void {
         agent,
         signal,
         pressure.contextWindow,
-        pressure.used,
         settings.retainPercent,
       )
       if (decision.kind === 'skipped') {
