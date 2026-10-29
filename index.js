@@ -2495,7 +2495,6 @@ __export(host_exports6, {
   apply: () => apply6,
   inject: () => inject6
 });
-import { appendFileSync as appendFileSync2 } from "node:fs";
 
 // src/features/auto-compact/host/settings.ts
 import { mkdirSync as mkdirSync3, readFileSync as readFileSync3, renameSync as renameSync3, statSync as statSync3, writeFileSync as writeFileSync3 } from "node:fs";
@@ -2616,9 +2615,6 @@ function installAutoCompactRoutes(webServer) {
   });
 }
 
-// src/features/auto-compact/host/watcher.ts
-import { appendFileSync } from "node:fs";
-
 // src/features/auto-compact/host/region.ts
 function toolCallDelta(event) {
   if (event.type === "tool/result") return -1;
@@ -2692,11 +2688,6 @@ function installAutoCompactWatcher(ctx) {
   const attemptedAt = /* @__PURE__ */ new Map();
   const check = async (agent, signal) => {
     const settings = readAutoCompactSettings();
-    appendFileSync(
-      "/tmp/ac-debug.log",
-      `${(/* @__PURE__ */ new Date()).toISOString()} pid=${process.pid} session=${agent.session.id} enabled=${settings.enabled} threshold=${settings.thresholdPercent} retain=${settings.retainPercent} engine=${String(ctx.compaction?.compactRegion !== void 0)} meter=${String(ctx.tokenMeter !== void 0)} projections=${String(ctx.sessionProjections !== void 0)} pressure=${JSON.stringify(readContextPressure(ctx, agent.session))}
-`
-    );
     if (!settings.enabled) return;
     const session = agent.session;
     if (compacting.has(session.id)) return;
@@ -2714,14 +2705,10 @@ function installAutoCompactWatcher(ctx) {
         pressure.contextWindow,
         settings.retainPercent
       );
-      appendFileSync("/tmp/ac-debug.log", `${(/* @__PURE__ */ new Date()).toISOString()} decision=${JSON.stringify(decision)}
-`);
       if (decision.kind === "skipped") {
         console.error("[auto-compact] \u81EA\u52A8\u538B\u7F29\u5DF2\u8DF3\u8FC7:", decision.reason);
       }
     } catch (error) {
-      appendFileSync("/tmp/ac-debug.log", `${(/* @__PURE__ */ new Date()).toISOString()} error=${String(error)}
-`);
       console.error("[auto-compact] \u81EA\u52A8\u538B\u7F29\u5931\u8D25:", error);
     } finally {
       compacting.delete(session.id);
@@ -2741,25 +2728,13 @@ function installAutoCompactWatcher(ctx) {
 // src/features/auto-compact/host.ts
 var inject6 = ["webServer"];
 function apply6(ctx) {
-  appendFileSync2(
-    "/tmp/ac-debug.log",
-    `${(/* @__PURE__ */ new Date()).toISOString()} apply pid=${process.pid} webServer=${String(ctx.webServer !== void 0)} compaction=${String(ctx.compaction !== void 0)} meter=${String(ctx.tokenMeter !== void 0)} proj=${String(ctx.sessionProjections !== void 0)}
-`
-  );
   const webServer = ctx.webServer;
   if (webServer === void 0) {
     console.error("[auto-compact] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u8BBE\u7F6E\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
     return;
   }
   ctx.effect(() => installAutoCompactRoutes(webServer), "auto-compact: routes");
-  ctx.on("agent/pre-step", async (_payload, next) => {
-    appendFileSync2("/tmp/ac-debug.log", `${(/* @__PURE__ */ new Date()).toISOString()} pre-step-reached
-`);
-    return next();
-  });
   ctx.inject(["compaction", "tokenMeter", "sessionProjections"], (scoped) => {
-    appendFileSync2("/tmp/ac-debug.log", `${(/* @__PURE__ */ new Date()).toISOString()} inject-satisfied
-`);
     scoped.effect(() => installAutoCompactWatcher(scoped), "auto-compact: watcher");
   });
 }

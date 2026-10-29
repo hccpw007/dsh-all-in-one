@@ -5,8 +5,6 @@
  * 会话的 `contextPressure` 投影：上下文窗口占用达到阈值就把较早的历史压成
  * 摘要，然后让本轮继续。因此长会话在回合中间也会被压缩，不必等到整轮结束。
  */
-import { appendFileSync } from 'node:fs'
-
 import type { AgentLike, AgentPreStepEvent, HostPluginContext } from '../../../types/host'
 import type { ContextPressureView } from '../types'
 import { compactOlderHistory } from './region'
@@ -64,11 +62,6 @@ export function installAutoCompactWatcher(ctx: HostPluginContext): () => void {
    */
   const check = async (agent: AgentLike, signal: AbortSignal): Promise<void> => {
     const settings = readAutoCompactSettings()
-    // 临时调试：把每步检查结果写文件，确认宿主侧能力是否就绪
-    appendFileSync(
-      '/tmp/ac-debug.log',
-      `${new Date().toISOString()} pid=${process.pid} session=${agent.session.id} enabled=${settings.enabled} threshold=${settings.thresholdPercent} retain=${settings.retainPercent} engine=${String(ctx.compaction?.compactRegion !== undefined)} meter=${String(ctx.tokenMeter !== undefined)} projections=${String(ctx.sessionProjections !== undefined)} pressure=${JSON.stringify(readContextPressure(ctx, agent.session))}\n`,
-    )
     if (!settings.enabled) return
 
     const session = agent.session
@@ -91,12 +84,10 @@ export function installAutoCompactWatcher(ctx: HostPluginContext): () => void {
         pressure.contextWindow,
         settings.retainPercent,
       )
-      appendFileSync('/tmp/ac-debug.log', `${new Date().toISOString()} decision=${JSON.stringify(decision)}\n`)
       if (decision.kind === 'skipped') {
         console.error('[auto-compact] 自动压缩已跳过:', decision.reason)
       }
     } catch (error) {
-      appendFileSync('/tmp/ac-debug.log', `${new Date().toISOString()} error=${String(error)}\n`)
       console.error('[auto-compact] 自动压缩失败:', error)
     } finally {
       compacting.delete(session.id)
