@@ -11,9 +11,10 @@
  */
 import type {
   AgentLike,
-  HostPluginContext,
+  CompactionApi,
   SessionEventLike,
   SessionLike,
+  TokenMeterApi,
 } from '../../../types/host'
 
 /** 一个表面节点的计价结果。 */
@@ -106,7 +107,8 @@ function selectRange(
 
 /**
  * 把较早的历史压缩成摘要，保留最近约 `retainPercent` 的上下文。
- * @param ctx 宿主插件上下文
+ * @param engine 压缩服务
+ * @param meter token 计价服务
  * @param agent 会话所属 Agent
  * @param signal 本轮取消信号
  * @param contextWindow 当前模型的上下文窗口容量
@@ -114,25 +116,20 @@ function selectRange(
  * @returns 压缩结果，或跳过原因
  */
 export async function compactOlderHistory(
-  ctx: HostPluginContext,
+  engine: CompactionApi,
+  meter: TokenMeterApi,
   agent: AgentLike,
   signal: AbortSignal,
   contextWindow: number,
   retainPercent: number,
 ): Promise<CompactionDecision> {
-  const engine = ctx.compaction
-  const meter = ctx.tokenMeter
-  if (engine?.compactRegion === undefined || meter === undefined) {
-    return { kind: 'skipped', reason: '宿主未提供分段压缩能力' }
-  }
-
   const session = agent.session
   const measurement = meter.measure(session)
   const retainTokens = Math.floor((contextWindow * retainPercent) / 100)
   const range = selectRange(session, measurement.nodes, retainTokens)
   if (range === null) return { kind: 'skipped', reason: '没有可安全压缩的历史' }
 
-  await engine.compactRegion(range.start, range.end, agent, signal)
+  await engine.compactRegion?.(range.start, range.end, agent, signal)
 
   return { kind: 'compacted' }
 }

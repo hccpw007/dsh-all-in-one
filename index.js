@@ -2501,8 +2501,8 @@ import { mkdirSync as mkdirSync3, readFileSync as readFileSync3, renameSync as r
 import { dirname as dirname5, join as join14 } from "node:path";
 var DEFAULT_SETTINGS2 = {
   enabled: false,
-  thresholdPercent: 80,
-  retainPercent: 16
+  thresholdPercent: 70,
+  retainPercent: 20
 };
 var MIN_PERCENT = 1;
 var MAX_PERCENT = 100;
@@ -2656,27 +2656,53 @@ function selectRange(session, priced, retainTokens) {
   if (keepFromIdx <= firstIdx) return null;
   return { start: surfaceNodes[firstIdx], end: surfaceNodes[keepFromIdx - 1] };
 }
-async function compactOlderHistory(ctx, agent, signal, contextWindow, retainPercent) {
-  const engine = ctx.compaction;
-  const meter = ctx.tokenMeter;
-  if (engine?.compactRegion === void 0 || meter === void 0) {
-    return { kind: "skipped", reason: "\u5BBF\u4E3B\u672A\u63D0\u4F9B\u5206\u6BB5\u538B\u7F29\u80FD\u529B" };
-  }
+async function compactOlderHistory(engine, meter, agent, signal, contextWindow, retainPercent) {
   const session = agent.session;
   const measurement = meter.measure(session);
   const retainTokens = Math.floor(contextWindow * retainPercent / 100);
   const range = selectRange(session, measurement.nodes, retainTokens);
   if (range === null) return { kind: "skipped", reason: "\u6CA1\u6709\u53EF\u5B89\u5168\u538B\u7F29\u7684\u5386\u53F2" };
-  await engine.compactRegion(range.start, range.end, agent, signal);
+  await engine.compactRegion?.(range.start, range.end, agent, signal);
   return { kind: "compacted" };
 }
 
 // src/features/auto-compact/host/watcher.ts
 var RETRY_COOLDOWN_MS = 3e4;
-function readContextPressure(ctx, session) {
-  const projections = ctx.sessionProjections;
+var serviceScopeCache = /* @__PURE__ */ new WeakMap();
+function findServiceScope(agent, name) {
+  const root = agent.ctx;
+  const agentFiber = root?.fiber;
+  if (root?.registry?.forEach === void 0 || agentFiber === void 0) return void 0;
+  const cached = serviceScopeCache.get(agentFiber);
+  if (cached !== void 0) return cached;
+  let found;
+  root.registry.forEach((runtime) => {
+    if (found !== void 0) return;
+    for (const fiber of runtime.fibers ?? []) {
+      if (fiber.ctx?.get?.(name) === void 0) continue;
+      found = fiber.ctx;
+      return;
+    }
+  });
+  if (found !== void 0) serviceScopeCache.set(agentFiber, found);
+  return found;
+}
+function readFromScope(scope, name) {
+  if (scope === void 0) return void 0;
+  try {
+    return scope.get(name);
+  } catch (error) {
+    console.error(`[auto-compact] \u8BFB\u53D6\u670D\u52A1 ${name} \u5931\u8D25:`, error);
+    return void 0;
+  }
+}
+function readService(agent, name) {
+  return readFromScope(agent.ctx, name) ?? readFromScope(findServiceScope(agent, name), name);
+}
+function readContextPressure(agent) {
+  const projections = readService(agent, "sessionProjections");
   if (projections === void 0) return void 0;
-  const values = projections.snapshot(session, ["contextPressure"]).values;
+  const values = projections.snapshot(agent.session, ["contextPressure"]).values;
   const pressure = values.contextPressure;
   const used = pressure?.projectedTokens ?? pressure?.pressureTokens;
   const contextWindow = pressure?.contextWindow;
@@ -2691,15 +2717,22 @@ function installAutoCompactWatcher(ctx) {
     if (!settings.enabled) return;
     const session = agent.session;
     if (compacting.has(session.id)) return;
-    const pressure = readContextPressure(ctx, session);
+    const pressure = readContextPressure(agent);
     if (pressure === void 0 || pressure.ratio * 100 < settings.thresholdPercent) return;
+    const engine = readService(agent, "compaction");
+    const meter = readService(agent, "tokenMeter");
+    if (engine?.compactRegion === void 0 || meter === void 0) {
+      console.error("[auto-compact] \u5BBF\u4E3B\u672A\u63D0\u4F9B\u5206\u6BB5\u538B\u7F29\u80FD\u529B\uFF0C\u8DF3\u8FC7\u672C\u6B21\u68C0\u67E5");
+      return;
+    }
     const lastAttempt = attemptedAt.get(session.id);
     if (lastAttempt !== void 0 && Date.now() - lastAttempt < RETRY_COOLDOWN_MS) return;
     compacting.add(session.id);
     attemptedAt.set(session.id, Date.now());
     try {
       const decision = await compactOlderHistory(
-        ctx,
+        engine,
+        meter,
         agent,
         signal,
         pressure.contextWindow,
@@ -2734,9 +2767,7 @@ function apply6(ctx) {
     return;
   }
   ctx.effect(() => installAutoCompactRoutes(webServer), "auto-compact: routes");
-  ctx.inject(["compaction", "tokenMeter", "sessionProjections"], (scoped) => {
-    scoped.effect(() => installAutoCompactWatcher(scoped), "auto-compact: watcher");
-  });
+  ctx.effect(() => installAutoCompactWatcher(ctx), "auto-compact: watcher");
 }
 
 // src/features/host.ts

@@ -5,8 +5,8 @@
  *   1. 提供设置页读写开关与两个百分比的本地路由；
  *   2. 在每步派发模型请求前检查上下文占用，达到阈值就压缩较早的历史。
  *
- * 事件监听依赖压缩、计价与投影服务，用嵌套 inject 按需注册：宿主缺少其中
- * 任一项时只是自动压缩不生效，设置路由仍可正常使用。
+ * 压缩与计价服务随 agent preset 挂载并被 isolate 隔离，插件根作用域读不到，
+ * 因此监听器注册在根作用域，所需服务在每次检查时按 agent 的作用域解析。
  */
 import type { HostPluginContext } from '../../types/host'
 
@@ -28,8 +28,5 @@ export function apply(ctx: HostPluginContext): void {
   }
 
   ctx.effect(() => installAutoCompactRoutes(webServer), 'auto-compact: routes')
-
-  ctx.inject(['compaction', 'tokenMeter', 'sessionProjections'], (scoped) => {
-    scoped.effect(() => installAutoCompactWatcher(scoped), 'auto-compact: watcher')
-  })
+  ctx.effect(() => installAutoCompactWatcher(ctx), 'auto-compact: watcher')
 }

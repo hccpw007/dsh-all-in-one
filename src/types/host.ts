@@ -70,6 +70,8 @@ export interface HostPluginContext {
   ): () => void
   /** 在依赖服务就绪后执行回调，回调拿到带对应服务的子上下文。 */
   inject(names: string[], callback: (ctx: HostPluginContext) => void): void
+  /** 按名称读取服务；服务在当前作用域不可见时返回 undefined。 */
+  get(name: string, strict?: boolean): unknown
   /** Agent 预设服务；插件声明依赖后可用。 */
   agentPresets?: AgentPresetApi
   /** Web 服务器服务；通过 inject 取得后可用。 */
@@ -98,6 +100,13 @@ export interface AgentPreStepEvent {
 /** 在线 Agent 的最小形状：会话与 Agent 一一对应。 */
 export interface AgentLike {
   session: SessionLike
+  /**
+   * Agent 自己的作用域。
+   *
+   * 压缩、计价与投影服务随 agent preset 挂载；预设会用 isolate 把它们隔离在
+   * agent 作用域内，插件根作用域拿不到，只能在运行期从这里解析。
+   */
+  ctx?: HostPluginContext
 }
 
 /** 会话的最小形状：读投影、选择压缩范围都需要它。 */

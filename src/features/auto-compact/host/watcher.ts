@@ -5,7 +5,14 @@
  * 会话的 `contextPressure` 投影：上下文窗口占用达到阈值就把较早的历史压成
  * 摘要，然后让本轮继续。因此长会话在回合中间也会被压缩，不必等到整轮结束。
  */
-import type { AgentLike, AgentPreStepEvent, HostPluginContext } from '../../../types/host'
+import type {
+  AgentLike,
+  AgentPreStepEvent,
+  CompactionApi,
+  HostPluginContext,
+  SessionProjectionsApi,
+  TokenMeterApi,
+} from '../../../types/host'
 import type { ContextPressureView } from '../types'
 import { compactOlderHistory } from './region'
 import { readAutoCompactSettings } from './settings'
@@ -21,20 +28,94 @@ interface ContextPressure {
   contextWindow: number
 }
 
+/** Cordis fiber 的最小结构：只需要它自己的作用域。 */
+interface FiberLike {
+  ctx?: HostPluginContext
+}
+
+/** Cordis 注册表的最小结构：每个插件 runtime 持有它的 fiber 列表。 */
+interface RegistryLike {
+  forEach?(callback: (runtime: { fibers?: Iterable<FiberLike> }) => void): void
+}
+
+/** 每个 agent 解析出的服务作用域缓存：服务归属固定，不必每步重扫。 */
+const serviceScopeCache = new WeakMap<object, HostPluginContext>()
+
+/**
+ * 找到能读到指定服务的作用域。
+ *
+ * agent preset 会把 `compaction` 之类的能力 isolate 到自己的插件组里：插件根
+ * 作用域与 agent 根作用域都读不到，只有该组内 fiber 的 ctx 能取到服务。该组与
+ * agent 在 Cordis 里是兄弟分支，因此沿注册表查找可见服务的提供者，而不是在
+ * 加载期用 `ctx.inject` 等一个永远不会出现在当前作用域的服务。
+ * @param agent 触发本步的 Agent
+ * @param name 服务名
+ * @returns 可见该服务的作用域；找不到时返回 undefined
+ */
+function findServiceScope(agent: AgentLike, name: string): HostPluginContext | undefined {
+  const root = agent.ctx as unknown as { fiber?: object; registry?: RegistryLike } | undefined
+  const agentFiber = root?.fiber
+  if (root?.registry?.forEach === undefined || agentFiber === undefined) return undefined
+
+  const cached = serviceScopeCache.get(agentFiber)
+  if (cached !== undefined) return cached
+
+  let found: HostPluginContext | undefined
+  root.registry.forEach((runtime) => {
+    if (found !== undefined) return
+
+    for (const fiber of runtime.fibers ?? []) {
+      if (fiber.ctx?.get?.(name) === undefined) continue
+
+      found = fiber.ctx
+      return
+    }
+  })
+
+  if (found !== undefined) serviceScopeCache.set(agentFiber, found)
+
+  return found
+}
+
+/**
+ * 在指定作用域读取服务，读不到或服务未就绪时返回 undefined。
+ * @param scope 作用域
+ * @param name 服务名
+ * @returns 服务实例
+ */
+function readFromScope<T>(scope: HostPluginContext | undefined, name: string): T | undefined {
+  if (scope === undefined) return undefined
+
+  try {
+    return scope.get(name) as T | undefined
+  } catch (error) {
+    console.error(`[auto-compact] 读取服务 ${name} 失败:`, error)
+    return undefined
+  }
+}
+
+/**
+ * 按 Agent 解析宿主服务：先看 agent 自己的作用域，再看服务提供者所在的作用域。
+ * @param agent 触发本步的 Agent
+ * @param name 服务名
+ * @returns 服务实例；不可见时返回 undefined
+ */
+function readService<T>(agent: AgentLike, name: string): T | undefined {
+  return (
+    readFromScope<T>(agent.ctx, name) ?? readFromScope<T>(findServiceScope(agent, name), name)
+  )
+}
+
 /**
  * 读取会话当前的上下文窗口占用。
- * @param ctx 宿主插件上下文
- * @param session 会话
+ * @param agent 触发本步的 Agent
  * @returns 占用比例与窗口容量；缺少窗口容量或用量时返回 undefined
  */
-function readContextPressure(
-  ctx: HostPluginContext,
-  session: AgentLike['session'],
-): ContextPressure | undefined {
-  const projections = ctx.sessionProjections
+function readContextPressure(agent: AgentLike): ContextPressure | undefined {
+  const projections = readService<SessionProjectionsApi>(agent, 'sessionProjections')
   if (projections === undefined) return undefined
 
-  const values = projections.snapshot(session, ['contextPressure']).values
+  const values = projections.snapshot(agent.session, ['contextPressure']).values
   const pressure = values.contextPressure as ContextPressureView | undefined
   // 优先使用推算的下一轮占用，取不到时回退到最近一次请求的实际用量
   const used = pressure?.projectedTokens ?? pressure?.pressureTokens
@@ -67,8 +148,15 @@ export function installAutoCompactWatcher(ctx: HostPluginContext): () => void {
     const session = agent.session
     if (compacting.has(session.id)) return
 
-    const pressure = readContextPressure(ctx, session)
+    const pressure = readContextPressure(agent)
     if (pressure === undefined || pressure.ratio * 100 < settings.thresholdPercent) return
+
+    const engine = readService<CompactionApi>(agent, 'compaction')
+    const meter = readService<TokenMeterApi>(agent, 'tokenMeter')
+    if (engine?.compactRegion === undefined || meter === undefined) {
+      console.error('[auto-compact] 宿主未提供分段压缩能力，跳过本次检查')
+      return
+    }
 
     const lastAttempt = attemptedAt.get(session.id)
     if (lastAttempt !== undefined && Date.now() - lastAttempt < RETRY_COOLDOWN_MS) return
@@ -78,7 +166,8 @@ export function installAutoCompactWatcher(ctx: HostPluginContext): () => void {
 
     try {
       const decision = await compactOlderHistory(
-        ctx,
+        engine,
+        meter,
         agent,
         signal,
         pressure.contextWindow,

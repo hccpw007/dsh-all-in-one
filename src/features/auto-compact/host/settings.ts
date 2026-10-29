@@ -12,11 +12,14 @@ import { dirname, join } from 'node:path'
 import { resolveDshHome } from '../../../common/dsh-home'
 import type { AutoCompactSettings } from '../types'
 
-/** 默认关闭：阈值沿用宿主内置自动压缩的比例，保留比例沿用宿主默认的近期尾部预算。 */
+/**
+ * 默认设置：默认关闭，阈值比宿主内置的 80% 更早触发，压缩后保留 20% 的近期
+ * 尾部——两者相差 50 个百分点，压缩后不会立刻又触到阈值。
+ */
 const DEFAULT_SETTINGS: AutoCompactSettings = {
   enabled: false,
-  thresholdPercent: 80,
-  retainPercent: 16,
+  thresholdPercent: 70,
+  retainPercent: 20,
 }
 
 /** 百分比允许的最小值。 */
