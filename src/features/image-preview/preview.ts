@@ -62,6 +62,15 @@ const TABLE_TAGS = new Set(['TABLE', 'TBODY', 'THEAD', 'TFOOT', 'TR', 'TD', 'TH'
 /** 图片扩展名；与宿主侧路由的允许清单保持一致，避免浏览器请求必然被拒的地址。 */
 const IMAGE_EXTENSION_PATTERN = /\.(?:png|jpe?g|gif|webp|bmp|avif|svg|ico)$/i
 
+/**
+ * 宿主附件对象路径：`<DSH_HOME>/attachments/v1/objects/<两位>/<64 位哈希>`。
+ *
+ * 这类文件按内容哈希命名、没有扩展名，但它们是宿主持久化的附件（不会自动清理），
+ * 正好是会话里最需要长期预览的来源，因此单独按目录形状识别。
+ * 客户端不展开 `~`，展开成绝对路径的活交给宿主侧路由。
+ */
+const ATTACHMENT_OBJECT_PATTERN = /(?:^|[\\/])attachments[\\/]v1[\\/]objects[\\/][0-9a-f]{2}[\\/][0-9a-f]{64}$/
+
 /** 路径切分用的分隔符：空白、引号与中英文标点，路径里出现它们时本就不会是一个合法地址。 */
 const PATH_SPLIT_PATTERN = /[\s"'`<>|，。；：、！？（）【】《》,;]+/
 
@@ -114,11 +123,15 @@ function normalizeCandidate(raw: string): string | undefined {
     console.warn('[image-preview] 路径不是合法 URI 编码，按原样使用:', withoutPunctuation, error)
   }
 
-  // 浏览器端无法把相对路径还原成文件系统位置，只处理绝对路径
-  const isAbsolute = decoded.startsWith('/') || /^[A-Za-z]:[\\/]/.test(decoded)
+  // 浏览器端无法把相对路径还原成文件系统位置，只处理绝对路径；
+  // `~/` 交给宿主侧展开，浏览器本身不知道用户主目录
+  const isAbsolute =
+    decoded.startsWith('/') || decoded.startsWith('~/') || /^[A-Za-z]:[\\/]/.test(decoded)
   if (!isAbsolute) return undefined
 
-  return IMAGE_EXTENSION_PATTERN.test(decoded) ? decoded : undefined
+  // 常规图片按扩展名识别；宿主附件对象没有扩展名，按目录形状识别
+  if (IMAGE_EXTENSION_PATTERN.test(decoded)) return decoded
+  return ATTACHMENT_OBJECT_PATTERN.test(decoded) ? decoded : undefined
 }
 
 /**

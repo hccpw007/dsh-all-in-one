@@ -580,8 +580,8 @@ function splitComposedPresetId(presetId) {
   return { packId: body.slice(0, separator), modeId: body.slice(separator + 1) };
 }
 function delay(ms) {
-  return new Promise((resolve2) => {
-    setTimeout(resolve2, ms);
+  return new Promise((resolve3) => {
+    setTimeout(resolve3, ms);
   });
 }
 async function waitPresetRows(api, modeId) {
@@ -1506,7 +1506,8 @@ __export(host_exports3, {
 
 // src/features/image-preview/host/routes.ts
 import { readFile as readFile6, stat as stat2 } from "node:fs/promises";
-import { extname, isAbsolute } from "node:path";
+import { homedir as homedir3 } from "node:os";
+import { basename, dirname as dirname3, extname, isAbsolute, join as join8, resolve, sep } from "node:path";
 var ROUTE_PATH2 = "/dsh-all-in-one/image";
 var MAX_FILE_BYTES = 32 * 1024 * 1024;
 var CONTENT_TYPES = {
@@ -1520,9 +1521,43 @@ var CONTENT_TYPES = {
   ".svg": "image/svg+xml",
   ".ico": "image/x-icon"
 };
+var ATTACHMENT_OBJECT_DIR = join8("attachments", "v1", "objects");
+var ATTACHMENT_OBJECT_NAME = /^[0-9a-f]{64}$/;
+var ATTACHMENT_SHARD_NAME = /^[0-9a-f]{2}$/;
+function isAttachmentObject(filePath) {
+  const root = join8(resolveDshHome(), ATTACHMENT_OBJECT_DIR);
+  const resolvedPath = resolve(filePath);
+  if (!resolvedPath.startsWith(`${resolve(root)}${sep}`)) return false;
+  if (!ATTACHMENT_OBJECT_NAME.test(basename(resolvedPath))) return false;
+  return ATTACHMENT_SHARD_NAME.test(basename(dirname3(resolvedPath)));
+}
+function detectImageType(data) {
+  const PNG_SIGNATURE = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
+  if (data.length >= 8 && data.subarray(0, 8).equals(PNG_SIGNATURE)) return "image/png";
+  if (data.length >= 3 && data[0] === 255 && data[1] === 216 && data[2] === 255) {
+    return "image/jpeg";
+  }
+  if (data.length >= 6) {
+    const header = data.subarray(0, 6).toString("latin1");
+    if (header === "GIF87a" || header === "GIF89a") return "image/gif";
+  }
+  if (data.length >= 12 && data.subarray(0, 4).toString("latin1") === "RIFF" && data.subarray(8, 12).toString("latin1") === "WEBP") {
+    return "image/webp";
+  }
+  if (data.length >= 2 && data[0] === 66 && data[1] === 77) return "image/bmp";
+  if (data.length >= 4 && data[0] === 0 && data[1] === 0 && data[2] === 1 && data[3] === 0) {
+    return "image/x-icon";
+  }
+  if (data.length >= 12 && data.subarray(4, 8).toString("latin1") === "ftyp") {
+    const brand = data.subarray(8, 12).toString("latin1");
+    if (brand === "avif" || brand === "avis") return "image/avif";
+  }
+  return void 0;
+}
 async function sendImage(request, response, filePath) {
-  const contentType = CONTENT_TYPES[extname(filePath).toLowerCase()];
-  if (contentType === void 0) {
+  const extensionType = CONTENT_TYPES[extname(filePath).toLowerCase()];
+  const attachmentObject = extensionType === void 0 && isAttachmentObject(filePath);
+  if (extensionType === void 0 && !attachmentObject) {
     sendJson(response, 415, { error: "\u53EA\u5141\u8BB8\u8BFB\u53D6\u56FE\u7247\u6587\u4EF6" });
     return;
   }
@@ -1537,6 +1572,11 @@ async function sendImage(request, response, filePath) {
       return;
     }
     const data = await readFile6(filePath);
+    const contentType = extensionType ?? detectImageType(data);
+    if (contentType === void 0) {
+      sendJson(response, 415, { error: "\u6587\u4EF6\u5185\u5BB9\u4E0D\u662F\u53D7\u652F\u6301\u7684\u56FE\u7247" });
+      return;
+    }
     response.writeHead(200, {
       "content-type": contentType,
       "content-length": data.length,
@@ -1571,11 +1611,12 @@ function installImagePreviewRoutes(webServer) {
         return;
       }
       const url = new URL(request.url ?? ROUTE_PATH2, "http://localhost");
-      const filePath = url.searchParams.get("path");
-      if (filePath === null || filePath === "") {
+      const rawPath = url.searchParams.get("path");
+      if (rawPath === null || rawPath === "") {
         sendJson(response, 400, { error: "\u7F3A\u5C11 path \u53C2\u6570" });
         return;
       }
+      const filePath = rawPath.startsWith("~/") ? join8(homedir3(), rawPath.slice(2)) : rawPath;
       if (!isAbsolute(filePath)) {
         sendJson(response, 400, { error: "\u53EA\u63A5\u53D7\u7EDD\u5BF9\u8DEF\u5F84" });
         return;
@@ -1605,11 +1646,11 @@ __export(host_exports4, {
 
 // src/features/delete-session/host/delete-session.ts
 import { readdir as readdir4, rm as rm3, stat as stat4 } from "node:fs/promises";
-import { join as join9 } from "node:path";
+import { join as join10 } from "node:path";
 
 // src/features/delete-session/host/session-records.ts
 import { readFile as readFile7, rename as rename3, rm as rm2, stat as stat3, unlink, writeFile as writeFile3 } from "node:fs/promises";
-import { join as join8 } from "node:path";
+import { join as join9 } from "node:path";
 var WORKSPACE_STORAGE_PATH = ["storages", "workspace.json"];
 var GLOBAL_SESSION_LISTS = ["archivedSessionIds", "pinnedSessionIds"];
 function isEnoent(error) {
@@ -1624,13 +1665,13 @@ function dropId(value, sessionId) {
   return { list: next, removed: next.length !== value.length };
 }
 async function forgetProjectionCache(dshHome, sessionId) {
-  const dir = join8(dshHome, "storages", "session_projcache", "sessions");
+  const dir = join9(dshHome, "storages", "session_projcache", "sessions");
   const plainId = sessionId.replace(/^session-/, "");
   const candidates = /* @__PURE__ */ new Set([`${sessionId}.json`, `${plainId}.json`]);
   let removed = 0;
   for (const name of candidates) {
     try {
-      await unlink(join8(dir, name));
+      await unlink(join9(dir, name));
       removed += 1;
     } catch (error) {
       if (isEnoent(error)) continue;
@@ -1641,7 +1682,7 @@ async function forgetProjectionCache(dshHome, sessionId) {
   return removed;
 }
 async function forgetWorkspaceAccount(dshHome, sessionId) {
-  const file = join8(dshHome, ...WORKSPACE_STORAGE_PATH);
+  const file = join9(dshHome, ...WORKSPACE_STORAGE_PATH);
   let before;
   try {
     before = await stat3(file);
@@ -1715,18 +1756,18 @@ function isValidSessionId(value) {
   return typeof value === "string" && SESSION_ID_PATTERN.test(value);
 }
 async function findSessionDirs(sessionId) {
-  const root = join9(resolveDshHome(), "sessions");
+  const root = join10(resolveDshHome(), "sessions");
   let projects;
   try {
     const entries = await readdir4(root, { withFileTypes: true });
-    projects = entries.filter((entry) => entry.isDirectory()).map((entry) => join9(root, entry.name));
+    projects = entries.filter((entry) => entry.isDirectory()).map((entry) => join10(root, entry.name));
   } catch (error) {
     console.error("[delete-session] \u679A\u4E3E\u4F1A\u8BDD\u6839\u76EE\u5F55\u5931\u8D25:", error);
     throw error;
   }
   const found = [];
   for (const project of projects) {
-    const candidate = join9(project, sessionId);
+    const candidate = join10(project, sessionId);
     try {
       const info = await stat4(candidate);
       if (info.isDirectory()) found.push(candidate);
@@ -1823,11 +1864,11 @@ __export(host_exports5, {
 
 // src/features/project-memory/host/settings.ts
 import { mkdirSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs";
-import { dirname as dirname3, join as join10 } from "node:path";
+import { dirname as dirname4, join as join11 } from "node:path";
 var DEFAULT_SETTINGS = { enabled: false, root: "" };
 var cache;
 function memorySettingsFile() {
-  return join10(resolveDshHome(), "all-in-one", "project-memory.json");
+  return join11(resolveDshHome(), "all-in-one", "project-memory.json");
 }
 function normalizeSettings(value) {
   if (typeof value !== "object" || value === null) return { ...DEFAULT_SETTINGS };
@@ -1858,7 +1899,7 @@ function writeMemorySettings(next) {
   const file = memorySettingsFile();
   const temp = `${file}.tmp`;
   try {
-    mkdirSync(dirname3(file), { recursive: true });
+    mkdirSync(dirname4(file), { recursive: true });
     writeFileSync(temp, `${JSON.stringify(next, null, 2)}
 `, "utf8");
     renameSync(temp, file);
@@ -1870,23 +1911,23 @@ function writeMemorySettings(next) {
 }
 
 // src/features/project-memory/host/paths.ts
-import { homedir as homedir3 } from "node:os";
-import { isAbsolute as isAbsolute2, join as join11, resolve } from "node:path";
+import { homedir as homedir4 } from "node:os";
+import { isAbsolute as isAbsolute2, join as join12, resolve as resolve2 } from "node:path";
 var MEMORY_INDEX_FILE = "MEMORY.md";
 function defaultMemoryRoot() {
-  return join11(resolveDshHome(), "all-in-one", "projects");
+  return join12(resolveDshHome(), "all-in-one", "projects");
 }
 function resolveMemoryRoot(root) {
   const trimmed = root.trim();
   if (trimmed === "") return defaultMemoryRoot();
-  const expanded = trimmed === "~" ? homedir3() : trimmed.startsWith("~/") ? join11(homedir3(), trimmed.slice(2)) : trimmed;
-  return isAbsolute2(expanded) ? resolve(expanded) : void 0;
+  const expanded = trimmed === "~" ? homedir4() : trimmed.startsWith("~/") ? join12(homedir4(), trimmed.slice(2)) : trimmed;
+  return isAbsolute2(expanded) ? resolve2(expanded) : void 0;
 }
 function projectSlug(directory) {
-  return resolve(directory).replace(/[^A-Za-z0-9]/g, "-");
+  return resolve2(directory).replace(/[^A-Za-z0-9]/g, "-");
 }
 function projectMemoryDir(root, projectDirectory) {
-  return join11(root, projectSlug(projectDirectory), "memory");
+  return join12(root, projectSlug(projectDirectory), "memory");
 }
 
 // src/features/project-memory/host/state.ts
@@ -1914,7 +1955,7 @@ function resolveSessionDirectory(agent) {
 
 // src/features/project-memory/host/store.ts
 import { mkdirSync as mkdirSync2, readdirSync, readFileSync as readFileSync2, renameSync as renameSync2, statSync as statSync2, unlinkSync, writeFileSync as writeFileSync2 } from "node:fs";
-import { join as join12 } from "node:path";
+import { join as join13 } from "node:path";
 var MEMORY_TYPES = ["user", "feedback", "project", "reference"];
 var MEMORY_NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 function isValidMemoryName(name) {
@@ -1925,7 +1966,7 @@ function ensureMemoryDir(dir) {
 }
 function readMemoryIndex(dir) {
   try {
-    return readFileSync2(join12(dir, MEMORY_INDEX_FILE), "utf8");
+    return readFileSync2(join13(dir, MEMORY_INDEX_FILE), "utf8");
   } catch (error) {
     if (error.code !== "ENOENT") {
       console.error("[project-memory] \u8BFB\u53D6\u8BB0\u5FC6\u7D22\u5F15\u5931\u8D25:", dir, error);
@@ -1934,7 +1975,7 @@ function readMemoryIndex(dir) {
   }
 }
 function writeMemoryIndex(dir, text) {
-  const file = join12(dir, MEMORY_INDEX_FILE);
+  const file = join13(dir, MEMORY_INDEX_FILE);
   const temp = `${file}.tmp`;
   try {
     writeFileSync2(temp, text, "utf8");
@@ -1982,7 +2023,7 @@ function readMemories(dir) {
   const entries = [];
   for (const file of listMemoryFiles(dir)) {
     try {
-      entries.push(parseMemoryFile(file, readFileSync2(join12(dir, file), "utf8")));
+      entries.push(parseMemoryFile(file, readFileSync2(join13(dir, file), "utf8")));
     } catch (error) {
       console.error("[project-memory] \u8BFB\u53D6\u8BB0\u5FC6\u6587\u4EF6\u5931\u8D25:", file, error);
     }
@@ -1993,7 +2034,7 @@ function readMemory(dir, name) {
   if (!isValidMemoryName(name)) return void 0;
   const file = `${name}.md`;
   try {
-    return parseMemoryFile(file, readFileSync2(join12(dir, file), "utf8"));
+    return parseMemoryFile(file, readFileSync2(join13(dir, file), "utf8"));
   } catch (error) {
     if (error.code !== "ENOENT") {
       console.error("[project-memory] \u8BFB\u53D6\u8BB0\u5FC6\u5931\u8D25:", file, error);
@@ -2024,7 +2065,7 @@ function preservedFrontmatter(dir, name) {
   const result = { before: [], after: [] };
   let text;
   try {
-    text = readFileSync2(join12(dir, `${name}.md`), "utf8");
+    text = readFileSync2(join13(dir, `${name}.md`), "utf8");
   } catch (error) {
     if (error.code !== "ENOENT") {
       console.error("[project-memory] \u8BFB\u53D6\u5F85\u66F4\u65B0\u8BB0\u5FC6\u5931\u8D25:", name, error);
@@ -2061,7 +2102,7 @@ function writeMemory(dir, input) {
   const type = input.type ?? "project";
   if (!MEMORY_TYPES.includes(type)) throw new Error(`\u8BB0\u5FC6\u7C7B\u578B\u4E0D\u5408\u6CD5\uFF1A${type}`);
   ensureMemoryDir(dir);
-  const file = join12(dir, `${input.name}.md`);
+  const file = join13(dir, `${input.name}.md`);
   const preserved = preservedFrontmatter(dir, input.name);
   const text = [
     "---",
@@ -2089,7 +2130,7 @@ function writeMemory(dir, input) {
 }
 function deleteMemory(dir, name) {
   if (!isValidMemoryName(name)) return false;
-  const file = join12(dir, `${name}.md`);
+  const file = join13(dir, `${name}.md`);
   try {
     unlinkSync(file);
   } catch (error) {
@@ -2118,7 +2159,7 @@ function renderMemoryIndex(dir, index) {
 }
 function memoryIndexFingerprint(dir) {
   try {
-    const index = statSync2(join12(dir, MEMORY_INDEX_FILE));
+    const index = statSync2(join13(dir, MEMORY_INDEX_FILE));
     return `${dir}|${index.mtimeMs}|${index.size}`;
   } catch (error) {
     if (error.code !== "ENOENT") {
@@ -2458,7 +2499,7 @@ import { appendFileSync as appendFileSync2 } from "node:fs";
 
 // src/features/auto-compact/host/settings.ts
 import { mkdirSync as mkdirSync3, readFileSync as readFileSync3, renameSync as renameSync3, statSync as statSync3, writeFileSync as writeFileSync3 } from "node:fs";
-import { dirname as dirname4, join as join13 } from "node:path";
+import { dirname as dirname5, join as join14 } from "node:path";
 var DEFAULT_SETTINGS2 = {
   enabled: false,
   thresholdPercent: 80,
@@ -2468,7 +2509,7 @@ var MIN_PERCENT = 1;
 var MAX_PERCENT = 100;
 var cache2;
 function autoCompactSettingsFile() {
-  return join13(resolveDshHome(), "all-in-one", "auto-compact.json");
+  return join14(resolveDshHome(), "all-in-one", "auto-compact.json");
 }
 function normalizePercent(value, fallback) {
   const parsed = typeof value === "number" ? value : Number.NaN;
@@ -2521,7 +2562,7 @@ function writeSettings(next) {
   const file = autoCompactSettingsFile();
   const temp = `${file}.tmp`;
   try {
-    mkdirSync3(dirname4(file), { recursive: true });
+    mkdirSync3(dirname5(file), { recursive: true });
     writeFileSync3(temp, `${JSON.stringify(next, null, 2)}
 `, "utf8");
     renameSync3(temp, file);
@@ -2711,6 +2752,11 @@ function apply6(ctx) {
     return;
   }
   ctx.effect(() => installAutoCompactRoutes(webServer), "auto-compact: routes");
+  ctx.on("agent/pre-step", async (_payload, next) => {
+    appendFileSync2("/tmp/ac-debug.log", `${(/* @__PURE__ */ new Date()).toISOString()} pre-step-reached
+`);
+    return next();
+  });
   ctx.inject(["compaction", "tokenMeter", "sessionProjections"], (scoped) => {
     appendFileSync2("/tmp/ac-debug.log", `${(/* @__PURE__ */ new Date()).toISOString()} inject-satisfied
 `);

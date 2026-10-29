@@ -1413,6 +1413,7 @@ window.__ModuleLoader__.load({
     ]);
     var TABLE_TAGS = /* @__PURE__ */ new Set(["TABLE", "TBODY", "THEAD", "TFOOT", "TR", "TD", "TH"]);
     var IMAGE_EXTENSION_PATTERN = /\.(?:png|jpe?g|gif|webp|bmp|avif|svg|ico)$/i;
+    var ATTACHMENT_OBJECT_PATTERN = /(?:^|[\\/])attachments[\\/]v1[\\/]objects[\\/][0-9a-f]{2}[\\/][0-9a-f]{64}$/;
     var PATH_SPLIT_PATTERN = /[\s"'`<>|，。；：、！？（）【】《》,;]+/;
     var TRAILING_PUNCTUATION_PATTERN = /[.,;:!?)\]}>]+$/;
     var renderedBlockKeys = /* @__PURE__ */ new WeakMap();
@@ -1437,9 +1438,10 @@ window.__ModuleLoader__.load({
       } catch (error) {
         console.warn("[image-preview] \u8DEF\u5F84\u4E0D\u662F\u5408\u6CD5 URI \u7F16\u7801\uFF0C\u6309\u539F\u6837\u4F7F\u7528:", withoutPunctuation, error);
       }
-      const isAbsolute = decoded.startsWith("/") || /^[A-Za-z]:[\\/]/.test(decoded);
+      const isAbsolute = decoded.startsWith("/") || decoded.startsWith("~/") || /^[A-Za-z]:[\\/]/.test(decoded);
       if (!isAbsolute) return void 0;
-      return IMAGE_EXTENSION_PATTERN.test(decoded) ? decoded : void 0;
+      if (IMAGE_EXTENSION_PATTERN.test(decoded)) return decoded;
+      return ATTACHMENT_OBJECT_PATTERN.test(decoded) ? decoded : void 0;
     }
     function closestBlock(element) {
       let current = element;
