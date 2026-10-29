@@ -64,8 +64,8 @@ async function sendImage(
     response.writeHead(200, {
       'content-type': contentType,
       'content-length': data.length,
-      // 文件可能被同名覆盖（例如截图工具复用文件名），每次重新读取
-      'cache-control': 'no-cache',
+      // 文件可能被同名覆盖或已被删除，禁止浏览器缓存，避免刷新后仍显示旧图
+      'cache-control': 'no-store, no-cache, must-revalidate',
       'x-content-type-options': 'nosniff',
       // SVG 直接打开时可能带脚本，用 CSP 禁掉资源加载与脚本执行
       'content-security-policy': "default-src 'none'; style-src 'unsafe-inline'",

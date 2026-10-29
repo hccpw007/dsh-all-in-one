@@ -8,6 +8,8 @@
  * 事件监听依赖压缩、计价与投影服务，用嵌套 inject 按需注册：宿主缺少其中
  * 任一项时只是自动压缩不生效，设置路由仍可正常使用。
  */
+import { appendFileSync } from 'node:fs'
+
 import type { HostPluginContext } from '../../types/host'
 
 import { installAutoCompactRoutes } from './host/routes'
@@ -21,6 +23,11 @@ export const inject = ['webServer']
  * @param ctx 宿主插件上下文
  */
 export function apply(ctx: HostPluginContext): void {
+  // 临时调试：确认 apply 执行时各服务是否已就绪
+  appendFileSync(
+    '/tmp/ac-debug.log',
+    `${new Date().toISOString()} apply pid=${process.pid} webServer=${String(ctx.webServer !== undefined)} compaction=${String(ctx.compaction !== undefined)} meter=${String(ctx.tokenMeter !== undefined)} proj=${String(ctx.sessionProjections !== undefined)}\n`,
+  )
   const webServer = ctx.webServer
   if (webServer === undefined) {
     console.error('[auto-compact] 未取得 webServer 服务，设置接口不会注册')
@@ -30,6 +37,7 @@ export function apply(ctx: HostPluginContext): void {
   ctx.effect(() => installAutoCompactRoutes(webServer), 'auto-compact: routes')
 
   ctx.inject(['compaction', 'tokenMeter', 'sessionProjections'], (scoped) => {
-    ctx.effect(() => installAutoCompactWatcher(scoped), 'auto-compact: watcher')
+    appendFileSync('/tmp/ac-debug.log', `${new Date().toISOString()} inject-satisfied\n`)
+    scoped.effect(() => installAutoCompactWatcher(scoped), 'auto-compact: watcher')
   })
 }

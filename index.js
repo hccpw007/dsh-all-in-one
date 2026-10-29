@@ -1540,8 +1540,8 @@ async function sendImage(request, response, filePath) {
     response.writeHead(200, {
       "content-type": contentType,
       "content-length": data.length,
-      // 文件可能被同名覆盖（例如截图工具复用文件名），每次重新读取
-      "cache-control": "no-cache",
+      // 文件可能被同名覆盖或已被删除，禁止浏览器缓存，避免刷新后仍显示旧图
+      "cache-control": "no-store, no-cache, must-revalidate",
       "x-content-type-options": "nosniff",
       // SVG 直接打开时可能带脚本，用 CSP 禁掉资源加载与脚本执行
       "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'"
@@ -2454,6 +2454,7 @@ __export(host_exports6, {
   apply: () => apply6,
   inject: () => inject6
 });
+import { appendFileSync as appendFileSync2 } from "node:fs";
 
 // src/features/auto-compact/host/settings.ts
 import { mkdirSync as mkdirSync3, readFileSync as readFileSync3, renameSync as renameSync3, statSync as statSync3, writeFileSync as writeFileSync3 } from "node:fs";
@@ -2699,6 +2700,11 @@ function installAutoCompactWatcher(ctx) {
 // src/features/auto-compact/host.ts
 var inject6 = ["webServer"];
 function apply6(ctx) {
+  appendFileSync2(
+    "/tmp/ac-debug.log",
+    `${(/* @__PURE__ */ new Date()).toISOString()} apply pid=${process.pid} webServer=${String(ctx.webServer !== void 0)} compaction=${String(ctx.compaction !== void 0)} meter=${String(ctx.tokenMeter !== void 0)} proj=${String(ctx.sessionProjections !== void 0)}
+`
+  );
   const webServer = ctx.webServer;
   if (webServer === void 0) {
     console.error("[auto-compact] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u8BBE\u7F6E\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
@@ -2706,7 +2712,9 @@ function apply6(ctx) {
   }
   ctx.effect(() => installAutoCompactRoutes(webServer), "auto-compact: routes");
   ctx.inject(["compaction", "tokenMeter", "sessionProjections"], (scoped) => {
-    ctx.effect(() => installAutoCompactWatcher(scoped), "auto-compact: watcher");
+    appendFileSync2("/tmp/ac-debug.log", `${(/* @__PURE__ */ new Date()).toISOString()} inject-satisfied
+`);
+    scoped.effect(() => installAutoCompactWatcher(scoped), "auto-compact: watcher");
   });
 }
 
