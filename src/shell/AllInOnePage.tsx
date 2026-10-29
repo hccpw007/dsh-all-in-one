@@ -123,9 +123,12 @@ export function AllInOnePage({ t }: AllInOnePageProps) {
 
             const Entry = feature.entry
 
-            // 入口卡片由功能自己渲染，外壳只负责布局与打开动作
+            // 入口卡片由功能自己渲染，外壳只负责布局与打开动作；
+            // 外层与开关卡片一样包一层，卡片才能按网格行高撑到统一高度
             return (
-              <Entry key={feature.id} t={featureT} open={() => setActiveId(feature.id)} />
+              <div key={feature.id} className="min-w-0">
+                <Entry t={featureT} open={() => setActiveId(feature.id)} />
+              </div>
             )
           })}
         </div>

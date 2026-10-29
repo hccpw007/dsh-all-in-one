@@ -2835,7 +2835,7 @@ window.__ModuleLoader__.load({
           return /* @__PURE__ */ import_react18.default.createElement("div", { key: feature.id, className: "min-w-0" }, /* @__PURE__ */ import_react18.default.createElement(SwitchEntry, { t: featureT }));
         }
         const Entry = feature.entry;
-        return /* @__PURE__ */ import_react18.default.createElement(Entry, { key: feature.id, t: featureT, open: () => setActiveId(feature.id) });
+        return /* @__PURE__ */ import_react18.default.createElement("div", { key: feature.id, className: "min-w-0" }, /* @__PURE__ */ import_react18.default.createElement(Entry, { t: featureT, open: () => setActiveId(feature.id) }));
       })));
     }
 
