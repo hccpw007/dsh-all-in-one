@@ -2633,6 +2633,7 @@ function installAutoCompactRoutes(webServer) {
 }
 
 // src/features/auto-compact/host/region.ts
+var MAX_FIXED_SHARE = 0.25;
 function toolCallDelta(event) {
   if (event.type === "tool/result") return -1;
   if (event.type !== "assistant/message") return 0;
@@ -2675,9 +2676,10 @@ function selectRange(session, priced, retainTokens) {
 }
 async function compactOlderHistory(engine, measurement, agent, signal, contextWindow, retainPercent) {
   const session = agent.session;
-  const fixedTokens = Math.max(0, measurement.totalTokens - measurement.surfaceTokens);
   const targetTokens = Math.floor(contextWindow * retainPercent / 100);
-  const retainTokens = Math.max(0, targetTokens - fixedTokens);
+  const fixedTokens = Math.max(0, measurement.totalTokens - measurement.surfaceTokens);
+  const deductibleTokens = Math.min(fixedTokens, Math.round(targetTokens * MAX_FIXED_SHARE));
+  const retainTokens = Math.max(0, targetTokens - deductibleTokens);
   const range = selectRange(session, measurement.nodes, retainTokens);
   if (range === null) return { kind: "skipped", reason: "\u6CA1\u6709\u53EF\u5B89\u5168\u538B\u7F29\u7684\u5386\u53F2" };
   await engine.compactRegion?.(range.start, range.end, agent, signal);

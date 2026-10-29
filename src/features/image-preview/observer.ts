@@ -6,9 +6,9 @@
  * 并且每帧有节点数上限，长会话不会因为一次大变更卡住界面。
  */
 import {
-  PREVIEW_ATTRIBUTE,
   closestBlock,
   collectImagePaths,
+  disposePreviews,
   isOwnPreviewNode,
   syncBlockPreviews,
 } from './preview'
@@ -183,7 +183,7 @@ export function installImagePreviewObserver(): () => void {
     window.clearInterval(relocateTimer)
     if (frame !== 0) window.cancelAnimationFrame(frame)
 
-    // 插件卸载或开关关闭时清掉已插入的预览，不给宿主留残留节点
-    for (const element of document.querySelectorAll(`[${PREVIEW_ATTRIBUTE}]`)) element.remove()
+    // 插件卸载或开关关闭时清掉已插入的预览与放大层，不给宿主留残留节点
+    disposePreviews()
   }
 }

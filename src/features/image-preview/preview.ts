@@ -8,6 +8,7 @@
  * 采用原生 DOM 而非 React：预览要插进宿主渲染的任意消息块之间，宿主不提供
  * 消息级插槽，用 React 会与宿主的渲染树互相覆盖。
  */
+import { closeImagePreview, openImagePreview } from './lightbox'
 
 /** 预览容器的标记属性，扫描时据此跳过自己插入的节点，避免回调自激。 */
 export const PREVIEW_ATTRIBUTE = 'data-dsh-image-preview'
@@ -17,7 +18,7 @@ const WRAPPER_CLASS = 'mt-2 flex flex-col items-start gap-2'
 
 /** 预览图的 Tailwind 类名；preflight 已关闭，描边必须显式写出 border-solid。 */
 const IMAGE_CLASS =
-  'block max-h-[320px] max-w-full rounded-lg border border-solid border-line4 bg-base object-contain'
+  'block max-h-[320px] max-w-full cursor-zoom-in rounded-lg border border-solid border-line4 bg-base object-contain'
 
 /** 图片内容由宿主侧路由返回给浏览器，这里只拼请求地址。 */
 const IMAGE_ROUTE = '/dsh-all-in-one/image'
@@ -238,6 +239,8 @@ function createPreviewImage(path: string, container: HTMLElement): HTMLImageElem
   image.loading = 'lazy'
   image.decoding = 'async'
   image.className = IMAGE_CLASS
+  // 缩略图最高只有 320px，细节看不清，点击后按原图放大查看
+  image.addEventListener('click', () => openImagePreview(image.src, path))
   image.addEventListener('error', () => {
     // 文件可能已被删除或不是真正的图片；记录后不再重试，避免和观察器反复重建
     rememberFailedPath(path)
@@ -268,4 +271,15 @@ function rememberFailedPath(path: string): void {
 export function isOwnPreviewNode(node: Node): boolean {
   const element = node instanceof HTMLElement ? node : node.parentElement
   return element?.closest(`[${PREVIEW_ATTRIBUTE}]`) != null
+}
+
+/**
+ * 清掉本功能插入的所有节点。
+ *
+ * 开关关闭或插件卸载时调用：预览容器与放大层都要移除，不给宿主留残留节点。
+ */
+export function disposePreviews(): void {
+  closeImagePreview()
+
+  for (const element of document.querySelectorAll(`[${PREVIEW_ATTRIBUTE}]`)) element.remove()
 }

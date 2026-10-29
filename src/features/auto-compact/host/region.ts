@@ -9,6 +9,7 @@
  *   1. 表面第一个节点若是系统提示词，不能进入压缩范围；
  *   2. 切点必须落在工具调用与结果之间之外，否则会拆散一次调用的配对。
  */
+
 import type {
   AgentLike,
   CompactionApi,
@@ -16,6 +17,14 @@ import type {
   SessionLike,
   TokenMeterMeasurement,
 } from '../../../types/host'
+
+/**
+ * 固定开销最多扣掉保留目标的这个份额。
+ *
+ * 真实用量与表面计价不是同一把尺子，长会话里表面计价系统性偏低，差出来的部分
+ * 会被当成「固定开销」。不封顶就会把保留预算扣到接近零，一次压缩清空历史。
+ */
+const MAX_FIXED_SHARE = 0.25
 
 /** 一个表面节点的计价结果。 */
 interface PricedNode {
@@ -110,12 +119,13 @@ function selectRange(
  *
  * 保留比例是「压缩后总占用的目标」，不是「近期尾部的预算」：请求里还有工具定义
  * 这类完全不可压缩的固定开销，它同样占窗口。先把固定开销从目标里扣掉，剩下的
- * 才是可以留给原文尾部的预算，否则压缩后总占用会稳定高出设定值一截。
+ * 才是可以留给原文尾部的预算。
  *
- * 固定开销取自同一次测量的 `totalTokens - surfaceTokens`：`totalTokens` 是这次
- * 请求的总量（含工具定义），`surfaceTokens` 是表面原文的计价，两者之差与压缩
- * 无关。不能改用上下文投影里的推算用量——那里含着对下一轮的预估，扣掉它会把
- * 预算压得过小而压掉过多历史。
+ * 固定开销取自同一次测量的 `totalTokens - surfaceTokens`。但这两个量并非同一把
+ * 尺子：`totalTokens` 来自模型回报的真实用量，`surfaceTokens` 是宿主按字符估算
+ * 的表面计价，长会话里两者会系统性偏离（文件投影、图片、消息框架都会让表面计价
+ * 偏低）。偏离全部计进「固定开销」，会把预算压到接近零，一压就把历史清空。
+ * 因此扣减额封顶为目标的一个份额：宁可少压、停在设定值稍上方，也不把历史压光。
  * @param engine 压缩服务
  * @param measurement 本次检查的表面计价（调用方已测量，压缩前后都用它判断）
  * @param agent 会话所属 Agent
@@ -133,9 +143,10 @@ export async function compactOlderHistory(
   retainPercent: number,
 ): Promise<CompactionDecision> {
   const session = agent.session
-  const fixedTokens = Math.max(0, measurement.totalTokens - measurement.surfaceTokens)
   const targetTokens = Math.floor((contextWindow * retainPercent) / 100)
-  const retainTokens = Math.max(0, targetTokens - fixedTokens)
+  const fixedTokens = Math.max(0, measurement.totalTokens - measurement.surfaceTokens)
+  const deductibleTokens = Math.min(fixedTokens, Math.round(targetTokens * MAX_FIXED_SHARE))
+  const retainTokens = Math.max(0, targetTokens - deductibleTokens)
   const range = selectRange(session, measurement.nodes, retainTokens)
   if (range === null) return { kind: 'skipped', reason: '没有可安全压缩的历史' }
 
