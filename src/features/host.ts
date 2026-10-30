@@ -3,6 +3,7 @@ import type { FeatureHostExtension } from '../types/host'
 import * as powerPack from './power-pack/host'
 import * as expandProcess from './expand-process/host'
 import * as imagePreview from './image-preview/host'
+import * as sessionHistory from './session-history/host'
 import * as deleteSession from './delete-session/host'
 import * as projectMemory from './project-memory/host'
 import * as autoCompact from './auto-compact/host'
@@ -16,6 +17,7 @@ import * as autoCompact from './auto-compact/host'
 export const featureHosts: FeatureHostExtension[] = [
   expandProcess,
   imagePreview,
+  sessionHistory,
   deleteSession,
   projectMemory,
   powerPack,

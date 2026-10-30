@@ -1654,26 +1654,173 @@ function apply3(ctx) {
   ctx.effect(() => installImagePreviewRoutes(webServer), "image-preview: routes");
 }
 
-// src/features/delete-session/host.ts
+// src/features/session-history/host.ts
 var host_exports4 = {};
 __export(host_exports4, {
   apply: () => apply4,
   inject: () => inject4
 });
 
+// src/features/session-history/host/turn-inputs.ts
+import { readdir as readdir4, readFile as readFile7, stat as stat3 } from "node:fs/promises";
+import { join as join9 } from "node:path";
+import { zstdDecompressSync } from "node:zlib";
+var SESSION_FILE = "session.v4.jsonl.zstd";
+var MAX_SESSION_FILE_BYTES = 16 * 1024 * 1024;
+var MAX_TEXT_LENGTH = 120;
+var SESSION_ID_PATTERN = /^[A-Za-z0-9_-]+$/;
+var ZSTD_MAGIC = Buffer.from([40, 181, 47, 253]);
+function decompressSession(buffer) {
+  const parts = [];
+  let start = buffer.indexOf(ZSTD_MAGIC);
+  while (start !== -1) {
+    const next = buffer.indexOf(ZSTD_MAGIC, start + ZSTD_MAGIC.length);
+    const end = next === -1 ? buffer.length : next;
+    try {
+      parts.push(zstdDecompressSync(buffer.subarray(start, end)));
+    } catch (error) {
+      console.warn("[session-history] \u8DF3\u8FC7\u65E0\u6CD5\u89E3\u538B\u7684\u4F1A\u8BDD\u8BB0\u5F55\u5E27:", error);
+    }
+    start = next;
+  }
+  return Buffer.concat(parts);
+}
+function isRecord(value) {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+function toSingleLine(text) {
+  return text.replace(/\s+/g, " ").trim().slice(0, MAX_TEXT_LENGTH);
+}
+async function findSessionFile(sessionId) {
+  if (!SESSION_ID_PATTERN.test(sessionId)) return void 0;
+  const root = join9(resolveDshHome(), "sessions");
+  let entries;
+  try {
+    entries = await readdir4(root, { withFileTypes: true });
+  } catch (error) {
+    console.error("[session-history] \u8BFB\u53D6\u4F1A\u8BDD\u6839\u76EE\u5F55\u5931\u8D25:", root, error);
+    return void 0;
+  }
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+    const file = join9(root, entry.name, sessionId, SESSION_FILE);
+    try {
+      const info = await stat3(file);
+      if (info.isFile()) return file;
+    } catch (error) {
+      continue;
+    }
+  }
+  return void 0;
+}
+function parseUserText(line) {
+  let event;
+  try {
+    event = JSON.parse(line);
+  } catch (error) {
+    console.warn("[session-history] \u8DF3\u8FC7\u4E0D\u662F\u5408\u6CD5 JSON \u7684\u4F1A\u8BDD\u8BB0\u5F55\u884C:", error);
+    return void 0;
+  }
+  if (!isRecord(event) || event.type !== "agent/inbox/spliced") return void 0;
+  const data = isRecord(event.data) ? event.data : void 0;
+  if (data === void 0 || !Array.isArray(data.inserted)) return void 0;
+  const parts = [];
+  for (const item of data.inserted) {
+    if (!isRecord(item) || item.role !== "user") continue;
+    if (!Array.isArray(item.content)) continue;
+    for (const block of item.content) {
+      if (!isRecord(block) || block.type !== "text" || typeof block.text !== "string") continue;
+      parts.push(block.text);
+    }
+  }
+  if (parts.length === 0) return void 0;
+  const text = toSingleLine(parts.join(" "));
+  return text === "" ? void 0 : text;
+}
+async function readTurnInputs(sessionId) {
+  const file = await findSessionFile(sessionId);
+  if (file === void 0) return [];
+  let raw;
+  try {
+    const info = await stat3(file);
+    if (info.size > MAX_SESSION_FILE_BYTES) {
+      console.warn("[session-history] \u4F1A\u8BDD\u8BB0\u5F55\u8D85\u51FA\u4F53\u79EF\u4E0A\u9650\uFF0C\u8DF3\u8FC7\u8BFB\u53D6:", file, info.size);
+      return [];
+    }
+    raw = decompressSession(await readFile7(file));
+  } catch (error) {
+    console.error("[session-history] \u8BFB\u53D6\u4F1A\u8BDD\u8BB0\u5F55\u5931\u8D25:", file, error);
+    return [];
+  }
+  const inputs = [];
+  for (const line of raw.toString("utf8").split("\n")) {
+    if (line === "") continue;
+    const text = parseUserText(line);
+    if (text === void 0) continue;
+    inputs.push({ turn: inputs.length + 1, text });
+  }
+  return inputs;
+}
+
+// src/features/session-history/host/routes.ts
+var ROUTE_PATH3 = "/dsh-all-in-one/turn-inputs";
+function installSessionHistoryRoutes(webServer) {
+  return webServer.register({
+    kind: "prefix",
+    path: ROUTE_PATH3,
+    handler: async (request, response) => {
+      if (!isLocalRequest(request)) {
+        sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
+        return;
+      }
+      if (request.method !== "GET") {
+        response.writeHead(405, { allow: "GET" });
+        response.end();
+        return;
+      }
+      const url = new URL(request.url ?? ROUTE_PATH3, "http://localhost");
+      const sessionId = url.searchParams.get("sessionId");
+      if (sessionId === null || sessionId === "") {
+        sendJson(response, 400, { error: "\u7F3A\u5C11 sessionId \u53C2\u6570" });
+        return;
+      }
+      const inputs = await readTurnInputs(sessionId);
+      sendJson(response, 200, { inputs });
+    }
+  });
+}
+
+// src/features/session-history/host.ts
+var inject4 = ["webServer"];
+function apply4(ctx) {
+  const webServer = ctx.webServer;
+  if (webServer === void 0) {
+    console.error("[session-history] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u8F6E\u6B21\u6587\u672C\u8DEF\u7531\u4E0D\u4F1A\u6CE8\u518C");
+    return;
+  }
+  ctx.effect(() => installSessionHistoryRoutes(webServer), "session-history: routes");
+}
+
+// src/features/delete-session/host.ts
+var host_exports5 = {};
+__export(host_exports5, {
+  apply: () => apply5,
+  inject: () => inject5
+});
+
 // src/features/delete-session/host/delete-session.ts
-import { readdir as readdir4, rm as rm3, stat as stat4 } from "node:fs/promises";
-import { join as join10 } from "node:path";
+import { readdir as readdir5, rm as rm3, stat as stat5 } from "node:fs/promises";
+import { join as join11 } from "node:path";
 
 // src/features/delete-session/host/session-records.ts
-import { readFile as readFile7, rename as rename3, rm as rm2, stat as stat3, unlink, writeFile as writeFile3 } from "node:fs/promises";
-import { join as join9 } from "node:path";
+import { readFile as readFile8, rename as rename3, rm as rm2, stat as stat4, unlink, writeFile as writeFile3 } from "node:fs/promises";
+import { join as join10 } from "node:path";
 var WORKSPACE_STORAGE_PATH = ["storages", "workspace.json"];
 var GLOBAL_SESSION_LISTS = ["archivedSessionIds", "pinnedSessionIds"];
 function isEnoent(error) {
   return error.code === "ENOENT";
 }
-function isRecord(value) {
+function isRecord2(value) {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 function dropId(value, sessionId) {
@@ -1682,13 +1829,13 @@ function dropId(value, sessionId) {
   return { list: next, removed: next.length !== value.length };
 }
 async function forgetProjectionCache(dshHome, sessionId) {
-  const dir = join9(dshHome, "storages", "session_projcache", "sessions");
+  const dir = join10(dshHome, "storages", "session_projcache", "sessions");
   const plainId = sessionId.replace(/^session-/, "");
   const candidates = /* @__PURE__ */ new Set([`${sessionId}.json`, `${plainId}.json`]);
   let removed = 0;
   for (const name of candidates) {
     try {
-      await unlink(join9(dir, name));
+      await unlink(join10(dir, name));
       removed += 1;
     } catch (error) {
       if (isEnoent(error)) continue;
@@ -1699,10 +1846,10 @@ async function forgetProjectionCache(dshHome, sessionId) {
   return removed;
 }
 async function forgetWorkspaceAccount(dshHome, sessionId) {
-  const file = join9(dshHome, ...WORKSPACE_STORAGE_PATH);
+  const file = join10(dshHome, ...WORKSPACE_STORAGE_PATH);
   let before;
   try {
-    before = await stat3(file);
+    before = await stat4(file);
   } catch (error) {
     if (isEnoent(error)) return 0;
     console.error("[delete-session] \u8BFB\u53D6\u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u72B6\u6001\u5931\u8D25:", error);
@@ -1710,17 +1857,17 @@ async function forgetWorkspaceAccount(dshHome, sessionId) {
   }
   let document;
   try {
-    document = JSON.parse(await readFile7(file, "utf8"));
+    document = JSON.parse(await readFile8(file, "utf8"));
   } catch (error) {
     console.error("[delete-session] \u89E3\u6790\u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u5931\u8D25:", file, error);
     return 0;
   }
-  if (!isRecord(document)) {
+  if (!isRecord2(document)) {
     console.warn("[delete-session] \u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u7ED3\u6784\u4E0D\u662F\u5BF9\u8C61\uFF0C\u8DF3\u8FC7\u6E05\u7406:", file);
     return 0;
   }
   let removed = 0;
-  const global = isRecord(document["global"]) ? document["global"] : void 0;
+  const global = isRecord2(document["global"]) ? document["global"] : void 0;
   if (global !== void 0) {
     for (const key of GLOBAL_SESSION_LISTS) {
       const result = dropId(global[key], sessionId);
@@ -1729,11 +1876,11 @@ async function forgetWorkspaceAccount(dshHome, sessionId) {
       removed += 1;
     }
   }
-  const tables = isRecord(document["tables"]) ? document["tables"] : void 0;
-  const workspaces = tables !== void 0 && isRecord(tables["workspaces"]) ? tables["workspaces"] : void 0;
+  const tables = isRecord2(document["tables"]) ? document["tables"] : void 0;
+  const workspaces = tables !== void 0 && isRecord2(tables["workspaces"]) ? tables["workspaces"] : void 0;
   if (workspaces !== void 0) {
     for (const record of Object.values(workspaces)) {
-      if (!isRecord(record)) continue;
+      if (!isRecord2(record)) continue;
       const result = dropId(record["sessionIds"], sessionId);
       if (!result.removed) continue;
       record["sessionIds"] = result.list;
@@ -1741,7 +1888,7 @@ async function forgetWorkspaceAccount(dshHome, sessionId) {
     }
   }
   if (removed === 0) return 0;
-  const after = await stat3(file);
+  const after = await stat4(file);
   if (after.mtimeMs !== before.mtimeMs || after.size !== before.size) {
     console.warn("[delete-session] \u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u521A\u88AB\u5BBF\u4E3B\u6539\u5199\uFF0C\u8DF3\u8FC7\u672C\u6B21\u6E05\u7406:", file);
     return 0;
@@ -1768,25 +1915,25 @@ async function forgetSessionRecords(dshHome, sessionId) {
 }
 
 // src/features/delete-session/host/delete-session.ts
-var SESSION_ID_PATTERN = /^session-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+var SESSION_ID_PATTERN2 = /^session-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 function isValidSessionId(value) {
-  return typeof value === "string" && SESSION_ID_PATTERN.test(value);
+  return typeof value === "string" && SESSION_ID_PATTERN2.test(value);
 }
 async function findSessionDirs(sessionId) {
-  const root = join10(resolveDshHome(), "sessions");
+  const root = join11(resolveDshHome(), "sessions");
   let projects;
   try {
-    const entries = await readdir4(root, { withFileTypes: true });
-    projects = entries.filter((entry) => entry.isDirectory()).map((entry) => join10(root, entry.name));
+    const entries = await readdir5(root, { withFileTypes: true });
+    projects = entries.filter((entry) => entry.isDirectory()).map((entry) => join11(root, entry.name));
   } catch (error) {
     console.error("[delete-session] \u679A\u4E3E\u4F1A\u8BDD\u6839\u76EE\u5F55\u5931\u8D25:", error);
     throw error;
   }
   const found = [];
   for (const project of projects) {
-    const candidate = join10(project, sessionId);
+    const candidate = join11(project, sessionId);
     try {
-      const info = await stat4(candidate);
+      const info = await stat5(candidate);
       if (info.isDirectory()) found.push(candidate);
     } catch (error) {
       if (error.code === "ENOENT") continue;
@@ -1817,7 +1964,7 @@ async function deleteStoredSession(sessionId) {
 }
 
 // src/features/delete-session/host/routes.ts
-var ROUTE_PATH3 = "/dsh-all-in-one/sessions";
+var ROUTE_PATH4 = "/dsh-all-in-one/sessions";
 var MAX_BODY_BYTES2 = 8 * 1024;
 function readSessionId(body) {
   if (typeof body !== "object" || body === null) return void 0;
@@ -1827,7 +1974,7 @@ function readSessionId(body) {
 function installDeleteSessionRoutes(webServer) {
   return webServer.register({
     kind: "prefix",
-    path: ROUTE_PATH3,
+    path: ROUTE_PATH4,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
         sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
@@ -1862,8 +2009,8 @@ function installDeleteSessionRoutes(webServer) {
 }
 
 // src/features/delete-session/host.ts
-var inject4 = ["webServer"];
-function apply4(ctx) {
+var inject5 = ["webServer"];
+function apply5(ctx) {
   const webServer = ctx.webServer;
   if (webServer === void 0) {
     console.error("[delete-session] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u5220\u9664\u4F1A\u8BDD\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
@@ -1873,19 +2020,19 @@ function apply4(ctx) {
 }
 
 // src/features/project-memory/host.ts
-var host_exports5 = {};
-__export(host_exports5, {
-  apply: () => apply5,
-  inject: () => inject5
+var host_exports6 = {};
+__export(host_exports6, {
+  apply: () => apply6,
+  inject: () => inject6
 });
 
 // src/features/project-memory/host/settings.ts
 import { mkdirSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs";
-import { dirname as dirname4, join as join11 } from "node:path";
+import { dirname as dirname4, join as join12 } from "node:path";
 var DEFAULT_SETTINGS = { enabled: false, root: "" };
 var cache;
 function memorySettingsFile() {
-  return join11(resolveDshHome(), "all-in-one", "project-memory.json");
+  return join12(resolveDshHome(), "all-in-one", "project-memory.json");
 }
 function normalizeSettings(value) {
   if (typeof value !== "object" || value === null) return { ...DEFAULT_SETTINGS };
@@ -1929,22 +2076,22 @@ function writeMemorySettings(next) {
 
 // src/features/project-memory/host/paths.ts
 import { homedir as homedir4 } from "node:os";
-import { isAbsolute as isAbsolute2, join as join12, resolve as resolve2 } from "node:path";
+import { isAbsolute as isAbsolute2, join as join13, resolve as resolve2 } from "node:path";
 var MEMORY_INDEX_FILE = "MEMORY.md";
 function defaultMemoryRoot() {
-  return join12(resolveDshHome(), "all-in-one", "projects");
+  return join13(resolveDshHome(), "all-in-one", "projects");
 }
 function resolveMemoryRoot(root) {
   const trimmed = root.trim();
   if (trimmed === "") return defaultMemoryRoot();
-  const expanded = trimmed === "~" ? homedir4() : trimmed.startsWith("~/") ? join12(homedir4(), trimmed.slice(2)) : trimmed;
+  const expanded = trimmed === "~" ? homedir4() : trimmed.startsWith("~/") ? join13(homedir4(), trimmed.slice(2)) : trimmed;
   return isAbsolute2(expanded) ? resolve2(expanded) : void 0;
 }
 function projectSlug(directory) {
   return resolve2(directory).replace(/[^A-Za-z0-9]/g, "-");
 }
 function projectMemoryDir(root, projectDirectory) {
-  return join12(root, projectSlug(projectDirectory), "memory");
+  return join13(root, projectSlug(projectDirectory), "memory");
 }
 
 // src/features/project-memory/host/state.ts
@@ -1972,7 +2119,7 @@ function resolveSessionDirectory(agent) {
 
 // src/features/project-memory/host/store.ts
 import { mkdirSync as mkdirSync2, readdirSync, readFileSync as readFileSync2, renameSync as renameSync2, statSync as statSync2, unlinkSync, writeFileSync as writeFileSync2 } from "node:fs";
-import { join as join13 } from "node:path";
+import { join as join14 } from "node:path";
 var MEMORY_TYPES = ["user", "feedback", "project", "reference"];
 var MEMORY_NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 function isValidMemoryName(name) {
@@ -1983,7 +2130,7 @@ function ensureMemoryDir(dir) {
 }
 function readMemoryIndex(dir) {
   try {
-    return readFileSync2(join13(dir, MEMORY_INDEX_FILE), "utf8");
+    return readFileSync2(join14(dir, MEMORY_INDEX_FILE), "utf8");
   } catch (error) {
     if (error.code !== "ENOENT") {
       console.error("[project-memory] \u8BFB\u53D6\u8BB0\u5FC6\u7D22\u5F15\u5931\u8D25:", dir, error);
@@ -1992,7 +2139,7 @@ function readMemoryIndex(dir) {
   }
 }
 function writeMemoryIndex(dir, text) {
-  const file = join13(dir, MEMORY_INDEX_FILE);
+  const file = join14(dir, MEMORY_INDEX_FILE);
   const temp = `${file}.tmp`;
   try {
     writeFileSync2(temp, text, "utf8");
@@ -2040,7 +2187,7 @@ function readMemories(dir) {
   const entries = [];
   for (const file of listMemoryFiles(dir)) {
     try {
-      entries.push(parseMemoryFile(file, readFileSync2(join13(dir, file), "utf8")));
+      entries.push(parseMemoryFile(file, readFileSync2(join14(dir, file), "utf8")));
     } catch (error) {
       console.error("[project-memory] \u8BFB\u53D6\u8BB0\u5FC6\u6587\u4EF6\u5931\u8D25:", file, error);
     }
@@ -2051,7 +2198,7 @@ function readMemory(dir, name) {
   if (!isValidMemoryName(name)) return void 0;
   const file = `${name}.md`;
   try {
-    return parseMemoryFile(file, readFileSync2(join13(dir, file), "utf8"));
+    return parseMemoryFile(file, readFileSync2(join14(dir, file), "utf8"));
   } catch (error) {
     if (error.code !== "ENOENT") {
       console.error("[project-memory] \u8BFB\u53D6\u8BB0\u5FC6\u5931\u8D25:", file, error);
@@ -2082,7 +2229,7 @@ function preservedFrontmatter(dir, name) {
   const result = { before: [], after: [] };
   let text;
   try {
-    text = readFileSync2(join13(dir, `${name}.md`), "utf8");
+    text = readFileSync2(join14(dir, `${name}.md`), "utf8");
   } catch (error) {
     if (error.code !== "ENOENT") {
       console.error("[project-memory] \u8BFB\u53D6\u5F85\u66F4\u65B0\u8BB0\u5FC6\u5931\u8D25:", name, error);
@@ -2119,7 +2266,7 @@ function writeMemory(dir, input) {
   const type = input.type ?? "project";
   if (!MEMORY_TYPES.includes(type)) throw new Error(`\u8BB0\u5FC6\u7C7B\u578B\u4E0D\u5408\u6CD5\uFF1A${type}`);
   ensureMemoryDir(dir);
-  const file = join13(dir, `${input.name}.md`);
+  const file = join14(dir, `${input.name}.md`);
   const preserved = preservedFrontmatter(dir, input.name);
   const text = [
     "---",
@@ -2147,7 +2294,7 @@ function writeMemory(dir, input) {
 }
 function deleteMemory(dir, name) {
   if (!isValidMemoryName(name)) return false;
-  const file = join13(dir, `${name}.md`);
+  const file = join14(dir, `${name}.md`);
   try {
     unlinkSync(file);
   } catch (error) {
@@ -2176,7 +2323,7 @@ function renderMemoryIndex(dir, index) {
 }
 function memoryIndexFingerprint(dir) {
   try {
-    const index = statSync2(join13(dir, MEMORY_INDEX_FILE));
+    const index = statSync2(join14(dir, MEMORY_INDEX_FILE));
     return `${dir}|${index.mtimeMs}|${index.size}`;
   } catch (error) {
     if (error.code !== "ENOENT") {
@@ -2232,7 +2379,7 @@ function installMemoryPrompt(ctx) {
 }
 
 // src/features/project-memory/host/routes.ts
-var ROUTE_PATH4 = "/dsh-all-in-one/memory";
+var ROUTE_PATH5 = "/dsh-all-in-one/memory";
 var MAX_BODY_BYTES3 = 8 * 1024;
 function buildPayload2() {
   const settings = readMemorySettings();
@@ -2266,7 +2413,7 @@ function readRequest(body) {
 function installMemoryRoutes(webServer) {
   return webServer.register({
     kind: "exact",
-    path: ROUTE_PATH4,
+    path: ROUTE_PATH5,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
         sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
@@ -2494,8 +2641,8 @@ function installMemoryTool(ctx) {
 }
 
 // src/features/project-memory/host.ts
-var inject5 = ["systemPrompt", "tools", "webServer"];
-function apply5(ctx) {
+var inject6 = ["systemPrompt", "tools", "webServer"];
+function apply6(ctx) {
   installMemoryPrompt(ctx);
   installMemoryTool(ctx);
   const webServer = ctx.webServer;
@@ -2507,15 +2654,15 @@ function apply5(ctx) {
 }
 
 // src/features/auto-compact/host.ts
-var host_exports6 = {};
-__export(host_exports6, {
-  apply: () => apply6,
-  inject: () => inject6
+var host_exports7 = {};
+__export(host_exports7, {
+  apply: () => apply7,
+  inject: () => inject7
 });
 
 // src/features/auto-compact/host/settings.ts
 import { mkdirSync as mkdirSync3, readFileSync as readFileSync3, renameSync as renameSync3, statSync as statSync3, writeFileSync as writeFileSync3 } from "node:fs";
-import { dirname as dirname5, join as join14 } from "node:path";
+import { dirname as dirname5, join as join15 } from "node:path";
 var DEFAULT_SETTINGS2 = {
   enabled: false,
   thresholdPercent: 70,
@@ -2525,7 +2672,7 @@ var MIN_PERCENT = 1;
 var MAX_PERCENT = 100;
 var cache2;
 function autoCompactSettingsFile() {
-  return join14(resolveDshHome(), "all-in-one", "auto-compact.json");
+  return join15(resolveDshHome(), "all-in-one", "auto-compact.json");
 }
 function normalizePercent(value, fallback) {
   const parsed = typeof value === "number" ? value : Number.NaN;
@@ -2595,12 +2742,12 @@ function updateAutoCompactSettings(patch) {
 }
 
 // src/features/auto-compact/host/routes.ts
-var ROUTE_PATH5 = "/dsh-all-in-one/auto-compact";
+var ROUTE_PATH6 = "/dsh-all-in-one/auto-compact";
 var MAX_BODY_BYTES4 = 4 * 1024;
 function installAutoCompactRoutes(webServer) {
   return webServer.register({
     kind: "prefix",
-    path: ROUTE_PATH5,
+    path: ROUTE_PATH6,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
         sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
@@ -2780,8 +2927,8 @@ function installAutoCompactWatcher(ctx) {
 }
 
 // src/features/auto-compact/host.ts
-var inject6 = ["webServer"];
-function apply6(ctx) {
+var inject7 = ["webServer"];
+function apply7(ctx) {
   const webServer = ctx.webServer;
   if (webServer === void 0) {
     console.error("[auto-compact] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u8BBE\u7F6E\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
@@ -2797,16 +2944,17 @@ var featureHosts = [
   host_exports3,
   host_exports4,
   host_exports5,
+  host_exports6,
   host_exports,
-  host_exports6
+  host_exports7
 ];
 
 // src/index.ts
-var inject7 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
-function apply7(ctx) {
+var inject8 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
+function apply8(ctx) {
   for (const feature of featureHosts) feature.apply(ctx);
 }
 export {
-  apply7 as apply,
-  inject7 as inject
+  apply8 as apply,
+  inject8 as inject
 };
