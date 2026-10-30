@@ -35,7 +35,7 @@ const TICK_INTERVAL_MS = 1200
 const STYLE_TEXT = `
 [${NAV_ATTRIBUTE}] {
   right: auto !important;
-  left: 4% !important;
+  left: 12% !important;
   display: block !important;
   overflow: visible !important;
 }
