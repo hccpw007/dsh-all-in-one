@@ -32,7 +32,7 @@ const TICK_INTERVAL_MS = 1200
 const STYLE_TEXT = `
 [${NAV_ATTRIBUTE}] {
   right: auto !important;
-  left: clamp(12px, 6%, 80px) !important;
+  left: 12px !important;
   display: block !important;
   overflow: visible !important;
 }
@@ -41,6 +41,13 @@ const STYLE_TEXT = `
   left: calc(100% + 10px) !important;
 }
 `
+
+/** 导航条与正文之间保留的空隙，避免贴住文字。 */
+const NAV_TEXT_GAP = 6
+
+/** 导航条左偏移的下限与上限：下限保证贴边不消失，上限避免宽屏时跑得太深。 */
+const NAV_LEFT_MIN = 8
+const NAV_LEFT_MAX = 96
 
 /**
  * 安装轮次导航的左侧化。
@@ -57,15 +64,37 @@ export function installTurnNav(): () => void {
   let disposed = false
 
   /**
-   * 补上导航条标记；宿主重建会话视图后会生成新的导航条。
+   * 把导航条摆到左侧留白里最靠右的位置。
+   *
+   * 留白宽度随窗口与侧边栏变化（侧边栏展开时只剩几十像素），写死像素要么贴边、
+   * 要么压到正文上；这里直接读外框的左侧内边距，贴着正文放但不重叠。
+   * @param nav 导航条
+   */
+  function positionNav(nav: HTMLElement): void {
+    const slot = nav.parentElement
+    if (slot === null) return
+
+    const paddingLeft = Number.parseFloat(getComputedStyle(slot).paddingLeft)
+    if (!Number.isFinite(paddingLeft)) return
+
+    const width = nav.offsetWidth
+    const fit = paddingLeft - width - NAV_TEXT_GAP
+    const left = Math.max(NAV_LEFT_MIN, Math.min(NAV_LEFT_MAX, Math.round(fit)))
+
+    nav.style.setProperty('left', `${left}px`, 'important')
+  }
+
+  /**
+   * 补上导航条标记并摆正位置；宿主重建会话视图后会生成新的导航条。
    */
   function tick(): void {
     if (disposed) return
 
     const nav = document.querySelector(NAV_SELECTOR)
-    if (nav instanceof HTMLElement && !nav.hasAttribute(NAV_ATTRIBUTE)) {
-      nav.setAttribute(NAV_ATTRIBUTE, '')
-    }
+    if (!(nav instanceof HTMLElement)) return
+
+    if (!nav.hasAttribute(NAV_ATTRIBUTE)) nav.setAttribute(NAV_ATTRIBUTE, '')
+    positionNav(nav)
   }
 
   tick()
@@ -77,6 +106,8 @@ export function installTurnNav(): () => void {
 
     for (const element of document.querySelectorAll(`[${NAV_ATTRIBUTE}]`)) {
       element.removeAttribute(NAV_ATTRIBUTE)
+      // 只撤掉插件写的 left，宿主自己的 top 等内联样式要保持原样
+      if (element instanceof HTMLElement) element.style.removeProperty('left')
     }
 
     document.getElementById(STYLE_ID)?.remove()

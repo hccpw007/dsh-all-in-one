@@ -10,8 +10,8 @@ function MemoryIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      width="16"
-      height="16"
+      width="14"
+      height="14"
       aria-hidden="true"
       fill="none"
       stroke="currentColor"
@@ -97,28 +97,28 @@ export function ProjectMemoryEntry({ t, open }: FeatureEntryProps) {
 
   return (
     // 卡片容器：主体按钮、开关与设置按钮是并列的交互区，不能互相嵌套
-    <div className="flex w-full items-start gap-2.5 rounded-lg border border-line4 bg-layer1 px-3 py-2 transition hover:bg-layer2">
+    <div className="flex w-full items-start gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1.5 transition hover:bg-layer2">
       {/* 卡片主体：进入功能页面配置记忆路径。preflight 关闭，必须清掉浏览器默认的按钮底色与内边距 */}
       <button
         type="button"
         onClick={open}
-        className="flex min-w-0 flex-1 items-start gap-2.5 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        className="flex min-w-0 flex-1 items-start gap-2 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
       >
         {/* 入口图标 */}
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-base text-brand">
+        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-base text-brand">
           <MemoryIcon />
         </span>
         {/* 入口标题与说明 */}
         <span className="min-w-0 flex-1">
           {/* 入口标题 */}
-          <span className="block text-[13px] font-medium leading-[17px] text-primary">{t('title')}</span>
+          <span className="block text-[13px] font-medium leading-[16px] text-primary">{t('title')}</span>
           {/* 入口描述 */}
-          <span className="mt-0.5 block text-[12px] leading-[16px] text-secondary">
+          <span className="block text-[12px] leading-[16px] text-secondary">
             {t('description')}
           </span>
           {/* 读写失败提示：说明当前状态未能保存 */}
           {error !== null ? (
-            <span className="mt-0.5 block text-[12px] leading-[16px] text-danger" role="alert">
+            <span className="block text-[12px] leading-[16px] text-danger" role="alert">
               {error}
             </span>
           ) : null}
