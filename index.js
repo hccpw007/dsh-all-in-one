@@ -1421,13 +1421,13 @@ function bootExpandProcess(storageKey) {
     "@deepseek-ai/dsh-client-ui-tool": [
       [
         "const { expanded, toggle: toggleExpand } = useDisclosure();",
-        "const { toggle: toggleExpand } = useDisclosure(); const expanded = window.__DSH_EXPAND_PROCESS_ENABLED__();"
+        "const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_ENABLED__()); const toggleExpand = () => setExpanded((value) => !value);"
       ]
     ],
     "@deepseek-ai/dsh-client-ui-chat": [
       [
         "const { expanded, toggle } = useDisclosure();",
-        "const { toggle } = useDisclosure(); const expanded = window.__DSH_EXPAND_PROCESS_ENABLED__();"
+        "const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_ENABLED__()); const toggle = () => setExpanded((value) => !value);"
       ]
     ]
   };

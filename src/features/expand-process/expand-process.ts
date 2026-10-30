@@ -2,8 +2,8 @@
  * 「展开过程」开关的共享逻辑。
  *
  * 宿主侧把引导脚本注入 index.html 的 <head>，在客户端模块系统启动前接管
- * `window.__ModuleLoader__`，把「思考」与「运行命令」两个 UI 包 factory 的源码
- * 换成按开关状态取值的版本；客户端侧只负责读写同一个 localStorage 键。
+ * `window.__ModuleLoader__`，把「思考」与「运行命令」两类行组件的折叠状态初始值
+ * 换成按开关取值；客户端侧只负责读写同一个 localStorage 键。
  *
  * 两端共用本文件，避免状态键与补丁规则出现两套定义。
  */
@@ -42,7 +42,7 @@ function bootExpandProcess(storageKey: string): void {
   if (win['__DSH_ALL_IN_ONE_EXPAND_PROCESS__']) return
   win['__DSH_ALL_IN_ONE_EXPAND_PROCESS__'] = true
 
-  // 组件每次渲染都读取开关，刷新页面后设置页的选择才能应用到所有行
+  // 行在挂载时读取一次开关作为初始展开值，之后由行自己的折叠按钮接管；刷新页面即重新读取
   win['__DSH_EXPAND_PROCESS_ENABLED__'] = function enabled(): boolean {
     try {
       return window.localStorage.getItem(storageKey) === '1'
@@ -52,18 +52,25 @@ function bootExpandProcess(storageKey: string): void {
     }
   }
 
-  /** 包 id → [旧源码片段, 新源码片段] 列表。 */
+  /**
+   * 包 id → [旧源码片段, 新源码片段] 列表。
+   *
+   * 展开状态必须留在行自己的 state 里：若把 `expanded` 直接换成开关值，
+   * 点击折叠按钮只改 hook 内部 state、渲染仍按开关值走，单行就永远收不起来。
+   * 这里的 useState 只把开关值当作初始值，之后完全由折叠按钮接管；
+   * 初始化用函数形式，避免每次渲染都读一次 localStorage。
+   */
   const RULES: Record<string, Array<[string, string]>> = {
     '@deepseek-ai/dsh-client-ui-tool': [
       [
         'const { expanded, toggle: toggleExpand } = useDisclosure();',
-        'const { toggle: toggleExpand } = useDisclosure(); const expanded = window.__DSH_EXPAND_PROCESS_ENABLED__();',
+        'const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_ENABLED__()); const toggleExpand = () => setExpanded((value) => !value);',
       ],
     ],
     '@deepseek-ai/dsh-client-ui-chat': [
       [
         'const { expanded, toggle } = useDisclosure();',
-        'const { toggle } = useDisclosure(); const expanded = window.__DSH_EXPAND_PROCESS_ENABLED__();',
+        'const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_ENABLED__()); const toggle = () => setExpanded((value) => !value);',
       ],
     ],
   }
