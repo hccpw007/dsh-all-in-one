@@ -1847,6 +1847,10 @@ window.__ModuleLoader__.load({
     var INPUT_LINE_HEIGHT = 14;
     var STYLE_TEXT = `
     [${NAV_ATTRIBUTE}] { right: auto !important; left: 12px !important; overflow: visible !important; }
+    [${NAV_ATTRIBUTE}] [class*="_preview"] {
+      right: auto !important;
+      left: calc(100% + 10px) !important;
+    }
     [${INPUTS_ATTRIBUTE}] {
       position: absolute;
       top: 0;

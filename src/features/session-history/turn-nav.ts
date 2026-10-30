@@ -36,10 +36,18 @@ const INPUT_LINE_HEIGHT = 14
 /**
  * 插件样式：把导航条挪到左侧，并排布文本列。
  *
+ * 宿主的悬停预览卡用 `right: calc(100% + 10px)` 贴在导航条左侧，导航条挪到左边后
+ * 会跑到屏幕外；这里把它反转到右侧，保持与右侧模式一致的「预览在横杠内侧」。
+ * 类名按 `_preview` 子串匹配：宿主的类名带构建期哈希，只有语义后缀是稳定的。
+ *
  * 只用主题令牌着色，跟随宿主明暗主题；样式随插件生命周期注入与移除。
  */
 const STYLE_TEXT = `
 [${NAV_ATTRIBUTE}] { right: auto !important; left: 12px !important; overflow: visible !important; }
+[${NAV_ATTRIBUTE}] [class*="_preview"] {
+  right: auto !important;
+  left: calc(100% + 10px) !important;
+}
 [${INPUTS_ATTRIBUTE}] {
   position: absolute;
   top: 0;
