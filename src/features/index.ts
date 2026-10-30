@@ -4,6 +4,7 @@ import powerPack from './power-pack'
 import expandProcess from './expand-process'
 import imagePreview from './image-preview'
 import sessionHistory from './session-history'
+import sidebarMore from './sidebar-more'
 import deleteSession from './delete-session'
 import projectMemory from './project-memory'
 import autoCompact from './auto-compact'
@@ -23,6 +24,7 @@ export const featureList: FeatureDefinition[] = [
   expandProcess,
   imagePreview,
   sessionHistory,
+  sidebarMore,
   deleteSession,
   projectMemory,
   powerPack,
