@@ -1,13 +1,14 @@
 /**
- * 轮次导航条的左侧化与轮次文本层。
+ * 轮次导航条的左侧化与轮次文本。
  *
  * 宿主把「跳转到第 N 轮」的标记渲染成 `nav[aria-label="轮次导航"]`，绝对定位在
  * 会话右侧。本模块只做两件事：
  *   - 给导航条打标记，用插件样式把横向定位从右侧改到左侧，DOM 与点击逻辑不动；
- *   - 开关打开时，在导航条旁叠加一列文本，内容是该轮用户输入，单行省略。
+ *   - 第二个开关打开时，把每轮用户输入写进对应标记的属性，由 CSS 渲染在横杠下方，
+ *     单行省略；当前轮用主色、其余用灰色。
  *
- * 文本层是插件自己的节点，挂在导航条内部、绝对定位；导航条随会话滚动更新标记
- * 位置时按属性变化重排，因此文本始终与对应标记对齐。
+ * 文本走标记上的属性而不是另建节点：宿主的标记会随滚动改写位置，只有跟着标记
+ * 自身的样式才能一直对齐；DOM 结构不变也不会与宿主的渲染树冲突。
  */
 import { requestTurnInputs } from './api'
 import type { TurnInput } from './types'
@@ -18,8 +19,11 @@ const NAV_SELECTOR = 'nav[aria-label="轮次导航"]'
 /** 导航条被移动到左侧后打的标记属性，插件样式据此生效。 */
 const NAV_ATTRIBUTE = 'data-aio-turn-nav'
 
-/** 文本层容器的标记属性；重排与跳过自身变更都靠它识别。 */
-const INPUTS_ATTRIBUTE = 'data-aio-turn-inputs'
+/** 第二个开关打开时追加的标记；布局改写只在这个属性存在时生效。 */
+const NAV_INPUTS_ATTRIBUTE = 'data-aio-turn-nav-inputs'
+
+/** 标记上承载该轮用户输入的属性，供 CSS `attr()` 渲染。 */
+const MARK_TEXT_ATTRIBUTE = 'data-aio-turn-text'
 
 /** 插件样式节点 id，卸载时据此整体移除。 */
 const STYLE_ID = 'dsh-all-in-one-session-history'
@@ -27,18 +31,13 @@ const STYLE_ID = 'dsh-all-in-one-session-history'
 /** 导航条检测间隔；宿主重建会话视图时不发通知，只能轮询兜底。 */
 const TICK_INTERVAL_MS = 1200
 
-/** 文本层单行宽度上限，超出部分用省略号。 */
-const INPUT_LINE_WIDTH = '200px'
-
-/** 文本行高，用于让每行与对应标记垂直居中。 */
-const INPUT_LINE_HEIGHT = 14
-
 /**
- * 插件样式：把导航条挪到左侧，并排布文本列。
+ * 插件样式：把导航条挪到左侧；第二个开关打开时改成「横杠 + 下方文字」的列表。
  *
  * 宿主的悬停预览卡用 `right: calc(100% + 10px)` 贴在导航条左侧，导航条挪到左边后
  * 会跑到屏幕外；这里把它反转到右侧，保持与右侧模式一致的「预览在横杠内侧」。
- * 类名按 `_preview` 子串匹配：宿主的类名带构建期哈希，只有语义后缀是稳定的。
+ * 类名按 `_preview` / `_markActive` / `_marks` 子串匹配：宿主类名带构建期哈希，
+ * 只有语义后缀是稳定的。
  *
  * 只用主题令牌着色，跟随宿主明暗主题；样式随插件生命周期注入与移除。
  */
@@ -48,23 +47,38 @@ const STYLE_TEXT = `
   right: auto !important;
   left: calc(100% + 10px) !important;
 }
-[${INPUTS_ATTRIBUTE}] {
-  position: absolute;
-  top: 0;
-  left: 30px;
-  width: ${INPUT_LINE_WIDTH};
-  pointer-events: none;
+[${NAV_ATTRIBUTE}][${NAV_INPUTS_ATTRIBUTE}] { width: 200px !important; }
+[${NAV_ATTRIBUTE}][${NAV_INPUTS_ATTRIBUTE}] [class*="_marks"] { height: auto !important; }
+[${NAV_ATTRIBUTE}][${NAV_INPUTS_ATTRIBUTE}] [data-index] {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  display: block !important;
+  width: 100% !important;
+  height: 40px !important;
 }
-[${INPUTS_ATTRIBUTE}] > span {
+[${NAV_ATTRIBUTE}][${NAV_INPUTS_ATTRIBUTE}] [data-index]::before {
+  top: 8px !important;
+  right: auto !important;
+  left: 0 !important;
+  transform-origin: 0 center !important;
+}
+[${NAV_ATTRIBUTE}][${NAV_INPUTS_ATTRIBUTE}] [data-index]::after {
+  content: attr(data-aio-turn-text);
   position: absolute;
+  top: 16px;
   left: 0;
-  max-width: ${INPUT_LINE_WIDTH};
+  width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: 11px;
-  line-height: 14px;
-  color: var(--dsw-alias-label-secondary);
+  line-height: 16px;
+  color: var(--dsw-alias-label-tertiary);
+}
+[${NAV_ATTRIBUTE}][${NAV_INPUTS_ATTRIBUTE}] [data-index][class*="_markActive"]::after {
+  color: var(--dsw-alias-label-primary);
 }
 `
 
@@ -77,9 +91,9 @@ export interface TurnNavOptions {
 }
 
 /**
- * 安装轮次导航的左侧化与文本层。
+ * 安装轮次导航的左侧化与轮次文本。
  * @param options 安装选项
- * @returns 清理函数：撤销样式、标记、文本层与监听
+ * @returns 清理函数：撤销样式、标记属性与轮询
  */
 export function installTurnNav(options: TurnNavOptions): () => void {
   if (document.getElementById(STYLE_ID) === null) {
@@ -95,10 +109,6 @@ export function installTurnNav(options: TurnNavOptions): () => void {
   let inputs: TurnInput[] = []
   /** 文本拉取进行中，避免轮询重复发起请求。 */
   let loading = false
-  /** 已按多少条标记排版过，标记数量变化时重排。 */
-  let appliedMarkCount = 0
-  /** 重排合并到每一帧，滚动时不会反复触发。 */
-  let frame = 0
   let disposed = false
 
   /**
@@ -114,55 +124,25 @@ export function installTurnNav(options: TurnNavOptions): () => void {
   }
 
   /**
-   * 按各标记的当前位置重排文本行。
+   * 把每轮输入写到对应标记上，供 CSS 渲染；值没变时不做写入。
    * @param nav 导航条
    */
-  function repositionLines(nav: HTMLElement): void {
-    const layer = nav.querySelector(`[${INPUTS_ATTRIBUTE}]`)
-    if (!(layer instanceof HTMLElement)) return
+  function applyInputs(nav: HTMLElement): void {
+    if (inputs.length === 0) return
 
-    const navTop = nav.getBoundingClientRect().top
-    const lines = Array.from(layer.children)
     const marks = Array.from(nav.querySelectorAll('[data-index]'))
+    if (marks.length === 0) return
 
-    for (const [index, line] of lines.entries()) {
-      const mark = marks[index]
-      if (!(line instanceof HTMLElement) || !(mark instanceof HTMLElement)) continue
+    if (!nav.hasAttribute(NAV_INPUTS_ATTRIBUTE)) nav.setAttribute(NAV_INPUTS_ATTRIBUTE, '')
 
-      const markRect = mark.getBoundingClientRect()
-      // 标记只有 10px 高，文本行按中心对齐才不会看起来偏上
-      const center = markRect.top - navTop + markRect.height / 2 - INPUT_LINE_HEIGHT / 2
-      line.style.top = `${center}px`
+    for (const [index, mark] of marks.entries()) {
+      if (!(mark instanceof HTMLElement)) continue
+
+      const text = inputs[index]?.text ?? ''
+      if (mark.getAttribute(MARK_TEXT_ATTRIBUTE) === text) continue
+
+      mark.setAttribute(MARK_TEXT_ATTRIBUTE, text)
     }
-  }
-
-  /**
-   * 用已取到的轮次文本重建文本层。
-   * @param nav 导航条
-   */
-  function renderLines(nav: HTMLElement): void {
-    const marks = Array.from(nav.querySelectorAll('[data-index]'))
-    if (marks.length === 0 || inputs.length === 0) return
-
-    let layer = nav.querySelector(`[${INPUTS_ATTRIBUTE}]`)
-    if (!(layer instanceof HTMLElement)) {
-      layer = document.createElement('div')
-      layer.setAttribute(INPUTS_ATTRIBUTE, '')
-      nav.appendChild(layer)
-    }
-
-    layer.textContent = ''
-
-    for (const [index, input] of inputs.entries()) {
-      if (index >= marks.length) break
-
-      const line = document.createElement('span')
-      line.textContent = input.text
-      layer.appendChild(line)
-    }
-
-    appliedMarkCount = marks.length
-    repositionLines(nav)
   }
 
   /**
@@ -185,80 +165,27 @@ export function installTurnNav(options: TurnNavOptions): () => void {
 
       loadedSessionId = sessionId
       inputs = next
-      appliedMarkCount = 0
     } finally {
       loading = false
     }
   }
 
   /**
-   * 每帧最多重排一次，避免滚动时反复布局。
-   * @param nav 导航条
-   */
-  function scheduleReposition(nav: HTMLElement): void {
-    if (disposed || frame !== 0) return
-
-    frame = window.requestAnimationFrame(() => {
-      frame = 0
-      repositionLines(nav)
-    })
-  }
-
-  /**
-   * 跟踪标记位置：宿主滚动时会改写标记的 transform，靠属性变化实时重排。
-   */
-  const positionObserver = new MutationObserver((records) => {
-    for (const record of records) {
-      const target = record.target
-
-      // 跳过自己写入的文本行，否则会与重排形成循环
-      if (target instanceof Element && target.closest(`[${INPUTS_ATTRIBUTE}]`) !== null) continue
-
-      const nav = findNav()
-      if (nav !== undefined) scheduleReposition(nav)
-      return
-    }
-  })
-
-  /** 当前被观察的导航条；宿主重建会话视图后需要重新绑定。 */
-  let observedNav: HTMLElement | undefined
-
-  /**
-   * 把位置监听绑定到当前导航条。
-   * @param nav 导航条
-   */
-  function ensurePositionObserver(nav: HTMLElement): void {
-    if (observedNav === nav) return
-
-    positionObserver.disconnect()
-    positionObserver.observe(nav, { attributes: true, subtree: true, attributeFilter: ['style'] })
-    observedNav = nav
-  }
-
-  /**
-   * 一轮检测：补标记、拉文本、必要时重画。
+   * 一轮检测：补标记、拉文本、写属性。
    */
   function tick(): void {
     const nav = findNav()
-    if (nav === undefined || !options.showInputs) return
-
-    ensurePositionObserver(nav)
-
-    if (loading) return
+    if (nav === undefined || !options.showInputs || loading) return
 
     if (inputs.length === 0) {
       void refreshInputs().then(() => {
         const current = findNav()
-        if (current !== undefined) renderLines(current)
+        if (current !== undefined) applyInputs(current)
       })
       return
     }
 
-    const markCount = nav.querySelectorAll('[data-index]').length
-    const hasLayer = nav.querySelector(`[${INPUTS_ATTRIBUTE}]`) !== null
-
-    if (!hasLayer || markCount !== appliedMarkCount) renderLines(nav)
-    else scheduleReposition(nav)
+    applyInputs(nav)
   }
 
   tick()
@@ -267,12 +194,17 @@ export function installTurnNav(options: TurnNavOptions): () => void {
   return () => {
     disposed = true
     window.clearInterval(timer)
-    if (frame !== 0) window.cancelAnimationFrame(frame)
-    positionObserver.disconnect()
 
-    for (const element of document.querySelectorAll(`[${INPUTS_ATTRIBUTE}]`)) element.remove()
-    for (const element of document.querySelectorAll(`[${NAV_ATTRIBUTE}]`)) {
-      element.removeAttribute(NAV_ATTRIBUTE)
+    for (const mark of document.querySelectorAll(`[${MARK_TEXT_ATTRIBUTE}]`)) {
+      mark.removeAttribute(MARK_TEXT_ATTRIBUTE)
+    }
+
+    for (const nav of document.querySelectorAll(`[${NAV_INPUTS_ATTRIBUTE}]`)) {
+      nav.removeAttribute(NAV_INPUTS_ATTRIBUTE)
+    }
+
+    for (const nav of document.querySelectorAll(`[${NAV_ATTRIBUTE}]`)) {
+      nav.removeAttribute(NAV_ATTRIBUTE)
     }
 
     document.getElementById(STYLE_ID)?.remove()
