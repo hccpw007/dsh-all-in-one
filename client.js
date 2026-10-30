@@ -1810,10 +1810,11 @@ window.__ModuleLoader__.load({
     var NAV_ATTRIBUTE = "data-aio-turn-nav";
     var STYLE_ID = "dsh-all-in-one-session-history";
     var TICK_INTERVAL_MS = 1200;
+    var WIDTH_HANDLE_SELECTOR = '[data-width-handle="left"]';
+    var NAV_EDGE_GAP = 4;
     var STYLE_TEXT = `
     [${NAV_ATTRIBUTE}] {
       right: auto !important;
-      left: 12% !important;
       display: block !important;
       overflow: visible !important;
     }
@@ -1830,12 +1831,21 @@ window.__ModuleLoader__.load({
         document.head.appendChild(style);
       }
       let disposed = false;
+      function positionNav(nav) {
+        const slot = nav.parentElement;
+        const handle = document.querySelector(WIDTH_HANDLE_SELECTOR);
+        if (slot === null || !(handle instanceof HTMLElement)) return;
+        const left = Math.round(
+          handle.getBoundingClientRect().left - slot.getBoundingClientRect().left - nav.offsetWidth - NAV_EDGE_GAP
+        );
+        nav.style.setProperty("left", `${Math.max(0, left)}px`, "important");
+      }
       function tick() {
         if (disposed) return;
         const nav = document.querySelector(NAV_SELECTOR);
-        if (nav instanceof HTMLElement && !nav.hasAttribute(NAV_ATTRIBUTE)) {
-          nav.setAttribute(NAV_ATTRIBUTE, "");
-        }
+        if (!(nav instanceof HTMLElement)) return;
+        if (!nav.hasAttribute(NAV_ATTRIBUTE)) nav.setAttribute(NAV_ATTRIBUTE, "");
+        positionNav(nav);
       }
       tick();
       const timer = window.setInterval(tick, TICK_INTERVAL_MS);
@@ -1844,6 +1854,7 @@ window.__ModuleLoader__.load({
         window.clearInterval(timer);
         for (const element of document.querySelectorAll(`[${NAV_ATTRIBUTE}]`)) {
           element.removeAttribute(NAV_ATTRIBUTE);
+          if (element instanceof HTMLElement) element.style.removeProperty("left");
         }
         document.getElementById(STYLE_ID)?.remove();
       };

@@ -17,11 +17,17 @@ const STYLE_ID = 'dsh-all-in-one-session-history'
 /** 导航条检测间隔；宿主重建会话视图时不发通知，只能轮询兜底。 */
 const TICK_INTERVAL_MS = 1200
 
+/** 会话区左侧的宽度拖拽手柄：正文从这里开始，导航条贴在它左边。 */
+const WIDTH_HANDLE_SELECTOR = '[data-width-handle="left"]'
+
+/** 导航条与手柄之间留的空隙，避免贴死。 */
+const NAV_EDGE_GAP = 4
+
 /**
  * 插件样式：把导航条挪到左侧。
  *
- * 横向位置用容器宽度百分比表达：会话区变窄（侧边栏展开、窗口缩小）时按比例跟着
- * 收缩，不会像固定像素那样压到正文或跑出可视区。
+ * 横向位置由脚本按左侧宽度手柄算出来（贴在手柄左边），不写死像素或百分比；
+ * 侧边栏展开、窗口缩放、正文宽度调整都会让手柄移动，下次轮询时自动跟上。
  *
  * 宿主的悬停预览卡用 `right: calc(100% + 10px)` 贴在导航条左侧，导航条挪到左边后
  * 会跑到屏幕外；这里把它反转到右侧，保持与右侧模式一致的「预览在横杠内侧」。
@@ -35,7 +41,6 @@ const TICK_INTERVAL_MS = 1200
 const STYLE_TEXT = `
 [${NAV_ATTRIBUTE}] {
   right: auto !important;
-  left: 12% !important;
   display: block !important;
   overflow: visible !important;
 }
@@ -60,15 +65,35 @@ export function installTurnNav(): () => void {
   let disposed = false
 
   /**
-   * 补上导航条标记；宿主重建会话视图后会生成新的导航条。
+   * 把导航条贴到左侧宽度手柄的左边。
+   *
+   * 手柄是正文区域的左边界，位置随窗口与侧边栏变化；直接用它的实时坐标换算成相对
+   * 导航条定位容器的偏移，宽度、留白怎么变都能贴住。
+   * @param nav 导航条
+   */
+  function positionNav(nav: HTMLElement): void {
+    const slot = nav.parentElement
+    const handle = document.querySelector(WIDTH_HANDLE_SELECTOR)
+    if (slot === null || !(handle instanceof HTMLElement)) return
+
+    const left = Math.round(
+      handle.getBoundingClientRect().left - slot.getBoundingClientRect().left - nav.offsetWidth - NAV_EDGE_GAP,
+    )
+
+    nav.style.setProperty('left', `${Math.max(0, left)}px`, 'important')
+  }
+
+  /**
+   * 补上导航条标记并摆正位置；宿主重建会话视图后会生成新的导航条。
    */
   function tick(): void {
     if (disposed) return
 
     const nav = document.querySelector(NAV_SELECTOR)
-    if (nav instanceof HTMLElement && !nav.hasAttribute(NAV_ATTRIBUTE)) {
-      nav.setAttribute(NAV_ATTRIBUTE, '')
-    }
+    if (!(nav instanceof HTMLElement)) return
+
+    if (!nav.hasAttribute(NAV_ATTRIBUTE)) nav.setAttribute(NAV_ATTRIBUTE, '')
+    positionNav(nav)
   }
 
   tick()
@@ -80,6 +105,8 @@ export function installTurnNav(): () => void {
 
     for (const element of document.querySelectorAll(`[${NAV_ATTRIBUTE}]`)) {
       element.removeAttribute(NAV_ATTRIBUTE)
+      // 只撤掉插件写的 left，宿主自己的 top 等内联样式要保持原样
+      if (element instanceof HTMLElement) element.style.removeProperty('left')
     }
 
     document.getElementById(STYLE_ID)?.remove()
