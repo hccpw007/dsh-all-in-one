@@ -78,13 +78,13 @@ export function ImagePreviewToggle({ t }: FeatureSwitchProps) {
         <span
           aria-hidden="true"
           className={cn(
-            'relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition',
+            'relative inline-flex h-5 w-9 shrink-0 items-center aio-switch transition',
             enabled ? 'bg-brand' : 'bg-line2',
           )}
         >
           <span
             className={cn(
-              'h-4 w-4 rounded-full bg-base shadow transition-transform',
+              'h-4 w-4 aio-switch bg-base shadow transition-transform',
               enabled ? 'translate-x-[18px]' : 'translate-x-0.5',
             )}
           />

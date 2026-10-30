@@ -1348,7 +1348,7 @@ window.__ModuleLoader__.load({
           {
             "aria-hidden": "true",
             className: cn(
-              "relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition",
+              "relative inline-flex h-5 w-9 shrink-0 items-center aio-switch transition",
               enabled ? "bg-brand" : "bg-line2"
             )
           },
@@ -1356,7 +1356,7 @@ window.__ModuleLoader__.load({
             "span",
             {
               className: cn(
-                "h-4 w-4 rounded-full bg-base shadow transition-transform",
+                "h-4 w-4 aio-switch bg-base shadow transition-transform",
                 enabled ? "translate-x-[18px]" : "translate-x-0.5"
               )
             }
@@ -1758,7 +1758,7 @@ window.__ModuleLoader__.load({
           {
             "aria-hidden": "true",
             className: cn(
-              "relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition",
+              "relative inline-flex h-5 w-9 shrink-0 items-center aio-switch transition",
               enabled ? "bg-brand" : "bg-line2"
             )
           },
@@ -1766,7 +1766,7 @@ window.__ModuleLoader__.load({
             "span",
             {
               className: cn(
-                "h-4 w-4 rounded-full bg-base shadow transition-transform",
+                "h-4 w-4 aio-switch bg-base shadow transition-transform",
                 enabled ? "translate-x-[18px]" : "translate-x-0.5"
               )
             }
@@ -1810,6 +1810,8 @@ window.__ModuleLoader__.load({
     var NAV_ATTRIBUTE = "data-aio-turn-nav";
     var STYLE_ID = "dsh-all-in-one-session-history";
     var TICK_INTERVAL_MS = 1200;
+    var CONVERSATION_SELECTOR = "[data-conversation-scroll]";
+    var CONTENT_SELECTOR = "p, li, h2, h3, pre, table";
     var STYLE_TEXT = `
     [${NAV_ATTRIBUTE}] {
       right: auto !important;
@@ -1824,7 +1826,15 @@ window.__ModuleLoader__.load({
     `;
     var NAV_TEXT_GAP = 6;
     var NAV_LEFT_MIN = 8;
-    var NAV_LEFT_MAX = 96;
+    var NAV_LEFT_MAX = 240;
+    function resolveTextLeft() {
+      const container = document.querySelector(CONVERSATION_SELECTOR);
+      if (container === null) return void 0;
+      const block = container.querySelector(CONTENT_SELECTOR);
+      if (block === null) return void 0;
+      const rect = block.getBoundingClientRect();
+      return rect.width > 0 ? rect.left : void 0;
+    }
     function installTurnNav() {
       if (document.getElementById(STYLE_ID) === null) {
         const style = document.createElement("style");
@@ -1836,10 +1846,10 @@ window.__ModuleLoader__.load({
       function positionNav(nav) {
         const slot = nav.parentElement;
         if (slot === null) return;
-        const paddingLeft = Number.parseFloat(getComputedStyle(slot).paddingLeft);
-        if (!Number.isFinite(paddingLeft)) return;
-        const width = nav.offsetWidth;
-        const fit = paddingLeft - width - NAV_TEXT_GAP;
+        const slotLeft = slot.getBoundingClientRect().left;
+        const textLeft = resolveTextLeft();
+        if (textLeft === void 0) return;
+        const fit = textLeft - slotLeft - nav.offsetWidth - NAV_TEXT_GAP;
         const left = Math.max(NAV_LEFT_MIN, Math.min(NAV_LEFT_MAX, Math.round(fit)));
         nav.style.setProperty("left", `${left}px`, "important");
       }
@@ -1932,7 +1942,7 @@ window.__ModuleLoader__.load({
           {
             "aria-hidden": "true",
             className: cn(
-              "relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition",
+              "relative inline-flex h-5 w-9 shrink-0 items-center aio-switch transition",
               enabled ? "bg-brand" : "bg-line2"
             )
           },
@@ -1940,7 +1950,7 @@ window.__ModuleLoader__.load({
             "span",
             {
               className: cn(
-                "h-4 w-4 rounded-full bg-base shadow transition-transform",
+                "h-4 w-4 aio-switch bg-base shadow transition-transform",
                 enabled ? "translate-x-[18px]" : "translate-x-0.5"
               )
             }
@@ -2376,7 +2386,7 @@ window.__ModuleLoader__.load({
           {
             "aria-hidden": "true",
             className: cn(
-              "relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition",
+              "relative inline-flex h-5 w-9 shrink-0 items-center aio-switch transition",
               enabled ? "bg-brand" : "bg-line2"
             )
           },
@@ -2384,7 +2394,7 @@ window.__ModuleLoader__.load({
             "span",
             {
               className: cn(
-                "h-4 w-4 rounded-full bg-base shadow transition-transform",
+                "h-4 w-4 aio-switch bg-base shadow transition-transform",
                 enabled ? "translate-x-[18px]" : "translate-x-0.5"
               )
             }
@@ -2531,7 +2541,7 @@ window.__ModuleLoader__.load({
             disabled: payload === null || saving,
             onClick: () => void handleToggle(),
             className: cn(
-              "flex h-5 w-9 shrink-0 items-center rounded-full border-0 p-0 transition",
+              "flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition",
               enabled ? "bg-brand" : "bg-line2",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
             )
@@ -2541,7 +2551,7 @@ window.__ModuleLoader__.load({
             {
               "aria-hidden": "true",
               className: cn(
-                "h-4 w-4 rounded-full bg-base shadow transition-transform",
+                "h-4 w-4 aio-switch bg-base shadow transition-transform",
                 enabled ? "translate-x-[18px]" : "translate-x-0.5"
               )
             }
@@ -2962,7 +2972,7 @@ window.__ModuleLoader__.load({
             disabled: settings === null,
             onClick: handleToggle,
             className: cn(
-              "flex h-5 w-9 shrink-0 items-center rounded-full border-0 p-0 transition",
+              "flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition",
               enabled ? "bg-brand" : "bg-line2",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-default"
             )
@@ -2972,7 +2982,7 @@ window.__ModuleLoader__.load({
             {
               "aria-hidden": "true",
               className: cn(
-                "h-4 w-4 rounded-full bg-base shadow transition-transform",
+                "h-4 w-4 aio-switch bg-base shadow transition-transform",
                 enabled ? "translate-x-[18px]" : "translate-x-0.5"
               )
             }

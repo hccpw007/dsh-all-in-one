@@ -239,7 +239,7 @@ export function AutoCompactToggle({ t }: FeatureSwitchProps) {
           disabled={settings === null}
           onClick={handleToggle}
           className={cn(
-            'flex h-5 w-9 shrink-0 items-center rounded-full border-0 p-0 transition',
+            'flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition',
             enabled ? 'bg-brand' : 'bg-line2',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-default',
           )}
@@ -247,7 +247,7 @@ export function AutoCompactToggle({ t }: FeatureSwitchProps) {
           <span
             aria-hidden="true"
             className={cn(
-              'h-4 w-4 rounded-full bg-base shadow transition-transform',
+              'h-4 w-4 aio-switch bg-base shadow transition-transform',
               enabled ? 'translate-x-[18px]' : 'translate-x-0.5',
             )}
           />

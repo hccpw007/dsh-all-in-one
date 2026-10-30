@@ -17,6 +17,12 @@ const STYLE_ID = 'dsh-all-in-one-session-history'
 /** 导航条检测间隔；宿主重建会话视图时不发通知，只能轮询兜底。 */
 const TICK_INTERVAL_MS = 1200
 
+/** 会话正文容器：它的左侧就是可读内容的起点。 */
+const CONVERSATION_SELECTOR = '[data-conversation-scroll]'
+
+/** 正文里用来量左边界的块级元素；取到第一个即可。 */
+const CONTENT_SELECTOR = 'p, li, h2, h3, pre, table'
+
 /**
  * 插件样式：把导航条挪到左侧。
  *
@@ -45,9 +51,24 @@ const STYLE_TEXT = `
 /** 导航条与正文之间保留的空隙，避免贴住文字。 */
 const NAV_TEXT_GAP = 6
 
-/** 导航条左偏移的下限与上限：下限保证贴边不消失，上限避免宽屏时跑得太深。 */
+/** 导航条左偏移的下限与上限：下限保证贴边不消失，上限避免超宽屏时跑得过深。 */
 const NAV_LEFT_MIN = 8
-const NAV_LEFT_MAX = 96
+const NAV_LEFT_MAX = 240
+
+/**
+ * 取会话正文的左边界。
+ * @returns 正文第一块内容的左坐标；会话还没渲染时返回 undefined
+ */
+function resolveTextLeft(): number | undefined {
+  const container = document.querySelector(CONVERSATION_SELECTOR)
+  if (container === null) return undefined
+
+  const block = container.querySelector(CONTENT_SELECTOR)
+  if (block === null) return undefined
+
+  const rect = block.getBoundingClientRect()
+  return rect.width > 0 ? rect.left : undefined
+}
 
 /**
  * 安装轮次导航的左侧化。
@@ -67,18 +88,18 @@ export function installTurnNav(): () => void {
    * 把导航条摆到左侧留白里最靠右的位置。
    *
    * 留白宽度随窗口与侧边栏变化（侧边栏展开时只剩几十像素），写死像素要么贴边、
-   * 要么压到正文上；这里直接读外框的左侧内边距，贴着正文放但不重叠。
+   * 要么压到正文上；这里读正文第一块内容的左边界，贴着它放但不重叠。
    * @param nav 导航条
    */
   function positionNav(nav: HTMLElement): void {
     const slot = nav.parentElement
     if (slot === null) return
 
-    const paddingLeft = Number.parseFloat(getComputedStyle(slot).paddingLeft)
-    if (!Number.isFinite(paddingLeft)) return
+    const slotLeft = slot.getBoundingClientRect().left
+    const textLeft = resolveTextLeft()
+    if (textLeft === undefined) return
 
-    const width = nav.offsetWidth
-    const fit = paddingLeft - width - NAV_TEXT_GAP
+    const fit = textLeft - slotLeft - nav.offsetWidth - NAV_TEXT_GAP
     const left = Math.max(NAV_LEFT_MIN, Math.min(NAV_LEFT_MAX, Math.round(fit)))
 
     nav.style.setProperty('left', `${left}px`, 'important')
