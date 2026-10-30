@@ -1811,7 +1811,7 @@ window.__ModuleLoader__.load({
     var STYLE_ID = "dsh-all-in-one-session-history";
     var TICK_INTERVAL_MS = 1200;
     var STYLE_TEXT = `
-    [${NAV_ATTRIBUTE}] { right: auto !important; left: 24px !important; overflow: visible !important; }
+    [${NAV_ATTRIBUTE}] { right: auto !important; left: 80px !important; overflow: visible !important; }
     [${NAV_ATTRIBUTE}] [class*="_preview"] {
       right: auto !important;
       left: calc(100% + 10px) !important;

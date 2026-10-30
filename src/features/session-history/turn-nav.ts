@@ -27,7 +27,7 @@ const TICK_INTERVAL_MS = 1200
  * 只用主题令牌着色，跟随宿主明暗主题；样式随插件生命周期注入与移除。
  */
 const STYLE_TEXT = `
-[${NAV_ATTRIBUTE}] { right: auto !important; left: 24px !important; overflow: visible !important; }
+[${NAV_ATTRIBUTE}] { right: auto !important; left: 80px !important; overflow: visible !important; }
 [${NAV_ATTRIBUTE}] [class*="_preview"] {
   right: auto !important;
   left: calc(100% + 10px) !important;
