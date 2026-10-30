@@ -56,10 +56,10 @@ const STYLE_TEXT = `
   right: auto !important;
   display: block !important;
   width: 100% !important;
-  height: 40px !important;
+  height: 26px !important;
 }
 [${NAV_ATTRIBUTE}][${NAV_INPUTS_ATTRIBUTE}] [data-index]::before {
-  top: 8px !important;
+  top: 50% !important;
   right: auto !important;
   left: 0 !important;
   transform-origin: 0 center !important;
@@ -67,9 +67,9 @@ const STYLE_TEXT = `
 [${NAV_ATTRIBUTE}][${NAV_INPUTS_ATTRIBUTE}] [data-index]::after {
   content: attr(data-aio-turn-text);
   position: absolute;
-  top: 16px;
-  left: 0;
-  width: 100%;
+  top: 5px;
+  left: 26px;
+  width: calc(100% - 26px);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
