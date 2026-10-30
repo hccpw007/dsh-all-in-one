@@ -184,7 +184,7 @@ async function handleWrite(
     if (!isValidPackId(request.id)) throw new Error('技能包标识无效')
 
     const payload = await deletePack(request.id, host)
-    await invalidateComposedPreset(request.id)
+    await invalidateComposedPreset(api, request.id)
     await forgetComposedPack(request.id)
     return payload
   }
@@ -199,7 +199,7 @@ async function handleWrite(
   if (!pack) throw new Error('技能包定义无效')
 
   const payload = await savePack(pack, host)
-  await invalidateComposedPreset(pack.id)
+  await invalidateComposedPreset(api, pack.id)
 
   return payload
 }

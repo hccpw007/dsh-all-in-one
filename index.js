@@ -557,6 +557,7 @@ var PRESET_ID_PREFIX = "power-pack-";
 var PRESET_ORDER = 200;
 var PRESET_READ_ATTEMPTS = 12;
 var PRESET_READ_INTERVAL_MS = 250;
+var PACK_ROW_IDS = /* @__PURE__ */ new Set(["power-pack-isolate", "power-pack-prompt", "skill-filesystem", "tool-skill"]);
 var SHARED_STATE = Symbol.for("dsh-all-in-one.composed-presets");
 function sharedComposed() {
   const holder = globalThis;
@@ -578,6 +579,43 @@ function splitComposedPresetId(presetId) {
   const separator = body.indexOf("@");
   if (separator < 0) return { packId: body, modeId: "" };
   return { packId: body.slice(0, separator), modeId: body.slice(separator + 1) };
+}
+function hostRegistry(api) {
+  return api;
+}
+function stableText(value) {
+  if (Array.isArray(value)) return `[${value.map(stableText).join(",")}]`;
+  if (value !== null && typeof value === "object") {
+    const record = value;
+    const entries = Object.keys(record).sort().map((key) => `${JSON.stringify(key)}:${stableText(record[key])}`);
+    return `{${entries.join(",")}}`;
+  }
+  return JSON.stringify(value) ?? "undefined";
+}
+function packRowSignature(rows) {
+  return stableText(rows.filter((row) => PACK_ROW_IDS.has(row.id)));
+}
+async function dropHostPreset(api, presetId) {
+  const registry = hostRegistry(api);
+  const record = registry.definitions?.get(presetId);
+  if (record === void 0) return;
+  registry.definitions?.delete(presetId);
+  const generation = record.generation;
+  if (generation === void 0) return;
+  generation.retired = true;
+  if (typeof registry.collect !== "function") return;
+  try {
+    await registry.collect(generation);
+  } catch (error) {
+    console.error("[power-pack] \u91CA\u653E\u6B8B\u7559\u7EC4\u5408\u9884\u8BBE\u5931\u8D25:", presetId, error);
+  }
+}
+function hostPresetIds(api, prefix) {
+  const ids = [];
+  for (const presetId of hostRegistry(api).definitions?.keys() ?? []) {
+    if (presetId.startsWith(`${PRESET_ID_PREFIX}${prefix}`)) ids.push(presetId);
+  }
+  return ids;
 }
 function delay(ms) {
   return new Promise((resolve3) => {
@@ -622,15 +660,18 @@ async function pendingComposedMeta() {
 }
 async function ensureComposedPreset(api, modeId, pack, groups) {
   const key = `${pack.id}@${modeId}`;
-  const existing = composed.get(key);
-  if (existing !== void 0) return existing.id;
   const modeRows = readPresetRows(api, modeId);
   if (modeRows === void 0) {
     throw new Error(`\u65E0\u6CD5\u8BFB\u53D6\u6A21\u5F0F ${modeId} \u7684\u7EC4\u5408\u884C`);
   }
   const id = composedPresetId(pack.id, modeId);
-  if (readPresetRows(api, id) !== void 0) return id;
   const rows = composePackRows(modeRows, pack, groups);
+  const registered = readPresetRows(api, id);
+  if (registered !== void 0) {
+    if (packRowSignature(registered) === packRowSignature(rows)) return id;
+    await dropHostPreset(api, id);
+    composed.delete(key);
+  }
   try {
     const dispose = await api.register({
       id,
@@ -646,11 +687,14 @@ async function ensureComposedPreset(api, modeId, pack, groups) {
     throw error;
   }
 }
-async function invalidateComposedPreset(packId) {
+async function invalidateComposedPreset(api, packId) {
   const prefix = `${packId}@`;
   for (const preset of [...composed.values()]) {
     if (!preset.key.startsWith(prefix)) continue;
     await disposeOne(preset);
+  }
+  for (const presetId of hostPresetIds(api, prefix)) {
+    await dropHostPreset(api, presetId);
   }
 }
 async function disposePackPresets() {
@@ -1307,7 +1351,7 @@ async function handleWrite(request, api, host) {
   if (request.action === "delete") {
     if (!isValidPackId(request.id)) throw new Error("\u6280\u80FD\u5305\u6807\u8BC6\u65E0\u6548");
     const payload2 = await deletePack(request.id, host);
-    await invalidateComposedPreset(request.id);
+    await invalidateComposedPreset(api, request.id);
     await forgetComposedPack(request.id);
     return payload2;
   }
@@ -1318,7 +1362,7 @@ async function handleWrite(request, api, host) {
   const pack = normalizePack(request.pack);
   if (!pack) throw new Error("\u6280\u80FD\u5305\u5B9A\u4E49\u65E0\u6548");
   const payload = await savePack(pack, host);
-  await invalidateComposedPreset(pack.id);
+  await invalidateComposedPreset(api, pack.id);
   return payload;
 }
 function installPowerPackRoutes(webServer, api, host) {

@@ -19,6 +19,7 @@ import type { GlobalToolGroup, PowerPack } from '../types'
 import { composePackRows } from './compose'
 import { readComposeState } from './compose-state'
 import { readPresetRows } from './preset-source'
+import type { PresetRow } from './standard-rows'
 import { readPacks } from './store'
 
 /** 组合预设 id 的前缀，与宿主内置预设区分。 */
@@ -30,6 +31,26 @@ const PRESET_ORDER = 200
 /** 等待宿主注册某个模式预设的次数与间隔。 */
 const PRESET_READ_ATTEMPTS = 12
 const PRESET_READ_INTERVAL_MS = 250
+
+/** 技能包注入预设的行 id：只有这些行会随技能包配置变化。 */
+const PACK_ROW_IDS = new Set(['power-pack-isolate', 'power-pack-prompt', 'skill-filesystem', 'tool-skill'])
+
+/** 宿主预设的挂载代际；`collect` 只在无人使用时真正销毁它。 */
+interface HostPresetGeneration {
+  retired?: boolean
+  users?: number
+}
+
+/** 宿主预设定义记录中本模块需要的部分。 */
+interface HostPresetRecord {
+  generation?: HostPresetGeneration
+}
+
+/** 宿主预设注册服务的内部形状；宿主没有公开注销单个注册项的接口。 */
+interface HostPresetRegistry {
+  definitions?: Map<string, HostPresetRecord>
+  collect?: (generation: HostPresetGeneration) => Promise<void>
+}
 
 /** 一个已注册的组合预设。 */
 interface ComposedPreset {
@@ -94,6 +115,94 @@ export function splitComposedPresetId(presetId: string): { packId: string; modeI
   if (separator < 0) return { packId: body, modeId: '' }
 
   return { packId: body.slice(0, separator), modeId: body.slice(separator + 1) }
+}
+
+/**
+ * 取宿主预设服务的内部注册表。
+ * @param api 宿主的 Agent 预设服务
+ * @returns 内部结构；宿主改版读不到时为 undefined 字段
+ */
+function hostRegistry(api: AgentPresetApi): HostPresetRegistry {
+  return api as unknown as HostPresetRegistry
+}
+
+/**
+ * 把纯数据序列化成与键序无关的文本，用于判断注册行是否过期。
+ *
+ * 技能包行只含字符串、布尔与数组，序列化结果可以直接比较；键序不稳定会让同一份
+ * 配置每次算出不同指纹，因此这里统一排序。
+ * @param value 待序列化的值
+ * @returns 稳定文本
+ */
+function stableText(value: unknown): string {
+  if (Array.isArray(value)) return `[${value.map(stableText).join(',')}]`
+
+  if (value !== null && typeof value === 'object') {
+    const record = value as Record<string, unknown>
+    const entries = Object.keys(record)
+      .sort()
+      .map((key) => `${JSON.stringify(key)}:${stableText(record[key])}`)
+
+    return `{${entries.join(',')}}`
+  }
+
+  // undefined 不是合法 JSON，用固定字面量保证两侧仍可比较
+  return JSON.stringify(value) ?? 'undefined'
+}
+
+/**
+ * 取组合行里属于技能包的部分并序列化，作为注册是否过期的指纹。
+ * @param rows 预设组合行
+ * @returns 稳定指纹
+ */
+function packRowSignature(rows: PresetRow[]): string {
+  return stableText(rows.filter((row) => PACK_ROW_IDS.has(row.id)))
+}
+
+/**
+ * 丢弃宿主里的一条同名注册。
+ *
+ * 宿主的注册表不随插件实例销毁，而保存技能包或跨进程改配置后，旧注册的定义仍是
+ * 旧配置；只从定义表删除并不能阻止新会话复用它，必须同时让挂载代际退役。正被
+ * 会话使用的代际只会被标记退役，由宿主的 `collect` 等最后一个使用者释放后销毁。
+ * @param api 宿主的 Agent 预设服务
+ * @param presetId 组合预设 id
+ */
+async function dropHostPreset(api: AgentPresetApi, presetId: string): Promise<void> {
+  const registry = hostRegistry(api)
+  const record = registry.definitions?.get(presetId)
+  if (record === undefined) return
+
+  registry.definitions?.delete(presetId)
+
+  const generation = record.generation
+  if (generation === undefined) return
+
+  generation.retired = true
+  if (typeof registry.collect !== 'function') return
+
+  try {
+    await registry.collect(generation)
+  } catch (error) {
+    // 释放失败不影响后续注册：定义已移除，重新注册会得到新代际
+    console.error('[power-pack] 释放残留组合预设失败:', presetId, error)
+  }
+}
+
+/**
+ * 列出宿主里属于某个技能包的全部注册 id。
+ * @param api 宿主的 Agent 预设服务
+ * @param prefix 组合 id 前缀，形如 `<技能包 id>@`
+ * @returns 命中的注册 id
+ */
+function hostPresetIds(api: AgentPresetApi, prefix: string): string[] {
+  const ids: string[] = []
+
+  for (const presetId of hostRegistry(api).definitions?.keys() ?? []) {
+    if (presetId.startsWith(`${PRESET_ID_PREFIX}${prefix}`)) ids.push(presetId)
+  }
+
+  return ids
 }
 
 /** 等待若干毫秒。 */
@@ -189,22 +298,25 @@ export async function ensureComposedPreset(
   groups: GlobalToolGroup[],
 ): Promise<string> {
   const key = `${pack.id}@${modeId}`
-  const existing = composed.get(key)
-  if (existing !== undefined) return existing.id
-
   const modeRows = readPresetRows(api, modeId)
   if (modeRows === undefined) {
     throw new Error(`无法读取模式 ${modeId} 的组合行`)
   }
 
   const id = composedPresetId(pack.id, modeId)
-
-  // 宿主侧的注册表不随插件实例销毁：热重载后本模块的 composed 表已清空，
-  // 旧实例注册的同名预设却还在，直接再注册会被宿主以重复 id 拒绝。
-  // 这里先问宿主是否已持有，持有即视为本次注册成功，跳过重复挂载。
-  if (readPresetRows(api, id) !== undefined) return id
-
   const rows = composePackRows(modeRows, pack, groups)
+
+  // 宿主的注册表不随插件实例销毁：同名注册可能来自旧配置、热重载前的实例，
+  // 或其它进程刚改过的技能包。只有技能包行完全一致才复用，否则先丢弃再按
+  // 当前配置注册，避免新会话继续拿到旧提示词与旧隔离规则直到重启宿主。
+  const registered = readPresetRows(api, id)
+  if (registered !== undefined) {
+    if (packRowSignature(registered) === packRowSignature(rows)) return id
+
+    await dropHostPreset(api, id)
+    // 表里可能还记着这条注册的注销函数；定义已丢弃，留着会让后续失效逻辑误判
+    composed.delete(key)
+  }
 
   try {
     const dispose = await api.register({
@@ -229,14 +341,21 @@ export async function ensureComposedPreset(
 
 /**
  * 技能包被修改或删除后让它的组合失效，下次选择会按新定义重新合成。
+ * @param api 宿主的 Agent 预设服务，用于清理表里没有记录的残留注册
  * @param packId 技能包标识
  */
-export async function invalidateComposedPreset(packId: string): Promise<void> {
+export async function invalidateComposedPreset(api: AgentPresetApi, packId: string): Promise<void> {
   const prefix = `${packId}@`
 
   for (const preset of [...composed.values()]) {
     if (!preset.key.startsWith(prefix)) continue
     await disposeOne(preset)
+  }
+
+  // composed 表可能缺记录（注册早退、热重载竞态或历史遗留），宿主的定义表才是
+  // 权威：按 id 前缀把它持有的同名注册一并丢弃，否则新会话会复用旧配置。
+  for (const presetId of hostPresetIds(api, prefix)) {
+    await dropHostPreset(api, presetId)
   }
 }
 
