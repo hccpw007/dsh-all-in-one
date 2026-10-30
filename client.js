@@ -1840,47 +1840,37 @@ window.__ModuleLoader__.load({
     // src/features/session-history/turn-nav.ts
     var NAV_SELECTOR = 'nav[aria-label="\u8F6E\u6B21\u5BFC\u822A"]';
     var NAV_ATTRIBUTE = "data-aio-turn-nav";
-    var NAV_INPUTS_ATTRIBUTE = "data-aio-turn-nav-inputs";
-    var MARK_TEXT_ATTRIBUTE = "data-aio-turn-text";
+    var INPUTS_ATTRIBUTE = "data-aio-turn-inputs";
     var STYLE_ID = "dsh-all-in-one-session-history";
     var TICK_INTERVAL_MS = 1200;
+    var INPUT_LINE_WIDTH = 170;
+    var INPUT_LINE_HEIGHT = 10;
     var STYLE_TEXT = `
     [${NAV_ATTRIBUTE}] { right: auto !important; left: 12px !important; overflow: visible !important; }
     [${NAV_ATTRIBUTE}] [class*="_preview"] {
       right: auto !important;
       left: calc(100% + 10px) !important;
     }
-    [${NAV_ATTRIBUTE}][${NAV_INPUTS_ATTRIBUTE}] { width: 200px !important; }
-    [${NAV_ATTRIBUTE}][${NAV_INPUTS_ATTRIBUTE}] [class*="_marks"] { height: auto !important; }
-    [${NAV_ATTRIBUTE}][${NAV_INPUTS_ATTRIBUTE}] [data-index] {
-      position: relative !important;
-      top: auto !important;
-      left: auto !important;
-      right: auto !important;
-      display: block !important;
-      width: 100% !important;
-      height: 26px !important;
-    }
-    [${NAV_ATTRIBUTE}][${NAV_INPUTS_ATTRIBUTE}] [data-index]::before {
-      top: 50% !important;
-      right: auto !important;
-      left: 0 !important;
-      transform-origin: 0 center !important;
-    }
-    [${NAV_ATTRIBUTE}][${NAV_INPUTS_ATTRIBUTE}] [data-index]::after {
-      content: attr(data-aio-turn-text);
+    [${INPUTS_ATTRIBUTE}] {
       position: absolute;
-      top: 5px;
+      top: 0;
       left: 26px;
-      width: calc(100% - 26px);
+      width: ${INPUT_LINE_WIDTH}px;
+      pointer-events: none;
+    }
+    [${INPUTS_ATTRIBUTE}] > span {
+      position: absolute;
+      left: 0;
+      width: ${INPUT_LINE_WIDTH}px;
+      height: ${INPUT_LINE_HEIGHT}px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
-      font-size: 11px;
-      line-height: 16px;
+      font-size: 10px;
+      line-height: ${INPUT_LINE_HEIGHT}px;
       color: var(--dsw-alias-label-tertiary);
     }
-    [${NAV_ATTRIBUTE}][${NAV_INPUTS_ATTRIBUTE}] [data-index][class*="_markActive"]::after {
+    [${INPUTS_ATTRIBUTE}] > span[data-aio-turn-active="true"] {
       color: var(--dsw-alias-label-primary);
     }
     `;
@@ -1894,6 +1884,8 @@ window.__ModuleLoader__.load({
       let loadedSessionId;
       let inputs = [];
       let loading = false;
+      let renderedMarkCount = 0;
+      let frame = 0;
       let disposed = false;
       function findNav() {
         const nav = document.querySelector(NAV_SELECTOR);
@@ -1901,17 +1893,48 @@ window.__ModuleLoader__.load({
         if (!nav.hasAttribute(NAV_ATTRIBUTE)) nav.setAttribute(NAV_ATTRIBUTE, "");
         return nav;
       }
-      function applyInputs(nav) {
+      function isActiveMark(mark) {
+        return (mark.getAttribute("class") ?? "").includes("_markActive");
+      }
+      function ensureLayer(nav) {
+        const existing = nav.querySelector(`[${INPUTS_ATTRIBUTE}]`);
+        if (existing instanceof HTMLElement) return existing;
+        const layer = document.createElement("div");
+        layer.setAttribute(INPUTS_ATTRIBUTE, "");
+        nav.appendChild(layer);
+        return layer;
+      }
+      function syncLines(nav) {
         if (inputs.length === 0) return;
         const marks = Array.from(nav.querySelectorAll("[data-index]"));
         if (marks.length === 0) return;
-        if (!nav.hasAttribute(NAV_INPUTS_ATTRIBUTE)) nav.setAttribute(NAV_INPUTS_ATTRIBUTE, "");
-        for (const [index, mark] of marks.entries()) {
-          if (!(mark instanceof HTMLElement)) continue;
-          const text = inputs[index]?.text ?? "";
-          if (mark.getAttribute(MARK_TEXT_ATTRIBUTE) === text) continue;
-          mark.setAttribute(MARK_TEXT_ATTRIBUTE, text);
+        const layer = ensureLayer(nav);
+        if (marks.length !== renderedMarkCount) {
+          layer.textContent = "";
+          for (const [index] of marks.entries()) {
+            const line = document.createElement("span");
+            line.textContent = inputs[index]?.text ?? "";
+            layer.appendChild(line);
+          }
+          renderedMarkCount = marks.length;
         }
+        const layerTop = layer.getBoundingClientRect().top;
+        const lines = Array.from(layer.children);
+        for (const [index, mark] of marks.entries()) {
+          const line = lines[index];
+          if (!(line instanceof HTMLElement) || !(mark instanceof HTMLElement)) continue;
+          const markRect = mark.getBoundingClientRect();
+          const center = markRect.top - layerTop + markRect.height / 2 - INPUT_LINE_HEIGHT / 2;
+          line.style.top = `${center}px`;
+          line.setAttribute("data-aio-turn-active", isActiveMark(mark) ? "true" : "false");
+        }
+      }
+      function scheduleSync(nav) {
+        if (disposed || frame !== 0) return;
+        frame = window.requestAnimationFrame(() => {
+          frame = 0;
+          syncLines(nav);
+        });
       }
       async function refreshInputs() {
         if (loading) return;
@@ -1919,6 +1942,7 @@ window.__ModuleLoader__.load({
         if (sessionId === void 0 || sessionId === loadedSessionId) return;
         loading = true;
         inputs = [];
+        renderedMarkCount = 0;
         try {
           const next = await requestTurnInputs(sessionId);
           if (disposed || options.resolveSessionId() !== sessionId) return;
@@ -1928,31 +1952,45 @@ window.__ModuleLoader__.load({
           loading = false;
         }
       }
+      const observer = new MutationObserver((records) => {
+        for (const record of records) {
+          const target = record.target;
+          if (target instanceof Element && target.closest(`[${INPUTS_ATTRIBUTE}]`) !== null) continue;
+          const nav = findNav();
+          if (nav !== void 0) scheduleSync(nav);
+          return;
+        }
+      });
+      let observedNav;
+      function ensureObserver(nav) {
+        if (observedNav === nav && !disposed) return;
+        observer.disconnect();
+        observer.observe(nav, { attributes: true, childList: true, subtree: true });
+        observedNav = nav;
+      }
       function tick() {
         const nav = findNav();
         if (nav === void 0 || !options.showInputs || loading) return;
+        ensureObserver(nav);
         if (inputs.length === 0) {
           void refreshInputs().then(() => {
             const current = findNav();
-            if (current !== void 0) applyInputs(current);
+            if (current !== void 0) syncLines(current);
           });
           return;
         }
-        applyInputs(nav);
+        syncLines(nav);
       }
       tick();
       const timer = window.setInterval(tick, TICK_INTERVAL_MS);
       return () => {
         disposed = true;
         window.clearInterval(timer);
-        for (const mark of document.querySelectorAll(`[${MARK_TEXT_ATTRIBUTE}]`)) {
-          mark.removeAttribute(MARK_TEXT_ATTRIBUTE);
-        }
-        for (const nav of document.querySelectorAll(`[${NAV_INPUTS_ATTRIBUTE}]`)) {
-          nav.removeAttribute(NAV_INPUTS_ATTRIBUTE);
-        }
-        for (const nav of document.querySelectorAll(`[${NAV_ATTRIBUTE}]`)) {
-          nav.removeAttribute(NAV_ATTRIBUTE);
+        if (frame !== 0) window.cancelAnimationFrame(frame);
+        observer.disconnect();
+        for (const element of document.querySelectorAll(`[${INPUTS_ATTRIBUTE}]`)) element.remove();
+        for (const element of document.querySelectorAll(`[${NAV_ATTRIBUTE}]`)) {
+          element.removeAttribute(NAV_ATTRIBUTE);
         }
         document.getElementById(STYLE_ID)?.remove();
       };
