@@ -8,9 +8,12 @@
  *
  * 顶部「更多」的两个子项（浏览更多插件、创建你的插件）没有常驻 DOM，按索引在
  * 打开顶部子菜单后再点，期间的弹层整体隐藏，避免它闪现在左上角。
+ *
+ * 另外在账户项之后插入本插件自己的入口（All In One），点击直达插件设置页。
  */
 
 import type { Translate } from '../../types/plugin'
+import { openAllInOneSection } from './open-settings'
 
 /** 顶部面板列表：宿主用构建期哈希类名渲染，只有 `_panelList` 后缀是稳定语义。 */
 const PANEL_LIST_SELECTOR = 'nav[class*="_panelList"]'
@@ -44,6 +47,20 @@ const SUBITEM_MAX_ATTEMPTS = 3
 /** 弹层隐藏保持时间，等宿主完成关闭动画后再恢复显示。 */
 const SUPPRESS_RELEASE_MS = 300
 
+/** svg 元素必须用命名空间创建，否则在 HTML 文档里不会被当作图形渲染。 */
+const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
+
+/** 菜单项图标尺寸，与宿主菜单图标一致。 */
+const ICON_SIZE = 16
+
+/** All In One 图标四个方块各自的左上角坐标，表达「多个工具收在一处」。 */
+const ICON_CELLS: ReadonlyArray<readonly [number, number]> = [
+  [2.5, 2.5],
+  [9, 2.5],
+  [2.5, 9],
+  [9, 9],
+]
+
 /**
  * 插件样式：隐藏顶部面板列表，并在读取顶部子菜单时屏蔽弹层。
  *
@@ -59,6 +76,35 @@ interface MenuItemOptions {
   label: string
   icon: Element | null
   onClick: () => void
+  /** 点击后是否先收起底部菜单；打开设置弹窗的入口由宿主自行关菜单，须传 false。 */
+  closeMenuFirst?: boolean
+}
+
+/**
+ * 创建 All In One 菜单项图标：四格网格，与宿主菜单图标一样用 currentColor 描边。
+ * @returns 16×16 的 svg 元素
+ */
+function createGridIcon(): Element {
+  const svg = document.createElementNS(SVG_NAMESPACE, 'svg')
+  svg.setAttribute('width', String(ICON_SIZE))
+  svg.setAttribute('height', String(ICON_SIZE))
+  svg.setAttribute('viewBox', `0 0 ${ICON_SIZE} ${ICON_SIZE}`)
+  svg.setAttribute('fill', 'none')
+  svg.setAttribute('stroke', 'currentColor')
+  svg.setAttribute('stroke-width', '1.3')
+  svg.setAttribute('aria-hidden', 'true')
+
+  for (const [x, y] of ICON_CELLS) {
+    const rect = document.createElementNS(SVG_NAMESPACE, 'rect')
+    rect.setAttribute('x', String(x))
+    rect.setAttribute('y', String(y))
+    rect.setAttribute('width', '4.5')
+    rect.setAttribute('height', '4.5')
+    rect.setAttribute('rx', '1.2')
+    svg.appendChild(rect)
+  }
+
+  return svg
 }
 
 /** 注入样式；重复安装时复用同一节点。 */
@@ -145,8 +191,9 @@ function createMenuItem(template: HTMLElement, options: MenuItemOptions): HTMLEl
   button.addEventListener('click', (event) => {
     event.preventDefault()
     event.stopPropagation()
-    // 先收起底部菜单再执行原入口：两层弹层重叠时宿主会把新弹层一起关掉
-    closeFooterMenu()
+    // 先收起底部菜单再执行原入口：两层弹层重叠时宿主会把新弹层一起关掉；
+    // 打开设置弹窗的入口例外，宿主选中「设置」项时会自己关菜单
+    if (options.closeMenuFirst !== false) closeFooterMenu()
     window.requestAnimationFrame(options.onClick)
   })
 
@@ -222,6 +269,22 @@ function injectFooterItems(t: Translate): void {
   }
 
   const viewport = menu.querySelector('[class*="_viewport"]') ?? menu
+
+  // 宿主账户菜单固定以账户项收尾（未登录是「登录」，已登录是「退出登录」），
+  // All In One 插在它后面，仍排在顶部面板入口之前，保住宿主「账户在上、功能在下」的分组
+  const hostItem = Array.from(viewport.querySelectorAll(MENU_TEMPLATE_SELECTOR))
+    .filter((node) => !node.hasAttribute(INJECTED_ATTRIBUTE))
+    .pop()
+
+  viewport.insertBefore(
+    createMenuItem(template, {
+      label: t('menuEntry'),
+      icon: createGridIcon(),
+      closeMenuFirst: false,
+      onClick: openAllInOneSection,
+    }),
+    hostItem?.nextSibling ?? null,
+  )
 
   // 顶部面板入口（插件、Skill / MCP、自动化任务）先插入，保持宿主原有顺序
   for (const row of findPanelRows().filter((item) => !isMenuToggle(item))) {

@@ -11,6 +11,8 @@ export const sidebarMoreLocales: FeatureLocales = {
     description: '顶部插件、Skill / MCP 与自动化任务收进左下角「更多」菜单。',
     // 开关状态写入失败时的提示
     saveFailed: '保存开关状态失败，请检查浏览器存储权限。',
+    // 底部菜单里打开本插件设置页的入口
+    menuEntry: 'All In One',
     // 底部菜单里对宿主「更多」子项「浏览更多插件」的替代文案
     browsePlugins: '浏览更多插件',
     // 底部菜单里对宿主「更多」子项「创建你的插件」的替代文案
@@ -23,6 +25,8 @@ export const sidebarMoreLocales: FeatureLocales = {
     description: 'Move Plugins, Skill / MCP and Automation into the bottom-left More menu.',
     // Shown when the switch state cannot be persisted
     saveFailed: 'Could not save the switch state. Check browser storage permissions.',
+    // Entry that opens this plugin's settings page
+    menuEntry: 'All In One',
     // Replacement label for the host's "Browse more plugins" entry
     browsePlugins: 'Browse more plugins',
     // Replacement label for the host's "Create your plugin" entry

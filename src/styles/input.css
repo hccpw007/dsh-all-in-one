@@ -51,6 +51,22 @@
 }
 
 /*
+ * 列数由插件自己决定，不依赖 Tailwind 的 `grid-cols-*` 工具类。
+ * 宿主与其它插件（例如 dsh-ide）也会输出同名类 `.grid-cols-1`，同特异性下
+ * 后注入的样式会盖掉本插件的响应式两列，网格就退化成一行一张卡片。
+ * 这里用根节点前缀把特异性提到两个类，任何注入顺序下都保持宽屏两列。
+ */
+.dsh-aio-root .aio-card-grid {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 640px) {
+  .dsh-aio-root .aio-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/*
  * 开关轨道与滑块必须是完整的药丸形（两端半圆）。
  * 开关尺寸小（36×20），一旦沿用宿主的超椭圆圆角就会明显看出"方"，
  * 因此不依赖 `rounded-full`，改用插件自己的类名并以 !important 兜底。
