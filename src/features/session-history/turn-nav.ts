@@ -21,7 +21,7 @@ const TICK_INTERVAL_MS = 1200
 const WIDTH_HANDLE_SELECTOR = '[data-width-handle="left"]'
 
 /** 导航条与手柄之间留的空隙，避免贴死。 */
-const NAV_EDGE_GAP = 4
+const NAV_EDGE_GAP = 10
 
 /**
  * 插件样式：把导航条挪到左侧。

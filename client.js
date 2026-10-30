@@ -1811,7 +1811,7 @@ window.__ModuleLoader__.load({
     var STYLE_ID = "dsh-all-in-one-session-history";
     var TICK_INTERVAL_MS = 1200;
     var WIDTH_HANDLE_SELECTOR = '[data-width-handle="left"]';
-    var NAV_EDGE_GAP = 4;
+    var NAV_EDGE_GAP = 10;
     var STYLE_TEXT = `
     [${NAV_ATTRIBUTE}] {
       right: auto !important;
