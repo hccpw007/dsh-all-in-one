@@ -1811,7 +1811,7 @@ window.__ModuleLoader__.load({
     var STYLE_ID = "dsh-all-in-one-session-history";
     var TICK_INTERVAL_MS = 1200;
     var STYLE_TEXT = `
-    [${NAV_ATTRIBUTE}] { right: auto !important; left: 12px !important; overflow: visible !important; }
+    [${NAV_ATTRIBUTE}] { right: auto !important; left: 24px !important; overflow: visible !important; }
     [${NAV_ATTRIBUTE}] [class*="_preview"] {
       right: auto !important;
       left: calc(100% + 10px) !important;
@@ -2132,7 +2132,16 @@ window.__ModuleLoader__.load({
           closeLabel: t("confirmCancel"),
           title: t("confirmTitle"),
           description: t("confirmTarget"),
-          footer: /* @__PURE__ */ import_react13.default.createElement(import_react13.default.Fragment, null, /* @__PURE__ */ import_react13.default.createElement(Button, { variant: "outline", disabled: pending2, onClick: close }, t("confirmCancel")), /* @__PURE__ */ import_react13.default.createElement(Button, { variant: "danger", disabled: pending2, onClick: () => void confirm() }, pending2 ? t("deleting") : t("confirmDelete")))
+          footer: /* @__PURE__ */ import_react13.default.createElement(import_react13.default.Fragment, null, /* @__PURE__ */ import_react13.default.createElement(Button, { variant: "outline", disabled: pending2, onClick: close }, t("confirmCancel")), /* @__PURE__ */ import_react13.default.createElement(
+            Button,
+            {
+              variant: "danger",
+              "data-modal-autofocus": "",
+              disabled: pending2,
+              onClick: () => void confirm()
+            },
+            pending2 ? t("deleting") : t("confirmDelete")
+          ))
         },
         /* @__PURE__ */ import_react13.default.createElement("p", { className: "mt-1 text-[13px] font-medium leading-5 text-primary" }, request4.title),
         /* @__PURE__ */ import_react13.default.createElement("p", { className: "mt-3 text-[12px] leading-[18px] text-secondary" }, t("confirmMessage")),
@@ -2150,24 +2159,53 @@ window.__ModuleLoader__.load({
         isCurrent: (summary?.retainedBy?.mainView ?? 0) > 0
       };
     }
+    function findWorkspaceId(uiWorkspace, sessionId) {
+      const items = uiWorkspace?.workspaces?.list.getSnapshot().items ?? [];
+      return items.find((item) => item.sessionIds.includes(sessionId))?.workspaceId;
+    }
+    function pickNextSession(sessions, uiWorkspace, workspaceId, removedId) {
+      const state = sessions.list.getSnapshot();
+      const workspaceState = uiWorkspace?.workspaces?.list.getSnapshot();
+      const workspace = workspaceState?.items.find((item) => item.workspaceId === workspaceId);
+      const memberIds = workspace?.sessionIds ?? state.ids;
+      const archived = new Set(workspaceState?.archivedSessionIds ?? []);
+      const candidates = memberIds.flatMap((id) => {
+        const summary = state.byId[id];
+        return id === removedId || summary === void 0 || archived.has(id) ? [] : [{ id, summary }];
+      });
+      const running = candidates.filter((candidate) => candidate.summary.running === true);
+      const pool = running.length > 0 ? running : candidates;
+      let newest;
+      for (const candidate of pool) {
+        if (newest === void 0 || (candidate.summary.updatedAt ?? 0) > (newest.summary.updatedAt ?? 0)) {
+          newest = candidate;
+        }
+      }
+      return newest?.id;
+    }
     function apply4(ctx, t) {
       ctx.inject(["sessions"], (scoped) => {
         const sessions = scoped.sessions;
         if (sessions === void 0) return;
-        let openNewSession;
+        let uiWorkspace;
         scoped.inject(["uiWorkspace"], (withWorkspace) => {
-          const uiWorkspace = withWorkspace.uiWorkspace;
-          if (uiWorkspace?.startSession === void 0) return;
-          openNewSession = () => uiWorkspace.startSession?.();
+          uiWorkspace = withWorkspace.uiWorkspace;
           return () => {
-            openNewSession = void 0;
+            uiWorkspace = void 0;
           };
         });
         const deleteSession = async (sessionId) => {
           const wasCurrent = resolveSession(sessions, sessionId).isCurrent;
+          const workspaceId = findWorkspaceId(uiWorkspace, sessionId);
           await requestDeleteSession(sessionId);
           sessions.handleSessionRemoved?.(sessionId);
-          if (wasCurrent) openNewSession?.();
+          if (!wasCurrent) return;
+          const next = pickNextSession(sessions, uiWorkspace, workspaceId, sessionId);
+          if (next !== void 0) {
+            uiWorkspace?.openSession?.(next);
+            return;
+          }
+          uiWorkspace?.startSession?.(workspaceId);
         };
         ctx.slots.inject(
           ROW_ACTION_SLOT,

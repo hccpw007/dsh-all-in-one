@@ -68,9 +68,18 @@ export interface SessionSummary {
   blank?: boolean
   /** Agent 是否正在执行任务；运行中的会话不能删除。 */
   running?: boolean
+  /** 最近一次活动时间（毫秒时间戳）；宿主默认按它倒序排列会话。 */
+  updatedAt?: number
   /** 当前被哪些界面持有；`mainView` 大于 0 表示这是正在浏览的对话。 */
   retainedBy?: { mainView?: number }
   projectionValues?: { agentPreset?: unknown }
+}
+
+/** 工作区条目中本插件用到的字段。 */
+export interface WorkspaceSummary {
+  workspaceId: string
+  /** 归属于该工作空间的会话标识，顺序由宿主维护。 */
+  sessionIds: string[]
 }
 
 /** 工作区服务：宿主用它决定主视图打开哪一条会话。 */
@@ -80,12 +89,27 @@ export interface UiWorkspaceApi {
    * 宿主没有任何可用工作区时回到新会话屏幕。
    */
   startSession?(workspaceId?: string): void
+  /** 把指定会话打开到主视图，不新建会话。 */
+  openSession?(sessionId: string): void
+  /**
+   * 工作区列表快照。宿主用它维护会话分组与归档集合，
+   * 这里只读取「会话属于哪个工作空间」与归档状态。
+   */
+  workspaces?: {
+    list: {
+      getSnapshot(): {
+        items: WorkspaceSummary[]
+        /** 已归档的会话；默认视图不展示它们。 */
+        archivedSessionIds?: string[]
+      }
+    }
+  }
 }
 
 /** 会话服务：读取列表快照，并在删除后让快照丢掉对应行。 */
 export interface SessionsApi {
   list: {
-    getSnapshot(): { byId: Record<string, SessionSummary> }
+    getSnapshot(): { ids: string[]; byId: Record<string, SessionSummary> }
   }
   /**
    * 本地摘掉一条会话（宿主列表快照层的移除入口）。

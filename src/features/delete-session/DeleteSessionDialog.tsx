@@ -99,7 +99,14 @@ export function DeleteSessionDialog({
           <Button variant="outline" disabled={pending} onClick={close}>
             {t('confirmCancel')}
           </Button>
-          <Button variant="danger" disabled={pending} onClick={() => void confirm()}>
+          {/* data-modal-autofocus 让宿主弹窗打开时把焦点交给删除按钮：
+              回车即确认删除，而不是落在默认的第一个按钮（取消）上 */}
+          <Button
+            variant="danger"
+            data-modal-autofocus=""
+            disabled={pending}
+            onClick={() => void confirm()}
+          >
             {pending ? t('deleting') : t('confirmDelete')}
           </Button>
         </>
