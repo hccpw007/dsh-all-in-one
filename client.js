@@ -1183,14 +1183,30 @@ window.__ModuleLoader__.load({
       const win = window;
       if (win["__DSH_ALL_IN_ONE_EXPAND_PROCESS__"]) return;
       win["__DSH_ALL_IN_ONE_EXPAND_PROCESS__"] = true;
-      win["__DSH_EXPAND_PROCESS_ENABLED__"] = function enabled() {
+      function readEnabled() {
         try {
           return window.localStorage.getItem(storageKey) === "1";
         } catch (error) {
           console.error("[expand-process] \u8BFB\u53D6\u5F00\u5173\u72B6\u6001\u5931\u8D25:", error);
           return false;
         }
-      };
+      }
+      win["__DSH_EXPAND_PROCESS_ENABLED__"] = readEnabled;
+      if (readEnabled()) {
+        const style = document.createElement("style");
+        style.id = "dsh-all-in-one-expand-process-style";
+        style.textContent = [
+          "[data-disclosure-header] [data-disclosure-row],",
+          '[data-slot="tool.call.toolview"] [role="button"][aria-expanded] {',
+          "  color: var(--dsw-alias-label-primary, #0f1115);",
+          "}",
+          "[data-disclosure-header] + div,",
+          '[data-slot="tool.call.toolview"] [role="button"][aria-expanded] + div {',
+          "  margin-left: 20px;",
+          "}"
+        ].join("\n");
+        (document.head || document.documentElement).appendChild(style);
+      }
       const RULES = {
         "@deepseek-ai/dsh-client-ui-tool": [
           [

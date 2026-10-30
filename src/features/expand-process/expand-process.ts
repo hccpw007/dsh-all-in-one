@@ -43,13 +43,37 @@ function bootExpandProcess(storageKey: string): void {
   win['__DSH_ALL_IN_ONE_EXPAND_PROCESS__'] = true
 
   // 行在挂载时读取一次开关作为初始展开值，之后由行自己的折叠按钮接管；刷新页面即重新读取
-  win['__DSH_EXPAND_PROCESS_ENABLED__'] = function enabled(): boolean {
+  function readEnabled(): boolean {
     try {
       return window.localStorage.getItem(storageKey) === '1'
     } catch (error) {
       console.error('[expand-process] 读取开关状态失败:', error)
       return false
     }
+  }
+  win['__DSH_EXPAND_PROCESS_ENABLED__'] = readEnabled
+
+  /**
+   * 行标题与过程内容的视觉层级。
+   *
+   * 只在开关打开时注入：行标题改用主文字色，与展开后的内容区分；
+   * 内容整体右移 20px（用 margin 而不是 padding，避免覆盖宿主已有的内边距），
+   * 表达它比行标题低一级。选择器基于宿主稳定属性，不依赖构建哈希类名。
+   */
+  if (readEnabled()) {
+    const style = document.createElement('style')
+    style.id = 'dsh-all-in-one-expand-process-style'
+    style.textContent = [
+      '[data-disclosure-header] [data-disclosure-row],',
+      '[data-slot="tool.call.toolview"] [role="button"][aria-expanded] {',
+      '  color: var(--dsw-alias-label-primary, #0f1115);',
+      '}',
+      '[data-disclosure-header] + div,',
+      '[data-slot="tool.call.toolview"] [role="button"][aria-expanded] + div {',
+      '  margin-left: 20px;',
+      '}',
+    ].join('\n')
+    ;(document.head || document.documentElement).appendChild(style)
   }
 
   /**

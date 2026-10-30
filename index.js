@@ -17,6 +17,7 @@ import { join as join2 } from "node:path";
 
 // src/common/dsh-home.ts
 import { homedir } from "node:os";
+
 import { join } from "node:path";
 function resolveDshHome() {
   const configured = process.env.DSH_HOME?.trim();
@@ -88,6 +89,7 @@ function buildPackRows(pack, isolate) {
   const skillConfig = pack.skills.mode === "all" ? { includeDefaultRoots: true } : { includeDefaultRoots: false, customSkillDirs: [packSkillDir(pack.id)] };
   rows.push({ id: "skill-filesystem", name: SKILL_FILESYSTEM_ROW, config: skillConfig });
   rows.push({ id: "tool-skill", name: TOOL_SKILL_ROW });
+  
   return rows;
 }
 
@@ -168,6 +170,8 @@ var TERMINAL_ITEM = process.platform === "win32" ? {
 };
 var STANDARD_PLUGIN_ITEMS = [
   {
+
+    
     id: "agent-instructions",
     label: "\u9879\u76EE\u8BF4\u660E",
     description: "\u8BFB\u53D6\u5DE5\u4F5C\u533A\u7684 AGENTS.md \u7B49\u8BF4\u660E\u6587\u4EF6\u5E76\u6CE8\u5165\u4E0A\u4E0B\u6587\u3002",
@@ -466,12 +470,12 @@ async function readPacks() {
   }
   return { version: 1, packs: [], defaultPackId: "" };
 }
-async function writePacks(document) {
+async function writePacks(document2) {
   const file = powerPacksFile();
   const temp = `${file}.tmp`;
   try {
     await mkdir2(dirname(file), { recursive: true });
-    await writeFile(temp, `${JSON.stringify(document, null, 2)}
+    await writeFile(temp, `${JSON.stringify(document2, null, 2)}
 `, "utf8");
     await rename(temp, file);
   } catch (error) {
@@ -521,10 +525,10 @@ async function readComposeState() {
 async function writeComposeState(recent) {
   const file = composeStateFile();
   const temp = `${file}.tmp`;
-  const document = { version: STATE_VERSION, recent: recent.slice(0, MAX_RECENT) };
+  const document2 = { version: STATE_VERSION, recent: recent.slice(0, MAX_RECENT) };
   try {
     await mkdir3(dirname2(file), { recursive: true });
-    await writeFile2(temp, `${JSON.stringify(document, null, 2)}
+    await writeFile2(temp, `${JSON.stringify(document2, null, 2)}
 `, "utf8");
     await rename2(temp, file);
   } catch (error) {
@@ -608,8 +612,8 @@ function hasComposedPreset(presetId) {
 async function pendingComposedMeta() {
   const selections = await readComposeState();
   if (selections.length === 0) return /* @__PURE__ */ new Map();
-  const document = await readPacks();
-  const byId = new Map(document.packs.map((pack) => [pack.id, pack]));
+  const document2 = await readPacks();
+  const byId = new Map(document2.packs.map((pack) => [pack.id, pack]));
   const result = /* @__PURE__ */ new Map();
   for (const selection of selections) {
     const pack = byId.get(selection.pack);
@@ -1228,14 +1232,14 @@ async function listSkillEntries() {
 var ROUTE_PATH = "/dsh-all-in-one/power-packs";
 var MAX_BODY_BYTES = 1024 * 1024;
 async function buildPayload(host) {
-  const document = await readPacks();
+  const document2 = await readPacks();
   const skills = await listSkillEntries();
   const plugins = await listPluginItems(host.profileDir);
   const globalGroups = await listGlobalToolGroups(host.tools, host.profileDir);
   const recentComposed = await readComposeState();
   return {
-    packs: document.packs,
-    defaultPackId: document.defaultPackId,
+    packs: document2.packs,
+    defaultPackId: document2.defaultPackId,
     recentComposed,
     catalog: {
       skills: skills.map(({ name, description }) => ({ name, description })),
@@ -1255,35 +1259,35 @@ async function syncSkills(pack, allSkills) {
 async function savePack(pack, host) {
   const allSkills = await listSkillEntries();
   await syncSkills(pack, allSkills);
-  const document = await readPacks();
-  const index = document.packs.findIndex((item) => item.id === pack.id);
-  if (index >= 0) document.packs[index] = pack;
-  else document.packs.push(pack);
-  await writePacks(document);
+  const document2 = await readPacks();
+  const index = document2.packs.findIndex((item) => item.id === pack.id);
+  if (index >= 0) document2.packs[index] = pack;
+  else document2.packs.push(pack);
+  await writePacks(document2);
   return buildPayload(host);
 }
 async function deletePack(packId, host) {
-  const document = await readPacks();
-  document.packs = document.packs.filter((pack) => pack.id !== packId);
-  if (document.defaultPackId === packId) document.defaultPackId = "";
-  await writePacks(document);
+  const document2 = await readPacks();
+  document2.packs = document2.packs.filter((pack) => pack.id !== packId);
+  if (document2.defaultPackId === packId) document2.defaultPackId = "";
+  await writePacks(document2);
   await removePackSkillDir(packId);
   return buildPayload(host);
 }
 async function setDefaultPack(packId, host) {
-  const document = await readPacks();
-  if (!document.packs.some((pack) => pack.id === packId)) throw new Error("\u6280\u80FD\u5305\u4E0D\u5B58\u5728");
-  document.defaultPackId = packId;
-  await writePacks(document);
+  const document2 = await readPacks();
+  if (!document2.packs.some((pack) => pack.id === packId)) throw new Error("\u6280\u80FD\u5305\u4E0D\u5B58\u5728");
+  document2.defaultPackId = packId;
+  await writePacks(document2);
   return buildPayload(host);
 }
 async function buildDiagnostics(host) {
-  const document = await readPacks();
+  const document2 = await readPacks();
   const groups = await listGlobalToolGroups(host.tools, host.profileDir);
   return {
     globalTools: collectGlobalToolNames(host.tools),
     groups,
-    packs: document.packs.map((pack) => ({
+    packs: document2.packs.map((pack) => ({
       id: pack.id,
       name: pack.name,
       plugins: pack.plugins,
@@ -1295,8 +1299,8 @@ async function buildDiagnostics(host) {
 var writeChain = Promise.resolve();
 async function handleWrite(request, api, host) {
   if (request.action === "compose") {
-    const document = await readPacks();
-    const pack2 = document.packs.find((item) => item.id === request.pack);
+    const document2 = await readPacks();
+    const pack2 = document2.packs.find((item) => item.id === request.pack);
     if (!pack2) throw new Error("\u6280\u80FD\u5305\u4E0D\u5B58\u5728");
     if (request.mode.trim() === "") throw new Error("\u672A\u6307\u5B9A\u6A21\u5F0F");
     const groups = await listGlobalToolGroups(host.tools, host.profileDir);
@@ -1409,14 +1413,30 @@ function bootExpandProcess(storageKey) {
   const win = window;
   if (win["__DSH_ALL_IN_ONE_EXPAND_PROCESS__"]) return;
   win["__DSH_ALL_IN_ONE_EXPAND_PROCESS__"] = true;
-  win["__DSH_EXPAND_PROCESS_ENABLED__"] = function enabled() {
+  function readEnabled() {
     try {
       return window.localStorage.getItem(storageKey) === "1";
     } catch (error) {
       console.error("[expand-process] \u8BFB\u53D6\u5F00\u5173\u72B6\u6001\u5931\u8D25:", error);
       return false;
     }
-  };
+  }
+  win["__DSH_EXPAND_PROCESS_ENABLED__"] = readEnabled;
+  if (readEnabled()) {
+    const style = document.createElement("style");
+    style.id = "dsh-all-in-one-expand-process-style";
+    style.textContent = [
+      "[data-disclosure-header] [data-disclosure-row],",
+      '[data-slot="tool.call.toolview"] [role="button"][aria-expanded] {',
+      "  color: var(--dsw-alias-label-primary, #0f1115);",
+      "}",
+      "[data-disclosure-header] + div,",
+      '[data-slot="tool.call.toolview"] [role="button"][aria-expanded] + div {',
+      "  margin-left: 20px;",
+      "}"
+    ].join("\n");
+    (document.head || document.documentElement).appendChild(style);
+  }
   const RULES = {
     "@deepseek-ai/dsh-client-ui-tool": [
       [
@@ -1730,19 +1750,19 @@ async function forgetWorkspaceAccount(dshHome, sessionId) {
     console.error("[delete-session] \u8BFB\u53D6\u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u72B6\u6001\u5931\u8D25:", error);
     throw error;
   }
-  let document;
+  let document2;
   try {
-    document = JSON.parse(await readFile7(file, "utf8"));
+    document2 = JSON.parse(await readFile7(file, "utf8"));
   } catch (error) {
     console.error("[delete-session] \u89E3\u6790\u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u5931\u8D25:", file, error);
     return 0;
   }
-  if (!isRecord(document)) {
+  if (!isRecord(document2)) {
     console.warn("[delete-session] \u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u7ED3\u6784\u4E0D\u662F\u5BF9\u8C61\uFF0C\u8DF3\u8FC7\u6E05\u7406:", file);
     return 0;
   }
   let removed = 0;
-  const global = isRecord(document["global"]) ? document["global"] : void 0;
+  const global = isRecord(document2["global"]) ? document2["global"] : void 0;
   if (global !== void 0) {
     for (const key of GLOBAL_SESSION_LISTS) {
       const result = dropId(global[key], sessionId);
@@ -1751,7 +1771,7 @@ async function forgetWorkspaceAccount(dshHome, sessionId) {
       removed += 1;
     }
   }
-  const tables = isRecord(document["tables"]) ? document["tables"] : void 0;
+  const tables = isRecord(document2["tables"]) ? document2["tables"] : void 0;
   const workspaces = tables !== void 0 && isRecord(tables["workspaces"]) ? tables["workspaces"] : void 0;
   if (workspaces !== void 0) {
     for (const record of Object.values(workspaces)) {
@@ -1770,7 +1790,7 @@ async function forgetWorkspaceAccount(dshHome, sessionId) {
   }
   const temporary = `${file}.${process.pid}.tmp`;
   try {
-    await writeFile3(temporary, `${JSON.stringify(document, null, 2)}
+    await writeFile3(temporary, `${JSON.stringify(document2, null, 2)}
 `, {
       encoding: "utf8",
       mode: before.mode
