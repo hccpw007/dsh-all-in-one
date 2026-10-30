@@ -199,38 +199,39 @@ export function AutoCompactToggle({ t }: FeatureSwitchProps) {
   const enabled = settings?.enabled === true
 
   return (
-    // 卡片容器：主体按钮、开关与阈值输入是并列的交互区，不能互相嵌套
-    <div className="flex w-full items-start gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 transition hover:bg-layer2">
-      {/* 卡片主体：点击整块文字区切换开关。preflight 关闭，必须清掉浏览器默认的按钮底色与内边距 */}
-      <button
-        type="button"
-        aria-label={t('title')}
-        disabled={settings === null}
-        onClick={handleToggle}
-        className="flex min-w-0 flex-1 items-start gap-2 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-default"
-      >
-        {/* 入口图标 */}
-        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand">
-          <CompactIcon />
-        </span>
-        {/* 入口标题与说明 */}
-        <span className="min-w-0 flex-1">
-          {/* 开关标题 */}
-          <span className="block text-[13px] font-medium leading-[16px] text-primary">{t('title')}</span>
-          {/* 开关用途说明 */}
-          <span className="block text-[11px] leading-[14px] text-secondary">
-            {t('description')}
+    // 卡片容器：文字区、开关与阈值输入是并列的交互区，不能互相嵌套；
+    // 阈值输入单独占下面一行，避免挤在开关下方把整行卡片撑高
+    <div className="flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 transition hover:bg-layer2">
+      {/* 上段：文字区与开关横向并列 */}
+      <div className="flex w-full items-start gap-2">
+        {/* 卡片主体：点击整块文字区切换开关。preflight 关闭，必须清掉浏览器默认的按钮底色与内边距 */}
+        <button
+          type="button"
+          aria-label={t('title')}
+          disabled={settings === null}
+          onClick={handleToggle}
+          className="flex min-w-0 flex-1 items-start gap-2 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-default"
+        >
+          {/* 入口图标 */}
+          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand">
+            <CompactIcon />
           </span>
-          {/* 读取或保存失败提示：说明当前状态未能保存 */}
-          {error !== null ? (
-            <span className="block text-[12px] leading-[16px] text-danger" role="alert">
-              {error}
+          {/* 入口标题与说明 */}
+          <span className="min-w-0 flex-1">
+            {/* 开关标题 */}
+            <span className="block text-[13px] font-medium leading-[16px] text-primary">{t('title')}</span>
+            {/* 开关用途说明 */}
+            <span className="block text-[11px] leading-[14px] text-secondary">
+              {t('description')}
             </span>
-          ) : null}
-        </span>
-      </button>
-      {/* 右侧一列：开关轨道在上，阈值输入紧挨在它下方 */}
-      <div className="flex shrink-0 flex-col items-end justify-between gap-1 self-stretch">
+            {/* 读取或保存失败提示：说明当前状态未能保存 */}
+            {error !== null ? (
+              <span className="block text-[12px] leading-[16px] text-danger" role="alert">
+                {error}
+              </span>
+            ) : null}
+          </span>
+        </button>
         <button
           type="button"
           role="switch"
@@ -252,26 +253,26 @@ export function AutoCompactToggle({ t }: FeatureSwitchProps) {
             )}
           />
         </button>
-        {/* 阈值与保留比例：只在开关打开后出现，紧挨在开关轨道下方 */}
-        {enabled ? (
-          <>
-            <PercentField
-              label={t('thresholdLabel')}
-              unit={t('thresholdUnit')}
-              value={thresholdDraft}
-              onChange={setThresholdDraft}
-              onCommit={commitThreshold}
-            />
-            <PercentField
-              label={t('retainLabel')}
-              unit={t('thresholdUnit')}
-              value={retainDraft}
-              onChange={setRetainDraft}
-              onCommit={commitRetain}
-            />
-          </>
-        ) : null}
       </div>
+      {/* 阈值与保留比例：只在开关打开后出现在卡片下方，并排成一行 */}
+      {enabled ? (
+        <div className="flex items-center gap-3 pl-7">
+          <PercentField
+            label={t('thresholdLabel')}
+            unit={t('thresholdUnit')}
+            value={thresholdDraft}
+            onChange={setThresholdDraft}
+            onCommit={commitThreshold}
+          />
+          <PercentField
+            label={t('retainLabel')}
+            unit={t('thresholdUnit')}
+            value={retainDraft}
+            onChange={setRetainDraft}
+            onCommit={commitRetain}
+          />
+        </div>
+      ) : null}
     </div>
   )
 }
