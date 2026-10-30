@@ -17,28 +17,25 @@ const STYLE_ID = 'dsh-all-in-one-session-history'
 /** 导航条检测间隔；宿主重建会话视图时不发通知，只能轮询兜底。 */
 const TICK_INTERVAL_MS = 1200
 
-/** 会话正文容器：它的左侧就是可读内容的起点。 */
-const CONVERSATION_SELECTOR = '[data-conversation-scroll]'
-
-/** 正文里用来量左边界的块级元素；取到第一个即可。 */
-const CONTENT_SELECTOR = 'p, li, h2, h3, pre, table'
-
 /**
  * 插件样式：把导航条挪到左侧。
+ *
+ * 横向位置用容器宽度百分比表达：会话区变窄（侧边栏展开、窗口缩小）时按比例跟着
+ * 收缩，不会像固定像素那样压到正文或跑出可视区。
  *
  * 宿主的悬停预览卡用 `right: calc(100% + 10px)` 贴在导航条左侧，导航条挪到左边后
  * 会跑到屏幕外；这里把它反转到右侧，保持与右侧模式一致的「预览在横杠内侧」。
  * 类名按 `_preview` 子串匹配：宿主的类名带构建期哈希，只有语义后缀是稳定的。
  *
  * 宿主在容器宽度不足 900px 时用 `@container` 把导航条整条隐藏；窗口变窄或侧边栏
- * 展开都会触发，所以这里用 `display: block` 把显示权要回来，位置再按可用宽度收窄。
+ * 展开都会触发，所以这里用 `display: block` 把显示权要回来。
  *
  * 只用主题令牌着色，跟随宿主明暗主题；样式随插件生命周期注入与移除。
  */
 const STYLE_TEXT = `
 [${NAV_ATTRIBUTE}] {
   right: auto !important;
-  left: 12px !important;
+  left: 4% !important;
   display: block !important;
   overflow: visible !important;
 }
@@ -47,28 +44,6 @@ const STYLE_TEXT = `
   left: calc(100% + 10px) !important;
 }
 `
-
-/** 导航条与正文之间保留的空隙，避免贴住文字。 */
-const NAV_TEXT_GAP = 6
-
-/** 导航条左偏移的下限与上限：下限保证贴边不消失，上限避免超宽屏时跑得过深。 */
-const NAV_LEFT_MIN = 8
-const NAV_LEFT_MAX = 240
-
-/**
- * 取会话正文的左边界。
- * @returns 正文第一块内容的左坐标；会话还没渲染时返回 undefined
- */
-function resolveTextLeft(): number | undefined {
-  const container = document.querySelector(CONVERSATION_SELECTOR)
-  if (container === null) return undefined
-
-  const block = container.querySelector(CONTENT_SELECTOR)
-  if (block === null) return undefined
-
-  const rect = block.getBoundingClientRect()
-  return rect.width > 0 ? rect.left : undefined
-}
 
 /**
  * 安装轮次导航的左侧化。
@@ -85,37 +60,15 @@ export function installTurnNav(): () => void {
   let disposed = false
 
   /**
-   * 把导航条摆到左侧留白里最靠右的位置。
-   *
-   * 留白宽度随窗口与侧边栏变化（侧边栏展开时只剩几十像素），写死像素要么贴边、
-   * 要么压到正文上；这里读正文第一块内容的左边界，贴着它放但不重叠。
-   * @param nav 导航条
-   */
-  function positionNav(nav: HTMLElement): void {
-    const slot = nav.parentElement
-    if (slot === null) return
-
-    const slotLeft = slot.getBoundingClientRect().left
-    const textLeft = resolveTextLeft()
-    if (textLeft === undefined) return
-
-    const fit = textLeft - slotLeft - nav.offsetWidth - NAV_TEXT_GAP
-    const left = Math.max(NAV_LEFT_MIN, Math.min(NAV_LEFT_MAX, Math.round(fit)))
-
-    nav.style.setProperty('left', `${left}px`, 'important')
-  }
-
-  /**
-   * 补上导航条标记并摆正位置；宿主重建会话视图后会生成新的导航条。
+   * 补上导航条标记；宿主重建会话视图后会生成新的导航条。
    */
   function tick(): void {
     if (disposed) return
 
     const nav = document.querySelector(NAV_SELECTOR)
-    if (!(nav instanceof HTMLElement)) return
-
-    if (!nav.hasAttribute(NAV_ATTRIBUTE)) nav.setAttribute(NAV_ATTRIBUTE, '')
-    positionNav(nav)
+    if (nav instanceof HTMLElement && !nav.hasAttribute(NAV_ATTRIBUTE)) {
+      nav.setAttribute(NAV_ATTRIBUTE, '')
+    }
   }
 
   tick()
@@ -127,8 +80,6 @@ export function installTurnNav(): () => void {
 
     for (const element of document.querySelectorAll(`[${NAV_ATTRIBUTE}]`)) {
       element.removeAttribute(NAV_ATTRIBUTE)
-      // 只撤掉插件写的 left，宿主自己的 top 等内联样式要保持原样
-      if (element instanceof HTMLElement) element.style.removeProperty('left')
     }
 
     document.getElementById(STYLE_ID)?.remove()

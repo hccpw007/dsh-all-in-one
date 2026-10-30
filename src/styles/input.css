@@ -49,3 +49,12 @@
 .aio-card-grid > * > * {
   height: 100%;
 }
+
+/*
+ * 开关轨道与滑块必须是完整的药丸形（两端半圆）。
+ * 宿主环境里该圆角会被压成小圆角，看起来像圆角矩形而不是胶囊，
+ * 因此不依赖 `rounded-full`，改用插件自己的类名并以 !important 兜底。
+ */
+.dsh-aio-root .aio-switch {
+  border-radius: 9999px !important;
+}
