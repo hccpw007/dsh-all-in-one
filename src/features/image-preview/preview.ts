@@ -11,7 +11,7 @@
 import { closeImagePreview, openImagePreview } from './lightbox'
 
 /** 预览容器的标记属性，扫描时据此跳过自己插入的节点，避免回调自激。 */
-export const PREVIEW_ATTRIBUTE = 'data-dsh-image-preview'
+const PREVIEW_ATTRIBUTE = 'data-dsh-image-preview'
 
 /** 预览容器的 Tailwind 类名；类名必须出现在源码里，构建期才会生成对应样式。 */
 const WRAPPER_CLASS = 'mt-2 flex flex-col items-start gap-2'

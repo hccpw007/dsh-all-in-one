@@ -6,8 +6,8 @@
  * 关闭或插件卸载时可以直接移除，不会与宿主的组件生命周期互相干扰。
  */
 
-/** 放大层的标记属性；卸载时据此识别是否还挂着本功能的节点。 */
-export const LIGHTBOX_ATTRIBUTE = 'data-dsh-image-preview-lightbox'
+/** 放大层的标记属性；据此识别是否还挂着本功能的节点。 */
+const LIGHTBOX_ATTRIBUTE = 'data-dsh-image-preview-lightbox'
 
 /** 放大层容器：铺满窗口、居中，并让点击事件从整层起算。 */
 const LIGHTBOX_CLASS = 'fixed inset-0 z-[100] flex items-center justify-center p-6'
