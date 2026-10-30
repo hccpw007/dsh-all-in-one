@@ -10,8 +10,8 @@ function MemoryIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      width="18"
-      height="18"
+      width="16"
+      height="16"
       aria-hidden="true"
       fill="none"
       stroke="currentColor"
@@ -97,35 +97,35 @@ export function ProjectMemoryEntry({ t, open }: FeatureEntryProps) {
 
   return (
     // 卡片容器：主体按钮、开关与设置按钮是并列的交互区，不能互相嵌套
-    <div className="flex w-full items-start gap-3 rounded-xl border border-line4 bg-layer1 px-4 py-3.5 transition hover:bg-layer2">
+    <div className="flex w-full items-start gap-2.5 rounded-lg border border-line4 bg-layer1 px-3 py-2 transition hover:bg-layer2">
       {/* 卡片主体：进入功能页面配置记忆路径。preflight 关闭，必须清掉浏览器默认的按钮底色与内边距 */}
       <button
         type="button"
         onClick={open}
-        className="flex min-w-0 flex-1 items-start gap-3 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        className="flex min-w-0 flex-1 items-start gap-2.5 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
       >
         {/* 入口图标 */}
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-base text-brand">
           <MemoryIcon />
         </span>
         {/* 入口标题与说明 */}
         <span className="min-w-0 flex-1">
           {/* 入口标题 */}
-          <span className="block text-[13px] font-medium leading-5 text-primary">{t('title')}</span>
+          <span className="block text-[13px] font-medium leading-[17px] text-primary">{t('title')}</span>
           {/* 入口描述 */}
-          <span className="mt-1 block text-[12px] leading-[18px] text-secondary">
+          <span className="mt-0.5 block text-[12px] leading-[16px] text-secondary">
             {t('description')}
           </span>
           {/* 读写失败提示：说明当前状态未能保存 */}
           {error !== null ? (
-            <span className="mt-1 block text-[12px] leading-[18px] text-danger" role="alert">
+            <span className="mt-0.5 block text-[12px] leading-[16px] text-danger" role="alert">
               {error}
             </span>
           ) : null}
         </span>
       </button>
       {/* 右侧一列：启用开关在上，设置按钮在下，两者各自独立 */}
-      <div className="flex shrink-0 flex-col items-center justify-between gap-2 self-stretch">
+      <div className="flex shrink-0 flex-col items-center justify-between gap-1 self-stretch">
         {/* 启用开关：只有轨道参与交互，避免与进入页面混淆 */}
         <button
           type="button"
@@ -154,7 +154,7 @@ export function ProjectMemoryEntry({ t, open }: FeatureEntryProps) {
           onClick={open}
           aria-label={t('pathTitle')}
           title={t('pathTitle')}
-          className="flex items-center justify-center rounded-md border-0 bg-transparent p-0 text-[12px] leading-[18px] text-secondary transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="flex items-center justify-center rounded-md border-0 bg-transparent p-0 text-[12px] leading-[16px] text-secondary transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         >
           {t('settingsAction')}
         </button>

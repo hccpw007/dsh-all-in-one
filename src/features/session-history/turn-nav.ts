@@ -24,10 +24,18 @@ const TICK_INTERVAL_MS = 1200
  * 会跑到屏幕外；这里把它反转到右侧，保持与右侧模式一致的「预览在横杠内侧」。
  * 类名按 `_preview` 子串匹配：宿主的类名带构建期哈希，只有语义后缀是稳定的。
  *
+ * 宿主在容器宽度不足 900px 时用 `@container` 把导航条整条隐藏；窗口变窄或侧边栏
+ * 展开都会触发，所以这里用 `display: block` 把显示权要回来，位置再按可用宽度收窄。
+ *
  * 只用主题令牌着色，跟随宿主明暗主题；样式随插件生命周期注入与移除。
  */
 const STYLE_TEXT = `
-[${NAV_ATTRIBUTE}] { right: auto !important; left: 80px !important; overflow: visible !important; }
+[${NAV_ATTRIBUTE}] {
+  right: auto !important;
+  left: clamp(12px, 6%, 80px) !important;
+  display: block !important;
+  overflow: visible !important;
+}
 [${NAV_ATTRIBUTE}] [class*="_preview"] {
   right: auto !important;
   left: calc(100% + 10px) !important;

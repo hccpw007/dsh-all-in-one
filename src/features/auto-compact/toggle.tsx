@@ -13,7 +13,7 @@ const MAX_PERCENT = 100
 
 /** 百分比输入框样式，宽度按两位数字预留，紧挨在开关轨道下方。 */
 const INPUT_CLASS =
-  'w-12 rounded-md border border-line4 bg-base px-1 py-0.5 text-[11px] text-primary outline-none focus:border-brand'
+  'w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] text-primary outline-none focus:border-brand'
 
 /** 一个百分比输入行：标签、输入框与单位。 */
 interface PercentFieldProps {
@@ -64,8 +64,8 @@ function CompactIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      width="18"
-      height="18"
+      width="16"
+      height="16"
       aria-hidden="true"
       fill="none"
       stroke="currentColor"
@@ -200,37 +200,37 @@ export function AutoCompactToggle({ t }: FeatureSwitchProps) {
 
   return (
     // 卡片容器：主体按钮、开关与阈值输入是并列的交互区，不能互相嵌套
-    <div className="flex w-full items-start gap-3 rounded-xl border border-line4 bg-layer1 px-4 py-3.5 transition hover:bg-layer2">
+    <div className="flex w-full items-start gap-2.5 rounded-lg border border-line4 bg-layer1 px-3 py-2 transition hover:bg-layer2">
       {/* 卡片主体：点击整块文字区切换开关。preflight 关闭，必须清掉浏览器默认的按钮底色与内边距 */}
       <button
         type="button"
         aria-label={t('title')}
         disabled={settings === null}
         onClick={handleToggle}
-        className="flex min-w-0 flex-1 items-start gap-3 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-default"
+        className="flex min-w-0 flex-1 items-start gap-2.5 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-default"
       >
         {/* 入口图标 */}
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-base text-brand">
+        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-base text-brand">
           <CompactIcon />
         </span>
         {/* 入口标题与说明 */}
         <span className="min-w-0 flex-1">
           {/* 开关标题 */}
-          <span className="block text-[13px] font-medium leading-5 text-primary">{t('title')}</span>
+          <span className="block text-[13px] font-medium leading-[17px] text-primary">{t('title')}</span>
           {/* 开关用途说明 */}
-          <span className="mt-1 block text-[12px] leading-[18px] text-secondary">
+          <span className="mt-0.5 block text-[12px] leading-[16px] text-secondary">
             {t('description')}
           </span>
           {/* 读取或保存失败提示：说明当前状态未能保存 */}
           {error !== null ? (
-            <span className="mt-1 block text-[12px] leading-[18px] text-danger" role="alert">
+            <span className="mt-0.5 block text-[12px] leading-[16px] text-danger" role="alert">
               {error}
             </span>
           ) : null}
         </span>
       </button>
       {/* 右侧一列：开关轨道在上，阈值输入紧挨在它下方 */}
-      <div className="flex shrink-0 flex-col items-end justify-between gap-2 self-stretch">
+      <div className="flex shrink-0 flex-col items-end justify-between gap-1 self-stretch">
         <button
           type="button"
           role="switch"
