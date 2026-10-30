@@ -52,9 +52,21 @@
 
 /*
  * 开关轨道与滑块必须是完整的药丸形（两端半圆）。
- * 宿主环境里该圆角会被压成小圆角，看起来像圆角矩形而不是胶囊，
+ * 开关尺寸小（36×20），一旦沿用宿主的超椭圆圆角就会明显看出"方"，
  * 因此不依赖 `rounded-full`，改用插件自己的类名并以 !important 兜底。
  */
 .dsh-aio-root .aio-switch {
   border-radius: 9999px !important;
+}
+
+/*
+ * 宿主在 :root 上把 --dsw-corner-shape 设为 superellipse(1.5)（超椭圆圆角），
+ * 入口卡片里的小尺寸胶囊因此被画成一圈都是"方"的曲线。
+ * 这里只在入口卡片网格内恢复默认圆角，宿主其它界面保持原样；
+ * 变量与属性同时重置，宿主无论是读变量还是直接写属性都能覆盖。
+ */
+.aio-card-grid,
+.aio-card-grid * {
+  --dsw-corner-shape: initial;
+  corner-shape: round;
 }
