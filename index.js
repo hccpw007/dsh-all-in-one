@@ -11,7 +11,6 @@ __export(host_exports, {
   inject: () => inject
 });
 
-
 // src/features/power-pack/host/skill-links.ts
 import { mkdir, rm, symlink } from "node:fs/promises";
 import { join as join2 } from "node:path";
@@ -69,7 +68,6 @@ async function removePackSkillDir(packId) {
   }
 }
 
-
 // src/features/power-pack/host/composition.ts
 var PROMPT_ROW_NAME = "dsh-all-in-one/preset-pack";
 var ISOLATE_ROW_NAME = "dsh-all-in-one/preset-isolate";
@@ -98,7 +96,6 @@ function isDenied(rule, id) {
   const selected = rule.items.includes(id);
   switch (rule.mode) {
     case "include":
-      
       return !selected;
     case "exclude":
       return selected;
@@ -1438,13 +1435,13 @@ function bootExpandProcess(storageKey) {
       '[data-slot="tool.call.toolview"] [role="button"][aria-expanded] + div::before {',
       '  content: "";',
       "  position: absolute;",
-      "  top: 22px;",
-      "  bottom: 22px;",
+      "  top: 17px;",
+      "  bottom: 17px;",
       "  left: -12px;",
       "  width: 2px;",
       "  border-radius: 1px;",
       "  background: var(--dsw-alias-label-tertiary, #81858c);",
-      "  opacity: 0.5;",
+      "  opacity: 0.35;",
       "}"
     ].join("\n");
     (document.head || document.documentElement).appendChild(style);

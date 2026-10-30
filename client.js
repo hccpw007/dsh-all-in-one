@@ -1209,13 +1209,13 @@ window.__ModuleLoader__.load({
           '[data-slot="tool.call.toolview"] [role="button"][aria-expanded] + div::before {',
           '  content: "";',
           "  position: absolute;",
-          "  top: 22px;",
-          "  bottom: 22px;",
+          "  top: 17px;",
+          "  bottom: 17px;",
           "  left: -12px;",
           "  width: 2px;",
           "  border-radius: 1px;",
           "  background: var(--dsw-alias-label-tertiary, #81858c);",
-          "  opacity: 0.5;",
+          "  opacity: 0.35;",
           "}"
         ].join("\n");
         (document.head || document.documentElement).appendChild(style);
