@@ -23,6 +23,9 @@ const CONTAINER_SELECTORS = [
 /** 每帧最多处理的变更节点数；超出的部分留到下一帧，避免一次性扫描长会话。 */
 const MAX_NODES_PER_FRAME = 40
 
+/** 待处理变更的节点上限；长会话流式输出会持续积压，超出后丢弃最早的部分。 */
+const MAX_PENDING_NODES = 4000
+
 /** 容器重建后的重定位间隔；缓存节点失联时才真正查询选择器。 */
 const RELOCATE_INTERVAL_MS = 1500
 
@@ -86,7 +89,12 @@ export function installImagePreviewObserver(): () => void {
    * 处理一帧内的积压变更。
    */
   function flush(): void {
-    if (container === undefined || !container.isConnected) return
+    // 容器已失效：清空积压并停止调度，等重定位轮询重新挂载后再继续。
+    // 只 return 而不清空，会让 pending 每帧重排一次 rAF，容器不回来就永久空转
+    if (container === undefined || !container.isConnected) {
+      pending.clear()
+      return
+    }
 
     const nodes = Array.from(pending).slice(0, MAX_NODES_PER_FRAME)
     for (const node of nodes) pending.delete(node)
@@ -105,9 +113,12 @@ export function installImagePreviewObserver(): () => void {
 
       if (!(node instanceof Element) || isOwnPreviewNode(node)) continue
 
-      // 新增节点在会话区内：只扫这一棵子树；会话区外部的变化（侧边栏等）直接忽略
+      // 新增节点在会话区内：按其所在块整块重扫。
+      // 只扫新增子树会得到块内路径的子集，与整块扫描出的全量 key 交替，
+      // 同一块的预览就会被反复删除重建（每帧新建 img 并重新请求图片）
       if (container.contains(node)) {
-        scanSubtree(node)
+        const block = closestBlock(node)
+        if (block !== undefined) scanSubtree(block)
         continue
       }
 
@@ -128,6 +139,23 @@ export function installImagePreviewObserver(): () => void {
     })
   }
 
+  /**
+   * 把待处理集合裁剪到上限内。
+   *
+   * 流式输出时变更可能持续快于每帧 40 个的处理速度，集合会无限增长，
+   * 每帧 `Array.from` 的复制成本也随之线性上升。
+   */
+  function trimPending(): void {
+    if (pending.size <= MAX_PENDING_NODES) return
+
+    let overflow = pending.size - MAX_PENDING_NODES
+    for (const node of pending) {
+      if (overflow <= 0) break
+      pending.delete(node)
+      overflow -= 1
+    }
+  }
+
   const observer = new MutationObserver((records) => {
     for (const record of records) {
       if (record.type === 'characterData') {
@@ -138,6 +166,7 @@ export function installImagePreviewObserver(): () => void {
       for (const node of record.addedNodes) pending.add(node)
     }
 
+    trimPending()
     schedule()
   })
 

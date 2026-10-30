@@ -984,6 +984,8 @@ function installLazyPresets(deps) {
 // src/features/power-pack/host/prompt-overlay.ts
 var SHARED_KEY = Symbol.for("dsh-all-in-one.prompt-isolation");
 var CHECK_INTERVAL_MS = 3e3;
+var MAX_CONSECUTIVE_REBUILDS = 20;
+var SLOW_CHECK_INTERVAL_MS = 3e4;
 var OVERLAY_INNER = Symbol.for("dsh-all-in-one.prompt-overlay.inner");
 function isolationState() {
   const holder = globalThis;
@@ -1022,8 +1024,14 @@ function installPromptOverlay(ctx) {
   ctx.effect(() => {
     let wrapped;
     let getter;
+    let innerBase;
+    let timer;
+    let intervalMs = CHECK_INTERVAL_MS;
+    let rebuildCount = 0;
     const rebuild = (next) => {
       const base = unwrapOverlay(next);
+      if (innerBase === base && wrapped !== void 0) return;
+      innerBase = base;
       const current = async (context) => {
         const result = await base.call(prompt, context);
         if (!isAssembly(result)) return result;
@@ -1062,15 +1070,29 @@ function installPromptOverlay(ctx) {
         if (typeof current !== "function") return;
         rebuild(current);
         attach();
+        rebuildCount += 1;
+        if (rebuildCount > MAX_CONSECUTIVE_REBUILDS && intervalMs !== SLOW_CHECK_INTERVAL_MS) {
+          console.error(
+            "[power-pack] \u63D0\u793A\u8BCD\u5305\u88C5\u88AB\u53CD\u590D\u66FF\u6362\uFF0C\u5DE1\u68C0\u964D\u9891\u5230",
+            SLOW_CHECK_INTERVAL_MS,
+            "ms"
+          );
+          intervalMs = SLOW_CHECK_INTERVAL_MS;
+          startTimer(intervalMs);
+        }
       } catch (error) {
         console.error("[power-pack] \u5B89\u88C5\u63D0\u793A\u8BCD\u5916\u5C42\u5305\u88C5\u5931\u8D25:", error);
       }
     };
+    const startTimer = (interval) => {
+      if (timer !== void 0) clearInterval(timer);
+      timer = setInterval(sync, interval);
+      if (typeof timer.unref === "function") timer.unref();
+    };
     sync();
-    const timer = setInterval(sync, CHECK_INTERVAL_MS);
-    if (typeof timer.unref === "function") timer.unref();
+    startTimer(intervalMs);
     return () => {
-      clearInterval(timer);
+      if (timer !== void 0) clearInterval(timer);
     };
   }, "power-pack: prompt overlay");
 }
@@ -2688,13 +2710,14 @@ async function compactOlderHistory(engine, measurement, agent, signal, contextWi
 
 // src/features/auto-compact/host/watcher.ts
 var RETRY_COOLDOWN_MS = 3e4;
+var SCOPE_MISS_TTL_MS = 3e4;
 var serviceScopeCache = /* @__PURE__ */ new WeakMap();
 function findServiceScope(agent, name) {
   const root = agent.ctx;
   const agentFiber = root?.fiber;
   if (root?.registry?.forEach === void 0 || agentFiber === void 0) return void 0;
-  const cached = serviceScopeCache.get(agentFiber);
-  if (cached !== void 0) return cached;
+  const cached = serviceScopeCache.get(agentFiber)?.get(name);
+  if (cached !== void 0 && cached.expiresAt > Date.now()) return cached.scope;
   let found;
   root.registry.forEach((runtime) => {
     if (found !== void 0) return;
@@ -2704,7 +2727,12 @@ function findServiceScope(agent, name) {
       return;
     }
   });
-  if (found !== void 0) serviceScopeCache.set(agentFiber, found);
+  const entries = serviceScopeCache.get(agentFiber) ?? /* @__PURE__ */ new Map();
+  entries.set(
+    name,
+    found === void 0 ? { expiresAt: Date.now() + SCOPE_MISS_TTL_MS } : { scope: found, expiresAt: Number.POSITIVE_INFINITY }
+  );
+  serviceScopeCache.set(agentFiber, entries);
   return found;
 }
 function readFromScope(scope, name) {
@@ -2731,6 +2759,7 @@ function readContextWindow(agent) {
 function installAutoCompactWatcher(ctx) {
   const compacting = /* @__PURE__ */ new Set();
   const attemptedAt = /* @__PURE__ */ new Map();
+  const warnedSessions = /* @__PURE__ */ new Set();
   const check = async (agent, signal) => {
     const settings = readAutoCompactSettings();
     if (!settings.enabled) return;
@@ -2741,7 +2770,10 @@ function installAutoCompactWatcher(ctx) {
     const engine = readService(agent, "compaction");
     const meter = readService(agent, "tokenMeter");
     if (engine?.compactRegion === void 0 || meter === void 0) {
-      console.error("[auto-compact] \u5BBF\u4E3B\u672A\u63D0\u4F9B\u5206\u6BB5\u538B\u7F29\u80FD\u529B\uFF0C\u8DF3\u8FC7\u672C\u6B21\u68C0\u67E5");
+      if (!warnedSessions.has(session.id)) {
+        warnedSessions.add(session.id);
+        console.error("[auto-compact] \u5BBF\u4E3B\u672A\u63D0\u4F9B\u5206\u6BB5\u538B\u7F29\u80FD\u529B\uFF0C\u8DF3\u8FC7\u672C\u6B21\u68C0\u67E5");
+      }
       return;
     }
     const measurement = meter.measure(session);
@@ -2776,6 +2808,7 @@ function installAutoCompactWatcher(ctx) {
     dispose();
     compacting.clear();
     attemptedAt.clear();
+    warnedSessions.clear();
   };
 }
 

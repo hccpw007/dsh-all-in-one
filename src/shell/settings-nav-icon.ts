@@ -76,6 +76,7 @@ export function installSettingsNavIcon(ctx: NavIconContext, t: Translate, iconSv
 
     let disposed = false
     let scheduled = false
+    let frame = 0
 
     // 每次导航行变化后重新认领：弹窗打开、语言切换都会重建这些按钮
     const sync = () => {
@@ -93,20 +94,23 @@ export function installSettingsNavIcon(ctx: NavIconContext, t: Translate, iconSv
       }
     }
 
-    // 合并一批 DOM 变化，并在下一次绘制前完成标记，避免先闪一下齿轮
+    // 合并一批 DOM 变化，并在下一次绘制前完成标记，避免先闪一下齿轮。
+    // 用 rAF 而不是微任务：流式输出一帧内会产生多个微任务批次，每次都要全文档查询
     const schedule = () => {
       if (scheduled || disposed) return
       scheduled = true
-      queueMicrotask(sync)
+      frame = window.requestAnimationFrame(sync)
     }
 
     sync()
+    // 只观察节点增删：导航行是整体重建的，文本变化不属于本图标要跟随的时机
     const observer = new MutationObserver(schedule)
-    observer.observe(document.body, { childList: true, subtree: true, characterData: true })
+    observer.observe(document.body, { childList: true, subtree: true })
 
     return () => {
       disposed = true
       observer.disconnect()
+      if (frame !== 0) window.cancelAnimationFrame(frame)
 
       for (const row of document.querySelectorAll(`[${NAV_ICON_MARKER}]`)) {
         row.removeAttribute(NAV_ICON_MARKER)

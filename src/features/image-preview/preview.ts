@@ -178,7 +178,8 @@ export function closestBlock(element: Element | null): Element | undefined {
  */
 export function syncBlockPreviews(block: Element, paths: string[]): void {
   const usablePaths = paths.filter((path) => !failedPaths.has(path))
-  const key = usablePaths.join('\n')
+  // key 与顺序无关：同一组路径因扫描顺序不同被当成变化时，会反复删除重建预览
+  const key = [...usablePaths].sort().join('\n')
 
   // 宿主重渲染可能已经移除了预览容器，这里先以 DOM 实际状态为准
   const existing = block.nextElementSibling

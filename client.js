@@ -1496,7 +1496,7 @@ window.__ModuleLoader__.load({
     }
     function syncBlockPreviews(block, paths) {
       const usablePaths = paths.filter((path) => !failedPaths.has(path));
-      const key = usablePaths.join("\n");
+      const key = [...usablePaths].sort().join("\n");
       const existing = block.nextElementSibling;
       const wrapper = existing instanceof HTMLElement && existing.hasAttribute(PREVIEW_ATTRIBUTE) ? existing : void 0;
       if (wrapper !== void 0) {
@@ -1560,6 +1560,7 @@ window.__ModuleLoader__.load({
       '[data-slot="main.conversation"]'
     ];
     var MAX_NODES_PER_FRAME = 40;
+    var MAX_PENDING_NODES = 4e3;
     var RELOCATE_INTERVAL_MS = 1500;
     function findContainer() {
       for (const selector of CONTAINER_SELECTORS) {
@@ -1595,7 +1596,10 @@ window.__ModuleLoader__.load({
       let frame = 0;
       let disposed = false;
       function flush() {
-        if (container === void 0 || !container.isConnected) return;
+        if (container === void 0 || !container.isConnected) {
+          pending2.clear();
+          return;
+        }
         const nodes = Array.from(pending2).slice(0, MAX_NODES_PER_FRAME);
         for (const node of nodes) pending2.delete(node);
         for (const node of nodes) {
@@ -1608,7 +1612,8 @@ window.__ModuleLoader__.load({
           }
           if (!(node instanceof Element) || isOwnPreviewNode(node)) continue;
           if (container.contains(node)) {
-            scanSubtree(node);
+            const block = closestBlock(node);
+            if (block !== void 0) scanSubtree(block);
             continue;
           }
           if (node.contains(container)) scanSubtree(container);
@@ -1622,6 +1627,15 @@ window.__ModuleLoader__.load({
           if (pending2.size > 0) schedule();
         });
       }
+      function trimPending() {
+        if (pending2.size <= MAX_PENDING_NODES) return;
+        let overflow = pending2.size - MAX_PENDING_NODES;
+        for (const node of pending2) {
+          if (overflow <= 0) break;
+          pending2.delete(node);
+          overflow -= 1;
+        }
+      }
       const observer = new MutationObserver((records) => {
         for (const record of records) {
           if (record.type === "characterData") {
@@ -1630,6 +1644,7 @@ window.__ModuleLoader__.load({
           }
           for (const node of record.addedNodes) pending2.add(node);
         }
+        trimPending();
         schedule();
       });
       function enqueueTree(element) {
@@ -2007,6 +2022,8 @@ window.__ModuleLoader__.load({
     var SUPPRESS_ATTRIBUTE = "data-aio-sidebar-more-suppress";
     var SUBITEM_MAX_ATTEMPTS = 3;
     var SUPPRESS_RELEASE_MS = 300;
+    var cachedTrigger = null;
+    var cachedPanelList = null;
     var SVG_NAMESPACE = "http://www.w3.org/2000/svg";
     var ICON_SIZE = 16;
     var ICON_CELLS = [
@@ -2047,13 +2064,18 @@ window.__ModuleLoader__.load({
       document.head.appendChild(style);
     }
     function findFooterTrigger() {
+      if (cachedTrigger !== null && cachedTrigger.isConnected) return cachedTrigger;
       const trigger = document.querySelector(FOOTER_TRIGGER_SELECTOR);
-      return trigger instanceof HTMLElement ? trigger : null;
+      cachedTrigger = trigger instanceof HTMLElement ? trigger : null;
+      return cachedTrigger;
     }
     function findPanelRows() {
-      const list = document.querySelector(PANEL_LIST_SELECTOR);
-      if (!(list instanceof HTMLElement)) return [];
-      return Array.from(list.querySelectorAll(PANEL_ROW_SELECTOR));
+      if (cachedPanelList === null || !cachedPanelList.isConnected) {
+        const list = document.querySelector(PANEL_LIST_SELECTOR);
+        cachedPanelList = list instanceof HTMLElement ? list : null;
+      }
+      if (cachedPanelList === null) return [];
+      return Array.from(cachedPanelList.querySelectorAll(PANEL_ROW_SELECTOR));
     }
     function isMenuToggle(row) {
       return row.getAttribute("aria-expanded") !== null;
@@ -2182,6 +2204,8 @@ window.__ModuleLoader__.load({
       return () => {
         disposed = true;
         observer.disconnect();
+        cachedTrigger = null;
+        cachedPanelList = null;
         document.getElementById(STYLE_ID2)?.remove();
         document.documentElement.removeAttribute(SUPPRESS_ATTRIBUTE);
       };
@@ -3504,6 +3528,7 @@ window.__ModuleLoader__.load({
         document.head.appendChild(style);
         let disposed = false;
         let scheduled = false;
+        let frame = 0;
         const sync = () => {
           scheduled = false;
           if (disposed) return;
@@ -3519,14 +3544,15 @@ window.__ModuleLoader__.load({
         const schedule = () => {
           if (scheduled || disposed) return;
           scheduled = true;
-          queueMicrotask(sync);
+          frame = window.requestAnimationFrame(sync);
         };
         sync();
         const observer = new MutationObserver(schedule);
-        observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+        observer.observe(document.body, { childList: true, subtree: true });
         return () => {
           disposed = true;
           observer.disconnect();
+          if (frame !== 0) window.cancelAnimationFrame(frame);
           for (const row of document.querySelectorAll(`[${NAV_ICON_MARKER}]`)) {
             row.removeAttribute(NAV_ICON_MARKER);
           }

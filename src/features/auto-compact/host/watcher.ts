@@ -20,6 +20,17 @@ import { readAutoCompactSettings } from './settings'
 /** 同一会话两次压缩尝试之间的最短间隔；压缩失败时避免每一步都重试。 */
 const RETRY_COOLDOWN_MS = 30_000
 
+/** 服务解析失败的负缓存时长：服务可能随会话建立后才就绪，过期后再重试。 */
+const SCOPE_MISS_TTL_MS = 30_000
+
+/** 一个「agent × 服务名」的解析结果缓存。 */
+interface ScopeCacheEntry {
+  /** 提供该服务的作用域；解析失败时为空。 */
+  scope?: HostPluginContext
+  /** 失效时间；命中结果用 Infinity 表示不再过期。 */
+  expiresAt: number
+}
+
 /** Cordis fiber 的最小结构：只需要它自己的作用域。 */
 interface FiberLike {
   ctx?: HostPluginContext
@@ -30,8 +41,13 @@ interface RegistryLike {
   forEach?(callback: (runtime: { fibers?: Iterable<FiberLike> }) => void): void
 }
 
-/** 每个 agent 解析出的服务作用域缓存：服务归属固定，不必每步重扫。 */
-const serviceScopeCache = new WeakMap<object, HostPluginContext>()
+/**
+ * 每个 agent、每个服务名的解析结果缓存。
+ *
+ * 服务归属固定，连「解析不到」也要缓存：宿主每步都会触发检查，不缓存 miss 就会
+ * 每一步把整个注册表扫一遍（agent 数 × fiber 数），会话越长 CPU 占用越高。
+ */
+const serviceScopeCache = new WeakMap<object, Map<string, ScopeCacheEntry>>()
 
 /**
  * 找到能读到指定服务的作用域。
@@ -49,8 +65,8 @@ function findServiceScope(agent: AgentLike, name: string): HostPluginContext | u
   const agentFiber = root?.fiber
   if (root?.registry?.forEach === undefined || agentFiber === undefined) return undefined
 
-  const cached = serviceScopeCache.get(agentFiber)
-  if (cached !== undefined) return cached
+  const cached = serviceScopeCache.get(agentFiber)?.get(name)
+  if (cached !== undefined && cached.expiresAt > Date.now()) return cached.scope
 
   let found: HostPluginContext | undefined
   root.registry.forEach((runtime) => {
@@ -64,7 +80,14 @@ function findServiceScope(agent: AgentLike, name: string): HostPluginContext | u
     }
   })
 
-  if (found !== undefined) serviceScopeCache.set(agentFiber, found)
+  const entries = serviceScopeCache.get(agentFiber) ?? new Map<string, ScopeCacheEntry>()
+  entries.set(
+    name,
+    found === undefined
+      ? { expiresAt: Date.now() + SCOPE_MISS_TTL_MS }
+      : { scope: found, expiresAt: Number.POSITIVE_INFINITY },
+  )
+  serviceScopeCache.set(agentFiber, entries)
 
   return found
 }
@@ -125,6 +148,8 @@ export function installAutoCompactWatcher(ctx: HostPluginContext): () => void {
   const compacting = new Set<string>()
   // 每个会话最近一次尝试的时间，用于失败冷却
   const attemptedAt = new Map<string, number>()
+  // 已告警过「缺少分段压缩能力」的会话：每步都打一条会把日志与 CPU 一起拖满
+  const warnedSessions = new Set<string>()
 
   /**
    * 达到阈值时压缩一段较早的历史；任何失败都只记日志，不影响本轮继续。
@@ -144,7 +169,11 @@ export function installAutoCompactWatcher(ctx: HostPluginContext): () => void {
     const engine = readService<CompactionApi>(agent, 'compaction')
     const meter = readService<TokenMeterApi>(agent, 'tokenMeter')
     if (engine?.compactRegion === undefined || meter === undefined) {
-      console.error('[auto-compact] 宿主未提供分段压缩能力，跳过本次检查')
+      if (!warnedSessions.has(session.id)) {
+        warnedSessions.add(session.id)
+        console.error('[auto-compact] 宿主未提供分段压缩能力，跳过本次检查')
+      }
+
       return
     }
 
@@ -188,5 +217,6 @@ export function installAutoCompactWatcher(ctx: HostPluginContext): () => void {
     dispose()
     compacting.clear()
     attemptedAt.clear()
+    warnedSessions.clear()
   }
 }

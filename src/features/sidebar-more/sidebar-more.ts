@@ -47,6 +47,12 @@ const SUBITEM_MAX_ATTEMPTS = 3
 /** 弹层隐藏保持时间，等宿主完成关闭动画后再恢复显示。 */
 const SUPPRESS_RELEASE_MS = 300
 
+/** 底部「更多」触发器缓存：宿主重排侧边栏时会替换，失联后重新查询。 */
+let cachedTrigger: HTMLElement | null = null
+
+/** 顶部面板列表缓存，同上。 */
+let cachedPanelList: HTMLElement | null = null
+
 /** svg 元素必须用命名空间创建，否则在 HTML 文档里不会被当作图形渲染。 */
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 
@@ -122,8 +128,13 @@ function ensureStyle(): void {
  * @returns 触发器；宿主未渲染底部工具条时返回 null
  */
 function findFooterTrigger(): HTMLElement | null {
+  // 宿主只在侧边栏重排时替换触发器：每帧全文档查询会在长会话里随 DOM 规模变贵
+  if (cachedTrigger !== null && cachedTrigger.isConnected) return cachedTrigger
+
   const trigger = document.querySelector(FOOTER_TRIGGER_SELECTOR)
-  return trigger instanceof HTMLElement ? trigger : null
+  cachedTrigger = trigger instanceof HTMLElement ? trigger : null
+
+  return cachedTrigger
 }
 
 /**
@@ -131,10 +142,14 @@ function findFooterTrigger(): HTMLElement | null {
  * @returns 面板行；顶部面板列表尚未渲染时为空数组
  */
 function findPanelRows(): HTMLElement[] {
-  const list = document.querySelector(PANEL_LIST_SELECTOR)
-  if (!(list instanceof HTMLElement)) return []
+  // 同上：缓存容器，只在其失联时重新查询，行本身每次重查以跟上宿主渲染
+  if (cachedPanelList === null || !cachedPanelList.isConnected) {
+    const list = document.querySelector(PANEL_LIST_SELECTOR)
+    cachedPanelList = list instanceof HTMLElement ? list : null
+  }
+  if (cachedPanelList === null) return []
 
-  return Array.from(list.querySelectorAll<HTMLElement>(PANEL_ROW_SELECTOR))
+  return Array.from(cachedPanelList.querySelectorAll<HTMLElement>(PANEL_ROW_SELECTOR))
 }
 
 /**
@@ -346,6 +361,9 @@ export function installSidebarMore(t: Translate): () => void {
   return () => {
     disposed = true
     observer.disconnect()
+    // 卸载后宿主可能整块重建侧边栏，缓存引用随之失效
+    cachedTrigger = null
+    cachedPanelList = null
     document.getElementById(STYLE_ID)?.remove()
     document.documentElement.removeAttribute(SUPPRESS_ATTRIBUTE)
   }

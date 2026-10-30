@@ -29,6 +29,7 @@ function isolationState() {
 var ASSEMBLE_EVENT = "system-prompt/assemble";
 var inject = ["tools"];
 var LOG_MAX_BYTES = 256 * 1024;
+var APPLY_MIN_INTERVAL_MS = 200;
 function writeDiagnostic(message) {
   try {
     const home = process.env.DSH_HOME?.trim() || join(homedir(), ".dsh");
@@ -90,8 +91,22 @@ function installToolIsolation(ctx, deny, mcpServers) {
   ctx.effect(() => {
     let lift;
     let applying = false;
+    let lastApplyAt = 0;
+    let pending;
     const apply2 = () => {
       if (applying) return;
+      const wait = APPLY_MIN_INTERVAL_MS - (Date.now() - lastApplyAt);
+      if (wait > 0) {
+        if (pending === void 0) {
+          pending = setTimeout(() => {
+            pending = void 0;
+            apply2();
+          }, wait);
+          if (typeof pending.unref === "function") pending.unref();
+        }
+        return;
+      }
+      lastApplyAt = Date.now();
       applying = true;
       try {
         if (lift !== void 0) {
@@ -132,6 +147,10 @@ function installToolIsolation(ctx, deny, mcpServers) {
     const off = ctx.on("tools/change", apply2);
     return () => {
       off();
+      if (pending !== void 0) {
+        clearTimeout(pending);
+        pending = void 0;
+      }
       if (lift === void 0) return;
       try {
         lift();

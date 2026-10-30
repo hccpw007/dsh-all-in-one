@@ -36,6 +36,15 @@ export const inject = ['tools']
 const LOG_MAX_BYTES = 256 * 1024
 
 /**
+ * 两次工具掩码重算之间的最小间隔。
+ *
+ * 同步闸门只能挡住当场派发的 `tools/change`；宿主若把派发推迟到微任务或下一 tick，
+ * 闸门此时已复位，`apply → restrict → apply` 会无限循环并把宿主进程拖到满核。
+ * 用最小间隔把连续触发合并成一次重算，对这类自激形成熔断。
+ */
+const APPLY_MIN_INTERVAL_MS = 200
+
+/**
  * 把一行诊断写进 `$DSH_HOME/all-in-one/isolate.log`。
  *
  * 隔离行运行在预设作用域里，控制台输出会被宿主日志淹没；写文件让用户能直接确认
@@ -181,10 +190,28 @@ function installToolIsolation(
     // 宿主在挂载与撤销掩码时都会同步发出 tools/change：不加这道闸，
     // 监听器会处理自己造成的变更而无限自激，把整个宿主进程拖到满核
     let applying = false
+    // 上一轮应用的时间，与 APPLY_MIN_INTERVAL_MS 一起构成异步派发下的熔断
+    let lastApplyAt = 0
+    // 合并中的重算：间隔内的多次变更只保留一个待执行的宏任务
+    let pending: ReturnType<typeof setTimeout> | undefined
 
     const apply = (): void => {
       if (applying) return
 
+      const wait = APPLY_MIN_INTERVAL_MS - (Date.now() - lastApplyAt)
+      if (wait > 0) {
+        if (pending === undefined) {
+          pending = setTimeout(() => {
+            pending = undefined
+            apply()
+          }, wait)
+          if (typeof pending.unref === 'function') pending.unref()
+        }
+
+        return
+      }
+
+      lastApplyAt = Date.now()
       applying = true
       try {
         if (lift !== undefined) {
@@ -237,6 +264,10 @@ function installToolIsolation(
 
     return () => {
       off()
+      if (pending !== undefined) {
+        clearTimeout(pending)
+        pending = undefined
+      }
       if (lift === undefined) return
       try {
         lift()

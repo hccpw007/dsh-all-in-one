@@ -20,6 +20,12 @@ const SHARED_KEY = Symbol.for('dsh-all-in-one.prompt-isolation')
 /** 抢占检查间隔：全局插件会周期性重挂自己的包装，这里要能抢回来。 */
 const CHECK_INTERVAL_MS = 3000
 
+/** 连续重建次数上限：超过后认为有其它插件在周期性抢占，巡检降频以免持续增层。 */
+const MAX_CONSECUTIVE_REBUILDS = 20
+
+/** 降频后的巡检间隔。 */
+const SLOW_CHECK_INTERVAL_MS = 30_000
+
 /** 装配方法形态：宿主实现依赖 `this`，调用时必须带上服务对象。 */
 type PromptAssemble = (this: unknown, context: unknown) => Promise<unknown>
 
@@ -125,6 +131,14 @@ export function installPromptOverlay(ctx: HostPluginContext): void {
     let wrapped: PromptAssemble | undefined
     /** 本模块挂在 `assemble` 上的 getter，用于判断 accessor 是否仍归本模块所有。 */
     let getter: (() => PromptAssemble | undefined) | undefined
+    /** 当前包装所包裹的下层实现，用于识别「下层没变、只是被重新赋值」的情况。 */
+    let innerBase: PromptAssemble | undefined
+    /** 巡检定时器；降频时整体替换。 */
+    let timer: ReturnType<typeof setInterval> | undefined
+    /** 当前巡检间隔。 */
+    let intervalMs = CHECK_INTERVAL_MS
+    /** 连续重建次数，用于把被反复抢占的情况降频。 */
+    let rebuildCount = 0
 
     /** 用 `next` 作为下层实现重新生成最外层包装。 */
     const rebuild = (next: PromptAssemble): void => {
@@ -132,6 +146,11 @@ export function installPromptOverlay(ctx: HostPluginContext): void {
       // 形成「包装调用自己」的无限递归，一次检查就能把调用栈压爆。
       // 同时剥掉自己的旧包装——全局插件常把读到的 assemble 原样存回去。
       const base = unwrapOverlay(next)
+
+      // 下层实现没变时复用已有包装：周期性检查每次都会读到同一实现，
+      // 每轮新建闭包会让装配调用链随时间变长
+      if (innerBase === base && wrapped !== undefined) return
+      innerBase = base
 
       const current = async (context: unknown): Promise<unknown> => {
         const result = await base.call(prompt, context)
@@ -193,19 +212,42 @@ export function installPromptOverlay(ctx: HostPluginContext): void {
 
         rebuild(current as PromptAssemble)
         attach()
+
+        rebuildCount += 1
+        // 反复重建说明有其它插件在周期性换回自己的包装：把巡检降频，
+        // 否则每轮都会重挂一次，长期运行下装配链与 CPU 一起上涨
+        if (rebuildCount > MAX_CONSECUTIVE_REBUILDS && intervalMs !== SLOW_CHECK_INTERVAL_MS) {
+          console.error(
+            '[power-pack] 提示词包装被反复替换，巡检降频到',
+            SLOW_CHECK_INTERVAL_MS,
+            'ms',
+          )
+          intervalMs = SLOW_CHECK_INTERVAL_MS
+          startTimer(intervalMs)
+        }
       } catch (error) {
         // 服务对象不可配置时放弃兜底，隔离行的事件路径仍然生效
         console.error('[power-pack] 安装提示词外层包装失败:', error)
       }
     }
 
+    /**
+     * 启动（或替换）巡检定时器。
+     * @param interval 巡检间隔
+     */
+    const startTimer = (interval: number): void => {
+      if (timer !== undefined) clearInterval(timer)
+
+      timer = setInterval(sync, interval)
+      if (typeof timer.unref === 'function') timer.unref()
+    }
+
     // 首次安装可能早于全局插件加载，因此周期性复查被抢占的情况
     sync()
-    const timer = setInterval(sync, CHECK_INTERVAL_MS)
-    if (typeof timer.unref === 'function') timer.unref()
+    startTimer(intervalMs)
 
     return () => {
-      clearInterval(timer)
+      if (timer !== undefined) clearInterval(timer)
       // 不主动还原 assemble：全局插件可能已把它当作底层实现持有，
       // 拆掉会让后续装配落到空的 sections 上。进程退出时一并释放。
     }
