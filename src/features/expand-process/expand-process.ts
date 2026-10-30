@@ -58,7 +58,9 @@ function bootExpandProcess(storageKey: string): void {
    *
    * 只在开关打开时注入：行标题改用主文字色，与展开后的内容区分；
    * 内容整体右移 20px（用 margin 而不是 padding，避免覆盖宿主已有的内边距），
-   * 表达它比行标题低一级。选择器基于宿主稳定属性，不依赖构建哈希类名。
+   * 表达它比行标题低一级。内容左侧再用伪元素画一条半透明的浅灰竖线作为引用标记，
+   * 线放在缩进留白里，不参与布局，因此不会挤动正文。
+   * 选择器基于宿主稳定属性，不依赖构建哈希类名。
    */
   if (readEnabled()) {
     const style = document.createElement('style')
@@ -70,7 +72,20 @@ function bootExpandProcess(storageKey: string): void {
       '}',
       '[data-disclosure-header] + div,',
       '[data-slot="tool.call.toolview"] [role="button"][aria-expanded] + div {',
+      '  position: relative;',
       '  margin-left: 20px;',
+      '}',
+      '[data-disclosure-header] + div::before,',
+      '[data-slot="tool.call.toolview"] [role="button"][aria-expanded] + div::before {',
+      '  content: "";',
+      '  position: absolute;',
+      '  top: 2px;',
+      '  bottom: 2px;',
+      '  left: -10px;',
+      '  width: 2px;',
+      '  border-radius: 1px;',
+      '  background: var(--dsw-alias-label-tertiary, #81858c);',
+      '  opacity: 0.5;',
       '}',
     ].join('\n')
     ;(document.head || document.documentElement).appendChild(style)

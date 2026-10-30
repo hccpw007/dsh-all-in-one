@@ -1202,7 +1202,20 @@ window.__ModuleLoader__.load({
           "}",
           "[data-disclosure-header] + div,",
           '[data-slot="tool.call.toolview"] [role="button"][aria-expanded] + div {',
+          "  position: relative;",
           "  margin-left: 20px;",
+          "}",
+          "[data-disclosure-header] + div::before,",
+          '[data-slot="tool.call.toolview"] [role="button"][aria-expanded] + div::before {',
+          '  content: "";',
+          "  position: absolute;",
+          "  top: 2px;",
+          "  bottom: 2px;",
+          "  left: -10px;",
+          "  width: 2px;",
+          "  border-radius: 1px;",
+          "  background: var(--dsw-alias-label-tertiary, #81858c);",
+          "  opacity: 0.5;",
           "}"
         ].join("\n");
         (document.head || document.documentElement).appendChild(style);
