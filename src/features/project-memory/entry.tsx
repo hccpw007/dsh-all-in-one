@@ -97,7 +97,7 @@ export function ProjectMemoryEntry({ t, open }: FeatureEntryProps) {
 
   return (
     // 卡片容器：主体按钮、开关与设置按钮是并列的交互区，不能互相嵌套
-    <div className="flex w-full items-start gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1.5 transition hover:bg-layer2">
+    <div className="flex w-full items-start gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 transition hover:bg-layer2">
       {/* 卡片主体：进入功能页面配置记忆路径。preflight 关闭，必须清掉浏览器默认的按钮底色与内边距 */}
       <button
         type="button"
@@ -105,7 +105,7 @@ export function ProjectMemoryEntry({ t, open }: FeatureEntryProps) {
         className="flex min-w-0 flex-1 items-start gap-2 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
       >
         {/* 入口图标 */}
-        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-base text-brand">
+        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand">
           <MemoryIcon />
         </span>
         {/* 入口标题与说明 */}
@@ -113,7 +113,7 @@ export function ProjectMemoryEntry({ t, open }: FeatureEntryProps) {
           {/* 入口标题 */}
           <span className="block text-[13px] font-medium leading-[16px] text-primary">{t('title')}</span>
           {/* 入口描述 */}
-          <span className="block text-[12px] leading-[16px] text-secondary">
+          <span className="block text-[11px] leading-[14px] text-secondary">
             {t('description')}
           </span>
           {/* 读写失败提示：说明当前状态未能保存 */}

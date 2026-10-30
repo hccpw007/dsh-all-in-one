@@ -6,7 +6,7 @@ export const projectMemoryLocales: FeatureLocales = {
     // 开关标题
     title: '项目记忆',
     // 开关用途说明：说明打开后记忆会写入文件，并在对话开始时进入上下文
-    description: '让对话记住项目约定与偏好，记忆写入文件并在之后的对话里自动带上。',
+    description: '记住项目约定与偏好，写入文件并在后续对话自动加载。',
     // 读取设置失败时的提示，卡片仍显示为关闭
     loadFailed: '读取设置失败，请检查宿主是否已加载本插件。',
     // 保存开关状态失败时的提示
@@ -45,7 +45,7 @@ export const projectMemoryLocales: FeatureLocales = {
     // Switch title
     title: 'Project memory',
     // Switch description: memories are written to files and injected into later conversations
-    description: 'Remembers project conventions and preferences in files that are loaded into later conversations.',
+    description: 'Remembers project conventions and preferences in files loaded into later chats.',
     // Shown when settings cannot be read
     loadFailed: 'Could not read settings. Check that the host loaded this plugin.',
     // Shown when the switch state cannot be saved

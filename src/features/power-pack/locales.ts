@@ -6,7 +6,7 @@ export const powerPackLocales: FeatureLocales = {
     // 网格入口标题
     title: '技能包',
     // 网格入口描述
-    description: '为不同任务准备不同的技能、插件与 MCP，新建对话时按技能包选择。',
+    description: '按任务组合技能、插件与 MCP，新建对话时选用。',
     // 功能页标题
     pageTitle: '技能包',
     // 功能页说明
@@ -117,7 +117,7 @@ export const powerPackLocales: FeatureLocales = {
     // Grid entry title
     title: 'Power packs',
     // Grid entry description
-    description: 'Prepare skills, plugins and MCP servers per task, then pick a power pack when starting a chat.',
+    description: 'Bundle skills, plugins and MCP servers per task, then pick one when starting a chat.',
     // Page title
     pageTitle: 'Power packs',
     // Page description

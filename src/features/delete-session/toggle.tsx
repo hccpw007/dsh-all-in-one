@@ -61,10 +61,10 @@ export function DeleteSessionToggle({ t }: FeatureSwitchProps) {
         role="switch"
         aria-checked={enabled}
         onClick={handleToggle}
-        className="flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1.5 text-left transition hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        className="flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 text-left transition hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
       >
         {/* 入口图标 */}
-        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-base text-brand">
+        <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand">
           <TrashIcon />
         </span>
         {/* 入口标题与说明 */}
@@ -72,7 +72,7 @@ export function DeleteSessionToggle({ t }: FeatureSwitchProps) {
           {/* 开关标题 */}
           <span className="block text-[13px] font-medium leading-[16px] text-primary">{t('title')}</span>
           {/* 开关用途说明 */}
-          <span className="block text-[12px] leading-[16px] text-secondary">
+          <span className="block text-[11px] leading-[14px] text-secondary">
             {t('description')}
           </span>
         </span>
