@@ -31,17 +31,37 @@ function isDenied(rule: ResourceRule, id: string): boolean {
 }
 
 /**
+ * 段名与包名不一致的插件的别名前缀。
+ *
+ * 段名通常以包名打头，但插件可以为了绕开宿主的段名处理故意改名：宿主会把
+ * `dsh-purge` 开头的段统一挪到装配最前，dsh-purge 因此把能力段改成
+ * `dshpg-capabilities` / `dshpg-objective` / `dshpg-redteam-role`，按包名推导的
+ * 前缀一个都命中不了，屏蔽后这些段仍会进入提示词。
+ * 键为插件包名，值为该包额外使用的段名前缀。
+ */
+const SECTION_PREFIX_ALIASES: Record<string, string[]> = {
+  'dsh-purge': ['dshpg-'],
+}
+
+/** MCP 服务器列表由宿主渲染成单独一段，段名不含服务器名，无法按服务器粒度移除。 */
+const MCP_SERVERS_SECTION = 'mcp-resource-servers'
+
+/**
  * 由插件包名派生提示词段名前缀。
  *
  * 约定成俗的段名以包名或去前缀的短名打头（`dsh-purge`、`purge:*`），按前缀
- * 过滤即可命中；完全不按约定命名的插件由严格模式兜底。
+ * 过滤即可命中；改名绕开约定的插件由 {@link SECTION_PREFIX_ALIASES} 补足，
+ * 仍完全不按约定命名的插件只能靠严格模式兜底。
  * @param packageName 插件包名
  * @returns 小写前缀，去重
  */
 function sectionPrefixes(packageName: string): string[] {
   const short = packageName.replace(/^dsh-plugin-/, '').replace(/^dsh-/, '')
+  const aliases = SECTION_PREFIX_ALIASES[packageName] ?? []
 
-  return [...new Set([packageName, short].filter((item) => item !== '').map((item) => item.toLowerCase()))]
+  return [
+    ...new Set([packageName, short, ...aliases].filter((item) => item !== '').map((item) => item.toLowerCase())),
+  ]
 }
 
 /**
@@ -97,6 +117,8 @@ export function planIsolation(
   }
   // MCP 服务器会向系统提示词注入自己的说明段，屏蔽工具的同时也要去掉它
   for (const server of denyMcpServers) hideSections.add(`mcp:${server}`.toLowerCase())
+  // 服务器清单是宿主渲染的聚合段，段名不带服务器名，排除任一台都只能整段隐藏
+  if (denyMcpServers.length > 0) hideSections.add(MCP_SERVERS_SECTION)
 
   if (denyTools.length === 0 && denyMcpServers.length === 0 && hideSections.size === 0) return undefined
 

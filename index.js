@@ -103,9 +103,16 @@ function isDenied(rule, id) {
       return false;
   }
 }
+var SECTION_PREFIX_ALIASES = {
+  "dsh-purge": ["dshpg-"]
+};
+var MCP_SERVERS_SECTION = "mcp-resource-servers";
 function sectionPrefixes(packageName) {
   const short = packageName.replace(/^dsh-plugin-/, "").replace(/^dsh-/, "");
-  return [...new Set([packageName, short].filter((item) => item !== "").map((item) => item.toLowerCase()))];
+  const aliases = SECTION_PREFIX_ALIASES[packageName] ?? [];
+  return [
+    ...new Set([packageName, short, ...aliases].filter((item) => item !== "").map((item) => item.toLowerCase()))
+  ];
 }
 function deniedMcpServers(rule) {
   if (rule.mode !== "exclude") return [];
@@ -131,6 +138,7 @@ function planIsolation(pack, groups) {
     for (const prefix of sectionPrefixes(group.id.slice(4))) hideSections.add(prefix);
   }
   for (const server of denyMcpServers) hideSections.add(`mcp:${server}`.toLowerCase());
+  if (denyMcpServers.length > 0) hideSections.add(MCP_SERVERS_SECTION);
   if (denyTools.length === 0 && denyMcpServers.length === 0 && hideSections.size === 0) return void 0;
   return {
     denyTools,
