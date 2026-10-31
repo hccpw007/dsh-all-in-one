@@ -454,15 +454,8 @@ window.__ModuleLoader__.load({
 
     // src/components/CardChevron.tsx
     var import_react3 = __toESM(require("react"), 1);
-
-    // src/common/cn.ts
-    function cn(...classes) {
-      return classes.filter(Boolean).join(" ");
-    }
-
-    // src/components/CardChevron.tsx
     var CHEVRON_SIZE = 14;
-    function CardChevron({ className }) {
+    function CardChevron() {
       return /* @__PURE__ */ import_react3.default.createElement(
         "svg",
         {
@@ -470,7 +463,7 @@ window.__ModuleLoader__.load({
           width: CHEVRON_SIZE,
           height: CHEVRON_SIZE,
           "aria-hidden": "true",
-          className: cn("shrink-0 text-secondary", className),
+          className: "shrink-0",
           fill: "none",
           stroke: "currentColor",
           strokeWidth: "1.6",
@@ -754,6 +747,13 @@ window.__ModuleLoader__.load({
 
     // src/components/Button.tsx
     var import_react5 = __toESM(require("react"), 1);
+
+    // src/common/cn.ts
+    function cn(...classes) {
+      return classes.filter(Boolean).join(" ");
+    }
+
+    // src/components/Button.tsx
     var VARIANT_CLASS = {
       // 构建关闭了 preflight，浏览器会给 button 加上原生边框与灰底，ghost 必须显式清掉
       ghost: "inline-flex items-center gap-1 rounded-lg border-0 bg-transparent px-2 py-1 text-secondary hover:bg-layer2 hover:text-primary",
