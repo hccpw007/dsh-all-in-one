@@ -1,16 +1,20 @@
 /**
  * 「对话加速」功能页面。
  *
- * 平铺列出全部可勾选条目，点击条目主体切换勾选；带数值参数的条目在勾选后展开输入框。
- * 条目对应的优化逻辑尚未实现，勾选状态与参数只存在页面内存里，离开页面即重置。
+ * 平铺列出全部可勾选条目，勾选与阈值都即时写入宿主侧设置并生效：
+ * 宿主据此注册批量工具、给只读工具补并发声明、改写裁剪预算与注入指引。
+ *
+ * 当前宿主版本上无法真实生效的条目（2/7/8/9）照常展示原因，但不允许勾选。
  */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { cn } from '../../common/cn'
 import type { FeaturePageProps } from '../../shell/registry'
 import type { Translate } from '../../types/plugin'
+import { loadChatAccelSettings, saveChatAccelSettings } from './api'
 import { ACCEL_ITEMS, scoreToStars } from './items'
 import type { AccelItem } from './items'
+import { PRUNE_THRESHOLD_DEFAULT, PRUNE_THRESHOLD_MAX, PRUNE_THRESHOLD_MIN } from './types'
 
 /** 勾选标记：只在选中时可见。 */
 function CheckGlyph() {
@@ -76,18 +80,6 @@ function StarRating({ stars }: { stars: number }) {
   )
 }
 
-/** 条目数值参数的输入状态。 */
-interface FieldState {
-  /** 当前草稿值。 */
-  value: string
-  /** 上一次提交是否不合法。 */
-  error: boolean
-  /** 草稿变化时回写。 */
-  onChange: (value: string) => void
-  /** 失焦或回车时提交校验。 */
-  onCommit: () => void
-}
-
 /** 单条条目的 props。 */
 interface AccelRowProps {
   /** 条目定义。 */
@@ -99,22 +91,40 @@ interface AccelRowProps {
   /** 已绑定本 feature 前缀的翻译函数。 */
   t: Translate
   /** 切换勾选状态。 */
-  onToggle: (id: string) => void
-  /** 数值参数的输入状态；条目没有参数时不传。 */
-  field?: FieldState
+  onToggle: (item: AccelItem) => void
+  /** 阈值输入的草稿值。 */
+  threshold: string
+  /** 阈值输入是否不合法。 */
+  thresholdError: boolean
+  /** 阈值草稿变化。 */
+  onThresholdChange: (value: string) => void
+  /** 阈值提交。 */
+  onThresholdCommit: () => void
 }
 
 /**
- * 渲染一条条目：序号、名称、推荐度、说明、收益、风险，以及可选的数值参数输入框。
+ * 渲染一条条目：序号、名称、星级、说明、收益、风险，以及可选的阈值输入框。
  * @param props 条目属性
  */
-function AccelRow({ item, index, checked, t, onToggle, field }: AccelRowProps) {
+function AccelRow({
+  item,
+  index,
+  checked,
+  t,
+  onToggle,
+  threshold,
+  thresholdError,
+  onThresholdChange,
+  onThresholdCommit,
+}: AccelRowProps) {
+  const disabled = !item.available
+
   return (
     // 条目用浅灰圆角块承载，选中时加深底色并用勾选框表达，不用描边
     <li
       className={cn(
         'rounded-lg px-2.5 py-1.5 transition',
-        checked ? 'bg-layer2' : 'bg-layer1 hover:bg-layer2',
+        disabled ? 'bg-layer1 opacity-60' : checked ? 'bg-layer2' : 'bg-layer1 hover:bg-layer2',
       )}
     >
       {/* 条目主体：点击切换勾选 */}
@@ -122,8 +132,12 @@ function AccelRow({ item, index, checked, t, onToggle, field }: AccelRowProps) {
         type="button"
         role="checkbox"
         aria-checked={checked}
-        onClick={() => onToggle(item.id)}
-        className="flex w-full items-start gap-2 border-0 bg-transparent p-0 text-left focus-visible:outline-none"
+        aria-disabled={disabled}
+        onClick={() => onToggle(item)}
+        className={cn(
+          'flex w-full items-start gap-2 border-0 bg-transparent p-0 text-left focus-visible:outline-none',
+          disabled ? 'cursor-default' : 'cursor-pointer',
+        )}
       >
         {/* 勾选框：选中时填充主色 */}
         <span
@@ -149,6 +163,12 @@ function AccelRow({ item, index, checked, t, onToggle, field }: AccelRowProps) {
             </span>
             {/* 推荐星级 */}
             <StarRating stars={scoreToStars(item.score)} />
+            {/* 当前宿主版本无法生效的条目标记 */}
+            {disabled ? (
+              <span className="rounded bg-base px-1 text-[10px] leading-[14px] text-secondary">
+                {t('unavailable')}
+              </span>
+            ) : null}
           </span>
           {/* 条目说明：这个优化解决什么问题 */}
           <span className="mt-0.5 block text-[11px] leading-[15px] text-secondary">
@@ -167,7 +187,7 @@ function AccelRow({ item, index, checked, t, onToggle, field }: AccelRowProps) {
         </span>
       </button>
       {/* 数值参数：只有勾选后出现，且放在主体按钮之外，输入时不会误触勾选 */}
-      {item.field && checked && field ? (
+      {item.field && checked && !disabled ? (
         <div className="mt-1.5 flex flex-wrap items-center gap-1.5 pl-6">
           <label className="flex items-center gap-1.5">
             {/* 参数输入框标签 */}
@@ -180,12 +200,12 @@ function AccelRow({ item, index, checked, t, onToggle, field }: AccelRowProps) {
               min={item.field.min}
               max={item.field.max}
               step={1}
-              value={field.value}
+              value={threshold}
               aria-label={t(`${item.id}Threshold`)}
-              onChange={(event) => field.onChange(event.target.value)}
-              onBlur={field.onCommit}
+              onChange={(event) => onThresholdChange(event.target.value)}
+              onBlur={onThresholdCommit}
               onKeyDown={(event) => {
-                if (event.key === 'Enter') field.onCommit()
+                if (event.key === 'Enter') onThresholdCommit()
               }}
               className="w-16 rounded-md border border-line4 bg-base px-1.5 py-0.5 text-[12px] text-primary outline-none focus:border-brand"
             />
@@ -195,7 +215,7 @@ function AccelRow({ item, index, checked, t, onToggle, field }: AccelRowProps) {
             </span>
           </label>
           {/* 输入不合法时的提示 */}
-          {field.error ? (
+          {thresholdError ? (
             <span className="text-[12px] leading-[16px] text-danger" role="alert">
               {t(`${item.id}Invalid`)}
             </span>
@@ -207,58 +227,101 @@ function AccelRow({ item, index, checked, t, onToggle, field }: AccelRowProps) {
 }
 
 /**
- * 「对话加速」页面：平铺全部条目，点击切换勾选。
+ * 「对话加速」页面：平铺全部条目，勾选与阈值即时保存并生效。
  * @param props t 已绑定本 feature 的 key 前缀
  */
 export function ChatAccelPage({ t }: FeaturePageProps) {
-  // 已勾选的条目 id 集合；不持久化，按当前需求只做界面
-  const [selected, setSelected] = useState<ReadonlySet<string>>(() => new Set())
-  // 各条目数值参数的草稿值，初始为条目定义的默认值
-  const [fieldValues, setFieldValues] = useState<Record<string, string>>(() => {
-    const initial: Record<string, string> = {}
+  // 已启用的条目 id 集合；初始为空，挂载后从宿主读取
+  const [enabled, setEnabled] = useState<ReadonlySet<string>>(() => new Set())
+  // 裁剪阈值草稿
+  const [threshold, setThreshold] = useState(String(PRUNE_THRESHOLD_DEFAULT))
+  // 阈值输入是否不合法
+  const [thresholdError, setThresholdError] = useState(false)
+  // 首次读取是否完成
+  const [loading, setLoading] = useState(true)
+  // 是否有请求在途
+  const [saving, setSaving] = useState(false)
+  // 最近一次失败原因；成功提交后清空
+  const [errorText, setErrorText] = useState('')
 
-    // 只有带参数的条目需要初始值，没参数的不占键
-    for (const item of ACCEL_ITEMS) {
-      if (item.field) initial[item.id] = String(item.field.defaultValue)
+  // 挂载时读取一次；离开页面后不再回写状态
+  useEffect(() => {
+    let cancelled = false
+
+    loadChatAccelSettings()
+      .then((settings) => {
+        if (cancelled) return
+
+        setEnabled(new Set(settings.enabledIds))
+        setThreshold(String(settings.pruneThreshold))
+      })
+      .catch((error: unknown) => {
+        if (cancelled) return
+
+        setErrorText(error instanceof Error ? error.message : String(error))
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false)
+      })
+
+    return () => {
+      cancelled = true
     }
-
-    return initial
-  })
-  // 各条目数值参数上次提交是否不合法
-  const [fieldErrors, setFieldErrors] = useState<Record<string, boolean>>({})
+  }, [])
 
   /**
-   * 切换一条条目的勾选状态。
-   * @param id 条目 id
+   * 提交一次设置变更，用返回值覆盖本地状态。
+   * @param update 要变更的字段
    */
-  const toggle = (id: string) => {
-    setSelected((previous) => {
-      const next = new Set(previous)
+  const persist = (update: { enabledIds?: string[]; pruneThreshold?: number }) => {
+    setSaving(true)
+    setErrorText('')
 
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-
-      return next
-    })
+    saveChatAccelSettings(update)
+      .then((settings) => {
+        setEnabled(new Set(settings.enabledIds))
+        setThreshold(String(settings.pruneThreshold))
+      })
+      .catch((error: unknown) => {
+        setErrorText(error instanceof Error ? error.message : String(error))
+      })
+      .finally(() => {
+        setSaving(false)
+      })
   }
 
   /**
-   * 校验并提交某条目的数值参数：必须是范围内的整数，非法时回退默认值并提示。
+   * 切换一条条目的勾选状态；不可用条目直接忽略。
    * @param item 条目定义
    */
-  const commitField = (item: AccelItem) => {
-    // 取到局部常量后再进闭包，避免属性收窄在回调里失效
-    const field = item.field
-    if (!field) return
+  const toggle = (item: AccelItem) => {
+    if (!item.available) return
 
-    const parsed = Number((fieldValues[item.id] ?? '').trim())
-    const valid = Number.isInteger(parsed) && parsed >= field.min && parsed <= field.max
+    const next = new Set(enabled)
 
-    setFieldErrors((previous) => ({ ...previous, [item.id]: !valid }))
+    if (next.has(item.id)) next.delete(item.id)
+    else next.add(item.id)
+
+    // 先更新本地让点击立即有反馈，再以宿主返回值为准
+    setEnabled(next)
+    persist({ enabledIds: [...next] })
+  }
+
+  /** 校验并提交阈值：必须是范围内的整数，非法时回退默认值并提示。 */
+  const commitThreshold = () => {
+    const parsed = Number(threshold.trim())
+    const valid =
+      Number.isInteger(parsed) && parsed >= PRUNE_THRESHOLD_MIN && parsed <= PRUNE_THRESHOLD_MAX
 
     if (!valid) {
-      setFieldValues((previous) => ({ ...previous, [item.id]: String(field.defaultValue) }))
+      setThresholdError(true)
+      setThreshold(String(PRUNE_THRESHOLD_DEFAULT))
+
+      return
     }
+
+    setThresholdError(false)
+    persist({ pruneThreshold: parsed })
   }
 
   return (
@@ -270,35 +333,41 @@ export function ChatAccelPage({ t }: FeaturePageProps) {
         {/* 已选条目计数 */}
         <span className="shrink-0 text-[12px] leading-[18px] text-secondary">
           {t('selectedLabel')}{' '}
-          <span className="font-medium text-primary">{selected.size}</span> / {ACCEL_ITEMS.length}{' '}
-          {t('itemUnit')}
+          <span className="font-medium text-primary">{enabled.size}</span> {t('itemUnit')}
+          {/* 保存中的状态提示 */}
+          {saving ? <span className="ml-1.5">{t('saving')}</span> : null}
         </span>
       </div>
       {/* 页面用途说明 */}
       <p className="mt-1 text-[12px] leading-[18px] text-secondary">{t('pageDescription')}</p>
+      {/* 读取或保存失败的提示 */}
+      {errorText === '' ? null : (
+        <p className="mt-1 text-[12px] leading-[18px] text-danger" role="alert">
+          {t('saveFailed')}：{errorText}
+        </p>
+      )}
       {/* 条目列表：外框固定高度不滚动，条目在框内滚动 */}
-      <ul className="mt-4 max-h-[60vh] space-y-1 overflow-y-auto rounded-xl border border-line4 p-1.5">
+      <ul
+        className={cn(
+          'mt-4 max-h-[60vh] space-y-1 overflow-y-auto rounded-xl border border-line4 p-1.5',
+          loading ? 'opacity-60' : '',
+        )}
+      >
         {ACCEL_ITEMS.map((item, index) => (
           <AccelRow
             key={item.id}
             item={item}
             index={index}
-            checked={selected.has(item.id)}
+            checked={enabled.has(item.id)}
             t={t}
             onToggle={toggle}
-            field={
-              item.field
-                ? {
-                    value: fieldValues[item.id] ?? '',
-                    error: fieldErrors[item.id] === true,
-                    onChange: (value: string) => {
-                      setFieldValues((previous) => ({ ...previous, [item.id]: value }))
-                      setFieldErrors((previous) => ({ ...previous, [item.id]: false }))
-                    },
-                    onCommit: () => commitField(item),
-                  }
-                : undefined
-            }
+            threshold={threshold}
+            thresholdError={thresholdError}
+            onThresholdChange={(value: string) => {
+              setThreshold(value)
+              setThresholdError(false)
+            }}
+            onThresholdCommit={commitThreshold}
           />
         ))}
       </ul>

@@ -11,12 +11,19 @@ export const chatAccelLocales: FeatureLocales = {
     settingsAction: '设置',
     // 功能页标题
     pageTitle: '对话加速',
-    // 功能页说明：交代本次只做界面
-    pageDescription: '勾选要启用的优化条目。条目尚未实现，勾选也不会保存。',
+    // 功能页说明：勾选即时保存并生效
+    pageDescription:
+      '勾选即生效并保存到宿主。标有「需宿主支持」的条目在当前宿主版本上无法生效。',
     // 已选条目计数的前缀
     selectedLabel: '已选',
     // 已选条目计数的单位
     itemUnit: '项',
+    // 保存中的状态提示
+    saving: '保存中…',
+    // 读取或保存失败时的前缀
+    saveFailed: '保存失败',
+    // 当前宿主版本无法生效的条目标记
+    unavailable: '需宿主支持',
     // 每条条目收益文案的前缀
     gainLabel: '收益',
     // 每条条目风险文案的前缀
@@ -118,12 +125,19 @@ export const chatAccelLocales: FeatureLocales = {
     settingsAction: 'Settings',
     // Feature page title
     pageTitle: 'Chat acceleration',
-    // Feature page description: this build only ships the picker
-    pageDescription: 'Tick the optimizations you want. They are not implemented yet, and selections are not saved.',
+    // Feature page description: selections apply and persist immediately
+    pageDescription:
+      'Changes apply and save immediately. Items marked unavailable cannot take effect on this host version.',
     // Prefix of the selected-count line
     selectedLabel: 'Selected',
     // Unit of the selected-count line
     itemUnit: 'items',
+    // Saving indicator
+    saving: 'Saving…',
+    // Prefix shown when loading or saving fails
+    saveFailed: 'Save failed',
+    // Badge for items the current host version cannot apply
+    unavailable: 'Needs host support',
     // Prefix of each item's gain text
     gainLabel: 'Gain',
     // Prefix of each item's risk text

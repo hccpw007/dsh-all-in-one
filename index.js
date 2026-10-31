@@ -1865,9 +1865,9 @@ async function forgetWorkspaceAccount(dshHome, sessionId) {
   return removed;
 }
 async function forgetSessionRecords(dshHome, sessionId) {
-  const cache3 = await forgetProjectionCache(dshHome, sessionId);
+  const cache4 = await forgetProjectionCache(dshHome, sessionId);
   const account = await forgetWorkspaceAccount(dshHome, sessionId);
-  return cache3 + account;
+  return cache4 + account;
 }
 
 // src/features/delete-session/host/delete-session.ts
@@ -2905,6 +2905,469 @@ function apply6(ctx) {
   ctx.effect(() => installAutoCompactWatcher(ctx), "auto-compact: watcher");
 }
 
+// src/features/chat-accel/host.ts
+var host_exports7 = {};
+__export(host_exports7, {
+  apply: () => apply7,
+  inject: () => inject7
+});
+
+// src/features/chat-accel/host/settings.ts
+import { mkdirSync as mkdirSync4, readFileSync as readFileSync4, renameSync as renameSync4, statSync as statSync4, writeFileSync as writeFileSync4 } from "node:fs";
+import { dirname as dirname6, join as join15 } from "node:path";
+
+// src/features/chat-accel/items.ts
+var ACCEL_ITEMS = [
+  { id: "parallelPrompt", score: 95, available: true },
+  { id: "connectionKeepalive", score: 75, available: false },
+  { id: "batchRead", score: 60, available: true },
+  { id: "batchEdit", score: 60, available: true },
+  // 裁剪阈值建议值来自实测：默认 8192 字符，降到 4096 更早回收旧结果
+  {
+    id: "toolResultPrune",
+    score: 60,
+    available: true,
+    field: { min: 512, max: 16384, defaultValue: 4096 }
+  },
+  { id: "readonlyConcurrency", score: 55, available: true },
+  { id: "streamFrameCoalesce", score: 50, available: false },
+  { id: "logBatch", score: 35, available: false },
+  { id: "zstdLevel", score: 35, available: false }
+].sort((left, right) => right.score - left.score);
+var ACCEL_ITEM_IDS = ACCEL_ITEMS.map((item) => item.id);
+
+// src/features/chat-accel/types.ts
+var PRUNE_THRESHOLD_MIN = 512;
+var PRUNE_THRESHOLD_MAX = 16384;
+var PRUNE_THRESHOLD_DEFAULT = 4096;
+
+// src/features/chat-accel/host/settings.ts
+var DEFAULT_SETTINGS3 = {
+  enabledIds: [],
+  pruneThreshold: PRUNE_THRESHOLD_DEFAULT
+};
+var KNOWN_IDS = new Set(ACCEL_ITEM_IDS);
+var cache3;
+function settingsFile() {
+  return join15(resolveDshHome(), "all-in-one", "chat-accel.json");
+}
+function normalizeThreshold(value) {
+  const parsed = typeof value === "number" ? value : Number.NaN;
+  if (!Number.isFinite(parsed)) return PRUNE_THRESHOLD_DEFAULT;
+  return Math.min(PRUNE_THRESHOLD_MAX, Math.max(PRUNE_THRESHOLD_MIN, Math.round(parsed)));
+}
+function normalizeEnabledIds(value) {
+  if (!Array.isArray(value)) return [];
+  const result = [];
+  for (const entry of value) {
+    if (typeof entry !== "string" || !KNOWN_IDS.has(entry) || result.includes(entry)) continue;
+    result.push(entry);
+  }
+  return result;
+}
+function normalizeSettings3(value) {
+  if (typeof value !== "object" || value === null) return { ...DEFAULT_SETTINGS3 };
+  const candidate = value;
+  return {
+    enabledIds: normalizeEnabledIds(candidate.enabledIds),
+    pruneThreshold: normalizeThreshold(candidate.pruneThreshold)
+  };
+}
+function applyPatch2(current, patch) {
+  if (typeof patch !== "object" || patch === null) return { ...current };
+  const candidate = patch;
+  return {
+    enabledIds: candidate.enabledIds === void 0 ? current.enabledIds : normalizeEnabledIds(candidate.enabledIds),
+    pruneThreshold: candidate.pruneThreshold === void 0 ? current.pruneThreshold : normalizeThreshold(candidate.pruneThreshold)
+  };
+}
+function readChatAccelSettings() {
+  const file = settingsFile();
+  try {
+    const info = statSync4(file);
+    if (cache3 !== void 0 && cache3.mtimeMs === info.mtimeMs && cache3.size === info.size) {
+      return cache3.value;
+    }
+    const value = normalizeSettings3(JSON.parse(readFileSync4(file, "utf8")));
+    cache3 = { mtimeMs: info.mtimeMs, size: info.size, value };
+    return value;
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.error("[chat-accel] \u8BFB\u53D6\u8BBE\u7F6E\u5931\u8D25:", file, error);
+    }
+    return { ...DEFAULT_SETTINGS3 };
+  }
+}
+function writeSettings2(next) {
+  const file = settingsFile();
+  const temp = `${file}.tmp`;
+  try {
+    mkdirSync4(dirname6(file), { recursive: true });
+    writeFileSync4(temp, `${JSON.stringify(next, null, 2)}
+`, "utf8");
+    renameSync4(temp, file);
+    cache3 = void 0;
+  } catch (error) {
+    console.error("[chat-accel] \u5199\u5165\u8BBE\u7F6E\u5931\u8D25:", file, error);
+    throw error;
+  }
+}
+function updateChatAccelSettings(patch) {
+  const next = applyPatch2(readChatAccelSettings(), patch);
+  writeSettings2(next);
+  return next;
+}
+function isEnabled(settings, id) {
+  return settings.enabledIds.includes(id);
+}
+
+// src/features/chat-accel/host/prompt.ts
+var SECTION_NAME2 = "chat-accel:guidance";
+var SECTION_ORDER2 = 150;
+var PARALLEL_GUIDANCE = [
+  "When a turn needs several independent tool calls, emit them together in the same assistant message instead of one call per step.",
+  "Reads, searches, and other read-only calls may run concurrently; keep dependent calls sequential and wait for the result a later call needs."
+].join("\n");
+var BATCH_READ_GUIDANCE = "Use read_files to read several files in one call instead of calling read once per file.";
+var BATCH_EDIT_GUIDANCE = "Use edit_files to apply several independent edits in one call; each entry keeps the same literal-match rules as edit.";
+function guidanceText(context) {
+  try {
+    void context;
+    const settings = readChatAccelSettings();
+    const blocks = [];
+    if (isEnabled(settings, "parallelPrompt")) blocks.push(PARALLEL_GUIDANCE);
+    if (isEnabled(settings, "batchRead")) blocks.push(BATCH_READ_GUIDANCE);
+    if (isEnabled(settings, "batchEdit")) blocks.push(BATCH_EDIT_GUIDANCE);
+    return blocks.join("\n\n");
+  } catch (error) {
+    console.error("[chat-accel] \u751F\u6210\u63D0\u793A\u8BCD\u6307\u5F15\u5931\u8D25:", error);
+    return "";
+  }
+}
+function installChatAccelPrompt(ctx) {
+  const prompt = ctx.systemPrompt;
+  if (prompt === void 0) {
+    console.error("[chat-accel] \u672A\u53D6\u5F97 systemPrompt \u670D\u52A1\uFF0C\u63D0\u793A\u8BCD\u6307\u5F15\u4E0D\u4F1A\u751F\u6548");
+    return;
+  }
+  ctx.effect(
+    () => prompt.section({
+      name: SECTION_NAME2,
+      order: SECTION_ORDER2,
+      // 指引是固定文本，不含变量占位符
+      interpolate: false,
+      text: guidanceText
+    }),
+    "chat-accel: prompt"
+  );
+}
+
+// src/features/chat-accel/host/prune.ts
+var DEFAULT_THRESHOLDS = {
+  thresholdChars: 8192,
+  headChars: 4096,
+  tailChars: 1024
+};
+var MARKER_LENGTH = 39;
+var applied = /* @__PURE__ */ new WeakMap();
+function budgetsFor(threshold) {
+  const headChars = Math.floor(threshold / 2);
+  const tailChars = Math.floor(threshold / 8);
+  if (headChars + tailChars + MARKER_LENGTH <= threshold) return { headChars, tailChars };
+  return { headChars: 0, tailChars: 0 };
+}
+function resolvePruner(agent) {
+  const own = agent.ctx?.get?.("toolResultPruner");
+  if (own !== void 0) return own;
+  const root = agent.ctx;
+  let found;
+  root?.registry?.forEach?.((runtime) => {
+    if (found !== void 0) return;
+    for (const fiber of runtime.fibers ?? []) {
+      const candidate = fiber.ctx?.get?.("toolResultPruner");
+      if (candidate === void 0) continue;
+      found = candidate;
+      return;
+    }
+  });
+  return found;
+}
+function writeBudgets(pruner, enabled, threshold) {
+  const thresholdChars = enabled ? threshold : DEFAULT_THRESHOLDS.thresholdChars;
+  const budgets = enabled ? budgetsFor(thresholdChars) : { headChars: DEFAULT_THRESHOLDS.headChars, tailChars: DEFAULT_THRESHOLDS.tailChars };
+  const next = {
+    thresholdChars,
+    headChars: budgets.headChars,
+    tailChars: budgets.tailChars
+  };
+  pruner.config = next;
+}
+function applyPruneForAgent(agent) {
+  try {
+    const settings = readChatAccelSettings();
+    const enabled = settings.enabledIds.includes("toolResultPrune");
+    const signature = `${enabled}|${settings.pruneThreshold}`;
+    const pruner = resolvePruner(agent);
+    if (pruner?.config === void 0) return;
+    if (applied.get(pruner) === signature) return;
+    writeBudgets(pruner, enabled, settings.pruneThreshold);
+    applied.set(pruner, signature);
+  } catch (error) {
+    console.error("[chat-accel] \u5E94\u7528\u88C1\u526A\u9608\u503C\u5931\u8D25:", error);
+  }
+}
+
+// src/features/chat-accel/host/tools.ts
+var READONLY_TOOL_NAMES = [
+  "read",
+  "read_image",
+  "glob",
+  "grep",
+  "web_fetch",
+  "web_search",
+  "job_list",
+  "job_output",
+  "get_goal"
+];
+var READ_FILES_NAME = "read_files";
+var EDIT_FILES_NAME = "edit_files";
+var BATCH_OUTPUT_SCHEMA = {
+  type: "object",
+  properties: {
+    text: { type: "string", description: "\u5408\u5E76\u540E\u7684\u5DE5\u5177\u7ED3\u679C\u6587\u672C\u3002" }
+  },
+  required: ["text"],
+  additionalProperties: false
+};
+var disposers = [];
+var patchedTools = /* @__PURE__ */ new Set();
+function readHostTool(ctx, name, scope) {
+  const tool = scope === void 0 ? ctx.tools?.get(name) : ctx.tools?.get(name, scope);
+  if (tool === void 0 || tool === null) return void 0;
+  return tool;
+}
+function applyConcurrencyForAgent(ctx, agent, enabled) {
+  if (!enabled) {
+    for (const tool of patchedTools) delete tool.isConcurrencySafe;
+    patchedTools.clear();
+    return;
+  }
+  for (const name of READONLY_TOOL_NAMES) {
+    const tool = readHostTool(ctx, name, agent);
+    if (tool === void 0 || typeof tool.isConcurrencySafe === "function") continue;
+    if (patchedTools.has(tool)) continue;
+    try {
+      tool.isConcurrencySafe = () => true;
+      patchedTools.add(tool);
+    } catch (error) {
+      console.error(`[chat-accel] \u65E0\u6CD5\u4E3A\u5DE5\u5177 ${name} \u58F0\u660E\u5E76\u53D1:`, error);
+    }
+  }
+}
+function renderHostResult(tool, args, value) {
+  const rendered = tool.output?.render?.(args, value);
+  if (rendered === void 0) return JSON.stringify(value);
+  return rendered.map((block) => block.text).join("\n");
+}
+function createReadFilesTool(ctx) {
+  return {
+    name: READ_FILES_NAME,
+    description: "Read several UTF-8 text files in one call and return their line-numbered content. Use it instead of calling read once per file when several files are needed.",
+    parameters: {
+      type: "object",
+      properties: {
+        files: {
+          type: "array",
+          items: { type: "string" },
+          description: "Paths to read, resolved by the filesystem backend."
+        },
+        limit: {
+          type: "number",
+          description: "Maximum number of lines to return per file."
+        }
+      },
+      required: ["files"],
+      additionalProperties: false
+    },
+    output: {
+      schema: BATCH_OUTPUT_SCHEMA,
+      render: (_args, value) => [{ type: "text", text: String(value["text"] ?? "") }]
+    },
+    execute: async (rawArgs, exec) => {
+      const read = readHostTool(ctx, "read", exec.agent);
+      if (read === void 0) throw new Error("\u5BBF\u4E3B\u672A\u63D0\u4F9B read \u5DE5\u5177\uFF0Cread_files \u4E0D\u53EF\u7528");
+      const files = Array.isArray(rawArgs["files"]) ? rawArgs["files"] : [];
+      const limit = typeof rawArgs["limit"] === "number" ? rawArgs["limit"] : void 0;
+      const blocks = [];
+      for (const entry of files) {
+        const path = typeof entry === "string" ? entry : "";
+        if (path === "") {
+          blocks.push("[read_files] \u5FFD\u7565\u4E86\u4E00\u4E2A\u975E\u5B57\u7B26\u4E32\u8DEF\u5F84");
+          continue;
+        }
+        const args = { file_path: path };
+        if (limit !== void 0) args["limit"] = limit;
+        try {
+          const value = await read.execute(args, exec);
+          blocks.push(renderHostResult(read, args, value));
+        } catch (error) {
+          const message = error instanceof Error ? error.message : String(error);
+          blocks.push(`[read_files] ${path} \u8BFB\u53D6\u5931\u8D25: ${message}`);
+        }
+      }
+      return { text: blocks.join("\n\n") };
+    }
+  };
+}
+function createEditFilesTool(ctx) {
+  return {
+    name: EDIT_FILES_NAME,
+    description: "Apply several independent literal-text edits in one call. Each entry keeps the same rules as edit: old_string must match exactly once unless replace_all is true.",
+    parameters: {
+      type: "object",
+      properties: {
+        edits: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              file_path: { type: "string", description: "Path to edit." },
+              old_string: { type: "string", description: "Literal text to replace." },
+              new_string: { type: "string", description: "Literal replacement text." },
+              replace_all: { type: "boolean", description: "Replace all matches. Defaults to false." }
+            },
+            required: ["file_path", "old_string", "new_string"],
+            additionalProperties: false
+          },
+          description: "Edits to apply in order."
+        }
+      },
+      required: ["edits"],
+      additionalProperties: false
+    },
+    output: {
+      schema: BATCH_OUTPUT_SCHEMA,
+      render: (_args, value) => [{ type: "text", text: String(value["text"] ?? "") }]
+    },
+    execute: async (rawArgs, exec) => {
+      const edit = readHostTool(ctx, "edit", exec.agent);
+      if (edit === void 0) throw new Error("\u5BBF\u4E3B\u672A\u63D0\u4F9B edit \u5DE5\u5177\uFF0Cedit_files \u4E0D\u53EF\u7528");
+      const edits = Array.isArray(rawArgs["edits"]) ? rawArgs["edits"] : [];
+      const blocks = [];
+      for (const entry of edits) {
+        if (typeof entry !== "object" || entry === null) {
+          blocks.push("[edit_files] \u5FFD\u7565\u4E86\u4E00\u4E2A\u975E\u6CD5\u7F16\u8F91\u9879");
+          continue;
+        }
+        const args = entry;
+        const path = typeof args["file_path"] === "string" ? args["file_path"] : "";
+        try {
+          const value = await edit.execute(args, exec);
+          blocks.push(renderHostResult(edit, args, value));
+        } catch (error) {
+          const message = error instanceof Error ? error.message : String(error);
+          blocks.push(`[edit_files] ${path === "" ? "\u67D0\u9879" : path} \u4FEE\u6539\u5931\u8D25: ${message}`);
+        }
+      }
+      return { text: blocks.join("\n\n") };
+    }
+  };
+}
+function registerTool(ctx, definition) {
+  const register = ctx.tools?.register;
+  if (register === void 0) {
+    console.error("[chat-accel] \u5BBF\u4E3B\u5DE5\u5177\u6CE8\u518C\u8868\u4E0D\u652F\u6301 register\uFF0C\u6279\u91CF\u5DE5\u5177\u4E0D\u4F1A\u6302\u8F7D");
+    return () => void 0;
+  }
+  try {
+    return register.call(ctx.tools, definition);
+  } catch (error) {
+    console.error(`[chat-accel] \u6CE8\u518C ${definition.name} \u5931\u8D25:`, error);
+    return () => void 0;
+  }
+}
+function disposeToolState() {
+  for (const dispose of disposers) dispose();
+  disposers = [];
+}
+function applyToolState(ctx) {
+  disposeToolState();
+  const settings = readChatAccelSettings();
+  if (isEnabled(settings, "batchRead")) {
+    disposers.push(registerTool(ctx, createReadFilesTool(ctx)));
+  }
+  if (isEnabled(settings, "batchEdit")) {
+    disposers.push(registerTool(ctx, createEditFilesTool(ctx)));
+  }
+}
+
+// src/features/chat-accel/host/routes.ts
+var ROUTE_PATH6 = "/dsh-all-in-one/chat-accel";
+var MAX_BODY_BYTES5 = 8 * 1024;
+function installChatAccelRoutes(ctx, webServer) {
+  return webServer.register({
+    kind: "prefix",
+    path: ROUTE_PATH6,
+    handler: async (request, response) => {
+      if (!isLocalRequest(request)) {
+        sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
+        return;
+      }
+      try {
+        if (request.method === "GET") {
+          sendJson(response, 200, readChatAccelSettings());
+          return;
+        }
+        if (request.method !== "POST") {
+          response.writeHead(405, { allow: "GET, POST" });
+          response.end();
+          return;
+        }
+        const body = await readJsonBody(request, MAX_BODY_BYTES5);
+        if (body === void 0) {
+          sendJson(response, 400, { error: "\u8BF7\u6C42\u4F53\u4E0D\u662F\u5408\u6CD5 JSON" });
+          return;
+        }
+        const settings = updateChatAccelSettings(body);
+        applyToolState(ctx);
+        sendJson(response, 200, settings);
+      } catch (error) {
+        console.error("[chat-accel] \u5904\u7406\u8BBE\u7F6E\u8BF7\u6C42\u5931\u8D25:", error);
+        sendJson(response, 500, {
+          error: error instanceof Error ? error.message : String(error)
+        });
+      }
+    }
+  });
+}
+
+// src/features/chat-accel/host.ts
+var inject7 = ["webServer", "systemPrompt", "tools"];
+function apply7(ctx) {
+  const webServer = ctx.webServer;
+  if (webServer === void 0) {
+    console.error("[chat-accel] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u8BBE\u7F6E\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
+    return;
+  }
+  installChatAccelPrompt(ctx);
+  ctx.effect(() => {
+    applyToolState(ctx);
+    return () => disposeToolState();
+  }, "chat-accel: tools");
+  ctx.effect(() => {
+    return ctx.on("agent/pre-step", async ({ agent }, next) => {
+      applyPruneForAgent(agent);
+      applyConcurrencyForAgent(
+        ctx,
+        agent,
+        readChatAccelSettings().enabledIds.includes("readonlyConcurrency")
+      );
+      return next();
+    });
+  }, "chat-accel: prune");
+  ctx.effect(() => installChatAccelRoutes(ctx, webServer), "chat-accel: routes");
+}
+
 // src/features/host.ts
 var featureHosts = [
   host_exports2,
@@ -2912,15 +3375,16 @@ var featureHosts = [
   host_exports4,
   host_exports5,
   host_exports,
-  host_exports6
+  host_exports6,
+  host_exports7
 ];
 
 // src/index.ts
-var inject7 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
-function apply7(ctx) {
+var inject8 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
+function apply8(ctx) {
   for (const feature of featureHosts) feature.apply(ctx);
 }
 export {
-  apply7 as apply,
-  inject7 as inject
+  apply8 as apply,
+  inject8 as inject
 };
