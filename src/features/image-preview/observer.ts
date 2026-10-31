@@ -5,6 +5,7 @@
  * 观察范围限定在会话正文容器内；回调只做入队，真正的扫描合并到每帧一次，
  * 并且每帧有节点数上限，长会话不会因为一次大变更卡住界面。
  */
+import { findConversationContainer } from './conversation'
 import {
   closestBlock,
   collectImagePaths,
@@ -12,13 +13,6 @@ import {
   isOwnPreviewNode,
   syncBlockPreviews,
 } from './preview'
-
-/** 会话正文容器的候选选择器，从最精确到最宽泛；宿主改版时逐级回退。 */
-const CONTAINER_SELECTORS = [
-  '[data-conversation-region="chat"]',
-  '[data-conversation-scroll]',
-  '[data-slot="main.conversation"]',
-]
 
 /** 每帧最多处理的变更节点数；超出的部分留到下一帧，避免一次性扫描长会话。 */
 const MAX_NODES_PER_FRAME = 40
@@ -28,19 +22,6 @@ const MAX_PENDING_NODES = 4000
 
 /** 容器重建后的重定位间隔；缓存节点失联时才真正查询选择器。 */
 const RELOCATE_INTERVAL_MS = 1500
-
-/**
- * 按优先级定位会话正文容器。
- * @returns 容器；页面尚未渲染出会话区时返回 undefined
- */
-function findContainer(): HTMLElement | undefined {
-  for (const selector of CONTAINER_SELECTORS) {
-    const element = document.querySelector<HTMLElement>(selector)
-    if (element !== null) return element
-  }
-
-  return undefined
-}
 
 /**
  * 扫描一个子树中的文本并同步预览。
@@ -80,7 +61,7 @@ function scanSubtree(root: Element): void {
  * @returns 清理函数：断开观察、撤销定时器并移除已插入的预览
  */
 export function installImagePreviewObserver(): () => void {
-  let container = findContainer()
+  let container = findConversationContainer()
   const pending = new Set<Node>()
   let frame = 0
   let disposed = false
@@ -200,7 +181,7 @@ export function installImagePreviewObserver(): () => void {
     if (container !== undefined && container.isConnected) return
 
     observer.disconnect()
-    container = findContainer()
+    container = findConversationContainer()
     if (container === undefined) return
 
     attach()

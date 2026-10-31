@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import { cn } from '../../common/cn'
+import { CardChevron } from '../../components/CardChevron'
 import type { FeatureEntryProps } from '../../shell/registry'
 import { loadMemorySettings, saveMemorySettings } from './api'
 import type { MemorySettingsPayload } from './types'
@@ -154,9 +155,11 @@ export function ProjectMemoryEntry({ t, open }: FeatureEntryProps) {
           onClick={open}
           aria-label={t('pathTitle')}
           title={t('pathTitle')}
-          className="flex items-center justify-center rounded-md border-0 bg-transparent p-0 text-[12px] leading-[16px] text-secondary transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="flex items-center justify-center gap-0.5 rounded-md border-0 bg-transparent p-0 text-[12px] leading-[16px] text-secondary transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         >
           {t('settingsAction')}
+          {/* 可进入标记：与其它页面型卡片一致，箭头表示点进去还有一层设置页 */}
+          <CardChevron />
         </button>
       </div>
     </div>

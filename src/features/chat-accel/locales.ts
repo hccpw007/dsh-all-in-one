@@ -7,6 +7,8 @@ export const chatAccelLocales: FeatureLocales = {
     title: '对话加速',
     // 网格入口描述：说明这个功能解决什么问题
     description: '勾选要优化的 dsh 环节，减少每步等待与来回次数。',
+    // 卡片右下角「设置」入口的文案
+    settingsAction: '设置',
     // 功能页标题
     pageTitle: '对话加速',
     // 功能页说明：交代本次只做界面
@@ -112,6 +114,8 @@ export const chatAccelLocales: FeatureLocales = {
     title: 'Chat acceleration',
     // Grid entry description: what this feature is for
     description: 'Pick the dsh optimizations to cut per-step waiting and round trips.',
+    // Label of the "settings" entry at the card's bottom-right corner
+    settingsAction: 'Settings',
     // Feature page title
     pageTitle: 'Chat acceleration',
     // Feature page description: this build only ships the picker

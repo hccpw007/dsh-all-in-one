@@ -4,11 +4,12 @@
  * 会话正文由宿主渲染成普通 DOM，本功能只在旁边追加预览节点：
  *   - 不修改宿主节点、不拦截事件、不读写会话数据；
  *   - 图片内容走宿主侧路由 `/dsh-all-in-one/image` 读取，浏览器端不接触文件系统。
+ *   - 点击放大统一由 `image-click-zoom.ts` 接管，预览图不再各自绑定点击。
  *
  * 采用原生 DOM 而非 React：预览要插进宿主渲染的任意消息块之间，宿主不提供
  * 消息级插槽，用 React 会与宿主的渲染树互相覆盖。
  */
-import { closeImagePreview, openImagePreview } from './lightbox'
+import { closeImagePreview } from './lightbox'
 
 /** 预览容器的标记属性，扫描时据此跳过自己插入的节点，避免回调自激。 */
 const PREVIEW_ATTRIBUTE = 'data-dsh-image-preview'
@@ -240,8 +241,6 @@ function createPreviewImage(path: string, container: HTMLElement): HTMLImageElem
   image.loading = 'lazy'
   image.decoding = 'async'
   image.className = IMAGE_CLASS
-  // 缩略图最高只有 320px，细节看不清，点击后按原图放大查看
-  image.addEventListener('click', () => openImagePreview(image.src, path))
   image.addEventListener('error', () => {
     // 文件可能已被删除或不是真正的图片；记录后不再重试，避免和观察器反复重建
     rememberFailedPath(path)

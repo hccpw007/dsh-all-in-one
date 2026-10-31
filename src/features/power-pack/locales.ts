@@ -7,6 +7,8 @@ export const powerPackLocales: FeatureLocales = {
     title: '技能包',
     // 网格入口描述
     description: '按任务组合技能、插件与 MCP，新建对话时选用。',
+    // 卡片右下角「设置」入口的文案
+    settingsAction: '设置',
     // 功能页标题
     pageTitle: '技能包',
     // 功能页说明
@@ -118,6 +120,8 @@ export const powerPackLocales: FeatureLocales = {
     title: 'Power packs',
     // Grid entry description
     description: 'Bundle skills, plugins and MCP servers per task, then pick one when starting a chat.',
+    // Label of the "settings" entry at the card's bottom-right corner
+    settingsAction: 'Settings',
     // Page title
     pageTitle: 'Power packs',
     // Page description
