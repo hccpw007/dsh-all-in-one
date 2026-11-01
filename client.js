@@ -1403,37 +1403,31 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react10.default.createElement(
+      return /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react10.default.createElement(ExpandIcon, null)), /* @__PURE__ */ import_react10.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react10.default.createElement(
         "button",
         {
           type: "button",
           role: "switch",
           "aria-checked": enabled,
+          "aria-label": t("title"),
           onClick: handleToggle,
-          className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 text-left transition hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className: cn(
+            "flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition",
+            enabled ? "bg-brand" : "bg-line2",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+          )
         },
-        /* @__PURE__ */ import_react10.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react10.default.createElement(ExpandIcon, null)),
-        /* @__PURE__ */ import_react10.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))),
         /* @__PURE__ */ import_react10.default.createElement(
           "span",
           {
             "aria-hidden": "true",
             className: cn(
-              "relative inline-flex h-5 w-9 shrink-0 items-center aio-switch transition",
-              enabled ? "bg-brand" : "bg-line2"
+              "h-4 w-4 aio-switch bg-base shadow transition-transform",
+              enabled ? "translate-x-[18px]" : "translate-x-0.5"
             )
-          },
-          /* @__PURE__ */ import_react10.default.createElement(
-            "span",
-            {
-              className: cn(
-                "h-4 w-4 aio-switch bg-base shadow transition-transform",
-                enabled ? "translate-x-[18px]" : "translate-x-0.5"
-              )
-            }
-          )
+          }
         )
-      ), saveFailed ? /* @__PURE__ */ import_react10.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
+      )), saveFailed ? /* @__PURE__ */ import_react10.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
     }
 
     // src/features/expand-process/index.tsx
@@ -2181,37 +2175,31 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react11.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react11.default.createElement(
+      return /* @__PURE__ */ import_react11.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react11.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react11.default.createElement(ImageIcon, null)), /* @__PURE__ */ import_react11.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react11.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react11.default.createElement(
         "button",
         {
           type: "button",
           role: "switch",
           "aria-checked": enabled,
+          "aria-label": t("title"),
           onClick: handleToggle,
-          className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 text-left transition hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className: cn(
+            "flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition",
+            enabled ? "bg-brand" : "bg-line2",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+          )
         },
-        /* @__PURE__ */ import_react11.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react11.default.createElement(ImageIcon, null)),
-        /* @__PURE__ */ import_react11.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react11.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))),
         /* @__PURE__ */ import_react11.default.createElement(
           "span",
           {
             "aria-hidden": "true",
             className: cn(
-              "relative inline-flex h-5 w-9 shrink-0 items-center aio-switch transition",
-              enabled ? "bg-brand" : "bg-line2"
+              "h-4 w-4 aio-switch bg-base shadow transition-transform",
+              enabled ? "translate-x-[18px]" : "translate-x-0.5"
             )
-          },
-          /* @__PURE__ */ import_react11.default.createElement(
-            "span",
-            {
-              className: cn(
-                "h-4 w-4 aio-switch bg-base shadow transition-transform",
-                enabled ? "translate-x-[18px]" : "translate-x-0.5"
-              )
-            }
-          )
+          }
         )
-      ), saveFailed ? /* @__PURE__ */ import_react11.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
+      )), saveFailed ? /* @__PURE__ */ import_react11.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
     }
 
     // src/features/image-preview/index.tsx
@@ -2352,37 +2340,31 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react12.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react12.default.createElement(
+      return /* @__PURE__ */ import_react12.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react12.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react12.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react12.default.createElement(LayoutLeftIcon, null)), /* @__PURE__ */ import_react12.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react12.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react12.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react12.default.createElement(
         "button",
         {
           type: "button",
           role: "switch",
           "aria-checked": enabled,
+          "aria-label": t("title"),
           onClick: handleToggle,
-          className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 text-left transition hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className: cn(
+            "flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition",
+            enabled ? "bg-brand" : "bg-line2",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+          )
         },
-        /* @__PURE__ */ import_react12.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react12.default.createElement(LayoutLeftIcon, null)),
-        /* @__PURE__ */ import_react12.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react12.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react12.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))),
         /* @__PURE__ */ import_react12.default.createElement(
           "span",
           {
             "aria-hidden": "true",
             className: cn(
-              "relative inline-flex h-5 w-9 shrink-0 items-center aio-switch transition",
-              enabled ? "bg-brand" : "bg-line2"
+              "h-4 w-4 aio-switch bg-base shadow transition-transform",
+              enabled ? "translate-x-[18px]" : "translate-x-0.5"
             )
-          },
-          /* @__PURE__ */ import_react12.default.createElement(
-            "span",
-            {
-              className: cn(
-                "h-4 w-4 aio-switch bg-base shadow transition-transform",
-                enabled ? "translate-x-[18px]" : "translate-x-0.5"
-              )
-            }
-          )
+          }
         )
-      ), saveFailed ? /* @__PURE__ */ import_react12.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
+      )), saveFailed ? /* @__PURE__ */ import_react12.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
     }
 
     // src/features/session-history/index.tsx
@@ -2730,37 +2712,31 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react13.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react13.default.createElement(
+      return /* @__PURE__ */ import_react13.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react13.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react13.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react13.default.createElement(TuckMenuIcon, null)), /* @__PURE__ */ import_react13.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react13.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react13.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react13.default.createElement(
         "button",
         {
           type: "button",
           role: "switch",
           "aria-checked": enabled,
+          "aria-label": t("title"),
           onClick: handleToggle,
-          className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 text-left transition hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className: cn(
+            "flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition",
+            enabled ? "bg-brand" : "bg-line2",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+          )
         },
-        /* @__PURE__ */ import_react13.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react13.default.createElement(TuckMenuIcon, null)),
-        /* @__PURE__ */ import_react13.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react13.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react13.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))),
         /* @__PURE__ */ import_react13.default.createElement(
           "span",
           {
             "aria-hidden": "true",
             className: cn(
-              "relative inline-flex h-5 w-9 shrink-0 items-center aio-switch transition",
-              enabled ? "bg-brand" : "bg-line2"
+              "h-4 w-4 aio-switch bg-base shadow transition-transform",
+              enabled ? "translate-x-[18px]" : "translate-x-0.5"
             )
-          },
-          /* @__PURE__ */ import_react13.default.createElement(
-            "span",
-            {
-              className: cn(
-                "h-4 w-4 aio-switch bg-base shadow transition-transform",
-                enabled ? "translate-x-[18px]" : "translate-x-0.5"
-              )
-            }
-          )
+          }
         )
-      ), saveFailed ? /* @__PURE__ */ import_react13.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
+      )), saveFailed ? /* @__PURE__ */ import_react13.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
     }
 
     // src/features/sidebar-more/index.tsx
@@ -3174,37 +3150,31 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react17.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react17.default.createElement(
+      return /* @__PURE__ */ import_react17.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react17.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react17.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react17.default.createElement(TrashIcon, null)), /* @__PURE__ */ import_react17.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react17.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react17.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react17.default.createElement(
         "button",
         {
           type: "button",
           role: "switch",
           "aria-checked": enabled,
+          "aria-label": t("title"),
           onClick: handleToggle,
-          className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 text-left transition hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className: cn(
+            "flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition",
+            enabled ? "bg-brand" : "bg-line2",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+          )
         },
-        /* @__PURE__ */ import_react17.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react17.default.createElement(TrashIcon, null)),
-        /* @__PURE__ */ import_react17.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react17.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react17.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))),
         /* @__PURE__ */ import_react17.default.createElement(
           "span",
           {
             "aria-hidden": "true",
             className: cn(
-              "relative inline-flex h-5 w-9 shrink-0 items-center aio-switch transition",
-              enabled ? "bg-brand" : "bg-line2"
+              "h-4 w-4 aio-switch bg-base shadow transition-transform",
+              enabled ? "translate-x-[18px]" : "translate-x-0.5"
             )
-          },
-          /* @__PURE__ */ import_react17.default.createElement(
-            "span",
-            {
-              className: cn(
-                "h-4 w-4 aio-switch bg-base shadow transition-transform",
-                enabled ? "translate-x-[18px]" : "translate-x-0.5"
-              )
-            }
-          )
+          }
         )
-      ), saveFailed ? /* @__PURE__ */ import_react17.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
+      )), saveFailed ? /* @__PURE__ */ import_react17.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
     }
 
     // src/features/delete-session/index.tsx
@@ -3755,20 +3725,9 @@ window.__ModuleLoader__.load({
       };
       const enabled = settings?.enabled === true;
       return (
-        // 卡片容器：文字区、开关与阈值输入是并列的交互区，不能互相嵌套；
+        // 卡片容器：文字区不参与交互，开关与阈值输入各自独立，不能互相嵌套；
         // 阈值输入单独占下面一行，避免挤在开关下方把整行卡片撑高
-        /* @__PURE__ */ import_react20.default.createElement("div", { className: "flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 transition hover:bg-layer2" }, /* @__PURE__ */ import_react20.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react20.default.createElement(
-          "button",
-          {
-            type: "button",
-            "aria-label": t("title"),
-            disabled: settings === null,
-            onClick: handleToggle,
-            className: "flex min-w-0 flex-1 items-start gap-2 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-default"
-          },
-          /* @__PURE__ */ import_react20.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react20.default.createElement(CompactIcon, null)),
-          /* @__PURE__ */ import_react20.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react20.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react20.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react20.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)
-        ), /* @__PURE__ */ import_react20.default.createElement(
+        /* @__PURE__ */ import_react20.default.createElement("div", { className: "flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react20.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react20.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react20.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react20.default.createElement(CompactIcon, null)), /* @__PURE__ */ import_react20.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react20.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react20.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react20.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)), /* @__PURE__ */ import_react20.default.createElement(
           "button",
           {
             type: "button",

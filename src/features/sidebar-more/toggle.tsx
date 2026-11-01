@@ -56,14 +56,8 @@ export function SidebarMoreToggle({ t }: FeatureSwitchProps) {
 
   return (
     <div className="flex h-full flex-col">
-      {/* 开关入口：撑满卡片宽度与行高、整块可点击，开关语义由 role 与 aria-checked 表达 */}
-      <button
-        type="button"
-        role="switch"
-        aria-checked={enabled}
-        onClick={handleToggle}
-        className="flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 text-left transition hover:bg-layer2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
-      >
+      {/* 卡片容器：只有右侧开关参与交互，点标题与说明不切换，避免浏览设置时误触 */}
+      <div className="flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1">
         {/* 入口图标 */}
         <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand">
           <TuckMenuIcon />
@@ -77,22 +71,28 @@ export function SidebarMoreToggle({ t }: FeatureSwitchProps) {
             {t('description')}
           </span>
         </span>
-        {/* 开关轨道与滑块，仅作视觉呈现，交互由上层的按钮承担 */}
-        <span
-          aria-hidden="true"
+        {/* 开关轨道与滑块：整卡唯一的交互区，开关语义由 role 与 aria-checked 表达 */}
+        <button
+          type="button"
+          role="switch"
+          aria-checked={enabled}
+          aria-label={t('title')}
+          onClick={handleToggle}
           className={cn(
-            'relative inline-flex h-5 w-9 shrink-0 items-center aio-switch transition',
+            'flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition',
             enabled ? 'bg-brand' : 'bg-line2',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2',
           )}
         >
           <span
+            aria-hidden="true"
             className={cn(
               'h-4 w-4 aio-switch bg-base shadow transition-transform',
               enabled ? 'translate-x-[18px]' : 'translate-x-0.5',
             )}
           />
-        </span>
-      </button>
+        </button>
+      </div>
       {/* 存储失败提示：说明开关状态没有保存 */}
       {saveFailed ? (
         <p className="mt-0.5 text-[12px] leading-[16px] text-danger">{t('saveFailed')}</p>

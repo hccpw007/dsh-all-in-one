@@ -199,19 +199,13 @@ export function AutoCompactToggle({ t }: FeatureSwitchProps) {
   const enabled = settings?.enabled === true
 
   return (
-    // 卡片容器：文字区、开关与阈值输入是并列的交互区，不能互相嵌套；
+    // 卡片容器：文字区不参与交互，开关与阈值输入各自独立，不能互相嵌套；
     // 阈值输入单独占下面一行，避免挤在开关下方把整行卡片撑高
-    <div className="flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 transition hover:bg-layer2">
+    <div className="flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1">
       {/* 上段：文字区与开关横向并列 */}
       <div className="flex w-full items-start gap-2">
-        {/* 卡片主体：点击整块文字区切换开关。preflight 关闭，必须清掉浏览器默认的按钮底色与内边距 */}
-        <button
-          type="button"
-          aria-label={t('title')}
-          disabled={settings === null}
-          onClick={handleToggle}
-          className="flex min-w-0 flex-1 items-start gap-2 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-default"
-        >
+        {/* 文字区：只展示标题与说明，点它不会切换开关，交互只留给右侧开关 */}
+        <div className="flex min-w-0 flex-1 items-start gap-2">
           {/* 入口图标 */}
           <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand">
             <CompactIcon />
@@ -231,7 +225,7 @@ export function AutoCompactToggle({ t }: FeatureSwitchProps) {
               </span>
             ) : null}
           </span>
-        </button>
+        </div>
         <button
           type="button"
           role="switch"
