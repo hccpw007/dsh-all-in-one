@@ -35,46 +35,37 @@ export const chatAccelLocales: FeatureLocales = {
     // 第 1 条风险：只改提示词
     parallelPromptRisk: '几乎为零，只加 3 行提示词。',
 
-    // 第 2 条：一次读多个文件
-    batchReadName: '一次读多个文件',
-    // 第 2 条说明：read 一次只处理一个文件
-    batchReadHint: 'read 一次只能读一个文件，读 5 个文件要 5 次来回。',
-    // 第 2 条收益：多文件任务的节省
-    batchReadGain: '多文件任务省 30% 步骤，5 个文件省 30 秒。',
-    // 第 2 条风险：返回体变大
-    batchReadRisk: '返回体变大，可能撑爆上下文。',
-
-    // 第 3 条：一次提交多处修改
+    // 第 2 条：一次提交多处修改
     batchEditName: '一次提交多处修改',
-    // 第 3 条说明：edit 一次只改一处
+    // 第 2 条说明：edit 一次只改一处
     batchEditHint: 'edit 一次只能改一处，改 4 个文件要 4 次来回。',
-    // 第 3 条收益：多文件改动的节省
+    // 第 2 条收益：多文件改动的节省
     batchEditGain: '多文件改动省 30% 步骤，4 个文件省 24 秒。',
-    // 第 3 条风险：半途失败留下半改状态
+    // 第 2 条风险：半途失败留下半改状态
     batchEditRisk: '半途失败会留下半改状态。',
 
-    // 第 4 条：更早裁剪旧工具结果
+    // 第 3 条：更早裁剪旧工具结果
     toolResultPruneName: '更早裁剪旧工具结果',
-    // 第 4 条说明：旧输出会一直留在上下文里
+    // 第 3 条说明：旧输出会一直留在上下文里
     toolResultPruneHint: '读文件和命令输出会一直留在上下文里，反复重传。',
-    // 第 4 条收益：上下文增速下降
+    // 第 3 条收益：上下文增速下降
     toolResultPruneGain: '每步少几 KB，上下文增速降 20–30%。',
-    // 第 4 条风险：模型可能重复读取
+    // 第 3 条风险：模型可能重复读取
     toolResultPruneRisk: '模型可能重复读同一文件。',
-    // 第 4 条参数输入框的标签：裁剪字符数阈值
+    // 第 3 条参数输入框的标签：裁剪字符数阈值
     toolResultPruneThreshold: '裁剪阈值',
-    // 第 4 条参数输入框的单位
+    // 第 3 条参数输入框的单位
     toolResultPruneUnit: '字符',
-    // 第 4 条参数输入不合法时的提示，含允许范围
+    // 第 3 条参数输入不合法时的提示，含允许范围
     toolResultPruneInvalid: '请输入 512–16384 之间的整数。',
 
-    // 第 5 条：只读工具声明可并发
+    // 第 4 条：只读工具声明可并发
     readonlyConcurrencyName: '只读工具声明可并发',
-    // 第 5 条说明：未声明的工具只能排队
+    // 第 4 条说明：未声明的工具只能排队
     readonlyConcurrencyHint: '没声明「安全」的工具一律排队，现在只有读文件声明了。',
-    // 第 5 条收益：需配合第 1 条
+    // 第 4 条收益：需配合第 1 条
     readonlyConcurrencyGain: '单独做几乎无效，配合第 1 条省 1–2 秒/步。',
-    // 第 5 条风险：声明错误会导致并发写冲突
+    // 第 4 条风险：声明错误会导致并发写冲突
     readonlyConcurrencyRisk: '标错会让写操作并发冲突。',
   },
   en: {
@@ -110,46 +101,37 @@ export const chatAccelLocales: FeatureLocales = {
     // Item 1 risk: prompt-only change
     parallelPromptRisk: 'Almost none — three lines of prompt text.',
 
-    // Item 2: read several files at once
-    batchReadName: 'Read several files at once',
-    // Item 2 hint: read handles one file per call
-    batchReadHint: 'read takes one file per call, so five files cost five round trips.',
-    // Item 2 gain: steps and time saved on multi-file tasks
-    batchReadGain: '30% fewer steps; five files save 30 s.',
-    // Item 2 risk: larger responses
-    batchReadRisk: 'Bigger responses can overflow the context.',
-
-    // Item 3: submit several edits at once
+    // Item 2: submit several edits at once
     batchEditName: 'Submit several edits at once',
-    // Item 3 hint: edit changes one location per call
+    // Item 2 hint: edit changes one location per call
     batchEditHint: 'edit changes one location per call, so four files cost four round trips.',
-    // Item 3 gain: steps and time saved on multi-file changes
+    // Item 2 gain: steps and time saved on multi-file changes
     batchEditGain: '30% fewer steps; four files save 24 s.',
-    // Item 3 risk: a half-finished batch
+    // Item 2 risk: a half-finished batch
     batchEditRisk: 'A failed batch leaves files half changed.',
 
-    // Item 4: prune old tool results earlier
+    // Item 3: prune old tool results earlier
     toolResultPruneName: 'Prune old tool results earlier',
-    // Item 4 hint: old output stays in the context
+    // Item 3 hint: old output stays in the context
     toolResultPruneHint: 'File and command output stays in the context and is re-sent every request.',
-    // Item 4 gain: slower context growth
+    // Item 3 gain: slower context growth
     toolResultPruneGain: 'Saves a few KB per step; context grows 20–30% slower.',
-    // Item 4 risk: the model may re-read files
+    // Item 3 risk: the model may re-read files
     toolResultPruneRisk: 'The model may read the same file again.',
-    // Item 4 threshold input label: prune size in characters
+    // Item 3 threshold input label: prune size in characters
     toolResultPruneThreshold: 'Prune threshold',
-    // Item 4 threshold input unit
+    // Item 3 threshold input unit
     toolResultPruneUnit: 'chars',
-    // Item 4 invalid input hint with the allowed range
+    // Item 3 invalid input hint with the allowed range
     toolResultPruneInvalid: 'Enter a whole number between 512 and 16384.',
 
-    // Item 5: mark read-only tools as concurrency-safe
+    // Item 4: mark read-only tools as concurrency-safe
     readonlyConcurrencyName: 'Mark read-only tools as concurrency-safe',
-    // Item 5 hint: only tools that declare themselves safe may run together
+    // Item 4 hint: only tools that declare themselves safe may run together
     readonlyConcurrencyHint: 'Tools without a safe declaration run one at a time; only file reading has one.',
-    // Item 5 gain: needs item 1 to matter
+    // Item 4 gain: needs item 1 to matter
     readonlyConcurrencyGain: 'Nearly zero alone; with item 1 saves 1–2 s per step.',
-    // Item 5 risk: a wrong declaration causes conflicting concurrent writes
+    // Item 4 risk: a wrong declaration causes conflicting concurrent writes
     readonlyConcurrencyRisk: 'A wrong declaration runs conflicting writes together.',
   },
 }

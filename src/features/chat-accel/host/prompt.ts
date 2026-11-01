@@ -22,10 +22,6 @@ const PARALLEL_GUIDANCE = [
   'Reads, searches, and other read-only calls may run concurrently; keep dependent calls sequential and wait for the result a later call needs.',
 ].join('\n')
 
-/** 批量读取指引：只在启用 batchRead 且工具已注册时注入。 */
-const BATCH_READ_GUIDANCE =
-  'Use read_files to read several files in one call instead of calling read once per file.'
-
 /** 批量编辑指引：只在启用 batchEdit 且工具已注册时注入。 */
 const BATCH_EDIT_GUIDANCE =
   'Use edit_files to apply several independent edits in one call; each entry keeps the same literal-match rules as edit.'
@@ -41,9 +37,8 @@ function guidanceText(context: PromptAssemblyContext): string {
     const settings = readChatAccelSettings()
     const blocks: string[] = []
 
-    // 顺序固定：先并发，再批量读取，最后批量编辑
+    // 顺序固定：先并发，再批量编辑
     if (isEnabled(settings, 'parallelPrompt')) blocks.push(PARALLEL_GUIDANCE)
-    if (isEnabled(settings, 'batchRead')) blocks.push(BATCH_READ_GUIDANCE)
     if (isEnabled(settings, 'batchEdit')) blocks.push(BATCH_EDIT_GUIDANCE)
 
     return blocks.join('\n\n')

@@ -2919,7 +2919,6 @@ import { dirname as dirname6, join as join15 } from "node:path";
 // src/features/chat-accel/items.ts
 var ACCEL_ITEMS = [
   { id: "parallelPrompt", score: 95 },
-  { id: "batchRead", score: 60 },
   { id: "batchEdit", score: 60 },
   // 裁剪阈值建议值来自实测：默认 8192 字符，降到 4096 更早回收旧结果
   {
@@ -3023,7 +3022,6 @@ var PARALLEL_GUIDANCE = [
   "When a turn needs several independent tool calls, emit them together in the same assistant message instead of one call per step.",
   "Reads, searches, and other read-only calls may run concurrently; keep dependent calls sequential and wait for the result a later call needs."
 ].join("\n");
-var BATCH_READ_GUIDANCE = "Use read_files to read several files in one call instead of calling read once per file.";
 var BATCH_EDIT_GUIDANCE = "Use edit_files to apply several independent edits in one call; each entry keeps the same literal-match rules as edit.";
 function guidanceText(context) {
   try {
@@ -3031,7 +3029,6 @@ function guidanceText(context) {
     const settings = readChatAccelSettings();
     const blocks = [];
     if (isEnabled(settings, "parallelPrompt")) blocks.push(PARALLEL_GUIDANCE);
-    if (isEnabled(settings, "batchRead")) blocks.push(BATCH_READ_GUIDANCE);
     if (isEnabled(settings, "batchEdit")) blocks.push(BATCH_EDIT_GUIDANCE);
     return blocks.join("\n\n");
   } catch (error) {
@@ -3124,7 +3121,6 @@ var READONLY_TOOL_NAMES = [
   "job_output",
   "get_goal"
 ];
-var READ_FILES_NAME = "read_files";
 var EDIT_FILES_NAME = "edit_files";
 var BATCH_OUTPUT_SCHEMA = {
   type: "object",
@@ -3163,56 +3159,6 @@ function renderHostResult(tool, args, value) {
   const rendered = tool.output?.render?.(args, value);
   if (rendered === void 0) return JSON.stringify(value);
   return rendered.map((block) => block.text).join("\n");
-}
-function createReadFilesTool(ctx) {
-  return {
-    name: READ_FILES_NAME,
-    description: "Read several UTF-8 text files in one call and return their line-numbered content. Use it instead of calling read once per file when several files are needed.",
-    parameters: {
-      type: "object",
-      properties: {
-        files: {
-          type: "array",
-          items: { type: "string" },
-          description: "Paths to read, resolved by the filesystem backend."
-        },
-        limit: {
-          type: "number",
-          description: "Maximum number of lines to return per file."
-        }
-      },
-      required: ["files"],
-      additionalProperties: false
-    },
-    output: {
-      schema: BATCH_OUTPUT_SCHEMA,
-      render: (_args, value) => [{ type: "text", text: String(value["text"] ?? "") }]
-    },
-    execute: async (rawArgs, exec) => {
-      const read = readHostTool(ctx, "read", exec.agent);
-      if (read === void 0) throw new Error("\u5BBF\u4E3B\u672A\u63D0\u4F9B read \u5DE5\u5177\uFF0Cread_files \u4E0D\u53EF\u7528");
-      const files = Array.isArray(rawArgs["files"]) ? rawArgs["files"] : [];
-      const limit = typeof rawArgs["limit"] === "number" ? rawArgs["limit"] : void 0;
-      const blocks = [];
-      for (const entry of files) {
-        const path = typeof entry === "string" ? entry : "";
-        if (path === "") {
-          blocks.push("[read_files] \u5FFD\u7565\u4E86\u4E00\u4E2A\u975E\u5B57\u7B26\u4E32\u8DEF\u5F84");
-          continue;
-        }
-        const args = { file_path: path };
-        if (limit !== void 0) args["limit"] = limit;
-        try {
-          const value = await read.execute(args, exec);
-          blocks.push(renderHostResult(read, args, value));
-        } catch (error) {
-          const message = error instanceof Error ? error.message : String(error);
-          blocks.push(`[read_files] ${path} \u8BFB\u53D6\u5931\u8D25: ${message}`);
-        }
-      }
-      return { text: blocks.join("\n\n") };
-    }
-  };
 }
 function createEditFilesTool(ctx) {
   return {
@@ -3288,9 +3234,6 @@ function disposeToolState() {
 function applyToolState(ctx) {
   disposeToolState();
   const settings = readChatAccelSettings();
-  if (isEnabled(settings, "batchRead")) {
-    disposers.push(registerTool(ctx, createReadFilesTool(ctx)));
-  }
   if (isEnabled(settings, "batchEdit")) {
     disposers.push(registerTool(ctx, createEditFilesTool(ctx)));
   }

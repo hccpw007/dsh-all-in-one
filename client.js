@@ -3903,43 +3903,35 @@ window.__ModuleLoader__.load({
         parallelPromptGain: "\u6B65\u9AA4\u51CF 25\u201335%\uFF0C10 \u6B65\u4EFB\u52A1\u7701 20\u201330 \u79D2\u3002",
         // 第 1 条风险：只改提示词
         parallelPromptRisk: "\u51E0\u4E4E\u4E3A\u96F6\uFF0C\u53EA\u52A0 3 \u884C\u63D0\u793A\u8BCD\u3002",
-        // 第 2 条：一次读多个文件
-        batchReadName: "\u4E00\u6B21\u8BFB\u591A\u4E2A\u6587\u4EF6",
-        // 第 2 条说明：read 一次只处理一个文件
-        batchReadHint: "read \u4E00\u6B21\u53EA\u80FD\u8BFB\u4E00\u4E2A\u6587\u4EF6\uFF0C\u8BFB 5 \u4E2A\u6587\u4EF6\u8981 5 \u6B21\u6765\u56DE\u3002",
-        // 第 2 条收益：多文件任务的节省
-        batchReadGain: "\u591A\u6587\u4EF6\u4EFB\u52A1\u7701 30% \u6B65\u9AA4\uFF0C5 \u4E2A\u6587\u4EF6\u7701 30 \u79D2\u3002",
-        // 第 2 条风险：返回体变大
-        batchReadRisk: "\u8FD4\u56DE\u4F53\u53D8\u5927\uFF0C\u53EF\u80FD\u6491\u7206\u4E0A\u4E0B\u6587\u3002",
-        // 第 3 条：一次提交多处修改
+        // 第 2 条：一次提交多处修改
         batchEditName: "\u4E00\u6B21\u63D0\u4EA4\u591A\u5904\u4FEE\u6539",
-        // 第 3 条说明：edit 一次只改一处
+        // 第 2 条说明：edit 一次只改一处
         batchEditHint: "edit \u4E00\u6B21\u53EA\u80FD\u6539\u4E00\u5904\uFF0C\u6539 4 \u4E2A\u6587\u4EF6\u8981 4 \u6B21\u6765\u56DE\u3002",
-        // 第 3 条收益：多文件改动的节省
+        // 第 2 条收益：多文件改动的节省
         batchEditGain: "\u591A\u6587\u4EF6\u6539\u52A8\u7701 30% \u6B65\u9AA4\uFF0C4 \u4E2A\u6587\u4EF6\u7701 24 \u79D2\u3002",
-        // 第 3 条风险：半途失败留下半改状态
+        // 第 2 条风险：半途失败留下半改状态
         batchEditRisk: "\u534A\u9014\u5931\u8D25\u4F1A\u7559\u4E0B\u534A\u6539\u72B6\u6001\u3002",
-        // 第 4 条：更早裁剪旧工具结果
+        // 第 3 条：更早裁剪旧工具结果
         toolResultPruneName: "\u66F4\u65E9\u88C1\u526A\u65E7\u5DE5\u5177\u7ED3\u679C",
-        // 第 4 条说明：旧输出会一直留在上下文里
+        // 第 3 条说明：旧输出会一直留在上下文里
         toolResultPruneHint: "\u8BFB\u6587\u4EF6\u548C\u547D\u4EE4\u8F93\u51FA\u4F1A\u4E00\u76F4\u7559\u5728\u4E0A\u4E0B\u6587\u91CC\uFF0C\u53CD\u590D\u91CD\u4F20\u3002",
-        // 第 4 条收益：上下文增速下降
+        // 第 3 条收益：上下文增速下降
         toolResultPruneGain: "\u6BCF\u6B65\u5C11\u51E0 KB\uFF0C\u4E0A\u4E0B\u6587\u589E\u901F\u964D 20\u201330%\u3002",
-        // 第 4 条风险：模型可能重复读取
+        // 第 3 条风险：模型可能重复读取
         toolResultPruneRisk: "\u6A21\u578B\u53EF\u80FD\u91CD\u590D\u8BFB\u540C\u4E00\u6587\u4EF6\u3002",
-        // 第 4 条参数输入框的标签：裁剪字符数阈值
+        // 第 3 条参数输入框的标签：裁剪字符数阈值
         toolResultPruneThreshold: "\u88C1\u526A\u9608\u503C",
-        // 第 4 条参数输入框的单位
+        // 第 3 条参数输入框的单位
         toolResultPruneUnit: "\u5B57\u7B26",
-        // 第 4 条参数输入不合法时的提示，含允许范围
+        // 第 3 条参数输入不合法时的提示，含允许范围
         toolResultPruneInvalid: "\u8BF7\u8F93\u5165 512\u201316384 \u4E4B\u95F4\u7684\u6574\u6570\u3002",
-        // 第 5 条：只读工具声明可并发
+        // 第 4 条：只读工具声明可并发
         readonlyConcurrencyName: "\u53EA\u8BFB\u5DE5\u5177\u58F0\u660E\u53EF\u5E76\u53D1",
-        // 第 5 条说明：未声明的工具只能排队
+        // 第 4 条说明：未声明的工具只能排队
         readonlyConcurrencyHint: "\u6CA1\u58F0\u660E\u300C\u5B89\u5168\u300D\u7684\u5DE5\u5177\u4E00\u5F8B\u6392\u961F\uFF0C\u73B0\u5728\u53EA\u6709\u8BFB\u6587\u4EF6\u58F0\u660E\u4E86\u3002",
-        // 第 5 条收益：需配合第 1 条
+        // 第 4 条收益：需配合第 1 条
         readonlyConcurrencyGain: "\u5355\u72EC\u505A\u51E0\u4E4E\u65E0\u6548\uFF0C\u914D\u5408\u7B2C 1 \u6761\u7701 1\u20132 \u79D2/\u6B65\u3002",
-        // 第 5 条风险：声明错误会导致并发写冲突
+        // 第 4 条风险：声明错误会导致并发写冲突
         readonlyConcurrencyRisk: "\u6807\u9519\u4F1A\u8BA9\u5199\u64CD\u4F5C\u5E76\u53D1\u51B2\u7A81\u3002"
       },
       en: {
@@ -3973,43 +3965,35 @@ window.__ModuleLoader__.load({
         parallelPromptGain: "25\u201335% fewer steps; a 10-step task saves 20\u201330 s.",
         // Item 1 risk: prompt-only change
         parallelPromptRisk: "Almost none \u2014 three lines of prompt text.",
-        // Item 2: read several files at once
-        batchReadName: "Read several files at once",
-        // Item 2 hint: read handles one file per call
-        batchReadHint: "read takes one file per call, so five files cost five round trips.",
-        // Item 2 gain: steps and time saved on multi-file tasks
-        batchReadGain: "30% fewer steps; five files save 30 s.",
-        // Item 2 risk: larger responses
-        batchReadRisk: "Bigger responses can overflow the context.",
-        // Item 3: submit several edits at once
+        // Item 2: submit several edits at once
         batchEditName: "Submit several edits at once",
-        // Item 3 hint: edit changes one location per call
+        // Item 2 hint: edit changes one location per call
         batchEditHint: "edit changes one location per call, so four files cost four round trips.",
-        // Item 3 gain: steps and time saved on multi-file changes
+        // Item 2 gain: steps and time saved on multi-file changes
         batchEditGain: "30% fewer steps; four files save 24 s.",
-        // Item 3 risk: a half-finished batch
+        // Item 2 risk: a half-finished batch
         batchEditRisk: "A failed batch leaves files half changed.",
-        // Item 4: prune old tool results earlier
+        // Item 3: prune old tool results earlier
         toolResultPruneName: "Prune old tool results earlier",
-        // Item 4 hint: old output stays in the context
+        // Item 3 hint: old output stays in the context
         toolResultPruneHint: "File and command output stays in the context and is re-sent every request.",
-        // Item 4 gain: slower context growth
+        // Item 3 gain: slower context growth
         toolResultPruneGain: "Saves a few KB per step; context grows 20\u201330% slower.",
-        // Item 4 risk: the model may re-read files
+        // Item 3 risk: the model may re-read files
         toolResultPruneRisk: "The model may read the same file again.",
-        // Item 4 threshold input label: prune size in characters
+        // Item 3 threshold input label: prune size in characters
         toolResultPruneThreshold: "Prune threshold",
-        // Item 4 threshold input unit
+        // Item 3 threshold input unit
         toolResultPruneUnit: "chars",
-        // Item 4 invalid input hint with the allowed range
+        // Item 3 invalid input hint with the allowed range
         toolResultPruneInvalid: "Enter a whole number between 512 and 16384.",
-        // Item 5: mark read-only tools as concurrency-safe
+        // Item 4: mark read-only tools as concurrency-safe
         readonlyConcurrencyName: "Mark read-only tools as concurrency-safe",
-        // Item 5 hint: only tools that declare themselves safe may run together
+        // Item 4 hint: only tools that declare themselves safe may run together
         readonlyConcurrencyHint: "Tools without a safe declaration run one at a time; only file reading has one.",
-        // Item 5 gain: needs item 1 to matter
+        // Item 4 gain: needs item 1 to matter
         readonlyConcurrencyGain: "Nearly zero alone; with item 1 saves 1\u20132 s per step.",
-        // Item 5 risk: a wrong declaration causes conflicting concurrent writes
+        // Item 4 risk: a wrong declaration causes conflicting concurrent writes
         readonlyConcurrencyRisk: "A wrong declaration runs conflicting writes together."
       }
     };
@@ -4063,7 +4047,6 @@ window.__ModuleLoader__.load({
     // src/features/chat-accel/items.ts
     var ACCEL_ITEMS = [
       { id: "parallelPrompt", score: 95 },
-      { id: "batchRead", score: 60 },
       { id: "batchEdit", score: 60 },
       // 裁剪阈值建议值来自实测：默认 8192 字符，降到 4096 更早回收旧结果
       {

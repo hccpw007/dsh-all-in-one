@@ -4,9 +4,9 @@
  * 两件事：
  *   1. 并发声明：给宿主里明确只读、但没声明 `isConcurrencySafe` 的工具补上声明。
  *      宿主按这个声明决定两个调用能否同时执行（`dsh-tools` 的 `executionMode`）。
- *   2. 批量工具：注册 `read_files` / `edit_files`。它们的 execute 直接转发给宿主
- *      官方 `read` / `edit` 的实现，因此路径解析、沙箱、行号、写前读取守卫、
- *      diff 呈现与官方完全一致，只是多了一层批量分发。
+ *   2. 批量编辑：注册 `edit_files`。它的 execute 直接转发给宿主官方 `edit` 的实现，
+ *      因此路径解析、沙箱、唯一匹配校验、写前读取守卫与 diff 呈现与官方完全一致，
+ *      只是把多处修改合成一次调用（写操作不能并发，这一层省的是模型往返次数）。
  *
  * 改造都在运行期完成：页面开关一变，`applyToolState` 重新应用一次即可生效。
  */
@@ -37,9 +37,6 @@ const READONLY_TOOL_NAMES = [
   'job_output',
   'get_goal',
 ]
-
-/** 批量读取工具名。 */
-const READ_FILES_NAME = 'read_files'
 
 /** 批量编辑工具名。 */
 const EDIT_FILES_NAME = 'edit_files'
@@ -134,69 +131,6 @@ function renderHostResult(
   if (rendered === undefined) return JSON.stringify(value)
 
   return rendered.map((block) => block.text).join('\n')
-}
-
-/**
- * 生成批量读取工具定义。
- * @param ctx 宿主上下文
- * @returns 工具定义
- */
-function createReadFilesTool(ctx: HostPluginContext): ToolDefinitionLike {
-  return {
-    name: READ_FILES_NAME,
-    description:
-      'Read several UTF-8 text files in one call and return their line-numbered content. Use it instead of calling read once per file when several files are needed.',
-    parameters: {
-      type: 'object',
-      properties: {
-        files: {
-          type: 'array',
-          items: { type: 'string' },
-          description: 'Paths to read, resolved by the filesystem backend.',
-        },
-        limit: {
-          type: 'number',
-          description: 'Maximum number of lines to return per file.',
-        },
-      },
-      required: ['files'],
-      additionalProperties: false,
-    },
-    output: {
-      schema: BATCH_OUTPUT_SCHEMA,
-      render: (_args, value) => [{ type: 'text', text: String(value['text'] ?? '') }],
-    },
-    execute: async (rawArgs, exec: ToolExecLike) => {
-      const read = readHostTool(ctx, 'read', exec.agent)
-      if (read === undefined) throw new Error('宿主未提供 read 工具，read_files 不可用')
-
-      const files = Array.isArray(rawArgs['files']) ? (rawArgs['files'] as unknown[]) : []
-      const limit = typeof rawArgs['limit'] === 'number' ? rawArgs['limit'] : undefined
-      const blocks: string[] = []
-
-      for (const entry of files) {
-        const path = typeof entry === 'string' ? entry : ''
-        if (path === '') {
-          blocks.push('[read_files] 忽略了一个非字符串路径')
-          continue
-        }
-
-        const args: Record<string, unknown> = { file_path: path }
-        if (limit !== undefined) args['limit'] = limit
-
-        try {
-          const value = await read.execute(args, exec)
-          blocks.push(renderHostResult(read, args, value))
-        } catch (error) {
-          // 单个文件失败不中断整批：把失败原因交给模型，其余文件照常返回
-          const message = error instanceof Error ? error.message : String(error)
-          blocks.push(`[read_files] ${path} 读取失败: ${message}`)
-        }
-      }
-
-      return { text: blocks.join('\n\n') }
-    },
-  }
 }
 
 /**
@@ -305,10 +239,6 @@ export function applyToolState(ctx: HostPluginContext): void {
   disposeToolState()
 
   const settings = readChatAccelSettings()
-
-  if (isEnabled(settings, 'batchRead')) {
-    disposers.push(registerTool(ctx, createReadFilesTool(ctx)))
-  }
 
   if (isEnabled(settings, 'batchEdit')) {
     disposers.push(registerTool(ctx, createEditFilesTool(ctx)))
