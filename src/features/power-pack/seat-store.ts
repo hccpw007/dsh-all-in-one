@@ -31,6 +31,8 @@ export interface SeatSnapshot {
   mode: string
   /** 当前技能包 id；空字符串表示不叠加技能包。 */
   pack: string
+  /** 技能包总开关是否打开；关闭时新会话界面不显示技能包下拉。 */
+  packsEnabled: boolean
   /** 提交失败的原因。 */
   error: string | null
 }
@@ -44,7 +46,7 @@ export interface SeatStore {
 
 /** 创建初始快照。 */
 function initialState(): SeatSnapshot {
-  return { status: 'idle', modes: [], packs: [], mode: '', pack: '', error: null }
+  return { status: 'idle', modes: [], packs: [], mode: '', pack: '', packsEnabled: false, error: null }
 }
 
 /**
@@ -147,12 +149,17 @@ export function createSeatController(ctx: PluginContext): SeatController {
       let packs: SeatPackOption[] = []
       let defaultPackId = ''
       let recent: ComposedSelection | undefined
+      // 总开关关闭时按「没有技能包」处理：不显示下拉、不回填、也不合成新组合
+      let packsEnabled = false
       try {
         const payload = await loadPowerPacks()
-        packs = payload.packs.map(({ id, name, description }) => ({ id, name, description }))
-        defaultPackId = payload.defaultPackId
+        packsEnabled = payload.enabled
+        packs = payload.enabled
+          ? payload.packs.map(({ id, name, description }) => ({ id, name, description }))
+          : []
+        defaultPackId = payload.enabled ? payload.defaultPackId : ''
         // 最近一次组合决定重启后新会话界面的回填值
-        recent = payload.recentComposed[0]
+        recent = payload.enabled ? payload.recentComposed[0] : undefined
       } catch (error) {
         console.error('[power-pack] 读取技能包列表失败:', error)
       }
@@ -173,9 +180,10 @@ export function createSeatController(ctx: PluginContext): SeatController {
       const recentMode = sessionBlank ? (recent?.mode ?? '') : ''
       // 模式为空说明会话用的是旧版独立技能包预设，回退到宿主默认模式
       const mode = staged?.mode || fromSession.mode || recentMode || fallbackMode
-      const pack = staged ? staged.pack : (fromSession.pack || fallbackPack)
+      // 关闭后不能再叠加技能包：历史会话的实际运行仍按原记录，界面只呈现模式
+      const pack = packsEnabled ? (staged ? staged.pack : (fromSession.pack || fallbackPack)) : ''
 
-      store.set({ status: 'ready', modes, packs, mode, pack, error: null })
+      store.set({ status: 'ready', modes, packs, mode, pack, packsEnabled, error: null })
 
       // 默认技能包要真正提交到会话才会生效：没有会话时先暂存，会话出现后由 applyStaged 应用
       if (staged === undefined && fromSession.pack === '' && fallbackPack !== '' && mode !== '') {

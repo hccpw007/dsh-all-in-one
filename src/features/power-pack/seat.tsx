@@ -196,14 +196,16 @@ export function PowerPackSeat({
           disabled={disabled}
           onPick={(id) => void selectMode(id)}
         />
-        {/* 技能包下拉：只列本插件定义的技能包 */}
-        <PresetDropdown
-          current={snapshot.pack}
-          options={snapshot.packs}
-          placeholder={t('seatLabel')}
-          disabled={disabled}
-          onPick={(id) => void selectPack(id)}
-        />
+        {/* 技能包下拉：只列本插件定义的技能包；总开关关闭时整体不出现 */}
+        {snapshot.packsEnabled ? (
+          <PresetDropdown
+            current={snapshot.pack}
+            options={snapshot.packs}
+            placeholder={t('seatLabel')}
+            disabled={disabled}
+            onPick={(id) => void selectPack(id)}
+          />
+        ) : null}
       </div>
 
       {/* 提交失败提示：会话已开始或宿主拒绝切换 */}

@@ -455,7 +455,7 @@ async function parsePackFile(file) {
     const list = Array.isArray(parsed.packs) ? parsed.packs : parsed.styles;
     const packs = Array.isArray(list) ? list.map(normalizePack).filter((pack) => pack !== void 0) : [];
     const defaultPackId = typeof parsed.defaultPackId === "string" && packs.some((pack) => pack.id === parsed.defaultPackId) ? parsed.defaultPackId : "";
-    return { version: 1, packs, defaultPackId };
+    return { version: 1, packs, defaultPackId, enabled: parsed.enabled === true };
   } catch (error) {
     if (error.code !== "ENOENT") {
       console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u5305\u914D\u7F6E\u5931\u8D25:", file, error);
@@ -472,7 +472,7 @@ async function readPacks() {
     await writePacks(migrated);
     return migrated;
   }
-  return { version: 1, packs: [], defaultPackId: "" };
+  return { version: 1, packs: [], defaultPackId: "", enabled: false };
 }
 async function writePacks(document2) {
   const file = powerPacksFile();
@@ -1294,7 +1294,8 @@ async function buildPayload(host) {
       plugins,
       globalGroups
     },
-    storagePath: powerPacksFile()
+    storagePath: powerPacksFile(),
+    enabled: document2.enabled
   };
 }
 async function syncSkills(pack, allSkills) {
@@ -1318,6 +1319,7 @@ async function deletePack(packId, host) {
   const document2 = await readPacks();
   document2.packs = document2.packs.filter((pack) => pack.id !== packId);
   if (document2.defaultPackId === packId) document2.defaultPackId = "";
+  if (document2.packs.length === 0) document2.enabled = false;
   await writePacks(document2);
   await removePackSkillDir(packId);
   return buildPayload(host);
@@ -1348,6 +1350,7 @@ var writeChain = Promise.resolve();
 async function handleWrite(request, api, host) {
   if (request.action === "compose") {
     const document2 = await readPacks();
+    if (!document2.enabled) throw new Error("\u6280\u80FD\u5305\u529F\u80FD\u672A\u5F00\u542F");
     const pack2 = document2.packs.find((item) => item.id === request.pack);
     if (!pack2) throw new Error("\u6280\u80FD\u5305\u4E0D\u5B58\u5728");
     if (request.mode.trim() === "") throw new Error("\u672A\u6307\u5B9A\u6A21\u5F0F");
@@ -1355,6 +1358,16 @@ async function handleWrite(request, api, host) {
     const presetId = await ensureComposedPreset(api, request.mode, pack2, groups);
     await rememberComposed(pack2.id, request.mode);
     return { presetId };
+  }
+  if (request.action === "setEnabled") {
+    if (typeof request.enabled !== "boolean") throw new Error("\u5F00\u5173\u72B6\u6001\u65E0\u6548");
+    const document2 = await readPacks();
+    if (request.enabled && document2.packs.length === 0) {
+      throw new Error("\u8FD8\u6CA1\u6709\u521B\u5EFA\u6280\u80FD\u5305\uFF0C\u65E0\u6CD5\u5F00\u542F");
+    }
+    document2.enabled = request.enabled;
+    await writePacks(document2);
+    return buildPayload(host);
   }
   if (request.action === "delete") {
     if (!isValidPackId(request.id)) throw new Error("\u6280\u80FD\u5305\u6807\u8BC6\u65E0\u6548");

@@ -55,6 +55,7 @@ async function buildPayload(host: HostContext): Promise<PowerPacksPayload> {
       globalGroups,
     },
     storagePath: powerPacksFile(),
+    enabled: document.enabled,
   }
 }
 
@@ -105,6 +106,8 @@ async function deletePack(packId: string, host: HostContext): Promise<PowerPacks
   document.packs = document.packs.filter((pack) => pack.id !== packId)
   // 删除的正是默认技能包时一并清空，避免默认指向不存在的包
   if (document.defaultPackId === packId) document.defaultPackId = ''
+  // 删掉最后一个技能包后没有可选内容，总开关回到关闭，避免出现「开着却无内容」的状态
+  if (document.packs.length === 0) document.enabled = false
   await writePacks(document)
 
   await removePackSkillDir(packId)
@@ -167,6 +170,8 @@ async function handleWrite(
 ): Promise<PowerPacksPayload | PowerPackComposeResponse> {
   if (request.action === 'compose') {
     const document = await readPacks()
+    // 总开关关闭时拒绝新组合：已注册的组合预设保持原样，绑定了技能包的历史会话不受影响
+    if (!document.enabled) throw new Error('技能包功能未开启')
     const pack = document.packs.find((item) => item.id === request.pack)
     if (!pack) throw new Error('技能包不存在')
     if (request.mode.trim() === '') throw new Error('未指定模式')
@@ -178,6 +183,21 @@ async function handleWrite(
     await rememberComposed(pack.id, request.mode)
 
     return { presetId }
+  }
+
+  if (request.action === 'setEnabled') {
+    if (typeof request.enabled !== 'boolean') throw new Error('开关状态无效')
+
+    const document = await readPacks()
+    // 没有任何技能包时开关不能打开：打开也没有可选内容
+    if (request.enabled && document.packs.length === 0) {
+      throw new Error('还没有创建技能包，无法开启')
+    }
+
+    document.enabled = request.enabled
+    await writePacks(document)
+
+    return buildPayload(host)
   }
 
   if (request.action === 'delete') {

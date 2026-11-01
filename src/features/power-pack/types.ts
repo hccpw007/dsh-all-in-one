@@ -58,6 +58,11 @@ export interface PowerPackDocument {
   packs: PowerPack[]
   /** 新建会话默认预选的技能包 id；空字符串表示没有默认。 */
   defaultPackId: string
+  /**
+   * 技能包总开关：关闭时新会话界面不再出现技能包选择，也不能再合成组合预设。
+   * 缺省（旧文件没有该字段）按关闭处理；已经绑定技能包的历史会话不受影响。
+   */
+  enabled: boolean
 }
 
 /** 插件/工具行的来源类别。 */
@@ -106,13 +111,16 @@ export interface PowerPacksPayload {
   catalog: PowerPackCatalog
   /** 存储文件路径，便于用户定位与备份。 */
   storagePath: string
+  /** 技能包总开关是否打开；关闭时新会话界面不显示技能包选择。 */
+  enabled: boolean
 }
 
-/** 保存、删除、设置默认或合成组合预设的请求体。 */
+/** 保存、删除、设置默认、开关技能包或合成组合预设的请求体。 */
 export type PowerPackWriteRequest =
   | { action: 'save'; pack: PowerPack }
   | { action: 'delete'; id: string }
   | { action: 'setDefault'; id: string }
+  | { action: 'setEnabled'; enabled: boolean }
   | { action: 'compose'; pack: string; mode: string }
 
 /** 合成组合预设的响应体。 */

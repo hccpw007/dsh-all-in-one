@@ -9,6 +9,8 @@ export const powerPackLocales: FeatureLocales = {
     description: '按任务组合技能、插件与 MCP，新建对话时选用。',
     // 卡片右下角「设置」入口的文案
     settingsAction: '设置',
+    // 没有任何技能包时开关被禁用，用它说明为什么打不开
+    needPacks: '先创建技能包才能打开',
     // 功能页标题
     pageTitle: '技能包',
     // 功能页说明
@@ -122,6 +124,8 @@ export const powerPackLocales: FeatureLocales = {
     description: 'Bundle skills, plugins and MCP servers per task, then pick one when starting a chat.',
     // Label of the "settings" entry at the card's bottom-right corner
     settingsAction: 'Settings',
+    // Shown on the disabled switch when no power pack exists yet
+    needPacks: 'Create a power pack first',
     // Page title
     pageTitle: 'Power packs',
     // Page description

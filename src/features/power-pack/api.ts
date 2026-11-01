@@ -125,3 +125,18 @@ export function setDefaultPowerPack(id: string): Promise<PowerPacksPayload> {
     body: JSON.stringify(body),
   })
 }
+
+/**
+ * 打开或关闭技能包总开关。
+ * @param enabled 是否启用
+ * @returns 保存后的负载
+ */
+export function setPowerPackEnabled(enabled: boolean): Promise<PowerPacksPayload> {
+  const body: PowerPackWriteRequest = { action: 'setEnabled', enabled }
+
+  return request<PowerPacksPayload>({
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+}
