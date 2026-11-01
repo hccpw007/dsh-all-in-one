@@ -13,6 +13,7 @@ import {
   dropPreviewsForHostImage,
   isOwnPreviewNode,
   syncBlockPreviews,
+  syncDisclosurePreviews,
 } from './preview'
 
 /** 每帧最多处理的变更节点数；超出的部分留到下一帧，避免一次性扫描长会话。 */
@@ -153,6 +154,12 @@ export function installImagePreviewObserver(): () => void {
 
   const observer = new MutationObserver((records) => {
     for (const record of records) {
+      if (record.type === 'attributes') {
+        // 折叠行展开或收起：行内的预览跟随一起显示或隐藏
+        if (record.target instanceof Element) syncDisclosurePreviews(record.target)
+        continue
+      }
+
       if (record.type === 'characterData') {
         pending.add(record.target)
         continue
@@ -183,7 +190,14 @@ export function installImagePreviewObserver(): () => void {
    */
   function attach(): void {
     if (container === undefined) return
-    observer.observe(container, { childList: true, characterData: true, subtree: true })
+    observer.observe(container, {
+      childList: true,
+      characterData: true,
+      subtree: true,
+      // 折叠行的展开状态写在根节点的 data-open 上，只盯这一个属性
+      attributes: true,
+      attributeFilter: ['data-open'],
+    })
 
     // 首次扫描以对话正文为根：会话容器同时装着轨迹等视图，整棵扫描会误插预览。
     // 正文尚未渲染时退回容器，等它挂载后的节点变化再触发扫描

@@ -2171,7 +2171,22 @@ window.__ModuleLoader__.load({
         container.appendChild(createPreviewImage(path, container));
         previewOwners.set(canonicalPathKey(path), container);
       }
+      applyDisclosureState(block, container);
       block.insertAdjacentElement("afterend", container);
+    }
+    function disclosureRoot(block) {
+      return block.closest("[data-disclosure-header]")?.parentElement ?? void 0;
+    }
+    function applyDisclosureState(block, container) {
+      const root = disclosureRoot(block);
+      container.style.display = root !== void 0 && !root.hasAttribute("data-open") ? "none" : "";
+    }
+    function syncDisclosurePreviews(root) {
+      const collapsed = !root.hasAttribute("data-open");
+      for (const wrapper of root.querySelectorAll(`[${PREVIEW_ATTRIBUTE}]`)) {
+        if (collapsed) wrapper.style.display = "none";
+        else wrapper.style.display = wrapper.childElementCount === 0 ? "none" : "";
+      }
     }
     function dropPreviewsForHostImage(block) {
       if (!hasHostImage(block)) return;
@@ -2297,6 +2312,10 @@ window.__ModuleLoader__.load({
       }
       const observer = new MutationObserver((records) => {
         for (const record of records) {
+          if (record.type === "attributes") {
+            if (record.target instanceof Element) syncDisclosurePreviews(record.target);
+            continue;
+          }
           if (record.type === "characterData") {
             pending2.add(record.target);
             continue;
@@ -2315,7 +2334,14 @@ window.__ModuleLoader__.load({
       }
       function attach() {
         if (container === void 0) return;
-        observer.observe(container, { childList: true, characterData: true, subtree: true });
+        observer.observe(container, {
+          childList: true,
+          characterData: true,
+          subtree: true,
+          // 折叠行的展开状态写在根节点的 data-open 上，只盯这一个属性
+          attributes: true,
+          attributeFilter: ["data-open"]
+        });
         const chatFlow = container.querySelector(CHAT_FLOW_SELECTOR) ?? container;
         enqueueTree(chatFlow);
         schedule();

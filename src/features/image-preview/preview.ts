@@ -324,7 +324,47 @@ export function syncBlockPreviews(block: Element, paths: string[]): void {
     previewOwners.set(canonicalPathKey(path), container)
   }
 
+  applyDisclosureState(block, container)
   block.insertAdjacentElement('afterend', container)
+}
+
+/**
+ * 求一个块所属的折叠行根节点。
+ *
+ * 预览插在标题块之后，也就落在折叠行的标题区里；标题区在收起时仍然可见，
+ * 宿主不会替我们隐藏它。因此要拿到折叠行的根，按它的展开状态决定预览的可见性。
+ * @param block 消息中的块级容器
+ * @returns 折叠行根节点；不在折叠行标题区里时返回 undefined
+ */
+function disclosureRoot(block: Element): Element | undefined {
+  return block.closest('[data-disclosure-header]')?.parentElement ?? undefined
+}
+
+/**
+ * 按折叠状态设置预览容器是否可见。
+ * @param block 预览所属的块
+ * @param container 预览容器
+ */
+function applyDisclosureState(block: Element, container: HTMLElement): void {
+  const root = disclosureRoot(block)
+  // 收起时用内联 display：预览容器自身带 flex 类名，[hidden] 会被它覆盖
+  container.style.display = root !== undefined && !root.hasAttribute('data-open') ? 'none' : ''
+}
+
+/**
+ * 同步一条折叠行里预览的可见性。
+ *
+ * 用户展开或收起折叠行时，行内已有的预览要跟着一起显示或隐藏。
+ * @param root 折叠行根节点
+ */
+export function syncDisclosurePreviews(root: Element): void {
+  const collapsed = !root.hasAttribute('data-open')
+
+  for (const wrapper of root.querySelectorAll<HTMLElement>(`[${PREVIEW_ATTRIBUTE}]`)) {
+    if (collapsed) wrapper.style.display = 'none'
+    // 图片加载失败后容器可能已经空了，展开时不要露出一个空壳
+    else wrapper.style.display = wrapper.childElementCount === 0 ? 'none' : ''
+  }
 }
 
 /**
