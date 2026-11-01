@@ -42,7 +42,7 @@ window.__ModuleLoader__.load({
     var import_react22 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-8{height:2rem}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.transform,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-xl{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}";
+    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-8{height:2rem}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.transform,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-xl{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}";
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -1276,9 +1276,15 @@ window.__ModuleLoader__.load({
       zh: {
         // 开关标题
         title: "\u5C55\u5F00\u8FC7\u7A0B",
-        // 开关用途说明：解释打开后会话里的哪些内容默认展开
+        // 开关用途说明：解释打开后会话里的哪些内容会展开
         description: "\u4F1A\u8BDD\u91CC\u7684\u300C\u601D\u8003\u300D\u4E0E\u300C\u8FD0\u884C\u547D\u4EE4\u300D\u9ED8\u8BA4\u5C55\u5F00\uFF0C\u65E0\u9700\u9010\u6761\u70B9\u5F00\u3002",
-        // 开关状态写入失败时的提示
+        // 展开范围标签
+        modeLabel: "\u8303\u56F4",
+        // 展开范围选项：所有历史轮次的过程都展开
+        modeAll: "\u5168\u90E8\u5185\u5BB9",
+        // 展开范围选项：只展开当前这一轮对话的过程
+        modeActive: "\u5F53\u524D\u6FC0\u6D3B",
+        // 开关或范围写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002"
       },
       en: {
@@ -1286,6 +1292,12 @@ window.__ModuleLoader__.load({
         title: "Expand process",
         // Switch description explaining what expands when enabled
         description: "Keep reasoning and command rows expanded so they need no manual opening.",
+        // Expansion scope label
+        modeLabel: "Scope",
+        // Scope option: expand process rows in every turn
+        modeAll: "All content",
+        // Scope option: expand only the process rows of the current turn
+        modeActive: "Active turn",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions."
       }
@@ -1296,20 +1308,29 @@ window.__ModuleLoader__.load({
 
     // src/features/expand-process/expand-process.ts
     var EXPAND_PROCESS_STORAGE_KEY = "dsh-all-in-one:expand-process";
-    function bootExpandProcess(storageKey) {
+    var EXPAND_PROCESS_MODE_STORAGE_KEY = "dsh-all-in-one:expand-process-mode";
+    function bootExpandProcess(keys) {
       const win = window;
       if (win["__DSH_ALL_IN_ONE_EXPAND_PROCESS__"]) return;
       win["__DSH_ALL_IN_ONE_EXPAND_PROCESS__"] = true;
       function readEnabled() {
         try {
-          return window.localStorage.getItem(storageKey) === "1";
+          return window.localStorage.getItem(keys.enabledKey) === "1";
         } catch (error) {
           console.error("[expand-process] \u8BFB\u53D6\u5F00\u5173\u72B6\u6001\u5931\u8D25:", error);
           return false;
         }
       }
-      win["__DSH_EXPAND_PROCESS_ENABLED__"] = readEnabled;
-      if (readEnabled()) {
+      function readMode() {
+        try {
+          return window.localStorage.getItem(keys.modeKey) === "active" ? "active" : "all";
+        } catch (error) {
+          console.error("[expand-process] \u8BFB\u53D6\u5C55\u5F00\u8303\u56F4\u5931\u8D25:", error);
+          return "all";
+        }
+      }
+      const enabled = readEnabled();
+      if (enabled) {
         const style = document.createElement("style");
         style.id = "dsh-all-in-one-expand-process-style";
         style.textContent = [
@@ -1337,18 +1358,87 @@ window.__ModuleLoader__.load({
         ].join("\n");
         (document.head || document.documentElement).appendChild(style);
       }
+      win["__DSH_EXPAND_PROCESS_INITIAL__"] = function() {
+        return enabled && readMode() === "all";
+      };
+      const binders = [];
+      let observer = null;
+      let scheduled = false;
+      let lastRunning = null;
+      let lastTurn = null;
+      function latestTurn() {
+        const nodes = document.querySelectorAll("[data-chat-turn]");
+        if (!nodes.length) return null;
+        let best = null;
+        let bestValue = -Infinity;
+        for (const node of Array.from(nodes)) {
+          const raw = node.getAttribute("data-chat-turn") ?? "";
+          const value = Number(raw);
+          if (Number.isFinite(value) && value > bestValue) {
+            bestValue = value;
+            best = raw;
+          }
+        }
+        return best ?? nodes[nodes.length - 1].getAttribute("data-chat-turn");
+      }
+      function isRunning() {
+        return document.querySelector("[data-chat-running]") !== null;
+      }
+      function refresh() {
+        const running = isRunning();
+        const turn = latestTurn();
+        if (running === lastRunning && turn === lastTurn) return;
+        lastRunning = running;
+        lastTurn = turn;
+        for (const update of [...binders]) update();
+      }
+      function schedule() {
+        if (scheduled) return;
+        scheduled = true;
+        window.requestAnimationFrame(() => {
+          scheduled = false;
+          refresh();
+        });
+      }
+      function observe() {
+        if (observer !== null || document.body === null) return;
+        observer = new MutationObserver(schedule);
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+      function bind(element, setExpanded, manual) {
+        if (!enabled || readMode() !== "active") return void 0;
+        if (element === null || typeof element.closest !== "function") return void 0;
+        const turnElement = element.closest("[data-chat-turn]");
+        if (turnElement === null) return void 0;
+        const turn = turnElement.getAttribute("data-chat-turn");
+        const update = () => {
+          if (manual.current) return;
+          setExpanded(isRunning() && turn !== null && turn === latestTurn());
+        };
+        binders.push(update);
+        observe();
+        update();
+        return () => {
+          const index = binders.indexOf(update);
+          if (index >= 0) binders.splice(index, 1);
+        };
+      }
+      win["__DSH_EXPAND_PROCESS_BIND__"] = bind;
       const RULES = {
         "@deepseek-ai/dsh-client-ui-tool": [
           [
             "const { expanded, toggle: toggleExpand } = useDisclosure();",
-            "const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_ENABLED__()); const toggleExpand = () => setExpanded((value) => !value);"
-          ]
+            'const __aioRow = (0, react.useRef)(null); const __aioManual = (0, react.useRef)(false); const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_INITIAL__()); const toggleExpand = () => { __aioManual.current = true; setExpanded((value) => !value); }; (0, react.useLayoutEffect)(() => typeof window.__DSH_EXPAND_PROCESS_BIND__ === "function" ? window.__DSH_EXPAND_PROCESS_BIND__(__aioRow.current, setExpanded, __aioManual) : undefined, []);'
+          ],
+          ['"data-tool": toolName,', 'ref: __aioRow, "data-tool": toolName,'],
+          ['"data-sample": "bash",', 'ref: __aioRow, "data-sample": "bash",']
         ],
         "@deepseek-ai/dsh-client-ui-chat": [
           [
             "const { expanded, toggle } = useDisclosure();",
-            "const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_ENABLED__()); const toggle = () => setExpanded((value) => !value);"
-          ]
+            'const __aioRow = (0, react.useRef)(null); const __aioManual = (0, react.useRef)(false); const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_INITIAL__()); const toggle = () => { __aioManual.current = true; setExpanded((value) => !value); }; (0, react.useLayoutEffect)(() => typeof window.__DSH_EXPAND_PROCESS_BIND__ === "function" ? window.__DSH_EXPAND_PROCESS_BIND__(__aioRow.current, setExpanded, __aioManual) : undefined, []);'
+          ],
+          ['"data-variant": "think",', 'ref: __aioRow, "data-variant": "think",']
         ]
       };
       function patch(registration) {
@@ -1372,6 +1462,11 @@ window.__ModuleLoader__.load({
             registration["__dshPatched"] = true;
             console.warn("[expand-process] \u89C4\u5219\u672A\u547D\u4E2D " + registration.id + "\uFF0CUI \u5B9E\u73B0\u53EF\u80FD\u5DF2\u53D8\u5316");
             return;
+          }
+          for (const [previous, next] of rules) {
+            if (output.indexOf(next) === -1) {
+              console.warn("[expand-process] \u90E8\u5206\u89C4\u5219\u672A\u547D\u4E2D " + registration.id + "\uFF1A" + previous);
+            }
           }
           registration.factory = (0, eval)("(" + output + ")");
           registration["__dshPatched"] = true;
@@ -1427,7 +1522,10 @@ window.__ModuleLoader__.load({
         console.warn("[expand-process] \u65E0\u6CD5\u6302\u8F7D\u6A21\u5757\u94A9\u5B50", error);
       }
     }
-    var EXPAND_PROCESS_SCRIPT = `(${bootExpandProcess.toString()})(${JSON.stringify(EXPAND_PROCESS_STORAGE_KEY)});`;
+    var EXPAND_PROCESS_SCRIPT = `(${bootExpandProcess.toString()})(${JSON.stringify({
+      enabledKey: EXPAND_PROCESS_STORAGE_KEY,
+      modeKey: EXPAND_PROCESS_MODE_STORAGE_KEY
+    })});`;
     function readExpandProcessEnabled() {
       try {
         return window.localStorage.getItem(EXPAND_PROCESS_STORAGE_KEY) === "1";
@@ -1445,8 +1543,29 @@ window.__ModuleLoader__.load({
         return false;
       }
     }
+    function readExpandProcessMode() {
+      try {
+        return window.localStorage.getItem(EXPAND_PROCESS_MODE_STORAGE_KEY) === "active" ? "active" : "all";
+      } catch (error) {
+        console.error("[expand-process] \u8BFB\u53D6\u5C55\u5F00\u8303\u56F4\u5931\u8D25:", error);
+        return "all";
+      }
+    }
+    function writeExpandProcessMode(mode) {
+      try {
+        window.localStorage.setItem(EXPAND_PROCESS_MODE_STORAGE_KEY, mode);
+        return true;
+      } catch (error) {
+        console.error("[expand-process] \u5199\u5165\u5C55\u5F00\u8303\u56F4\u5931\u8D25:", error);
+        return false;
+      }
+    }
 
     // src/features/expand-process/toggle.tsx
+    var MODE_OPTIONS = [
+      { value: "all", labelKey: "modeAll" },
+      { value: "active", labelKey: "modeActive" }
+    ];
     function ExpandIcon() {
       return /* @__PURE__ */ import_react10.default.createElement(
         "svg",
@@ -1466,19 +1585,23 @@ window.__ModuleLoader__.load({
       );
     }
     function ExpandProcessToggle({ t }) {
-      const [enabled, setEnabled] = (0, import_react10.useState)(readExpandProcessEnabled);
+      const [enabled] = (0, import_react10.useState)(readExpandProcessEnabled);
+      const [mode] = (0, import_react10.useState)(readExpandProcessMode);
       const [saveFailed, setSaveFailed] = (0, import_react10.useState)(false);
-      const handleToggle = () => {
-        const next = !enabled;
-        if (!writeExpandProcessEnabled(next)) {
+      const save = (apply6) => {
+        if (!apply6()) {
           setSaveFailed(true);
           return;
         }
         setSaveFailed(false);
-        setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react10.default.createElement(ExpandIcon, null)), /* @__PURE__ */ import_react10.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react10.default.createElement(
+      const handleToggle = () => save(() => writeExpandProcessEnabled(!enabled));
+      const handleModeChange = (next) => {
+        if (next === mode) return;
+        save(() => writeExpandProcessMode(next));
+      };
+      return /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex w-full flex-1 flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react10.default.createElement(ExpandIcon, null)), /* @__PURE__ */ import_react10.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react10.default.createElement(
         "button",
         {
           type: "button",
@@ -1502,7 +1625,25 @@ window.__ModuleLoader__.load({
             )
           }
         )
-      )), saveFailed ? /* @__PURE__ */ import_react10.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
+      )), enabled ? /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex items-center gap-2 pl-7", role: "radiogroup", "aria-label": t("modeLabel") }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, t("modeLabel")), MODE_OPTIONS.map((option) => {
+        const checked = option.value === mode;
+        return /* @__PURE__ */ import_react10.default.createElement(
+          "button",
+          {
+            key: option.value,
+            type: "button",
+            role: "radio",
+            "aria-checked": checked,
+            onClick: () => handleModeChange(option.value),
+            className: cn(
+              "rounded-md border px-1.5 py-0 text-[11px] leading-[16px] transition",
+              checked ? "border-brand bg-base text-brand" : "border-line4 bg-layer1 text-secondary hover:text-primary",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1"
+            )
+          },
+          t(option.labelKey)
+        );
+      })) : null), saveFailed ? /* @__PURE__ */ import_react10.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
     }
 
     // src/features/expand-process/index.tsx

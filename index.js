@@ -1470,20 +1470,29 @@ __export(host_exports2, {
 
 // src/features/expand-process/expand-process.ts
 var EXPAND_PROCESS_STORAGE_KEY = "dsh-all-in-one:expand-process";
-function bootExpandProcess(storageKey) {
+var EXPAND_PROCESS_MODE_STORAGE_KEY = "dsh-all-in-one:expand-process-mode";
+function bootExpandProcess(keys) {
   const win = window;
   if (win["__DSH_ALL_IN_ONE_EXPAND_PROCESS__"]) return;
   win["__DSH_ALL_IN_ONE_EXPAND_PROCESS__"] = true;
   function readEnabled() {
     try {
-      return window.localStorage.getItem(storageKey) === "1";
+      return window.localStorage.getItem(keys.enabledKey) === "1";
     } catch (error) {
       console.error("[expand-process] \u8BFB\u53D6\u5F00\u5173\u72B6\u6001\u5931\u8D25:", error);
       return false;
     }
   }
-  win["__DSH_EXPAND_PROCESS_ENABLED__"] = readEnabled;
-  if (readEnabled()) {
+  function readMode() {
+    try {
+      return window.localStorage.getItem(keys.modeKey) === "active" ? "active" : "all";
+    } catch (error) {
+      console.error("[expand-process] \u8BFB\u53D6\u5C55\u5F00\u8303\u56F4\u5931\u8D25:", error);
+      return "all";
+    }
+  }
+  const enabled = readEnabled();
+  if (enabled) {
     const style = document.createElement("style");
     style.id = "dsh-all-in-one-expand-process-style";
     style.textContent = [
@@ -1511,18 +1520,87 @@ function bootExpandProcess(storageKey) {
     ].join("\n");
     (document.head || document.documentElement).appendChild(style);
   }
+  win["__DSH_EXPAND_PROCESS_INITIAL__"] = function() {
+    return enabled && readMode() === "all";
+  };
+  const binders = [];
+  let observer = null;
+  let scheduled = false;
+  let lastRunning = null;
+  let lastTurn = null;
+  function latestTurn() {
+    const nodes = document.querySelectorAll("[data-chat-turn]");
+    if (!nodes.length) return null;
+    let best = null;
+    let bestValue = -Infinity;
+    for (const node of Array.from(nodes)) {
+      const raw = node.getAttribute("data-chat-turn") ?? "";
+      const value = Number(raw);
+      if (Number.isFinite(value) && value > bestValue) {
+        bestValue = value;
+        best = raw;
+      }
+    }
+    return best ?? nodes[nodes.length - 1].getAttribute("data-chat-turn");
+  }
+  function isRunning() {
+    return document.querySelector("[data-chat-running]") !== null;
+  }
+  function refresh() {
+    const running = isRunning();
+    const turn = latestTurn();
+    if (running === lastRunning && turn === lastTurn) return;
+    lastRunning = running;
+    lastTurn = turn;
+    for (const update of [...binders]) update();
+  }
+  function schedule() {
+    if (scheduled) return;
+    scheduled = true;
+    window.requestAnimationFrame(() => {
+      scheduled = false;
+      refresh();
+    });
+  }
+  function observe() {
+    if (observer !== null || document.body === null) return;
+    observer = new MutationObserver(schedule);
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+  function bind(element, setExpanded, manual) {
+    if (!enabled || readMode() !== "active") return void 0;
+    if (element === null || typeof element.closest !== "function") return void 0;
+    const turnElement = element.closest("[data-chat-turn]");
+    if (turnElement === null) return void 0;
+    const turn = turnElement.getAttribute("data-chat-turn");
+    const update = () => {
+      if (manual.current) return;
+      setExpanded(isRunning() && turn !== null && turn === latestTurn());
+    };
+    binders.push(update);
+    observe();
+    update();
+    return () => {
+      const index = binders.indexOf(update);
+      if (index >= 0) binders.splice(index, 1);
+    };
+  }
+  win["__DSH_EXPAND_PROCESS_BIND__"] = bind;
   const RULES = {
     "@deepseek-ai/dsh-client-ui-tool": [
       [
         "const { expanded, toggle: toggleExpand } = useDisclosure();",
-        "const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_ENABLED__()); const toggleExpand = () => setExpanded((value) => !value);"
-      ]
+        'const __aioRow = (0, react.useRef)(null); const __aioManual = (0, react.useRef)(false); const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_INITIAL__()); const toggleExpand = () => { __aioManual.current = true; setExpanded((value) => !value); }; (0, react.useLayoutEffect)(() => typeof window.__DSH_EXPAND_PROCESS_BIND__ === "function" ? window.__DSH_EXPAND_PROCESS_BIND__(__aioRow.current, setExpanded, __aioManual) : undefined, []);'
+      ],
+      ['"data-tool": toolName,', 'ref: __aioRow, "data-tool": toolName,'],
+      ['"data-sample": "bash",', 'ref: __aioRow, "data-sample": "bash",']
     ],
     "@deepseek-ai/dsh-client-ui-chat": [
       [
         "const { expanded, toggle } = useDisclosure();",
-        "const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_ENABLED__()); const toggle = () => setExpanded((value) => !value);"
-      ]
+        'const __aioRow = (0, react.useRef)(null); const __aioManual = (0, react.useRef)(false); const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_INITIAL__()); const toggle = () => { __aioManual.current = true; setExpanded((value) => !value); }; (0, react.useLayoutEffect)(() => typeof window.__DSH_EXPAND_PROCESS_BIND__ === "function" ? window.__DSH_EXPAND_PROCESS_BIND__(__aioRow.current, setExpanded, __aioManual) : undefined, []);'
+      ],
+      ['"data-variant": "think",', 'ref: __aioRow, "data-variant": "think",']
     ]
   };
   function patch(registration) {
@@ -1546,6 +1624,11 @@ function bootExpandProcess(storageKey) {
         registration["__dshPatched"] = true;
         console.warn("[expand-process] \u89C4\u5219\u672A\u547D\u4E2D " + registration.id + "\uFF0CUI \u5B9E\u73B0\u53EF\u80FD\u5DF2\u53D8\u5316");
         return;
+      }
+      for (const [previous, next] of rules) {
+        if (output.indexOf(next) === -1) {
+          console.warn("[expand-process] \u90E8\u5206\u89C4\u5219\u672A\u547D\u4E2D " + registration.id + "\uFF1A" + previous);
+        }
       }
       registration.factory = (0, eval)("(" + output + ")");
       registration["__dshPatched"] = true;
@@ -1601,7 +1684,10 @@ function bootExpandProcess(storageKey) {
     console.warn("[expand-process] \u65E0\u6CD5\u6302\u8F7D\u6A21\u5757\u94A9\u5B50", error);
   }
 }
-var EXPAND_PROCESS_SCRIPT = `(${bootExpandProcess.toString()})(${JSON.stringify(EXPAND_PROCESS_STORAGE_KEY)});`;
+var EXPAND_PROCESS_SCRIPT = `(${bootExpandProcess.toString()})(${JSON.stringify({
+  enabledKey: EXPAND_PROCESS_STORAGE_KEY,
+  modeKey: EXPAND_PROCESS_MODE_STORAGE_KEY
+})});`;
 
 // src/features/expand-process/host.ts
 var inject2 = ["webServer"];
