@@ -42,7 +42,7 @@ window.__ModuleLoader__.load({
     var import_react24 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.ml-1\\.5{margin-left:.375rem}.ml-2{margin-left:.5rem}.ml-2\\.5{margin-left:.625rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3{height:.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-8{height:2rem}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.max-h-\\[60vh\\]{max-height:60vh}.w-11{width:2.75rem}.w-12{width:3rem}.w-16{width:4rem}.w-3{width:.75rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[14px\\]{min-width:14px}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.grow{flex-grow:1}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.transform,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-default{cursor:default}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line2{border-color:var(--dsw-alias-border-l2)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-1\\.5{padding:.375rem}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-0\\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-6{padding-left:1.5rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[16px\\]{font-size:16px}.text-\\[17px\\]{font-size:17px}.text-base{font-size:1rem;line-height:1.5rem}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.tabular-nums{--tw-numeric-spacing:tabular-nums;font-variant-numeric:var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction)}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[14px\\]{line-height:14px}.leading-\\[15px\\]{line-height:15px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\],.text-base{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-line2{color:var(--dsw-alias-border-l2)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-transparent{color:transparent}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-60{opacity:.6}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-xl{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}";
+    var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.ml-1\\.5{margin-left:.375rem}.ml-2{margin-left:.5rem}.ml-2\\.5{margin-left:.625rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3{height:.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-8{height:2rem}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.max-h-\\[60vh\\]{max-height:60vh}.w-11{width:2.75rem}.w-12{width:3rem}.w-16{width:4rem}.w-3{width:.75rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[14px\\]{min-width:14px}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.transform,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line2{border-color:var(--dsw-alias-border-l2)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-1\\.5{padding:.375rem}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-0\\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-6{padding-left:1.5rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[16px\\]{font-size:16px}.text-\\[17px\\]{font-size:17px}.text-base{font-size:1rem;line-height:1.5rem}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.tabular-nums{--tw-numeric-spacing:tabular-nums;font-variant-numeric:var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction)}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[14px\\]{line-height:14px}.leading-\\[15px\\]{line-height:15px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\],.text-base{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-line2{color:var(--dsw-alias-border-l2)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-transparent{color:transparent}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-60{opacity:.6}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-xl{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}";
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -3882,7 +3882,7 @@ window.__ModuleLoader__.load({
         // 功能页标题
         pageTitle: "\u5BF9\u8BDD\u52A0\u901F",
         // 功能页说明：勾选即时保存并生效
-        pageDescription: "\u52FE\u9009\u5373\u751F\u6548\u5E76\u4FDD\u5B58\u5230\u5BBF\u4E3B\u3002\u6807\u6709\u300C\u9700\u5BBF\u4E3B\u652F\u6301\u300D\u7684\u6761\u76EE\u5728\u5F53\u524D\u5BBF\u4E3B\u7248\u672C\u4E0A\u65E0\u6CD5\u751F\u6548\u3002",
+        pageDescription: "\u52FE\u9009\u5373\u751F\u6548\u5E76\u4FDD\u5B58\u5230\u5BBF\u4E3B\uFF0C\u4E4B\u540E\u6BCF\u4E2A\u4F1A\u8BDD\u90FD\u6309\u8FD9\u4EFD\u8BBE\u7F6E\u8FD0\u884C\u3002",
         // 已选条目计数的前缀
         selectedLabel: "\u5DF2\u9009",
         // 已选条目计数的单位
@@ -3891,8 +3891,6 @@ window.__ModuleLoader__.load({
         saving: "\u4FDD\u5B58\u4E2D\u2026",
         // 读取或保存失败时的前缀
         saveFailed: "\u4FDD\u5B58\u5931\u8D25",
-        // 当前宿主版本无法生效的条目标记
-        unavailable: "\u9700\u5BBF\u4E3B\u652F\u6301",
         // 每条条目收益文案的前缀
         gainLabel: "\u6536\u76CA",
         // 每条条目风险文案的前缀
@@ -3905,76 +3903,44 @@ window.__ModuleLoader__.load({
         parallelPromptGain: "\u6B65\u9AA4\u51CF 25\u201335%\uFF0C10 \u6B65\u4EFB\u52A1\u7701 20\u201330 \u79D2\u3002",
         // 第 1 条风险：只改提示词
         parallelPromptRisk: "\u51E0\u4E4E\u4E3A\u96F6\uFF0C\u53EA\u52A0 3 \u884C\u63D0\u793A\u8BCD\u3002",
-        // 第 2 条：只读工具声明可并发
-        readonlyConcurrencyName: "\u53EA\u8BFB\u5DE5\u5177\u58F0\u660E\u53EF\u5E76\u53D1",
-        // 第 2 条说明：未声明的工具只能排队
-        readonlyConcurrencyHint: "\u6CA1\u58F0\u660E\u300C\u5B89\u5168\u300D\u7684\u5DE5\u5177\u4E00\u5F8B\u6392\u961F\uFF0C\u73B0\u5728\u53EA\u6709\u8BFB\u6587\u4EF6\u58F0\u660E\u4E86\u3002",
-        // 第 2 条收益：需配合第 1 条
-        readonlyConcurrencyGain: "\u5355\u72EC\u505A\u51E0\u4E4E\u65E0\u6548\uFF0C\u914D\u5408\u7B2C 1 \u6761\u7701 1\u20132 \u79D2/\u6B65\u3002",
-        // 第 2 条风险：声明错误会导致并发写冲突
-        readonlyConcurrencyRisk: "\u6807\u9519\u4F1A\u8BA9\u5199\u64CD\u4F5C\u5E76\u53D1\u51B2\u7A81\u3002",
-        // 第 3 条：一次读多个文件
+        // 第 2 条：一次读多个文件
         batchReadName: "\u4E00\u6B21\u8BFB\u591A\u4E2A\u6587\u4EF6",
-        // 第 3 条说明：read 一次只处理一个文件
+        // 第 2 条说明：read 一次只处理一个文件
         batchReadHint: "read \u4E00\u6B21\u53EA\u80FD\u8BFB\u4E00\u4E2A\u6587\u4EF6\uFF0C\u8BFB 5 \u4E2A\u6587\u4EF6\u8981 5 \u6B21\u6765\u56DE\u3002",
-        // 第 3 条收益：多文件任务的节省
+        // 第 2 条收益：多文件任务的节省
         batchReadGain: "\u591A\u6587\u4EF6\u4EFB\u52A1\u7701 30% \u6B65\u9AA4\uFF0C5 \u4E2A\u6587\u4EF6\u7701 30 \u79D2\u3002",
-        // 第 3 条风险：返回体变大
+        // 第 2 条风险：返回体变大
         batchReadRisk: "\u8FD4\u56DE\u4F53\u53D8\u5927\uFF0C\u53EF\u80FD\u6491\u7206\u4E0A\u4E0B\u6587\u3002",
-        // 第 4 条：一次提交多处修改
+        // 第 3 条：一次提交多处修改
         batchEditName: "\u4E00\u6B21\u63D0\u4EA4\u591A\u5904\u4FEE\u6539",
-        // 第 4 条说明：edit 一次只改一处
+        // 第 3 条说明：edit 一次只改一处
         batchEditHint: "edit \u4E00\u6B21\u53EA\u80FD\u6539\u4E00\u5904\uFF0C\u6539 4 \u4E2A\u6587\u4EF6\u8981 4 \u6B21\u6765\u56DE\u3002",
-        // 第 4 条收益：多文件改动的节省
+        // 第 3 条收益：多文件改动的节省
         batchEditGain: "\u591A\u6587\u4EF6\u6539\u52A8\u7701 30% \u6B65\u9AA4\uFF0C4 \u4E2A\u6587\u4EF6\u7701 24 \u79D2\u3002",
-        // 第 4 条风险：半途失败留下半改状态
+        // 第 3 条风险：半途失败留下半改状态
         batchEditRisk: "\u534A\u9014\u5931\u8D25\u4F1A\u7559\u4E0B\u534A\u6539\u72B6\u6001\u3002",
-        // 第 5 条：延长连接保活
-        connectionKeepaliveName: "\u5EF6\u957F\u8FDE\u63A5\u4FDD\u6D3B",
-        // 第 5 条说明：连接寿命短于两步间隔
-        connectionKeepaliveHint: "\u8FDE\u63A5 4 \u79D2\u4E0D\u7528\u5C31\u65AD\uFF0C\u800C\u4E24\u6B65\u4E4B\u95F4\u5E73\u5747\u95F4\u9694 8.1 \u79D2\u3002",
-        // 第 5 条收益：每步省下的握手开销
-        connectionKeepaliveGain: "\u6BCF\u6B65\u7701 0.1\u20130.3 \u79D2\uFF0C10 \u6B65\u7701 1\u20133 \u79D2\u3002",
-        // 第 5 条风险：长连接占用少量资源
-        connectionKeepaliveRisk: "\u957F\u8FDE\u63A5\u4F1A\u591A\u5360\u4E00\u70B9\u672C\u5730\u8D44\u6E90\u3002",
-        // 第 6 条：合并流式帧
-        streamFrameCoalesceName: "\u5408\u5E76\u6D41\u5F0F\u5E27",
-        // 第 6 条说明：每个词都触发一次重画
-        streamFrameCoalesceHint: "\u6A21\u578B\u5410\u4E00\u4E2A\u8BCD\u5C31\u91CD\u753B\u4E00\u6B21\u9875\u9762\uFF0C\u5B57\u591A\u65F6\u524D\u7AEF\u88AB\u62D6\u6EE1\u3002",
-        // 第 6 条收益：降低重渲染
-        streamFrameCoalesceGain: "\u4E0D\u7701\u65F6\u95F4\uFF0C\u91CD\u6E32\u67D3\u964D 30\u201360%\u3002",
-        // 第 6 条风险：合并过粗会跳字
-        streamFrameCoalesceRisk: "\u5408\u5E76\u592A\u7C97\u4F1A\u4E00\u6BB5\u6BB5\u8DF3\u5B57\u3002",
-        // 第 7 条：会话日志批量写入
-        logBatchName: "\u4F1A\u8BDD\u65E5\u5FD7\u6279\u91CF\u5199\u5165",
-        // 第 7 条说明：每个事件都写盘
-        logBatchHint: "\u6BCF\u4E2A\u4E8B\u4EF6\u90FD\u5199\u4E00\u6B21\u78C1\u76D8\u5E76\u5F3A\u5236\u843D\u76D8\uFF0C\u957F\u4F1A\u8BDD\u5199\u5F97\u5F88\u9891\u7E41\u3002",
-        // 第 7 条收益：降低磁盘抖动
-        logBatchGain: "\u78C1\u76D8\u6296\u52A8\u4E0B\u964D\uFF0C\u957F\u4F1A\u8BDD\u66F4\u7A33\u3002",
-        // 第 7 条风险：崩溃时可能丢日志
-        logBatchRisk: "\u5D29\u6E83\u65F6\u53EF\u80FD\u4E22\u6700\u8FD1\u51E0\u79D2\u65E5\u5FD7\u3002",
-        // 第 8 条：降低日志压缩级别
-        zstdLevelName: "\u964D\u4F4E\u65E5\u5FD7\u538B\u7F29\u7EA7\u522B",
-        // 第 8 条说明：压缩级别与 CPU 的取舍
-        zstdLevelHint: "\u4F1A\u8BDD\u65E5\u5FD7\u7528 zstd \u538B\u7F29\uFF0C\u7EA7\u522B\u8D8A\u9AD8\u8D8A\u7701\u7A7A\u95F4\u3001\u8D8A\u5403 CPU\u3002",
-        // 第 8 条收益：降低 CPU，体积变大
-        zstdLevelGain: "\u957F\u4F1A\u8BDD CPU \u4E0B\u964D\uFF0C\u65E5\u5FD7\u53D8\u5927 1.5\u20132 \u500D\u3002",
-        // 第 8 条风险：只影响磁盘占用
-        zstdLevelRisk: "\u53EA\u5F71\u54CD\u78C1\u76D8\u5360\u7528\u3002",
-        // 第 9 条：更早裁剪旧工具结果
+        // 第 4 条：更早裁剪旧工具结果
         toolResultPruneName: "\u66F4\u65E9\u88C1\u526A\u65E7\u5DE5\u5177\u7ED3\u679C",
-        // 第 9 条说明：旧输出会一直留在上下文里
+        // 第 4 条说明：旧输出会一直留在上下文里
         toolResultPruneHint: "\u8BFB\u6587\u4EF6\u548C\u547D\u4EE4\u8F93\u51FA\u4F1A\u4E00\u76F4\u7559\u5728\u4E0A\u4E0B\u6587\u91CC\uFF0C\u53CD\u590D\u91CD\u4F20\u3002",
-        // 第 9 条收益：上下文增速下降
+        // 第 4 条收益：上下文增速下降
         toolResultPruneGain: "\u6BCF\u6B65\u5C11\u51E0 KB\uFF0C\u4E0A\u4E0B\u6587\u589E\u901F\u964D 20\u201330%\u3002",
-        // 第 9 条风险：模型可能重复读取
+        // 第 4 条风险：模型可能重复读取
         toolResultPruneRisk: "\u6A21\u578B\u53EF\u80FD\u91CD\u590D\u8BFB\u540C\u4E00\u6587\u4EF6\u3002",
-        // 第 9 条参数输入框的标签：裁剪字符数阈值
+        // 第 4 条参数输入框的标签：裁剪字符数阈值
         toolResultPruneThreshold: "\u88C1\u526A\u9608\u503C",
-        // 第 9 条参数输入框的单位
+        // 第 4 条参数输入框的单位
         toolResultPruneUnit: "\u5B57\u7B26",
-        // 第 9 条参数输入不合法时的提示，含允许范围
-        toolResultPruneInvalid: "\u8BF7\u8F93\u5165 512\u201316384 \u4E4B\u95F4\u7684\u6574\u6570\u3002"
+        // 第 4 条参数输入不合法时的提示，含允许范围
+        toolResultPruneInvalid: "\u8BF7\u8F93\u5165 512\u201316384 \u4E4B\u95F4\u7684\u6574\u6570\u3002",
+        // 第 5 条：只读工具声明可并发
+        readonlyConcurrencyName: "\u53EA\u8BFB\u5DE5\u5177\u58F0\u660E\u53EF\u5E76\u53D1",
+        // 第 5 条说明：未声明的工具只能排队
+        readonlyConcurrencyHint: "\u6CA1\u58F0\u660E\u300C\u5B89\u5168\u300D\u7684\u5DE5\u5177\u4E00\u5F8B\u6392\u961F\uFF0C\u73B0\u5728\u53EA\u6709\u8BFB\u6587\u4EF6\u58F0\u660E\u4E86\u3002",
+        // 第 5 条收益：需配合第 1 条
+        readonlyConcurrencyGain: "\u5355\u72EC\u505A\u51E0\u4E4E\u65E0\u6548\uFF0C\u914D\u5408\u7B2C 1 \u6761\u7701 1\u20132 \u79D2/\u6B65\u3002",
+        // 第 5 条风险：声明错误会导致并发写冲突
+        readonlyConcurrencyRisk: "\u6807\u9519\u4F1A\u8BA9\u5199\u64CD\u4F5C\u5E76\u53D1\u51B2\u7A81\u3002"
       },
       en: {
         // Grid entry title
@@ -3986,7 +3952,7 @@ window.__ModuleLoader__.load({
         // Feature page title
         pageTitle: "Chat acceleration",
         // Feature page description: selections apply and persist immediately
-        pageDescription: "Changes apply and save immediately. Items marked unavailable cannot take effect on this host version.",
+        pageDescription: "Changes apply and save immediately; every session then runs with these settings.",
         // Prefix of the selected-count line
         selectedLabel: "Selected",
         // Unit of the selected-count line
@@ -3995,8 +3961,6 @@ window.__ModuleLoader__.load({
         saving: "Saving\u2026",
         // Prefix shown when loading or saving fails
         saveFailed: "Save failed",
-        // Badge for items the current host version cannot apply
-        unavailable: "Needs host support",
         // Prefix of each item's gain text
         gainLabel: "Gain",
         // Prefix of each item's risk text
@@ -4009,76 +3973,44 @@ window.__ModuleLoader__.load({
         parallelPromptGain: "25\u201335% fewer steps; a 10-step task saves 20\u201330 s.",
         // Item 1 risk: prompt-only change
         parallelPromptRisk: "Almost none \u2014 three lines of prompt text.",
-        // Item 2: mark read-only tools as concurrency-safe
-        readonlyConcurrencyName: "Mark read-only tools as concurrency-safe",
-        // Item 2 hint: only tools that declare themselves safe may run together
-        readonlyConcurrencyHint: "Tools without a safe declaration run one at a time; only file reading has one.",
-        // Item 2 gain: needs item 1 to matter
-        readonlyConcurrencyGain: "Nearly zero alone; with item 1 saves 1\u20132 s per step.",
-        // Item 2 risk: a wrong declaration causes conflicting concurrent writes
-        readonlyConcurrencyRisk: "A wrong declaration runs conflicting writes together.",
-        // Item 3: read several files at once
+        // Item 2: read several files at once
         batchReadName: "Read several files at once",
-        // Item 3 hint: read handles one file per call
+        // Item 2 hint: read handles one file per call
         batchReadHint: "read takes one file per call, so five files cost five round trips.",
-        // Item 3 gain: steps and time saved on multi-file tasks
+        // Item 2 gain: steps and time saved on multi-file tasks
         batchReadGain: "30% fewer steps; five files save 30 s.",
-        // Item 3 risk: larger responses
+        // Item 2 risk: larger responses
         batchReadRisk: "Bigger responses can overflow the context.",
-        // Item 4: submit several edits at once
+        // Item 3: submit several edits at once
         batchEditName: "Submit several edits at once",
-        // Item 4 hint: edit changes one location per call
+        // Item 3 hint: edit changes one location per call
         batchEditHint: "edit changes one location per call, so four files cost four round trips.",
-        // Item 4 gain: steps and time saved on multi-file changes
+        // Item 3 gain: steps and time saved on multi-file changes
         batchEditGain: "30% fewer steps; four files save 24 s.",
-        // Item 4 risk: a half-finished batch
+        // Item 3 risk: a half-finished batch
         batchEditRisk: "A failed batch leaves files half changed.",
-        // Item 5: keep connections alive
-        connectionKeepaliveName: "Keep connections alive",
-        // Item 5 hint: connections die before the next step
-        connectionKeepaliveHint: "Connections drop after 4 s while steps are 8.1 s apart on average.",
-        // Item 5 gain: fixed network cost saved per step
-        connectionKeepaliveGain: "0.1\u20130.3 s per step, 1\u20133 s on a 10-step task.",
-        // Item 5 risk: long-lived connections hold a little resource
-        connectionKeepaliveRisk: "Long-lived connections hold a little local resource.",
-        // Item 6: coalesce stream frames
-        streamFrameCoalesceName: "Coalesce stream frames",
-        // Item 6 hint: every token repaints
-        streamFrameCoalesceHint: "Every token repaints the page, so long answers saturate the frontend.",
-        // Item 6 gain: fewer re-renders
-        streamFrameCoalesceGain: "No real-time change; 30\u201360% fewer re-renders.",
-        // Item 6 risk: coarse merging jumps
-        streamFrameCoalesceRisk: "Coarse merging makes text jump in chunks.",
-        // Item 7: batch session log writes
-        logBatchName: "Batch session log writes",
-        // Item 7 hint: every event flushes to disk
-        logBatchHint: "Every event writes and flushes to disk, which is frequent on long sessions.",
-        // Item 7 gain: less disk jitter
-        logBatchGain: "Less disk jitter; steadier long sessions.",
-        // Item 7 risk: a crash can lose events
-        logBatchRisk: "A crash can lose the newest events.",
-        // Item 8: lower log compression level
-        zstdLevelName: "Lower log compression level",
-        // Item 8 hint: higher levels cost CPU
-        zstdLevelHint: "Session logs are zstd-compressed; higher levels save space but cost CPU.",
-        // Item 8 gain: less CPU, larger files
-        zstdLevelGain: "Lower CPU on long sessions; logs grow 1.5\u20132\xD7.",
-        // Item 8 risk: disk usage only
-        zstdLevelRisk: "Disk usage only.",
-        // Item 9: prune old tool results earlier
+        // Item 4: prune old tool results earlier
         toolResultPruneName: "Prune old tool results earlier",
-        // Item 9 hint: old output stays in the context
+        // Item 4 hint: old output stays in the context
         toolResultPruneHint: "File and command output stays in the context and is re-sent every request.",
-        // Item 9 gain: slower context growth
+        // Item 4 gain: slower context growth
         toolResultPruneGain: "Saves a few KB per step; context grows 20\u201330% slower.",
-        // Item 9 risk: the model may re-read files
+        // Item 4 risk: the model may re-read files
         toolResultPruneRisk: "The model may read the same file again.",
-        // Item 9 threshold input label: prune size in characters
+        // Item 4 threshold input label: prune size in characters
         toolResultPruneThreshold: "Prune threshold",
-        // Item 9 threshold input unit
+        // Item 4 threshold input unit
         toolResultPruneUnit: "chars",
-        // Item 9 invalid input hint with the allowed range
-        toolResultPruneInvalid: "Enter a whole number between 512 and 16384."
+        // Item 4 invalid input hint with the allowed range
+        toolResultPruneInvalid: "Enter a whole number between 512 and 16384.",
+        // Item 5: mark read-only tools as concurrency-safe
+        readonlyConcurrencyName: "Mark read-only tools as concurrency-safe",
+        // Item 5 hint: only tools that declare themselves safe may run together
+        readonlyConcurrencyHint: "Tools without a safe declaration run one at a time; only file reading has one.",
+        // Item 5 gain: needs item 1 to matter
+        readonlyConcurrencyGain: "Nearly zero alone; with item 1 saves 1\u20132 s per step.",
+        // Item 5 risk: a wrong declaration causes conflicting concurrent writes
+        readonlyConcurrencyRisk: "A wrong declaration runs conflicting writes together."
       }
     };
 
@@ -4130,21 +4062,16 @@ window.__ModuleLoader__.load({
 
     // src/features/chat-accel/items.ts
     var ACCEL_ITEMS = [
-      { id: "parallelPrompt", score: 95, available: true },
-      { id: "connectionKeepalive", score: 75, available: false },
-      { id: "batchRead", score: 60, available: true },
-      { id: "batchEdit", score: 60, available: true },
+      { id: "parallelPrompt", score: 95 },
+      { id: "batchRead", score: 60 },
+      { id: "batchEdit", score: 60 },
       // 裁剪阈值建议值来自实测：默认 8192 字符，降到 4096 更早回收旧结果
       {
         id: "toolResultPrune",
         score: 60,
-        available: true,
         field: { min: 512, max: 16384, defaultValue: 4096 }
       },
-      { id: "readonlyConcurrency", score: 55, available: true },
-      { id: "streamFrameCoalesce", score: 50, available: false },
-      { id: "logBatch", score: 35, available: false },
-      { id: "zstdLevel", score: 35, available: false }
+      { id: "readonlyConcurrency", score: 55 }
     ].sort((left, right) => right.score - left.score);
     var ACCEL_ITEM_IDS = ACCEL_ITEMS.map((item) => item.id);
     function scoreToStars(score) {
@@ -4211,7 +4138,6 @@ window.__ModuleLoader__.load({
       onThresholdChange,
       onThresholdCommit
     }) {
-      const disabled = !item.available;
       return (
         // 条目用浅灰圆角块承载，选中时加深底色并用勾选框表达，不用描边
         /* @__PURE__ */ import_react22.default.createElement(
@@ -4219,7 +4145,7 @@ window.__ModuleLoader__.load({
           {
             className: cn(
               "rounded-lg px-2.5 py-1.5 transition",
-              disabled ? "bg-layer1 opacity-60" : checked ? "bg-layer2" : "bg-layer1 hover:bg-layer2"
+              checked ? "bg-layer2" : "bg-layer1 hover:bg-layer2"
             )
           },
           /* @__PURE__ */ import_react22.default.createElement(
@@ -4228,12 +4154,8 @@ window.__ModuleLoader__.load({
               type: "button",
               role: "checkbox",
               "aria-checked": checked,
-              "aria-disabled": disabled,
               onClick: () => onToggle(item),
-              className: cn(
-                "flex w-full items-start gap-2 border-0 bg-transparent p-0 text-left focus-visible:outline-none",
-                disabled ? "cursor-default" : "cursor-pointer"
-              )
+              className: "flex w-full cursor-pointer items-start gap-2 border-0 bg-transparent p-0 text-left focus-visible:outline-none"
             },
             /* @__PURE__ */ import_react22.default.createElement(
               "span",
@@ -4246,9 +4168,9 @@ window.__ModuleLoader__.load({
               },
               /* @__PURE__ */ import_react22.default.createElement(CheckGlyph, null)
             ),
-            /* @__PURE__ */ import_react22.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "flex flex-wrap items-center gap-1.5" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "min-w-[14px] text-[13px] font-semibold leading-[16px] tabular-nums text-primary" }, index + 1), /* @__PURE__ */ import_react22.default.createElement("span", { className: "text-[13px] font-medium leading-[16px] text-primary" }, t(`${item.id}Name`)), /* @__PURE__ */ import_react22.default.createElement(StarRating, { stars: scoreToStars(item.score) }), disabled ? /* @__PURE__ */ import_react22.default.createElement("span", { className: "rounded bg-base px-1 text-[10px] leading-[14px] text-secondary" }, t("unavailable")) : null), /* @__PURE__ */ import_react22.default.createElement("span", { className: "mt-0.5 block text-[11px] leading-[15px] text-secondary" }, t(`${item.id}Hint`)), /* @__PURE__ */ import_react22.default.createElement("span", { className: "mt-0.5 block text-[11px] leading-[15px]" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "text-primary" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "text-secondary" }, t("gainLabel"), " \xB7 "), t(`${item.id}Gain`)), /* @__PURE__ */ import_react22.default.createElement("span", { className: "ml-2.5 text-secondary" }, t("riskLabel"), " \xB7 ", t(`${item.id}Risk`))))
+            /* @__PURE__ */ import_react22.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "flex flex-wrap items-center gap-1.5" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "min-w-[14px] text-[13px] font-semibold leading-[16px] tabular-nums text-primary" }, index + 1), /* @__PURE__ */ import_react22.default.createElement("span", { className: "text-[13px] font-medium leading-[16px] text-primary" }, t(`${item.id}Name`)), /* @__PURE__ */ import_react22.default.createElement(StarRating, { stars: scoreToStars(item.score) })), /* @__PURE__ */ import_react22.default.createElement("span", { className: "mt-0.5 block text-[11px] leading-[15px] text-secondary" }, t(`${item.id}Hint`)), /* @__PURE__ */ import_react22.default.createElement("span", { className: "mt-0.5 block text-[11px] leading-[15px]" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "text-primary" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "text-secondary" }, t("gainLabel"), " \xB7 "), t(`${item.id}Gain`)), /* @__PURE__ */ import_react22.default.createElement("span", { className: "ml-2.5 text-secondary" }, t("riskLabel"), " \xB7 ", t(`${item.id}Risk`))))
           ),
-          item.field && checked && !disabled ? /* @__PURE__ */ import_react22.default.createElement("div", { className: "mt-1.5 flex flex-wrap items-center gap-1.5 pl-6" }, /* @__PURE__ */ import_react22.default.createElement("label", { className: "flex items-center gap-1.5" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "text-[12px] leading-[16px] text-secondary" }, t(`${item.id}Threshold`)), /* @__PURE__ */ import_react22.default.createElement(
+          item.field && checked ? /* @__PURE__ */ import_react22.default.createElement("div", { className: "mt-1.5 flex flex-wrap items-center gap-1.5 pl-6" }, /* @__PURE__ */ import_react22.default.createElement("label", { className: "flex items-center gap-1.5" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "text-[12px] leading-[16px] text-secondary" }, t(`${item.id}Threshold`)), /* @__PURE__ */ import_react22.default.createElement(
             "input",
             {
               type: "number",
@@ -4305,7 +4227,6 @@ window.__ModuleLoader__.load({
         });
       };
       const toggle = (item) => {
-        if (!item.available) return;
         const next = new Set(enabled);
         if (next.has(item.id)) next.delete(item.id);
         else next.add(item.id);

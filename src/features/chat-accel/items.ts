@@ -1,11 +1,11 @@
 /**
  * 「对话加速」的可勾选条目清单。
  *
- * 条目来自 dsh 的性能诊断结论与用户勾选。这里只保存稳定标识、推荐值、可选项参数
- * 与在当前宿主版本上能否真实生效；名称、说明、收益与风险文案放在 locales.ts。
+ * 条目来自 dsh 的性能诊断结论与用户勾选，只保留插件层能真实生效的部分：
+ * 连接保活、流式合帧、日志批量写入、压缩级别这四条需要宿主内部接口，
+ * 做不出实际效果，已从清单移除，不再占位。
  *
- * 宿主把工具、持久化与客户端打包在 app.asar 内，插件层拿不到对应接口，
- * 因此 2/7/8/9 四条标记为不可用：页面照常展示原因，但不允许勾选。
+ * 名称、说明、收益与风险文案放在 locales.ts。
  */
 
 /** 条目附带的数值参数：勾选后在条目下方出现输入框。 */
@@ -24,29 +24,22 @@ export interface AccelItem {
   id: string
   /** 推荐值 0–100，页面按它换算星级并倒序排列。 */
   score: number
-  /** 当前宿主版本上能否真实生效；false 时页面只展示、不可勾选。 */
-  available: boolean
   /** 可选的数值参数；没有参数的条目不渲染输入框。 */
   field?: AccelField
 }
 
 /** 全部可勾选条目：页面按推荐值从高到低展示，序号为下标加一。 */
 export const ACCEL_ITEMS: AccelItem[] = [
-  { id: 'parallelPrompt', score: 95, available: true },
-  { id: 'connectionKeepalive', score: 75, available: false },
-  { id: 'batchRead', score: 60, available: true },
-  { id: 'batchEdit', score: 60, available: true },
+  { id: 'parallelPrompt', score: 95 },
+  { id: 'batchRead', score: 60 },
+  { id: 'batchEdit', score: 60 },
   // 裁剪阈值建议值来自实测：默认 8192 字符，降到 4096 更早回收旧结果
   {
     id: 'toolResultPrune',
     score: 60,
-    available: true,
     field: { min: 512, max: 16384, defaultValue: 4096 },
   },
-  { id: 'readonlyConcurrency', score: 55, available: true },
-  { id: 'streamFrameCoalesce', score: 50, available: false },
-  { id: 'logBatch', score: 35, available: false },
-  { id: 'zstdLevel', score: 35, available: false },
+  { id: 'readonlyConcurrency', score: 55 },
 ].sort((left, right) => right.score - left.score)
 
 /** 全部条目 id，用作设置文件的白名单，避免历史配置里的旧 id 一直残留。 */

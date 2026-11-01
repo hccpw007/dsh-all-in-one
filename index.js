@@ -2918,21 +2918,16 @@ import { dirname as dirname6, join as join15 } from "node:path";
 
 // src/features/chat-accel/items.ts
 var ACCEL_ITEMS = [
-  { id: "parallelPrompt", score: 95, available: true },
-  { id: "connectionKeepalive", score: 75, available: false },
-  { id: "batchRead", score: 60, available: true },
-  { id: "batchEdit", score: 60, available: true },
+  { id: "parallelPrompt", score: 95 },
+  { id: "batchRead", score: 60 },
+  { id: "batchEdit", score: 60 },
   // 裁剪阈值建议值来自实测：默认 8192 字符，降到 4096 更早回收旧结果
   {
     id: "toolResultPrune",
     score: 60,
-    available: true,
     field: { min: 512, max: 16384, defaultValue: 4096 }
   },
-  { id: "readonlyConcurrency", score: 55, available: true },
-  { id: "streamFrameCoalesce", score: 50, available: false },
-  { id: "logBatch", score: 35, available: false },
-  { id: "zstdLevel", score: 35, available: false }
+  { id: "readonlyConcurrency", score: 55 }
 ].sort((left, right) => right.score - left.score);
 var ACCEL_ITEM_IDS = ACCEL_ITEMS.map((item) => item.id);
 

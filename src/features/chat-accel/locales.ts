@@ -12,8 +12,7 @@ export const chatAccelLocales: FeatureLocales = {
     // 功能页标题
     pageTitle: '对话加速',
     // 功能页说明：勾选即时保存并生效
-    pageDescription:
-      '勾选即生效并保存到宿主。标有「需宿主支持」的条目在当前宿主版本上无法生效。',
+    pageDescription: '勾选即生效并保存到宿主，之后每个会话都按这份设置运行。',
     // 已选条目计数的前缀
     selectedLabel: '已选',
     // 已选条目计数的单位
@@ -22,8 +21,6 @@ export const chatAccelLocales: FeatureLocales = {
     saving: '保存中…',
     // 读取或保存失败时的前缀
     saveFailed: '保存失败',
-    // 当前宿主版本无法生效的条目标记
-    unavailable: '需宿主支持',
     // 每条条目收益文案的前缀
     gainLabel: '收益',
     // 每条条目风险文案的前缀
@@ -38,83 +35,47 @@ export const chatAccelLocales: FeatureLocales = {
     // 第 1 条风险：只改提示词
     parallelPromptRisk: '几乎为零，只加 3 行提示词。',
 
-    // 第 2 条：只读工具声明可并发
-    readonlyConcurrencyName: '只读工具声明可并发',
-    // 第 2 条说明：未声明的工具只能排队
-    readonlyConcurrencyHint: '没声明「安全」的工具一律排队，现在只有读文件声明了。',
-    // 第 2 条收益：需配合第 1 条
-    readonlyConcurrencyGain: '单独做几乎无效，配合第 1 条省 1–2 秒/步。',
-    // 第 2 条风险：声明错误会导致并发写冲突
-    readonlyConcurrencyRisk: '标错会让写操作并发冲突。',
-
-    // 第 3 条：一次读多个文件
+    // 第 2 条：一次读多个文件
     batchReadName: '一次读多个文件',
-    // 第 3 条说明：read 一次只处理一个文件
+    // 第 2 条说明：read 一次只处理一个文件
     batchReadHint: 'read 一次只能读一个文件，读 5 个文件要 5 次来回。',
-    // 第 3 条收益：多文件任务的节省
+    // 第 2 条收益：多文件任务的节省
     batchReadGain: '多文件任务省 30% 步骤，5 个文件省 30 秒。',
-    // 第 3 条风险：返回体变大
+    // 第 2 条风险：返回体变大
     batchReadRisk: '返回体变大，可能撑爆上下文。',
 
-    // 第 4 条：一次提交多处修改
+    // 第 3 条：一次提交多处修改
     batchEditName: '一次提交多处修改',
-    // 第 4 条说明：edit 一次只改一处
+    // 第 3 条说明：edit 一次只改一处
     batchEditHint: 'edit 一次只能改一处，改 4 个文件要 4 次来回。',
-    // 第 4 条收益：多文件改动的节省
+    // 第 3 条收益：多文件改动的节省
     batchEditGain: '多文件改动省 30% 步骤，4 个文件省 24 秒。',
-    // 第 4 条风险：半途失败留下半改状态
+    // 第 3 条风险：半途失败留下半改状态
     batchEditRisk: '半途失败会留下半改状态。',
 
-    // 第 5 条：延长连接保活
-    connectionKeepaliveName: '延长连接保活',
-    // 第 5 条说明：连接寿命短于两步间隔
-    connectionKeepaliveHint: '连接 4 秒不用就断，而两步之间平均间隔 8.1 秒。',
-    // 第 5 条收益：每步省下的握手开销
-    connectionKeepaliveGain: '每步省 0.1–0.3 秒，10 步省 1–3 秒。',
-    // 第 5 条风险：长连接占用少量资源
-    connectionKeepaliveRisk: '长连接会多占一点本地资源。',
-
-    // 第 6 条：合并流式帧
-    streamFrameCoalesceName: '合并流式帧',
-    // 第 6 条说明：每个词都触发一次重画
-    streamFrameCoalesceHint: '模型吐一个词就重画一次页面，字多时前端被拖满。',
-    // 第 6 条收益：降低重渲染
-    streamFrameCoalesceGain: '不省时间，重渲染降 30–60%。',
-    // 第 6 条风险：合并过粗会跳字
-    streamFrameCoalesceRisk: '合并太粗会一段段跳字。',
-
-    // 第 7 条：会话日志批量写入
-    logBatchName: '会话日志批量写入',
-    // 第 7 条说明：每个事件都写盘
-    logBatchHint: '每个事件都写一次磁盘并强制落盘，长会话写得很频繁。',
-    // 第 7 条收益：降低磁盘抖动
-    logBatchGain: '磁盘抖动下降，长会话更稳。',
-    // 第 7 条风险：崩溃时可能丢日志
-    logBatchRisk: '崩溃时可能丢最近几秒日志。',
-
-    // 第 8 条：降低日志压缩级别
-    zstdLevelName: '降低日志压缩级别',
-    // 第 8 条说明：压缩级别与 CPU 的取舍
-    zstdLevelHint: '会话日志用 zstd 压缩，级别越高越省空间、越吃 CPU。',
-    // 第 8 条收益：降低 CPU，体积变大
-    zstdLevelGain: '长会话 CPU 下降，日志变大 1.5–2 倍。',
-    // 第 8 条风险：只影响磁盘占用
-    zstdLevelRisk: '只影响磁盘占用。',
-
-    // 第 9 条：更早裁剪旧工具结果
+    // 第 4 条：更早裁剪旧工具结果
     toolResultPruneName: '更早裁剪旧工具结果',
-    // 第 9 条说明：旧输出会一直留在上下文里
+    // 第 4 条说明：旧输出会一直留在上下文里
     toolResultPruneHint: '读文件和命令输出会一直留在上下文里，反复重传。',
-    // 第 9 条收益：上下文增速下降
+    // 第 4 条收益：上下文增速下降
     toolResultPruneGain: '每步少几 KB，上下文增速降 20–30%。',
-    // 第 9 条风险：模型可能重复读取
+    // 第 4 条风险：模型可能重复读取
     toolResultPruneRisk: '模型可能重复读同一文件。',
-    // 第 9 条参数输入框的标签：裁剪字符数阈值
+    // 第 4 条参数输入框的标签：裁剪字符数阈值
     toolResultPruneThreshold: '裁剪阈值',
-    // 第 9 条参数输入框的单位
+    // 第 4 条参数输入框的单位
     toolResultPruneUnit: '字符',
-    // 第 9 条参数输入不合法时的提示，含允许范围
+    // 第 4 条参数输入不合法时的提示，含允许范围
     toolResultPruneInvalid: '请输入 512–16384 之间的整数。',
+
+    // 第 5 条：只读工具声明可并发
+    readonlyConcurrencyName: '只读工具声明可并发',
+    // 第 5 条说明：未声明的工具只能排队
+    readonlyConcurrencyHint: '没声明「安全」的工具一律排队，现在只有读文件声明了。',
+    // 第 5 条收益：需配合第 1 条
+    readonlyConcurrencyGain: '单独做几乎无效，配合第 1 条省 1–2 秒/步。',
+    // 第 5 条风险：声明错误会导致并发写冲突
+    readonlyConcurrencyRisk: '标错会让写操作并发冲突。',
   },
   en: {
     // Grid entry title
@@ -126,8 +87,7 @@ export const chatAccelLocales: FeatureLocales = {
     // Feature page title
     pageTitle: 'Chat acceleration',
     // Feature page description: selections apply and persist immediately
-    pageDescription:
-      'Changes apply and save immediately. Items marked unavailable cannot take effect on this host version.',
+    pageDescription: 'Changes apply and save immediately; every session then runs with these settings.',
     // Prefix of the selected-count line
     selectedLabel: 'Selected',
     // Unit of the selected-count line
@@ -136,8 +96,6 @@ export const chatAccelLocales: FeatureLocales = {
     saving: 'Saving…',
     // Prefix shown when loading or saving fails
     saveFailed: 'Save failed',
-    // Badge for items the current host version cannot apply
-    unavailable: 'Needs host support',
     // Prefix of each item's gain text
     gainLabel: 'Gain',
     // Prefix of each item's risk text
@@ -152,82 +110,46 @@ export const chatAccelLocales: FeatureLocales = {
     // Item 1 risk: prompt-only change
     parallelPromptRisk: 'Almost none — three lines of prompt text.',
 
-    // Item 2: mark read-only tools as concurrency-safe
-    readonlyConcurrencyName: 'Mark read-only tools as concurrency-safe',
-    // Item 2 hint: only tools that declare themselves safe may run together
-    readonlyConcurrencyHint: 'Tools without a safe declaration run one at a time; only file reading has one.',
-    // Item 2 gain: needs item 1 to matter
-    readonlyConcurrencyGain: 'Nearly zero alone; with item 1 saves 1–2 s per step.',
-    // Item 2 risk: a wrong declaration causes conflicting concurrent writes
-    readonlyConcurrencyRisk: 'A wrong declaration runs conflicting writes together.',
-
-    // Item 3: read several files at once
+    // Item 2: read several files at once
     batchReadName: 'Read several files at once',
-    // Item 3 hint: read handles one file per call
+    // Item 2 hint: read handles one file per call
     batchReadHint: 'read takes one file per call, so five files cost five round trips.',
-    // Item 3 gain: steps and time saved on multi-file tasks
+    // Item 2 gain: steps and time saved on multi-file tasks
     batchReadGain: '30% fewer steps; five files save 30 s.',
-    // Item 3 risk: larger responses
+    // Item 2 risk: larger responses
     batchReadRisk: 'Bigger responses can overflow the context.',
 
-    // Item 4: submit several edits at once
+    // Item 3: submit several edits at once
     batchEditName: 'Submit several edits at once',
-    // Item 4 hint: edit changes one location per call
+    // Item 3 hint: edit changes one location per call
     batchEditHint: 'edit changes one location per call, so four files cost four round trips.',
-    // Item 4 gain: steps and time saved on multi-file changes
+    // Item 3 gain: steps and time saved on multi-file changes
     batchEditGain: '30% fewer steps; four files save 24 s.',
-    // Item 4 risk: a half-finished batch
+    // Item 3 risk: a half-finished batch
     batchEditRisk: 'A failed batch leaves files half changed.',
 
-    // Item 5: keep connections alive
-    connectionKeepaliveName: 'Keep connections alive',
-    // Item 5 hint: connections die before the next step
-    connectionKeepaliveHint: 'Connections drop after 4 s while steps are 8.1 s apart on average.',
-    // Item 5 gain: fixed network cost saved per step
-    connectionKeepaliveGain: '0.1–0.3 s per step, 1–3 s on a 10-step task.',
-    // Item 5 risk: long-lived connections hold a little resource
-    connectionKeepaliveRisk: 'Long-lived connections hold a little local resource.',
-
-    // Item 6: coalesce stream frames
-    streamFrameCoalesceName: 'Coalesce stream frames',
-    // Item 6 hint: every token repaints
-    streamFrameCoalesceHint: 'Every token repaints the page, so long answers saturate the frontend.',
-    // Item 6 gain: fewer re-renders
-    streamFrameCoalesceGain: 'No real-time change; 30–60% fewer re-renders.',
-    // Item 6 risk: coarse merging jumps
-    streamFrameCoalesceRisk: 'Coarse merging makes text jump in chunks.',
-
-    // Item 7: batch session log writes
-    logBatchName: 'Batch session log writes',
-    // Item 7 hint: every event flushes to disk
-    logBatchHint: 'Every event writes and flushes to disk, which is frequent on long sessions.',
-    // Item 7 gain: less disk jitter
-    logBatchGain: 'Less disk jitter; steadier long sessions.',
-    // Item 7 risk: a crash can lose events
-    logBatchRisk: 'A crash can lose the newest events.',
-
-    // Item 8: lower log compression level
-    zstdLevelName: 'Lower log compression level',
-    // Item 8 hint: higher levels cost CPU
-    zstdLevelHint: 'Session logs are zstd-compressed; higher levels save space but cost CPU.',
-    // Item 8 gain: less CPU, larger files
-    zstdLevelGain: 'Lower CPU on long sessions; logs grow 1.5–2×.',
-    // Item 8 risk: disk usage only
-    zstdLevelRisk: 'Disk usage only.',
-
-    // Item 9: prune old tool results earlier
+    // Item 4: prune old tool results earlier
     toolResultPruneName: 'Prune old tool results earlier',
-    // Item 9 hint: old output stays in the context
+    // Item 4 hint: old output stays in the context
     toolResultPruneHint: 'File and command output stays in the context and is re-sent every request.',
-    // Item 9 gain: slower context growth
+    // Item 4 gain: slower context growth
     toolResultPruneGain: 'Saves a few KB per step; context grows 20–30% slower.',
-    // Item 9 risk: the model may re-read files
+    // Item 4 risk: the model may re-read files
     toolResultPruneRisk: 'The model may read the same file again.',
-    // Item 9 threshold input label: prune size in characters
+    // Item 4 threshold input label: prune size in characters
     toolResultPruneThreshold: 'Prune threshold',
-    // Item 9 threshold input unit
+    // Item 4 threshold input unit
     toolResultPruneUnit: 'chars',
-    // Item 9 invalid input hint with the allowed range
+    // Item 4 invalid input hint with the allowed range
     toolResultPruneInvalid: 'Enter a whole number between 512 and 16384.',
+
+    // Item 5: mark read-only tools as concurrency-safe
+    readonlyConcurrencyName: 'Mark read-only tools as concurrency-safe',
+    // Item 5 hint: only tools that declare themselves safe may run together
+    readonlyConcurrencyHint: 'Tools without a safe declaration run one at a time; only file reading has one.',
+    // Item 5 gain: needs item 1 to matter
+    readonlyConcurrencyGain: 'Nearly zero alone; with item 1 saves 1–2 s per step.',
+    // Item 5 risk: a wrong declaration causes conflicting concurrent writes
+    readonlyConcurrencyRisk: 'A wrong declaration runs conflicting writes together.',
   },
 }

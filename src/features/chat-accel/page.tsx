@@ -117,14 +117,12 @@ function AccelRow({
   onThresholdChange,
   onThresholdCommit,
 }: AccelRowProps) {
-  const disabled = !item.available
-
   return (
     // 条目用浅灰圆角块承载，选中时加深底色并用勾选框表达，不用描边
     <li
       className={cn(
         'rounded-lg px-2.5 py-1.5 transition',
-        disabled ? 'bg-layer1 opacity-60' : checked ? 'bg-layer2' : 'bg-layer1 hover:bg-layer2',
+        checked ? 'bg-layer2' : 'bg-layer1 hover:bg-layer2',
       )}
     >
       {/* 条目主体：点击切换勾选 */}
@@ -132,12 +130,8 @@ function AccelRow({
         type="button"
         role="checkbox"
         aria-checked={checked}
-        aria-disabled={disabled}
         onClick={() => onToggle(item)}
-        className={cn(
-          'flex w-full items-start gap-2 border-0 bg-transparent p-0 text-left focus-visible:outline-none',
-          disabled ? 'cursor-default' : 'cursor-pointer',
-        )}
+        className="flex w-full cursor-pointer items-start gap-2 border-0 bg-transparent p-0 text-left focus-visible:outline-none"
       >
         {/* 勾选框：选中时填充主色 */}
         <span
@@ -163,12 +157,6 @@ function AccelRow({
             </span>
             {/* 推荐星级 */}
             <StarRating stars={scoreToStars(item.score)} />
-            {/* 当前宿主版本无法生效的条目标记 */}
-            {disabled ? (
-              <span className="rounded bg-base px-1 text-[10px] leading-[14px] text-secondary">
-                {t('unavailable')}
-              </span>
-            ) : null}
           </span>
           {/* 条目说明：这个优化解决什么问题 */}
           <span className="mt-0.5 block text-[11px] leading-[15px] text-secondary">
@@ -187,7 +175,7 @@ function AccelRow({
         </span>
       </button>
       {/* 数值参数：只有勾选后出现，且放在主体按钮之外，输入时不会误触勾选 */}
-      {item.field && checked && !disabled ? (
+      {item.field && checked ? (
         <div className="mt-1.5 flex flex-wrap items-center gap-1.5 pl-6">
           <label className="flex items-center gap-1.5">
             {/* 参数输入框标签 */}
@@ -291,12 +279,10 @@ export function ChatAccelPage({ t }: FeaturePageProps) {
   }
 
   /**
-   * 切换一条条目的勾选状态；不可用条目直接忽略。
+   * 切换一条条目的勾选状态。
    * @param item 条目定义
    */
   const toggle = (item: AccelItem) => {
-    if (!item.available) return
-
     const next = new Set(enabled)
 
     if (next.has(item.id)) next.delete(item.id)
