@@ -1977,6 +1977,10 @@ window.__ModuleLoader__.load({
       '[data-slot="main.conversation"]'
     ];
     var CONVERSATION_SELECTOR = CONTAINER_SELECTORS.join(", ");
+    var CHAT_FLOW_SELECTOR = "[data-chat-flow]";
+    function isChatFlowRegion(element) {
+      return element?.closest(CHAT_FLOW_SELECTOR) != null;
+    }
     function findConversationContainer() {
       for (const selector of CONTAINER_SELECTORS) {
         const element = document.querySelector(selector);
@@ -2166,8 +2170,10 @@ window.__ModuleLoader__.load({
     var MAX_PENDING_NODES = 4e3;
     var RELOCATE_INTERVAL_MS = 1500;
     function scanSubtree(root) {
+      const scope = isChatFlowRegion(root) ? root : root.querySelector(CHAT_FLOW_SELECTOR);
+      if (scope === null) return;
       const grouped = /* @__PURE__ */ new Map();
-      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT);
       for (let node = walker.nextNode(); node !== null; node = walker.nextNode()) {
         if (isOwnPreviewNode(node)) continue;
         const text = node;
@@ -2253,7 +2259,8 @@ window.__ModuleLoader__.load({
       function attach() {
         if (container === void 0) return;
         observer.observe(container, { childList: true, characterData: true, subtree: true });
-        enqueueTree(container);
+        const chatFlow = container.querySelector(CHAT_FLOW_SELECTOR) ?? container;
+        enqueueTree(chatFlow);
         schedule();
       }
       if (container !== void 0) attach();

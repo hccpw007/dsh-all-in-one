@@ -5,7 +5,7 @@
  * 观察范围限定在会话正文容器内；回调只做入队，真正的扫描合并到每帧一次，
  * 并且每帧有节点数上限，长会话不会因为一次大变更卡住界面。
  */
-import { findConversationContainer } from './conversation'
+import { CHAT_FLOW_SELECTOR, findConversationContainer, isChatFlowRegion } from './conversation'
 import {
   closestBlock,
   collectImagePaths,
@@ -28,8 +28,14 @@ const RELOCATE_INTERVAL_MS = 1500
  * @param root 待扫描的元素
  */
 function scanSubtree(root: Element): void {
+  // 预览只插在对话正文内：轨迹等视图的记录里同样带图片路径，扫进去会挤占轨迹内容。
+  // React 挂载视图时一次插入整棵子树，传入的 root 可能包住正文以外的兄弟视图，
+  // 因此不能直接以 root 为界，而要收窄到正文本身
+  const scope = isChatFlowRegion(root) ? root : root.querySelector(CHAT_FLOW_SELECTOR)
+  if (scope === null) return
+
   const grouped = new Map<Element, string[]>()
-  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
+  const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT)
 
   for (let node = walker.nextNode(); node !== null; node = walker.nextNode()) {
     // 跳过自己插入的节点：预览容器里没有文本，但宿主可能把它包进别的块
@@ -103,7 +109,7 @@ export function installImagePreviewObserver(): () => void {
         continue
       }
 
-      // 会话容器本身被重建：重新扫一遍容器内容
+      // 会话容器本身被重建：重新扫一遍，扫描范围由 scanSubtree 收窄到对话正文
       if (node.contains(container)) scanSubtree(container)
     }
   }
@@ -170,7 +176,11 @@ export function installImagePreviewObserver(): () => void {
   function attach(): void {
     if (container === undefined) return
     observer.observe(container, { childList: true, characterData: true, subtree: true })
-    enqueueTree(container)
+
+    // 首次扫描以对话正文为根：会话容器同时装着轨迹等视图，整棵扫描会误插预览。
+    // 正文尚未渲染时退回容器，等它挂载后的节点变化再触发扫描
+    const chatFlow = container.querySelector(CHAT_FLOW_SELECTOR) ?? container
+    enqueueTree(chatFlow)
     schedule()
   }
 

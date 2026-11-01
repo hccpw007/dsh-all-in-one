@@ -16,6 +16,24 @@ const CONTAINER_SELECTORS = [
 export const CONVERSATION_SELECTOR = CONTAINER_SELECTORS.join(', ')
 
 /**
+ * 对话视图正文的容器标记。
+ *
+ * 会话区的容器同时容纳轨迹等其它视图（切到轨迹时对话视图会被卸载），
+ * 而它们的记录里同样带着图片路径文本；预览只属于对话正文，扫描必须以它为界，
+ * 否则预览会被插进轨迹视图并挤占、遮挡轨迹内容。
+ */
+export const CHAT_FLOW_SELECTOR = '[data-chat-flow]'
+
+/**
+ * 判断一个元素是否位于对话视图正文内。
+ * @param element 待判断元素
+ * @returns 位于对话正文内返回 true
+ */
+export function isChatFlowRegion(element: Element | null): boolean {
+  return element?.closest(CHAT_FLOW_SELECTOR) != null
+}
+
+/**
  * 按优先级定位会话正文容器。
  * @returns 容器；页面尚未渲染出会话区时返回 undefined
  */
