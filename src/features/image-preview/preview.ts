@@ -97,6 +97,87 @@ const failedPaths = new Set<string>()
 const MAX_FAILED_PATHS = 200
 
 /**
+ * 宿主的消息行标记。
+ *
+ * 同一条工具调用里，路径会分别出现在标题块与结果块上，而宿主渲染的原图只在
+ * 其中一块里；按行判断「这条消息是不是已经有图」才能把两处预览一起让位。
+ */
+const HOST_MESSAGE_ROW_SELECTOR = '[data-chat-anchor-key]'
+
+/**
+ * 工具调用的根容器标记。
+ *
+ * 截图类工具会把结果图片渲染在调用容器内；能取到该容器时按它判断，
+ * 同一调用里标题与结果上的路径就一起让位。取不到时退回消息行。
+ */
+const TOOL_CALL_SELECTOR = '[data-tool]'
+
+/**
+ * macOS 把 `/tmp`、`/var`、`/etc` 挂在 `/private` 下的符号链接，
+ * 同一文件因此常以 `/tmp/x.png` 与 `/private/tmp/x.png` 两种写法出现在会话里。
+ * 只用于判断「是不是同一张图」，实际请求仍用原文路径：
+ * Linux 上这些目录是真实目录，按别名改写会让读取地址失效。
+ */
+const PRIVATE_ALIASES = ['/tmp', '/var', '/etc']
+
+/**
+ * 求一条路径的归一化键，用来识别同一文件的不同写法。
+ * @param path 本地图片绝对路径或宿主附件 ID
+ * @returns 归一到 `/private/...` 形式的键；非别名路径原样返回
+ */
+function canonicalPathKey(path: string): string {
+  for (const alias of PRIVATE_ALIASES) {
+    if (path === alias || path.startsWith(`${alias}/`)) return `/private${path}`
+  }
+
+  return path
+}
+
+/**
+ * 预览的判断范围：工具调用容器 → 消息行 → 块本身，逐级回退。
+ * @param block 消息中的块级容器
+ * @returns 判断「是否已有宿主图片」的范围元素
+ */
+function previewScope(block: Element): Element {
+  return block.closest(TOOL_CALL_SELECTOR) ?? block.closest(HOST_MESSAGE_ROW_SELECTOR) ?? block
+}
+
+/**
+ * 判断范围内是否已有宿主渲染的图片。
+ *
+ * 宿主已经显示原图时再插一张预览就是同一张图出现两次，预览应当让位。
+ * 本功能自己的预览图不算：它们挂在块之后，落在同一个消息行里。
+ * @param block 消息中的块级容器
+ * @returns 已有宿主图片时返回 true
+ */
+function hasHostImage(block: Element): boolean {
+  for (const image of previewScope(block).querySelectorAll('img')) {
+    if (!isOwnPreviewNode(image)) return true
+  }
+
+  return false
+}
+
+/**
+ * 按归一化键去重，同一文件只保留最先出现的写法。
+ * @param paths 路径列表
+ * @returns 去重后的路径列表
+ */
+function dedupeByCanonicalPath(paths: string[]): string[] {
+  const seen = new Set<string>()
+  const unique: string[] = []
+
+  for (const path of paths) {
+    const key = canonicalPathKey(path)
+    if (seen.has(key)) continue
+    seen.add(key)
+    unique.push(path)
+  }
+
+  return unique
+}
+
+/**
  * 从一段文本中提取本地图片路径。
  * @param text 消息中的文本节点内容
  * @returns 去重后的绝对路径（已去掉 file:// 前缀与尾部标点）
@@ -171,6 +252,25 @@ export function closestBlock(element: Element | null): Element | undefined {
 }
 
 /**
+ * 已插入预览的归一化路径 → 拥有它的预览容器。
+ *
+ * 同一张图常在一段工具调用里出现两次：调用标题写着 `/tmp/x.png`，结果里写着
+ * `/private/tmp/x.png`。两者落在不同的块上，只按块内去重仍会各插一张，
+ * 因此再按归一化路径占位：同一张图只由最先插入的块预览。
+ */
+const previewOwners = new Map<string, HTMLElement>()
+
+/**
+ * 释放某个容器占用的路径，供它被重建或移除时调用。
+ * @param wrapper 预览容器
+ */
+function releasePreviewOwnership(wrapper: Element): void {
+  for (const [key, owner] of previewOwners) {
+    if (owner === wrapper) previewOwners.delete(key)
+  }
+}
+
+/**
  * 把一个块内识别到的路径同步成预览节点。
  *
  * 同一个块只保留一个预览容器：路径集合变化时整体重建，未变化时不做任何 DOM 写入。
@@ -178,21 +278,32 @@ export function closestBlock(element: Element | null): Element | undefined {
  * @param paths 该块内的本地图片路径
  */
 export function syncBlockPreviews(block: Element, paths: string[]): void {
-  const usablePaths = paths.filter((path) => !failedPaths.has(path))
-  // key 与顺序无关：同一组路径因扫描顺序不同被当成变化时，会反复删除重建预览
-  const key = [...usablePaths].sort().join('\n')
-
   // 宿主重渲染可能已经移除了预览容器，这里先以 DOM 实际状态为准
   const existing = block.nextElementSibling
   const wrapper = existing instanceof HTMLElement && existing.hasAttribute(PREVIEW_ATTRIBUTE)
     ? existing
     : undefined
 
+  // 宿主已经把原图渲染出来时不插预览，否则同一张图会显示两次；
+  // 同一文件还可能以 `/tmp/...` 与 `/private/tmp/...` 两种写法出现，先去重
+  const candidates = hasHostImage(block)
+    ? []
+    : dedupeByCanonicalPath(paths.filter((path) => !failedPaths.has(canonicalPathKey(path))))
+
+  // 已被别的块占用的同一张图也不再重复插入（容器断开即视为释放，跟随虚拟滚动）
+  const usablePaths = candidates.filter((path) => {
+    const owner = previewOwners.get(canonicalPathKey(path))
+    return owner === undefined || !owner.isConnected || owner === wrapper
+  })
+  // key 与顺序无关：同一组路径因扫描顺序不同被当成变化时，会反复删除重建预览
+  const key = usablePaths.map(canonicalPathKey).sort().join('\n')
+
   if (wrapper !== undefined) {
     if (wrapper.dataset.previewKey === key) return
+    releasePreviewOwnership(wrapper)
     wrapper.remove()
   } else if (usablePaths.length === 0 && renderedBlockKeys.get(block) === key) {
-    // 该块此前已判定为无需预览（路径全部读取失败），不必每次扫描都重试；
+    // 该块此前已判定为无需预览（路径全部读取失败或被别处占用），不必每次扫描都重试；
     // 反之有可用路径却没有容器，只可能是被宿主重渲染移除了，必须重建
     return
   }
@@ -208,9 +319,28 @@ export function syncBlockPreviews(block: Element, paths: string[]): void {
   container.dataset.previewKey = key
   container.className = WRAPPER_CLASS
 
-  for (const path of usablePaths) container.appendChild(createPreviewImage(path, container))
+  for (const path of usablePaths) {
+    container.appendChild(createPreviewImage(path, container))
+    previewOwners.set(canonicalPathKey(path), container)
+  }
 
   block.insertAdjacentElement('afterend', container)
+}
+
+/**
+ * 撤掉一条消息行里本功能的预览。
+ *
+ * 宿主往往晚于文本把原图渲染出来，同一行里的预览此时就成了重复内容；
+ * 这里就地清理，不必等该行再出现文本变化。
+ * @param block 消息中的块级容器
+ */
+export function dropPreviewsForHostImage(block: Element): void {
+  if (!hasHostImage(block)) return
+
+  for (const wrapper of previewScope(block).querySelectorAll(`[${PREVIEW_ATTRIBUTE}]`)) {
+    releasePreviewOwnership(wrapper)
+    wrapper.remove()
+  }
 }
 
 /**
@@ -256,10 +386,12 @@ function createPreviewImage(path: string, container: HTMLElement): HTMLImageElem
  * @param path 本地图片路径
  */
 function rememberFailedPath(path: string): void {
-  if (failedPaths.has(path)) return
+  // 按归一化键记录：同一文件的另一种写法读不到，再试一次也只会失败
+  const key = canonicalPathKey(path)
+  if (failedPaths.has(key)) return
   if (failedPaths.size >= MAX_FAILED_PATHS) failedPaths.clear()
 
-  failedPaths.add(path)
+  failedPaths.add(key)
   console.warn('[image-preview] 图片读取失败，已停止预览:', path)
 }
 
@@ -280,6 +412,7 @@ export function isOwnPreviewNode(node: Node): boolean {
  */
 export function disposePreviews(): void {
   closeImagePreview()
+  previewOwners.clear()
 
   for (const element of document.querySelectorAll(`[${PREVIEW_ATTRIBUTE}]`)) element.remove()
 }

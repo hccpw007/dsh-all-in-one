@@ -10,6 +10,7 @@ import {
   closestBlock,
   collectImagePaths,
   disposePreviews,
+  dropPreviewsForHostImage,
   isOwnPreviewNode,
   syncBlockPreviews,
 } from './preview'
@@ -105,7 +106,14 @@ export function installImagePreviewObserver(): () => void {
       // 同一块的预览就会被反复删除重建（每帧新建 img 并重新请求图片）
       if (container.contains(node)) {
         const block = closestBlock(node)
-        if (block !== undefined) scanSubtree(block)
+        if (block !== undefined) {
+          // 宿主把原图渲染出来后，同一行里本功能的预览就成了重复内容，先撤掉再重扫
+          if (node instanceof HTMLImageElement || node.querySelector('img') !== null) {
+            dropPreviewsForHostImage(block)
+          }
+
+          scanSubtree(block)
+        }
         continue
       }
 

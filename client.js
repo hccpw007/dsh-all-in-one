@@ -2069,6 +2069,35 @@ window.__ModuleLoader__.load({
     var renderedBlockKeys = /* @__PURE__ */ new WeakMap();
     var failedPaths = /* @__PURE__ */ new Set();
     var MAX_FAILED_PATHS = 200;
+    var HOST_MESSAGE_ROW_SELECTOR = "[data-chat-anchor-key]";
+    var TOOL_CALL_SELECTOR = "[data-tool]";
+    var PRIVATE_ALIASES = ["/tmp", "/var", "/etc"];
+    function canonicalPathKey(path) {
+      for (const alias of PRIVATE_ALIASES) {
+        if (path === alias || path.startsWith(`${alias}/`)) return `/private${path}`;
+      }
+      return path;
+    }
+    function previewScope(block) {
+      return block.closest(TOOL_CALL_SELECTOR) ?? block.closest(HOST_MESSAGE_ROW_SELECTOR) ?? block;
+    }
+    function hasHostImage(block) {
+      for (const image of previewScope(block).querySelectorAll("img")) {
+        if (!isOwnPreviewNode(image)) return true;
+      }
+      return false;
+    }
+    function dedupeByCanonicalPath(paths) {
+      const seen = /* @__PURE__ */ new Set();
+      const unique = [];
+      for (const path of paths) {
+        const key = canonicalPathKey(path);
+        if (seen.has(key)) continue;
+        seen.add(key);
+        unique.push(path);
+      }
+      return unique;
+    }
     function collectImagePaths(text) {
       const paths = [];
       for (const raw of text.split(PATH_SPLIT_PATTERN)) {
@@ -2107,13 +2136,24 @@ window.__ModuleLoader__.load({
       }
       return void 0;
     }
+    var previewOwners = /* @__PURE__ */ new Map();
+    function releasePreviewOwnership(wrapper) {
+      for (const [key, owner] of previewOwners) {
+        if (owner === wrapper) previewOwners.delete(key);
+      }
+    }
     function syncBlockPreviews(block, paths) {
-      const usablePaths = paths.filter((path) => !failedPaths.has(path));
-      const key = [...usablePaths].sort().join("\n");
       const existing = block.nextElementSibling;
       const wrapper = existing instanceof HTMLElement && existing.hasAttribute(PREVIEW_ATTRIBUTE) ? existing : void 0;
+      const candidates = hasHostImage(block) ? [] : dedupeByCanonicalPath(paths.filter((path) => !failedPaths.has(canonicalPathKey(path))));
+      const usablePaths = candidates.filter((path) => {
+        const owner = previewOwners.get(canonicalPathKey(path));
+        return owner === void 0 || !owner.isConnected || owner === wrapper;
+      });
+      const key = usablePaths.map(canonicalPathKey).sort().join("\n");
       if (wrapper !== void 0) {
         if (wrapper.dataset.previewKey === key) return;
+        releasePreviewOwnership(wrapper);
         wrapper.remove();
       } else if (usablePaths.length === 0 && renderedBlockKeys.get(block) === key) {
         return;
@@ -2127,8 +2167,18 @@ window.__ModuleLoader__.load({
       container.setAttribute(PREVIEW_ATTRIBUTE, "");
       container.dataset.previewKey = key;
       container.className = WRAPPER_CLASS;
-      for (const path of usablePaths) container.appendChild(createPreviewImage(path, container));
+      for (const path of usablePaths) {
+        container.appendChild(createPreviewImage(path, container));
+        previewOwners.set(canonicalPathKey(path), container);
+      }
       block.insertAdjacentElement("afterend", container);
+    }
+    function dropPreviewsForHostImage(block) {
+      if (!hasHostImage(block)) return;
+      for (const wrapper of previewScope(block).querySelectorAll(`[${PREVIEW_ATTRIBUTE}]`)) {
+        releasePreviewOwnership(wrapper);
+        wrapper.remove();
+      }
     }
     function toImageUrl(source) {
       if (source.startsWith("sha256:")) {
@@ -2151,9 +2201,10 @@ window.__ModuleLoader__.load({
       return image;
     }
     function rememberFailedPath(path) {
-      if (failedPaths.has(path)) return;
+      const key = canonicalPathKey(path);
+      if (failedPaths.has(key)) return;
       if (failedPaths.size >= MAX_FAILED_PATHS) failedPaths.clear();
-      failedPaths.add(path);
+      failedPaths.add(key);
       console.warn("[image-preview] \u56FE\u7247\u8BFB\u53D6\u5931\u8D25\uFF0C\u5DF2\u505C\u6B62\u9884\u89C8:", path);
     }
     function isOwnPreviewNode(node) {
@@ -2162,6 +2213,7 @@ window.__ModuleLoader__.load({
     }
     function disposePreviews() {
       closeImagePreview();
+      previewOwners.clear();
       for (const element of document.querySelectorAll(`[${PREVIEW_ATTRIBUTE}]`)) element.remove();
     }
 
@@ -2215,7 +2267,12 @@ window.__ModuleLoader__.load({
           if (!(node instanceof Element) || isOwnPreviewNode(node)) continue;
           if (container.contains(node)) {
             const block = closestBlock(node);
-            if (block !== void 0) scanSubtree(block);
+            if (block !== void 0) {
+              if (node instanceof HTMLImageElement || node.querySelector("img") !== null) {
+                dropPreviewsForHostImage(block);
+              }
+              scanSubtree(block);
+            }
             continue;
           }
           if (node.contains(container)) scanSubtree(container);
