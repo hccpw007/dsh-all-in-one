@@ -3004,6 +3004,216 @@ function apply6(ctx) {
   ctx.effect(() => installAutoCompactWatcher(ctx), "auto-compact: watcher");
 }
 
+// src/features/desktop-cookie/host.ts
+var host_exports7 = {};
+__export(host_exports7, {
+  apply: () => apply7,
+  inject: () => inject7
+});
+import { basename as basename2 } from "node:path";
+
+// src/features/desktop-cookie/host/cleanup.ts
+import { existsSync } from "node:fs";
+import { homedir as homedir5 } from "node:os";
+import { join as join15 } from "node:path";
+var COOKIE_FILE_NAME = "Cookies";
+var AUTH_COOKIE_PREFIX = "dsh-auth-";
+var AUTH_COOKIE_HOST = "127.0.0.1";
+function desktopUserDataDir() {
+  if (process.platform === "darwin") return join15(homedir5(), "Library", "Application Support");
+  if (process.platform === "win32") {
+    return process.env.APPDATA ?? join15(homedir5(), "AppData", "Roaming");
+  }
+  return process.env.XDG_CONFIG_HOME ?? join15(homedir5(), ".config");
+}
+function desktopCookiesFile() {
+  return join15(desktopUserDataDir(), "@deepseek-ai", "dsh-desktop", COOKIE_FILE_NAME);
+}
+function cleanupAuthCookies(settings) {
+  if (!settings.enabled) return { status: "skipped", before: 0, after: 0, reason: "disabled" };
+  const file = desktopCookiesFile();
+  if (!existsSync(file)) {
+    return { status: "skipped", before: 0, after: 0, reason: `cookie library not found: ${file}` };
+  }
+  const sqlite = process.getBuiltinModule("node:sqlite");
+  if (sqlite === void 0) {
+    console.error("[desktop-cookie] \u5F53\u524D Node \u672A\u63D0\u4F9B node:sqlite\uFF0C\u8DF3\u8FC7\u6E05\u7406:", file);
+    return { status: "failed", before: 0, after: 0, reason: "node:sqlite unavailable" };
+  }
+  let database;
+  try {
+    database = new sqlite.DatabaseSync(file);
+    const rows = database.prepare(
+      "SELECT name FROM cookies WHERE host_key = ? AND name LIKE ? ORDER BY creation_utc DESC"
+    ).all(AUTH_COOKIE_HOST, `${AUTH_COOKIE_PREFIX}%`);
+    const names = rows.map((row) => row.name).filter((name) => typeof name === "string");
+    if (names.length < settings.threshold) {
+      return {
+        status: "skipped",
+        before: names.length,
+        after: names.length,
+        reason: "below threshold"
+      };
+    }
+    const stale = names.slice(settings.retain);
+    const remove = database.prepare("DELETE FROM cookies WHERE host_key = ? AND name = ?");
+    for (const name of stale) remove.run(AUTH_COOKIE_HOST, name);
+    return { status: "cleaned", before: names.length, after: names.length - stale.length };
+  } catch (error) {
+    console.error("[desktop-cookie] \u6E05\u7406\u684C\u9762\u7248\u8BA4\u8BC1 cookie \u5931\u8D25:", file, error);
+    return {
+      status: "failed",
+      before: 0,
+      after: 0,
+      reason: error instanceof Error ? error.message : String(error)
+    };
+  } finally {
+    try {
+      database?.close();
+    } catch (error) {
+      console.error("[desktop-cookie] \u5173\u95ED cookie \u5E93\u5931\u8D25:", file, error);
+    }
+  }
+}
+
+// src/features/desktop-cookie/host/settings.ts
+import { mkdirSync as mkdirSync4, readFileSync as readFileSync4, renameSync as renameSync4, writeFileSync as writeFileSync4 } from "node:fs";
+import { dirname as dirname6, join as join16 } from "node:path";
+var DEFAULT_SETTINGS3 = {
+  enabled: true,
+  threshold: 3,
+  retain: 1
+};
+var MIN_THRESHOLD = 1;
+var MAX_THRESHOLD = 100;
+function desktopCookieSettingsFile() {
+  return join16(resolveDshHome(), "all-in-one", "desktop-cookie.json");
+}
+function normalizeCount(value, fallback) {
+  const parsed = typeof value === "number" ? value : Number.NaN;
+  if (!Number.isFinite(parsed)) return fallback;
+  return Math.min(MAX_THRESHOLD, Math.max(MIN_THRESHOLD, Math.round(parsed)));
+}
+function clampRetain2(retain, threshold) {
+  return Math.min(retain, threshold - 1);
+}
+function normalizeSettings3(value) {
+  if (typeof value !== "object" || value === null) return { ...DEFAULT_SETTINGS3 };
+  const candidate = value;
+  const threshold = normalizeCount(candidate.threshold, DEFAULT_SETTINGS3.threshold);
+  const retain = normalizeCount(candidate.retain, DEFAULT_SETTINGS3.retain);
+  return {
+    enabled: typeof candidate.enabled === "boolean" ? candidate.enabled : DEFAULT_SETTINGS3.enabled,
+    threshold,
+    retain: clampRetain2(retain, threshold)
+  };
+}
+function applyPatch2(current, patch) {
+  if (typeof patch !== "object" || patch === null) return { ...current };
+  const candidate = patch;
+  const threshold = candidate.threshold === void 0 ? current.threshold : normalizeCount(candidate.threshold, current.threshold);
+  const retain = candidate.retain === void 0 ? current.retain : normalizeCount(candidate.retain, current.retain);
+  return {
+    enabled: typeof candidate.enabled === "boolean" ? candidate.enabled : current.enabled,
+    threshold,
+    retain: clampRetain2(retain, threshold)
+  };
+}
+function readDesktopCookieSettings() {
+  const file = desktopCookieSettingsFile();
+  try {
+    return normalizeSettings3(JSON.parse(readFileSync4(file, "utf8")));
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.error("[desktop-cookie] \u8BFB\u53D6\u8BBE\u7F6E\u5931\u8D25:", file, error);
+    }
+    return { ...DEFAULT_SETTINGS3 };
+  }
+}
+function writeSettings2(next) {
+  const file = desktopCookieSettingsFile();
+  const temp = `${file}.tmp`;
+  try {
+    mkdirSync4(dirname6(file), { recursive: true });
+    writeFileSync4(temp, `${JSON.stringify(next, null, 2)}
+`, "utf8");
+    renameSync4(temp, file);
+  } catch (error) {
+    console.error("[desktop-cookie] \u5199\u5165\u8BBE\u7F6E\u5931\u8D25:", file, error);
+    throw error;
+  }
+}
+function updateDesktopCookieSettings(patch) {
+  const next = applyPatch2(readDesktopCookieSettings(), patch);
+  writeSettings2(next);
+  return next;
+}
+
+// src/features/desktop-cookie/host/routes.ts
+var ROUTE_PATH6 = "/dsh-all-in-one/desktop-cookie";
+var MAX_BODY_BYTES5 = 4 * 1024;
+function installDesktopCookieRoutes(webServer) {
+  return webServer.register({
+    kind: "prefix",
+    path: ROUTE_PATH6,
+    handler: async (request, response) => {
+      if (!isLocalRequest(request)) {
+        sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
+        return;
+      }
+      try {
+        if (request.method === "GET") {
+          sendJson(response, 200, readDesktopCookieSettings());
+          return;
+        }
+        if (request.method !== "POST") {
+          response.writeHead(405, { allow: "GET, POST" });
+          response.end();
+          return;
+        }
+        const body = await readJsonBody(request, MAX_BODY_BYTES5);
+        if (body === void 0) {
+          sendJson(response, 400, { error: "\u8BF7\u6C42\u4F53\u4E0D\u662F\u5408\u6CD5 JSON" });
+          return;
+        }
+        sendJson(response, 200, updateDesktopCookieSettings(body));
+      } catch (error) {
+        console.error("[desktop-cookie] \u5904\u7406\u8BBE\u7F6E\u8BF7\u6C42\u5931\u8D25:", error);
+        sendJson(response, 500, {
+          error: error instanceof Error ? error.message : String(error)
+        });
+      }
+    }
+  });
+}
+
+// src/features/desktop-cookie/host.ts
+var inject7 = ["webServer"];
+function isDesktopProfile(ctx) {
+  const name = ctx.profileContext?.name;
+  if (typeof name === "string" && name !== "") return name === "desktop";
+  const dir = ctx.profileContext?.dir;
+  if (typeof dir === "string" && dir !== "") return basename2(dir) === "desktop";
+  const entry = process.argv[1] ?? "";
+  return entry.includes("dsh-desktop-host");
+}
+function apply7(ctx) {
+  if (isDesktopProfile(ctx)) {
+    const report = cleanupAuthCookies(readDesktopCookieSettings());
+    if (report.status === "cleaned") {
+      console.log(
+        `[desktop-cookie] \u5DF2\u6E05\u7406 ${report.before - report.after} \u6761\u8FC7\u671F\u8BA4\u8BC1 cookie\uFF0C\u4FDD\u7559 ${report.after} \u6761`
+      );
+    }
+  }
+  const webServer = ctx.webServer;
+  if (webServer === void 0) {
+    console.error("[desktop-cookie] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u8BBE\u7F6E\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
+    return;
+  }
+  ctx.effect(() => installDesktopCookieRoutes(webServer), "desktop-cookie: routes");
+}
+
 // src/features/host.ts
 var featureHosts = [
   host_exports2,
@@ -3011,15 +3221,16 @@ var featureHosts = [
   host_exports4,
   host_exports5,
   host_exports,
-  host_exports6
+  host_exports6,
+  host_exports7
 ];
 
 // src/index.ts
-var inject7 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
-function apply7(ctx) {
+var inject8 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
+function apply8(ctx) {
   for (const feature of featureHosts) feature.apply(ctx);
 }
 export {
-  apply7 as apply,
-  inject7 as inject
+  apply8 as apply,
+  inject8 as inject
 };

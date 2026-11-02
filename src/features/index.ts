@@ -8,6 +8,7 @@ import sidebarMore from './sidebar-more'
 import deleteSession from './delete-session'
 import projectMemory from './project-memory'
 import autoCompact from './auto-compact'
+import desktopCookie from './desktop-cookie'
 
 /**
  * 所有已注册的 feature。
@@ -29,4 +30,5 @@ export const featureList: FeatureDefinition[] = [
   projectMemory,
   powerPack,
   autoCompact,
+  desktopCookie,
 ]

@@ -39,7 +39,7 @@ window.__ModuleLoader__.load({
       default: () => entry_default
     });
     module.exports = __toCommonJS(entry_exports);
-    var import_react22 = __toESM(require("react"), 1);
+    var import_react23 = __toESM(require("react"), 1);
 
     // .build/styles.css
     var styles_default = "*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-8{height:2rem}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.transform,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-xl{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}";
@@ -3213,12 +3213,12 @@ window.__ModuleLoader__.load({
       const [pending2, setPending] = (0, import_react15.useState)(false);
       const [error, setError] = (0, import_react15.useState)(null);
       const readRequest = useRequest ?? useNoRequest;
-      const request4 = readRequest((value) => value);
-      const activeSessionId = request4?.sessionId;
+      const request5 = readRequest((value) => value);
+      const activeSessionId = request5?.sessionId;
       (0, import_react15.useEffect)(() => {
         setError(null);
       }, [activeSessionId]);
-      if (request4 === null) return null;
+      if (request5 === null) return null;
       const close = () => {
         if (pending2) return;
         setError(null);
@@ -3229,7 +3229,7 @@ window.__ModuleLoader__.load({
         setPending(true);
         setError(null);
         try {
-          await deleteSession?.(request4.sessionId);
+          await deleteSession?.(request5.sessionId);
         } catch (failure) {
           console.error("[delete-session] \u5220\u9664\u4F1A\u8BDD\u5931\u8D25:", failure);
           setPending(false);
@@ -3258,7 +3258,7 @@ window.__ModuleLoader__.load({
             pending2 ? t("deleting") : t("confirmDelete")
           ))
         },
-        /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-1 text-[13px] font-medium leading-5 text-primary" }, request4.title),
+        /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-1 text-[13px] font-medium leading-5 text-primary" }, request5.title),
         /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-3 text-[12px] leading-[18px] text-secondary" }, t("confirmMessage")),
         error !== null ? /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, `${t("deleteFailed")}\uFF1A${error}`) : null
       );
@@ -3989,16 +3989,16 @@ window.__ModuleLoader__.load({
       }, [t]);
       const persist = async (patch) => {
         latestRequest.current += 1;
-        const request4 = latestRequest.current;
+        const request5 = latestRequest.current;
         setError(null);
         try {
           const next = await saveAutoCompactSettings(patch);
-          if (latestRequest.current !== request4) return;
+          if (latestRequest.current !== request5) return;
           setSettings(next);
           setThresholdDraft(String(next.thresholdPercent));
           setRetainDraft(String(next.retainPercent));
         } catch (failure) {
-          if (latestRequest.current !== request4) return;
+          if (latestRequest.current !== request5) return;
           console.error("[auto-compact] \u4FDD\u5B58\u81EA\u52A8\u538B\u7F29\u8BBE\u7F6E\u5931\u8D25:", failure);
           setError(`${t("saveFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
         }
@@ -4089,6 +4089,265 @@ window.__ModuleLoader__.load({
     };
     var auto_compact_default = autoCompactFeature;
 
+    // src/features/desktop-cookie/locales.ts
+    var desktopCookieLocales = {
+      zh: {
+        // 开关标题
+        title: "Cookie \u6E05\u7406",
+        // 开关用途说明
+        description: "\u542F\u52A8\u65F6\u6E05\u7406\u8FC7\u671F\u7684\u767B\u5F55 Cookie\uFF0C\u907F\u514D\u684C\u9762\u7248\u8BA4\u8BC1\u5931\u8D25\u3002",
+        // 阈值输入框的标签
+        thresholdLabel: "\u9608\u503C",
+        // 保留条数输入框的标签
+        retainLabel: "\u4FDD\u7559",
+        // 输入框的单位
+        unit: "\u6761",
+        // 读取配置失败时的提示
+        loadFailed: "\u8BFB\u53D6\u6E05\u7406\u8BBE\u7F6E\u5931\u8D25",
+        // 保存配置失败时的提示
+        saveFailed: "\u4FDD\u5B58\u6E05\u7406\u8BBE\u7F6E\u5931\u8D25",
+        // 阈值超出 1-100 时的提示
+        thresholdInvalid: "\u9608\u503C\u9700\u8981\u662F 1 \u5230 100 \u4E4B\u95F4\u7684\u6574\u6570",
+        // 保留条数不小于阈值时的提示
+        retainInvalid: "\u4FDD\u7559\u6761\u6570\u9700\u8981\u662F\u6574\u6570\uFF0C\u4E14\u5C0F\u4E8E\u9608\u503C"
+      },
+      en: {
+        // Switch title
+        title: "Cookie cleanup",
+        // Switch description
+        description: "Prune stale sign-in cookies at launch so the desktop app can authenticate.",
+        // Label of the threshold input
+        thresholdLabel: "Threshold",
+        // Label of the retained-count input
+        retainLabel: "Keep",
+        // Unit shown after both inputs
+        unit: "cookies",
+        // Shown when the settings cannot be loaded
+        loadFailed: "Could not load the cleanup settings",
+        // Shown when the settings cannot be saved
+        saveFailed: "Could not save the cleanup settings",
+        // Shown when the threshold is outside 1-100
+        thresholdInvalid: "The threshold must be an integer between 1 and 100",
+        // Shown when the retained count is not below the threshold
+        retainInvalid: "The retained count must be an integer below the threshold"
+      }
+    };
+
+    // src/features/desktop-cookie/toggle.tsx
+    var import_react21 = __toESM(require("react"), 1);
+
+    // src/features/desktop-cookie/api.ts
+    var ENDPOINT5 = "/dsh-all-in-one/desktop-cookie";
+    var REQUEST_TIMEOUT_MS5 = 1e4;
+    async function request4(init = {}) {
+      const controller = new AbortController();
+      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS5);
+      try {
+        const response = await fetch(new URL(ENDPOINT5, window.location.origin).toString(), {
+          credentials: "same-origin",
+          cache: "no-store",
+          ...init,
+          signal: controller.signal
+        });
+        if (!response.ok) {
+          const text = await response.text();
+          let message = text;
+          try {
+            const parsed = JSON.parse(text);
+            if (typeof parsed.error === "string") message = parsed.error;
+          } catch (error) {
+            console.error("[desktop-cookie] \u89E3\u6790\u9519\u8BEF\u54CD\u5E94\u5931\u8D25:", error);
+          }
+          throw new Error(message || `HTTP ${response.status}`);
+        }
+        return await response.json();
+      } catch (error) {
+        console.error("[desktop-cookie] \u8BF7\u6C42\u6E05\u7406\u8BBE\u7F6E\u5931\u8D25:", error);
+        throw error;
+      } finally {
+        window.clearTimeout(timer);
+      }
+    }
+    function loadDesktopCookieSettings() {
+      return request4();
+    }
+    function saveDesktopCookieSettings(update) {
+      return request4({
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(update)
+      });
+    }
+
+    // src/features/desktop-cookie/toggle.tsx
+    var MIN_THRESHOLD = 1;
+    var MAX_THRESHOLD = 100;
+    var MIN_RETAIN = 0;
+    var INPUT_CLASS4 = "w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] text-primary outline-none focus:border-brand";
+    function CountField({ label, unit, value, onChange, onCommit }) {
+      return /* @__PURE__ */ import_react21.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react21.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, label), /* @__PURE__ */ import_react21.default.createElement(
+        "input",
+        {
+          type: "number",
+          inputMode: "numeric",
+          min: MIN_RETAIN,
+          max: MAX_THRESHOLD,
+          step: 1,
+          value,
+          "aria-label": label,
+          onChange: (event) => onChange(event.target.value),
+          onBlur: onCommit,
+          onKeyDown: (event) => {
+            if (event.key === "Enter") onCommit();
+          },
+          className: INPUT_CLASS4
+        }
+      ), /* @__PURE__ */ import_react21.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, unit));
+    }
+    function CookieIcon() {
+      return /* @__PURE__ */ import_react21.default.createElement(
+        "svg",
+        {
+          viewBox: "0 0 24 24",
+          width: "14",
+          height: "14",
+          "aria-hidden": "true",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: "1.8",
+          strokeLinecap: "round",
+          strokeLinejoin: "round"
+        },
+        /* @__PURE__ */ import_react21.default.createElement("path", { d: "M20.5 12.5A8.5 8.5 0 1 1 11.5 3.5a3.5 3.5 0 0 0 4 4 3.5 3.5 0 0 0 5 5Z" }),
+        /* @__PURE__ */ import_react21.default.createElement("circle", { cx: "9", cy: "10", r: "0.9", fill: "currentColor", stroke: "none" }),
+        /* @__PURE__ */ import_react21.default.createElement("circle", { cx: "12", cy: "15", r: "0.9", fill: "currentColor", stroke: "none" }),
+        /* @__PURE__ */ import_react21.default.createElement("circle", { cx: "7", cy: "15.5", r: "0.9", fill: "currentColor", stroke: "none" })
+      );
+    }
+    function DesktopCookieToggle({ t }) {
+      const [settings, setSettings] = (0, import_react21.useState)(null);
+      const [thresholdDraft, setThresholdDraft] = (0, import_react21.useState)("");
+      const [retainDraft, setRetainDraft] = (0, import_react21.useState)("");
+      const [error, setError] = (0, import_react21.useState)(null);
+      const latestRequest = (0, import_react21.useRef)(0);
+      (0, import_react21.useEffect)(() => {
+        let active = true;
+        void loadDesktopCookieSettings().then((next) => {
+          if (!active) return;
+          setSettings(next);
+          setThresholdDraft(String(next.threshold));
+          setRetainDraft(String(next.retain));
+        }).catch((failure) => {
+          if (!active) return;
+          console.error("[desktop-cookie] \u8BFB\u53D6\u6E05\u7406\u8BBE\u7F6E\u5931\u8D25:", failure);
+          setError(`${t("loadFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
+        });
+        return () => {
+          active = false;
+        };
+      }, [t]);
+      const persist = async (patch) => {
+        latestRequest.current += 1;
+        const request5 = latestRequest.current;
+        setError(null);
+        try {
+          const next = await saveDesktopCookieSettings(patch);
+          if (latestRequest.current !== request5) return;
+          setSettings(next);
+          setThresholdDraft(String(next.threshold));
+          setRetainDraft(String(next.retain));
+        } catch (failure) {
+          if (latestRequest.current !== request5) return;
+          console.error("[desktop-cookie] \u4FDD\u5B58\u6E05\u7406\u8BBE\u7F6E\u5931\u8D25:", failure);
+          setError(`${t("saveFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
+        }
+      };
+      const handleToggle = () => {
+        if (settings === null) return;
+        void persist({ enabled: !settings.enabled });
+      };
+      const commitThreshold = () => {
+        if (settings === null) return;
+        const parsed = Number(thresholdDraft.trim());
+        if (!Number.isInteger(parsed) || parsed < MIN_THRESHOLD || parsed > MAX_THRESHOLD) {
+          setError(t("thresholdInvalid"));
+          setThresholdDraft(String(settings.threshold));
+          return;
+        }
+        if (parsed === settings.threshold) return;
+        void persist({ threshold: parsed });
+      };
+      const commitRetain = () => {
+        if (settings === null) return;
+        const parsed = Number(retainDraft.trim());
+        if (!Number.isInteger(parsed) || parsed < MIN_RETAIN || parsed >= settings.threshold) {
+          setError(t("retainInvalid"));
+          setRetainDraft(String(settings.retain));
+          return;
+        }
+        if (parsed === settings.retain) return;
+        void persist({ retain: parsed });
+      };
+      const enabled = settings?.enabled === true;
+      return (
+        // 卡片容器：文字区不参与交互，开关与输入框各自独立，不能互相嵌套；
+        // 两个输入框单独占下面一行，避免挤在开关下方把整行卡片撑高
+        /* @__PURE__ */ import_react21.default.createElement("div", { className: "flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react21.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react21.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react21.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react21.default.createElement(CookieIcon, null)), /* @__PURE__ */ import_react21.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react21.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react21.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react21.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)), /* @__PURE__ */ import_react21.default.createElement(
+          "button",
+          {
+            type: "button",
+            role: "switch",
+            "aria-checked": enabled,
+            "aria-label": t("title"),
+            disabled: settings === null,
+            onClick: handleToggle,
+            className: cn(
+              "flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition",
+              enabled ? "bg-brand" : "bg-line2",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-default"
+            )
+          },
+          /* @__PURE__ */ import_react21.default.createElement(
+            "span",
+            {
+              "aria-hidden": "true",
+              className: cn(
+                "h-4 w-4 aio-switch bg-base shadow transition-transform",
+                enabled ? "translate-x-[18px]" : "translate-x-0.5"
+              )
+            }
+          )
+        )), enabled ? /* @__PURE__ */ import_react21.default.createElement("div", { className: "flex items-center gap-3 pl-7" }, /* @__PURE__ */ import_react21.default.createElement(
+          CountField,
+          {
+            label: t("thresholdLabel"),
+            unit: t("unit"),
+            value: thresholdDraft,
+            onChange: setThresholdDraft,
+            onCommit: commitThreshold
+          }
+        ), /* @__PURE__ */ import_react21.default.createElement(
+          CountField,
+          {
+            label: t("retainLabel"),
+            unit: t("unit"),
+            value: retainDraft,
+            onChange: setRetainDraft,
+            onCommit: commitRetain
+          }
+        )) : null)
+      );
+    }
+
+    // src/features/desktop-cookie/index.tsx
+    var desktopCookieFeature = {
+      id: "desktop-cookie",
+      order: 50,
+      switch: DesktopCookieToggle,
+      locales: desktopCookieLocales
+    };
+    var desktop_cookie_default = desktopCookieFeature;
+
     // src/features/index.ts
     var featureList = [
       expand_process_default,
@@ -4098,7 +4357,8 @@ window.__ModuleLoader__.load({
       delete_session_default,
       project_memory_default,
       power_pack_default,
-      auto_compact_default
+      auto_compact_default,
+      desktop_cookie_default
     ];
 
     // src/shell/registry.ts
@@ -4138,9 +4398,9 @@ window.__ModuleLoader__.load({
     var registry = createFeatureRegistry(featureList);
 
     // src/shell/AllInOnePage.tsx
-    var import_react21 = __toESM(require("react"), 1);
+    var import_react22 = __toESM(require("react"), 1);
     function BackGlyph() {
-      return /* @__PURE__ */ import_react21.default.createElement(
+      return /* @__PURE__ */ import_react22.default.createElement(
         "svg",
         {
           viewBox: "0 0 16 16",
@@ -4153,34 +4413,34 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react21.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
+        /* @__PURE__ */ import_react22.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
       );
     }
     function AllInOnePage({ t }) {
-      const [activeId, setActiveId] = (0, import_react21.useState)(null);
-      const [pageActions, setPageActions] = (0, import_react21.useState)(null);
+      const [activeId, setActiveId] = (0, import_react22.useState)(null);
+      const [pageActions, setPageActions] = (0, import_react22.useState)(null);
       const active = activeId ? registry.find(activeId) : void 0;
       const activePage = active && "page" in active ? active : void 0;
-      const featureTranslate = (0, import_react21.useCallback)(
+      const featureTranslate = (0, import_react22.useCallback)(
         // 网格视图不会调用此函数，activePage 为空时直接返回 key 兜底
         (key) => activePage ? t(`${activePage.id}.${key}`) : key,
         [activePage, t]
       );
       if (activePage) {
         const ActivePage = activePage.page;
-        return /* @__PURE__ */ import_react21.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react21.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react21.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react21.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react21.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react21.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react21.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react21.default.createElement(ActivePage, { t: featureTranslate }))));
+        return /* @__PURE__ */ import_react22.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react22.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react22.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react22.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react22.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react22.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react22.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react22.default.createElement(ActivePage, { t: featureTranslate }))));
       }
-      return /* @__PURE__ */ import_react21.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react21.default.createElement("header", null, /* @__PURE__ */ import_react21.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react21.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
+      return /* @__PURE__ */ import_react22.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react22.default.createElement("header", null, /* @__PURE__ */ import_react22.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react22.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
         // 尚未注册功能时的空态提示
-        /* @__PURE__ */ import_react21.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
-      ) : /* @__PURE__ */ import_react21.default.createElement("div", { className: "aio-card-grid mt-4 grid auto-rows-fr gap-2.5" }, registry.list.map((feature) => {
+        /* @__PURE__ */ import_react22.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
+      ) : /* @__PURE__ */ import_react22.default.createElement("div", { className: "aio-card-grid mt-4 grid auto-rows-fr gap-2.5" }, registry.list.map((feature) => {
         const featureT = (key) => t(`${feature.id}.${key}`);
         if ("switch" in feature) {
           const SwitchEntry = feature.switch;
-          return /* @__PURE__ */ import_react21.default.createElement("div", { key: feature.id, className: "min-w-0" }, /* @__PURE__ */ import_react21.default.createElement(SwitchEntry, { t: featureT }));
+          return /* @__PURE__ */ import_react22.default.createElement("div", { key: feature.id, className: "min-w-0" }, /* @__PURE__ */ import_react22.default.createElement(SwitchEntry, { t: featureT }));
         }
         const Entry = feature.entry;
-        return /* @__PURE__ */ import_react21.default.createElement("div", { key: feature.id, className: "min-w-0" }, /* @__PURE__ */ import_react21.default.createElement(Entry, { t: featureT, open: () => setActiveId(feature.id) }));
+        return /* @__PURE__ */ import_react22.default.createElement("div", { key: feature.id, className: "min-w-0" }, /* @__PURE__ */ import_react22.default.createElement(Entry, { t: featureT, open: () => setActiveId(feature.id) }));
       })));
     }
 
@@ -4301,7 +4561,7 @@ window.__ModuleLoader__.load({
         });
         const t = ctx.locale.bind(LOCALE_NAMESPACE);
         installSettingsNavIcon(ctx, t, icon_default);
-        const SettingsSection = () => /* @__PURE__ */ import_react22.default.createElement(AllInOnePage, { t });
+        const SettingsSection = () => /* @__PURE__ */ import_react23.default.createElement(AllInOnePage, { t });
         ctx.slots.inject(
           "settings.section",
           () => ctx.slots.register(
