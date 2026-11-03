@@ -1,11 +1,13 @@
 /**
  * 「删除会话」的客户端扩展。
  *
- * 两个插槽配合完成一次删除：
+ * 三类入口配合完成删除：
  *   - 会话行悬停操作区（`sidebar.workspaces.session.row.action`）里的删除按钮，
- *     点击只写入待确认请求；
+ *     点击只写入单条会话的待确认请求；
+ *   - 工作区「更多」菜单里的「删除所有会话」（由 workspace-menu 注入），点击
+ *     写入该工作区所有非运行中会话的待确认请求；
  *   - 宿主浮层（`shell.overlay`）里的确认弹窗，用户确认后才请求宿主删除磁盘
- *     上的会话记录，并让客户端列表立刻丢掉这一行。
+ *     上的会话记录，并让客户端列表立刻丢掉这些行。
  *
  * 当前正在浏览的会话也能删除；删掉它之后优先切到工作空间里还在执行的任务，
  * 其次是第一条对话，一条都不剩时打开新建对话页面，界面不会停在一条已经不存在
@@ -20,11 +22,12 @@ import type {
   Translate,
   UiWorkspaceApi,
 } from '../../types/plugin'
-import { requestDeleteSession } from './api'
+import { requestDeleteSession, requestDeleteSessions } from './api'
 import { deleteConfirmStore } from './confirm-store'
 import { DeleteSessionButton, type DeleteSessionButtonProps } from './DeleteSessionButton'
 import { DeleteSessionDialog, type DeleteSessionDialogProps } from './DeleteSessionDialog'
-import type { SessionDeletableState } from './types'
+import type { DeleteSessionsResponse, SessionDeletableState } from './types'
+import { installWorkspaceMenu } from './workspace-menu'
 
 /** 会话行悬停操作插槽；宿主自带的归档（order 100）与置顶（order 200）也在这里。 */
 const ROW_ACTION_SLOT = 'sidebar.workspaces.session.row.action'
@@ -64,14 +67,14 @@ function findWorkspaceId(uiWorkspace: UiWorkspaceApi | undefined, sessionId: str
  * @param sessions 宿主客户端会话列表服务
  * @param uiWorkspace 宿主工作区服务
  * @param workspaceId 被删会话所属工作空间
- * @param removedId 刚被删掉的会话标识
+ * @param removedIds 刚被删掉的会话标识集合
  * @returns 目标会话标识；该工作空间已无可用会话时返回 undefined
  */
 function pickNextSession(
   sessions: SessionsApi,
   uiWorkspace: UiWorkspaceApi | undefined,
   workspaceId: string | undefined,
-  removedId: string,
+  removedIds: ReadonlySet<string>,
 ): string | undefined {
   const state = sessions.list.getSnapshot()
   const workspaceState = uiWorkspace?.workspaces?.list.getSnapshot()
@@ -83,7 +86,7 @@ function pickNextSession(
   const candidates = memberIds.flatMap((id) => {
     const summary = state.byId[id]
     // 刚删掉的会话、已归档的会话与快照里已消失的会话都不能当落点
-    return id === removedId || summary === undefined || archived.has(id) ? [] : [{ id, summary }]
+    return removedIds.has(id) || summary === undefined || archived.has(id) ? [] : [{ id, summary }]
   })
 
   // 进行中的任务优先：任务还在跑，回到它比回到旧对话更有用
@@ -102,7 +105,7 @@ function pickNextSession(
 }
 
 /**
- * 注册会话行的删除按钮与确认弹窗。
+ * 注册会话行的删除按钮、工作区菜单入口与确认弹窗。
  * @param ctx 客户端插件上下文
  * @param t 已绑定本 feature 前缀的翻译函数
  */
@@ -122,7 +125,7 @@ export function apply(ctx: PluginContext, t: Translate): void {
       }
     })
 
-    /** 请求宿主删除并同步客户端列表；确认弹窗与行按钮共用这一份实现。 */
+    /** 请求宿主删除一条会话并同步客户端列表；确认弹窗与行按钮共用这一份实现。 */
     const deleteSession = async (sessionId: string) => {
       // 删除前判断是不是当前对话：删除后列表快照里已经没有这一行
       const wasCurrent = resolveSession(sessions, sessionId).isCurrent
@@ -136,7 +139,7 @@ export function apply(ctx: PluginContext, t: Translate): void {
       if (!wasCurrent) return
 
       // 删掉的是当前对话：先回到进行中的任务或第一条对话
-      const next = pickNextSession(sessions, uiWorkspace, workspaceId, sessionId)
+      const next = pickNextSession(sessions, uiWorkspace, workspaceId, new Set([sessionId]))
       if (next !== undefined) {
         uiWorkspace?.openSession?.(next)
         return
@@ -144,6 +147,34 @@ export function apply(ctx: PluginContext, t: Translate): void {
 
       // 工作空间里一条对话都不剩：打开新建对话页面
       uiWorkspace?.startSession?.(workspaceId)
+    }
+
+    /** 批量删除工作区里的会话并同步客户端列表；工作区菜单入口与确认弹窗共用这一份实现。 */
+    const deleteWorkspaceSessions = async (
+      workspaceId: string,
+      sessionIds: string[],
+    ): Promise<DeleteSessionsResponse> => {
+      // 删除前判断当前对话是否在删除范围内：删除后列表快照里已经没有这一行
+      const currentId = sessionIds.find((id) => resolveSession(sessions, id).isCurrent)
+
+      const report = await requestDeleteSessions(sessionIds)
+      // 磁盘上的会话已删除，但客户端快照仍留着它们：逐条摘掉，列表立即刷新
+      for (const id of report.deleted) sessions.handleSessionRemoved?.(id)
+
+      // 当前对话没被删掉（例如删除失败）时界面不用动
+      if (currentId === undefined || !report.deleted.includes(currentId)) return report
+
+      // 删掉的是当前对话：先回到进行中的任务或第一条对话
+      const next = pickNextSession(sessions, uiWorkspace, workspaceId, new Set(report.deleted))
+      if (next !== undefined) {
+        uiWorkspace?.openSession?.(next)
+        return report
+      }
+
+      // 工作空间里一条对话都不剩：打开新建对话页面
+      uiWorkspace?.startSession?.(workspaceId)
+
+      return report
     }
 
     ctx.slots.inject(ROW_ACTION_SLOT, () =>
@@ -175,6 +206,7 @@ export function apply(ctx: PluginContext, t: Translate): void {
           inject: () => ({
             hooks: { request: deleteConfirmStore },
             deleteSession,
+            deleteWorkspaceSessions,
             settle: deleteConfirmStore.settle,
           }),
         },
@@ -185,6 +217,12 @@ export function apply(ctx: PluginContext, t: Translate): void {
           />
         ),
       ),
+    )
+
+    // 工作区「更多」菜单没有宿主扩展点，按菜单 DOM 结构注入入口
+    ctx.effect(
+      () => installWorkspaceMenu(t, sessions, () => uiWorkspace),
+      'delete-session: workspace menu',
     )
   })
 }

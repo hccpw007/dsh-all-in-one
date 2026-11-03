@@ -107,3 +107,45 @@ export async function deleteStoredSession(sessionId: string): Promise<DeletedSes
 
   return { directories: dirs.length, records }
 }
+
+/** 批量删除结果：成功与失败的会话分开返回。 */
+export interface DeletedSessionsReport {
+  /** 已删除的会话标识。 */
+  deleted: string[]
+  /** 删除失败的会话与原因。 */
+  failed: Array<{ sessionId: string; error: string }>
+}
+
+/**
+ * 批量删除一个工作区里的多个会话。
+ *
+ * 逐条串行删除：每次删除都会读改写工作区注册表，并发执行会让两次写入互相
+ * 覆盖，因此这里不并行。单条失败只记入报告，不影响其余会话。
+ * @param sessionIds 已校验的会话标识列表
+ * @returns 成功与失败的会话
+ */
+export async function deleteStoredSessions(sessionIds: string[]): Promise<DeletedSessionsReport> {
+  const deleted: string[] = []
+  const failed: Array<{ sessionId: string; error: string }> = []
+
+  for (const sessionId of sessionIds) {
+    try {
+      const report = await deleteStoredSession(sessionId)
+
+      // 正文目录与派生记录都不存在时，说明这条会话早已被删掉
+      if (report.directories === 0 && report.records === 0) {
+        failed.push({ sessionId, error: '会话不存在或已被删除' })
+        continue
+      }
+
+      deleted.push(sessionId)
+    } catch (error) {
+      console.error('[delete-session] 批量删除会话失败:', sessionId, error)
+      failed.push({ sessionId, error: error instanceof Error ? error.message : String(error) })
+    }
+  }
+
+  console.info('[delete-session] 批量删除完成:', deleted.length, '条，失败', failed.length, '条')
+
+  return { deleted, failed }
+}

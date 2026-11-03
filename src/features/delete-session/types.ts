@@ -16,6 +16,20 @@ export interface DeleteSessionResponse {
   deleted: boolean
 }
 
+/** 批量删除请求体。 */
+export interface DeleteSessionsRequest {
+  /** 要删除的会话标识列表。 */
+  sessionIds: string[]
+}
+
+/** 批量删除结果：成功与失败的会话分开返回，个别会话不存在不影响其余会话。 */
+export interface DeleteSessionsResponse {
+  /** 已删除的会话标识。 */
+  deleted: string[]
+  /** 删除失败的会话与原因。 */
+  failed: Array<{ sessionId: string; error: string }>
+}
+
 /** 一条会话当前能不能删：运行中与会话列表的判定都由宿主列表快照给出。 */
 export interface SessionDeletableState {
   /** 该会话的 Agent 是否正在执行任务；运行中的会话不能删除。 */

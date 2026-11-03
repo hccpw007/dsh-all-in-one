@@ -3060,13 +3060,14 @@ window.__ModuleLoader__.load({
 
     // src/features/delete-session/api.ts
     var ENDPOINT2 = "/dsh-all-in-one/sessions";
+    var BATCH_ENDPOINT = "/dsh-all-in-one/sessions/batch";
     var REQUEST_TIMEOUT_MS2 = 15e3;
-    async function requestDeleteSession(sessionId) {
+    var BATCH_TIMEOUT_MS = 12e4;
+    async function postJson(path, body, timeoutMs) {
       const controller = new AbortController();
-      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS2);
-      const body = { sessionId };
+      const timer = window.setTimeout(() => controller.abort(), timeoutMs);
       try {
-        const response = await fetch(new URL(ENDPOINT2, window.location.origin).toString(), {
+        const response = await fetch(new URL(path, window.location.origin).toString(), {
           method: "POST",
           credentials: "same-origin",
           cache: "no-store",
@@ -3086,14 +3087,27 @@ window.__ModuleLoader__.load({
           }
           throw new Error(message);
         }
-        const payload = await response.json();
-        if (payload.deleted !== true) throw new Error("\u5BBF\u4E3B\u672A\u786E\u8BA4\u5220\u9664");
+        return await response.json();
       } catch (error) {
-        console.error("[delete-session] \u8BF7\u6C42\u5220\u9664\u4F1A\u8BDD\u5931\u8D25:", error);
+        console.error("[delete-session] \u8BF7\u6C42\u5BBF\u4E3B\u5931\u8D25:", path, error);
         throw error;
       } finally {
         window.clearTimeout(timer);
       }
+    }
+    async function requestDeleteSession(sessionId) {
+      const body = { sessionId };
+      const payload = await postJson(ENDPOINT2, body, REQUEST_TIMEOUT_MS2);
+      if (payload.deleted !== true) throw new Error("\u5BBF\u4E3B\u672A\u786E\u8BA4\u5220\u9664");
+    }
+    async function requestDeleteSessions(sessionIds) {
+      const body = { sessionIds };
+      const payload = await postJson(BATCH_ENDPOINT, body, BATCH_TIMEOUT_MS);
+      if (!Array.isArray(payload.deleted)) throw new Error("\u5BBF\u4E3B\u672A\u8FD4\u56DE\u5220\u9664\u7ED3\u679C");
+      return {
+        deleted: payload.deleted,
+        failed: Array.isArray(payload.failed) ? payload.failed : []
+      };
     }
 
     // src/features/delete-session/confirm-store.ts
@@ -3185,7 +3199,7 @@ window.__ModuleLoader__.load({
       if (state !== void 0 && state.running) return null;
       const handleClick = (event) => {
         event.stopPropagation();
-        requestConfirm({ sessionId, title: displayTitle ?? sessionId });
+        requestConfirm({ kind: "session", sessionId, title: displayTitle ?? sessionId });
       };
       return /* @__PURE__ */ import_react14.default.createElement(
         "button",
@@ -3208,17 +3222,19 @@ window.__ModuleLoader__.load({
       t,
       useRequest,
       deleteSession,
+      deleteWorkspaceSessions,
       settle
     }) {
       const [pending2, setPending] = (0, import_react15.useState)(false);
       const [error, setError] = (0, import_react15.useState)(null);
       const readRequest = useRequest ?? useNoRequest;
       const request5 = readRequest((value) => value);
-      const activeSessionId = request5?.sessionId;
+      const requestKey = request5 === null ? "" : request5.kind === "session" ? request5.sessionId : request5.workspaceId;
       (0, import_react15.useEffect)(() => {
         setError(null);
-      }, [activeSessionId]);
+      }, [requestKey]);
       if (request5 === null) return null;
+      const isWorkspace = request5.kind === "workspace";
       const close = () => {
         if (pending2) return;
         setError(null);
@@ -3229,11 +3245,20 @@ window.__ModuleLoader__.load({
         setPending(true);
         setError(null);
         try {
-          await deleteSession?.(request5.sessionId);
+          if (request5.kind === "workspace") {
+            const report = await deleteWorkspaceSessions?.(request5.workspaceId, request5.sessionIds);
+            if (report !== void 0 && report.failed.length > 0) {
+              setPending(false);
+              setError(t("deleteAllPartial").replace("{count}", String(report.failed.length)));
+              return;
+            }
+          } else {
+            await deleteSession?.(request5.sessionId);
+          }
         } catch (failure) {
           console.error("[delete-session] \u5220\u9664\u4F1A\u8BDD\u5931\u8D25:", failure);
           setPending(false);
-          setError(failure instanceof Error ? failure.message : String(failure));
+          setError(`${t("deleteFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
           return;
         }
         setPending(false);
@@ -3245,8 +3270,8 @@ window.__ModuleLoader__.load({
           open: true,
           onClose: close,
           closeLabel: t("confirmCancel"),
-          title: t("confirmTitle"),
-          description: t("confirmTarget"),
+          title: isWorkspace ? t("confirmAllTitle") : t("confirmTitle"),
+          description: isWorkspace ? t("confirmAllTarget") : t("confirmTarget"),
           footer: /* @__PURE__ */ import_react15.default.createElement(import_react15.default.Fragment, null, /* @__PURE__ */ import_react15.default.createElement(Button, { variant: "outline", disabled: pending2, onClick: close }, t("confirmCancel")), /* @__PURE__ */ import_react15.default.createElement(
             Button,
             {
@@ -3259,9 +3284,112 @@ window.__ModuleLoader__.load({
           ))
         },
         /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-1 text-[13px] font-medium leading-5 text-primary" }, request5.title),
-        /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-3 text-[12px] leading-[18px] text-secondary" }, t("confirmMessage")),
-        error !== null ? /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, `${t("deleteFailed")}\uFF1A${error}`) : null
+        request5.kind === "workspace" ? /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("confirmAllCount").replace("{count}", String(request5.sessionIds.length))) : null,
+        /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-3 text-[12px] leading-[18px] text-secondary" }, isWorkspace ? t("confirmAllMessage") : t("confirmMessage")),
+        error !== null ? /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null
       );
+    }
+
+    // src/features/delete-session/workspace-menu.ts
+    var WORKSPACE_ROW_SELECTOR = '[data-row-key^="workspace:"]';
+    var MENU_SELECTOR = '[role="menu"]';
+    var MENU_ITEM_SELECTOR = '[class*="_itemWrap"]';
+    var MENU_LABEL_SELECTOR2 = '[class*="_itemLabel"]';
+    var DELETE_WORKSPACE_LABELS = ["\u5220\u9664\u5DE5\u4F5C\u533A", "Delete workspace"];
+    var INJECTED_ATTRIBUTE2 = "data-aio-delete-all-sessions";
+    function readWorkspaceRow(row) {
+      const key = row.getAttribute("data-row-key") ?? "";
+      const workspaceId = key.slice("workspace:".length);
+      if (workspaceId === "") return void 0;
+      const title = (row.querySelector('[class*="_title"]')?.textContent ?? "").trim();
+      return { workspaceId, title: title === "" ? workspaceId : title };
+    }
+    function collectDeletableSessions(sessions, uiWorkspace, workspaceId) {
+      const workspace = uiWorkspace?.workspaces?.list.getSnapshot().items.find(
+        (item) => item.workspaceId === workspaceId
+      );
+      if (workspace === void 0) return [];
+      const state = sessions.list.getSnapshot();
+      return workspace.sessionIds.filter((id) => state.byId[id]?.running !== true);
+    }
+    function closeMenu() {
+      document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+    }
+    function createMenuItem2(template, label, onSelect) {
+      const wrap = template.cloneNode(true);
+      wrap.setAttribute(INJECTED_ATTRIBUTE2, "");
+      const labelNode = wrap.querySelector(MENU_LABEL_SELECTOR2);
+      if (labelNode !== null) labelNode.textContent = label;
+      const button = wrap.querySelector("button");
+      if (!(button instanceof HTMLElement)) {
+        console.error("[delete-session] \u5DE5\u4F5C\u533A\u83DC\u5355\u9879\u6A21\u677F\u7F3A\u5C11\u6309\u94AE\uFF0C\u5165\u53E3\u4E0D\u53EF\u70B9\u51FB:", label);
+        return wrap;
+      }
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        onSelect();
+      });
+      return wrap;
+    }
+    function injectMenuItem(menu, target, sessions, uiWorkspace, t) {
+      if (menu.querySelector(`[${INJECTED_ATTRIBUTE2}]`) !== null) return;
+      const items = Array.from(menu.querySelectorAll(MENU_ITEM_SELECTOR));
+      const deleteWorkspace = items.find(
+        (item2) => DELETE_WORKSPACE_LABELS.includes((item2.textContent ?? "").trim())
+      );
+      if (deleteWorkspace === void 0) return;
+      const sessionIds = collectDeletableSessions(sessions, uiWorkspace, target.workspaceId);
+      if (sessionIds.length === 0) return;
+      const item = createMenuItem2(deleteWorkspace, t("deleteAllAction"), () => {
+        closeMenu();
+        window.requestAnimationFrame(() => {
+          deleteConfirmStore.request({
+            kind: "workspace",
+            workspaceId: target.workspaceId,
+            title: target.title,
+            sessionIds
+          });
+        });
+      });
+      deleteWorkspace.parentElement?.insertBefore(item, deleteWorkspace);
+    }
+    function installWorkspaceMenu(t, sessions, readUiWorkspace) {
+      let pending2;
+      let scheduled = false;
+      let disposed = false;
+      const onClick = (event) => {
+        const node = event.target;
+        if (!(node instanceof Element)) return;
+        const row = node.closest(WORKSPACE_ROW_SELECTOR);
+        if (!(row instanceof HTMLElement)) return;
+        const button = node.closest("button");
+        if (button === null || row.querySelector("button") !== button) return;
+        pending2 = readWorkspaceRow(row);
+      };
+      const scan = () => {
+        scheduled = false;
+        if (disposed || pending2 === void 0) return;
+        const menu = document.querySelector(MENU_SELECTOR);
+        if (!(menu instanceof HTMLElement)) return;
+        if (readDeleteSessionEnabled()) {
+          injectMenuItem(menu, pending2, sessions, readUiWorkspace(), t);
+        }
+        pending2 = void 0;
+      };
+      const schedule = () => {
+        if (scheduled || disposed) return;
+        scheduled = true;
+        window.requestAnimationFrame(scan);
+      };
+      const observer = new MutationObserver(schedule);
+      observer.observe(document.body, { childList: true, subtree: true });
+      document.addEventListener("click", onClick, true);
+      return () => {
+        disposed = true;
+        observer.disconnect();
+        document.removeEventListener("click", onClick, true);
+      };
     }
 
     // src/features/delete-session/client.tsx
@@ -3278,7 +3406,7 @@ window.__ModuleLoader__.load({
       const items = uiWorkspace?.workspaces?.list.getSnapshot().items ?? [];
       return items.find((item) => item.sessionIds.includes(sessionId))?.workspaceId;
     }
-    function pickNextSession(sessions, uiWorkspace, workspaceId, removedId) {
+    function pickNextSession(sessions, uiWorkspace, workspaceId, removedIds) {
       const state = sessions.list.getSnapshot();
       const workspaceState = uiWorkspace?.workspaces?.list.getSnapshot();
       const workspace = workspaceState?.items.find((item) => item.workspaceId === workspaceId);
@@ -3286,7 +3414,7 @@ window.__ModuleLoader__.load({
       const archived = new Set(workspaceState?.archivedSessionIds ?? []);
       const candidates = memberIds.flatMap((id) => {
         const summary = state.byId[id];
-        return id === removedId || summary === void 0 || archived.has(id) ? [] : [{ id, summary }];
+        return removedIds.has(id) || summary === void 0 || archived.has(id) ? [] : [{ id, summary }];
       });
       const running = candidates.filter((candidate) => candidate.summary.running === true);
       const pool = running.length > 0 ? running : candidates;
@@ -3315,12 +3443,25 @@ window.__ModuleLoader__.load({
           await requestDeleteSession(sessionId);
           sessions.handleSessionRemoved?.(sessionId);
           if (!wasCurrent) return;
-          const next = pickNextSession(sessions, uiWorkspace, workspaceId, sessionId);
+          const next = pickNextSession(sessions, uiWorkspace, workspaceId, /* @__PURE__ */ new Set([sessionId]));
           if (next !== void 0) {
             uiWorkspace?.openSession?.(next);
             return;
           }
           uiWorkspace?.startSession?.(workspaceId);
+        };
+        const deleteWorkspaceSessions = async (workspaceId, sessionIds) => {
+          const currentId = sessionIds.find((id) => resolveSession(sessions, id).isCurrent);
+          const report = await requestDeleteSessions(sessionIds);
+          for (const id of report.deleted) sessions.handleSessionRemoved?.(id);
+          if (currentId === void 0 || !report.deleted.includes(currentId)) return report;
+          const next = pickNextSession(sessions, uiWorkspace, workspaceId, new Set(report.deleted));
+          if (next !== void 0) {
+            uiWorkspace?.openSession?.(next);
+            return report;
+          }
+          uiWorkspace?.startSession?.(workspaceId);
+          return report;
         };
         ctx.slots.inject(
           ROW_ACTION_SLOT,
@@ -3353,6 +3494,7 @@ window.__ModuleLoader__.load({
               inject: () => ({
                 hooks: { request: deleteConfirmStore },
                 deleteSession,
+                deleteWorkspaceSessions,
                 settle: deleteConfirmStore.settle
               })
             },
@@ -3365,6 +3507,10 @@ window.__ModuleLoader__.load({
             )
           )
         );
+        ctx.effect(
+          () => installWorkspaceMenu(t, sessions, () => uiWorkspace),
+          "delete-session: workspace menu"
+        );
       });
     }
 
@@ -3373,18 +3519,28 @@ window.__ModuleLoader__.load({
       zh: {
         // 开关标题
         title: "\u5220\u9664\u4F1A\u8BDD",
-        // 开关用途说明：说明打开后会话行会出现删除入口，且删除前需要先在弹窗里确认
-        description: "\u4F1A\u8BDD\u60AC\u505C\u64CD\u4F5C\u91CC\u65B0\u589E\u5220\u9664\u6309\u94AE\uFF0C\u786E\u8BA4\u540E\u6E05\u9664\u672C\u5730\u8BB0\u5F55\u3002",
+        // 开关用途说明：说明打开后会话行会出现删除入口、工作区菜单会出现批量删除入口，且删除前需要先在弹窗里确认
+        description: "\u4F1A\u8BDD\u60AC\u505C\u64CD\u4F5C\u91CC\u65B0\u589E\u5220\u9664\u6309\u94AE\uFF0C\u5DE5\u4F5C\u533A\u300C\u66F4\u591A\u300D\u83DC\u5355\u53EF\u4E00\u952E\u5220\u9664\u5168\u90E8\u4F1A\u8BDD\uFF0C\u786E\u8BA4\u540E\u6E05\u9664\u672C\u5730\u8BB0\u5F55\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 会话行删除按钮的可访问名称与悬停提示
         action: "\u5220\u9664\u4F1A\u8BDD",
+        // 工作区「更多」菜单里的批量删除入口
+        deleteAllAction: "\u5220\u9664\u6240\u6709\u4F1A\u8BDD",
         // 确认弹窗标题
         confirmTitle: "\u5220\u9664\u4F1A\u8BDD",
         // 确认弹窗的说明文字，指出弹窗里给出的是哪一条会话
         confirmTarget: "\u5373\u5C06\u5220\u9664\u4EE5\u4E0B\u4F1A\u8BDD\uFF1A",
         // 确认弹窗的删除范围说明
         confirmMessage: "\u5C06\u5220\u9664\u8BE5\u4F1A\u8BDD\u7684\u672C\u5730\u8BB0\u5F55\uFF1A\u5BF9\u8BDD\u6B63\u6587\u3001\u6807\u9898\u7F13\u5B58\u4E0E\u5217\u8868\u8BB0\u5F55\uFF0C\u5220\u9664\u540E\u65E0\u6CD5\u6062\u590D\u3002",
+        // 批量删除确认弹窗标题
+        confirmAllTitle: "\u5220\u9664\u6240\u6709\u4F1A\u8BDD",
+        // 批量删除确认弹窗的说明文字，指出弹窗里给出的是哪个工作区
+        confirmAllTarget: "\u5373\u5C06\u5220\u9664\u4EE5\u4E0B\u5DE5\u4F5C\u533A\u4E2D\u7684\u4F1A\u8BDD\uFF1A",
+        // 批量删除确认弹窗的会话数量说明，{count} 为条数
+        confirmAllCount: "\u5171 {count} \u6761\u4F1A\u8BDD",
+        // 批量删除的删除范围说明：说明跳过运行中的会话、包含归档会话且无法恢复
+        confirmAllMessage: "\u5C06\u5220\u9664\u8BE5\u5DE5\u4F5C\u533A\u4E2D\u6240\u6709\u4E0D\u5728\u8FD0\u884C\u4E2D\u7684\u4F1A\u8BDD\uFF08\u542B\u5DF2\u5F52\u6863\u4F1A\u8BDD\uFF09\u7684\u672C\u5730\u8BB0\u5F55\uFF0C\u5220\u9664\u540E\u65E0\u6CD5\u6062\u590D\uFF1B\u6B63\u5728\u6267\u884C\u4EFB\u52A1\u7684\u4F1A\u8BDD\u4F1A\u4FDD\u7559\u3002",
         // 确认弹窗的取消按钮
         confirmCancel: "\u53D6\u6D88",
         // 确认弹窗的确认按钮
@@ -3392,23 +3548,35 @@ window.__ModuleLoader__.load({
         // 删除进行中的按钮与状态文字
         deleting: "\u6B63\u5728\u5220\u9664",
         // 删除失败时的提示前缀，后面拼接宿主返回的原因
-        deleteFailed: "\u5220\u9664\u4F1A\u8BDD\u5931\u8D25"
+        deleteFailed: "\u5220\u9664\u4F1A\u8BDD\u5931\u8D25",
+        // 批量删除部分失败时的提示，{count} 为失败条数
+        deleteAllPartial: "\u6709 {count} \u6761\u4F1A\u8BDD\u5220\u9664\u5931\u8D25\uFF0C\u53EF\u5173\u95ED\u540E\u91CD\u65B0\u64CD\u4F5C\u3002"
       },
       en: {
         // Switch title
         title: "Delete sessions",
-        // Switch description covering the row action and the confirmation step
-        description: "Adds a delete button to session hover actions; a dialog confirms first.",
+        // Switch description covering the row action, the bulk workspace entry, and the confirmation step
+        description: "Adds a delete button to session hover actions and a delete-all entry to the workspace menu; a dialog confirms first.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions.",
         // Accessible name and hover hint of the row delete button
         action: "Delete session",
+        // Bulk delete entry in the workspace More menu
+        deleteAllAction: "Delete all sessions",
         // Confirmation dialog title
         confirmTitle: "Delete session",
         // Dialog line introducing the session being deleted
         confirmTarget: "About to delete:",
         // Dialog text describing what is removed
         confirmMessage: "This removes the session\u2019s local records: the conversation log, its title cache, and its list entry. It cannot be undone.",
+        // Bulk confirmation dialog title
+        confirmAllTitle: "Delete all sessions",
+        // Dialog line introducing the workspace whose sessions are deleted
+        confirmAllTarget: "About to delete sessions in:",
+        // Session count line of the bulk dialog; {count} is the number of sessions
+        confirmAllCount: "{count} sessions in total",
+        // Bulk dialog text: running sessions are kept, archived ones included, irreversible
+        confirmAllMessage: "This removes every non-running session in this workspace, including archived ones: conversation logs, title caches, and list entries. It cannot be undone; sessions with running work are kept.",
         // Cancel button of the confirmation dialog
         confirmCancel: "Cancel",
         // Confirming delete button
@@ -3416,7 +3584,9 @@ window.__ModuleLoader__.load({
         // Button label and status text while deleting
         deleting: "Deleting",
         // Prefix for a failed delete, followed by the host's reason
-        deleteFailed: "Could not delete the session"
+        deleteFailed: "Could not delete the session",
+        // Shown when part of a bulk delete failed; {count} is the number of failed sessions
+        deleteAllPartial: "{count} sessions could not be deleted. Close and try again."
       }
     };
 

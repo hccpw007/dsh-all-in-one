@@ -1,8 +1,13 @@
 /**
  * 删除会话的确认弹窗。
  *
- * 会话行按钮只负责发起请求，弹窗挂在宿主的 `shell.overlay` 插槽里渲染：删除
- * 不可撤销，确认前不碰磁盘；失败时把宿主返回的原因留在弹窗内，用户可重试。
+ * 删除入口（会话行按钮、工作区「更多」菜单）只负责发起请求，弹窗挂在宿主的
+ * `shell.overlay` 插槽里渲染：删除不可撤销，确认前不碰磁盘；失败时把宿主返回
+ * 的原因留在弹窗内，用户可重试。
+ *
+ * 两种请求共用同一个弹窗：单条会话删除，以及工作区里所有非运行中会话的批量
+ * 删除。批量删除部分失败时保留弹窗并给出失败条数，已删的会话已经从列表消失，
+ * 用户关闭后重新打开菜单即可处理剩余会话。
  */
 import { Modal } from '@deepseek-ai/dsh-client-ui-primitives'
 import React, { useEffect, useState } from 'react'
@@ -10,6 +15,7 @@ import React, { useEffect, useState } from 'react'
 import { Button } from '../../components/Button'
 import type { Translate } from '../../types/plugin'
 import type { DeleteConfirmRequest } from './confirm-store'
+import type { DeleteSessionsResponse } from './types'
 
 /** 宿主插槽注入的快照 hook：按选择器读取待确认请求。 */
 export type DeleteConfirmSelector = <T>(
@@ -23,8 +29,13 @@ export interface DeleteSessionDialogProps {
   t: Translate
   /** 由客户端扩展注入：读取当前待确认请求。 */
   useRequest?: DeleteConfirmSelector
-  /** 由客户端扩展注入：请求宿主删除会话并同步本地列表。 */
+  /** 由客户端扩展注入：请求宿主删除单条会话并同步本地列表。 */
   deleteSession?: (sessionId: string) => Promise<void>
+  /** 由客户端扩展注入：批量删除工作区里的会话并同步本地列表。 */
+  deleteWorkspaceSessions?: (
+    workspaceId: string,
+    sessionIds: string[],
+  ) => Promise<DeleteSessionsResponse>
   /** 由客户端扩展注入：清空待确认请求。 */
   settle?: () => void
 }
@@ -43,23 +54,26 @@ export function DeleteSessionDialog({
   t,
   useRequest,
   deleteSession,
+  deleteWorkspaceSessions,
   settle,
 }: DeleteSessionDialogProps) {
   // 请求进行中禁用两个按钮，避免重复提交
   const [pending, setPending] = useState(false)
-  // 宿主拒绝删除时把原因留在弹窗里，而不是关掉弹窗只弹提示
+  // 删除失败或批量删除部分失败时把提示留在弹窗里，而不是关掉弹窗只弹通知
   const [error, setError] = useState<string | null>(null)
 
   const readRequest = useRequest ?? useNoRequest
   const request = readRequest((value) => value)
-  const activeSessionId = request?.sessionId
+  // 换了一个删除目标时清掉上一次的失败原因，避免把无关的错误带到新弹窗里
+  const requestKey = request === null ? '' : request.kind === 'session' ? request.sessionId : request.workspaceId
 
-  // 换了一条会话时清掉上一条的失败原因，避免把无关的错误带到新弹窗里
   useEffect(() => {
     setError(null)
-  }, [activeSessionId])
+  }, [requestKey])
 
   if (request === null) return null
+
+  const isWorkspace = request.kind === 'workspace'
 
   const close = () => {
     if (pending) return
@@ -75,11 +89,21 @@ export function DeleteSessionDialog({
     setError(null)
 
     try {
-      await deleteSession?.(request.sessionId)
+      // 工作区批量删除：有会话删不掉时保留弹窗，让用户知道还剩几条
+      if (request.kind === 'workspace') {
+        const report = await deleteWorkspaceSessions?.(request.workspaceId, request.sessionIds)
+        if (report !== undefined && report.failed.length > 0) {
+          setPending(false)
+          setError(t('deleteAllPartial').replace('{count}', String(report.failed.length)))
+          return
+        }
+      } else {
+        await deleteSession?.(request.sessionId)
+      }
     } catch (failure) {
       console.error('[delete-session] 删除会话失败:', failure)
       setPending(false)
-      setError(failure instanceof Error ? failure.message : String(failure))
+      setError(`${t('deleteFailed')}：${failure instanceof Error ? failure.message : String(failure)}`)
       return
     }
 
@@ -92,8 +116,8 @@ export function DeleteSessionDialog({
       open
       onClose={close}
       closeLabel={t('confirmCancel')}
-      title={t('confirmTitle')}
-      description={t('confirmTarget')}
+      title={isWorkspace ? t('confirmAllTitle') : t('confirmTitle')}
+      description={isWorkspace ? t('confirmAllTarget') : t('confirmTarget')}
       footer={
         <>
           <Button variant="outline" disabled={pending} onClick={close}>
@@ -112,14 +136,22 @@ export function DeleteSessionDialog({
         </>
       }
     >
-      {/* 被删除的会话标题：让用户确认点的是哪一条 */}
+      {/* 删除目标：单条会话显示会话标题，批量删除显示工作区标题 */}
       <p className="mt-1 text-[13px] font-medium leading-5 text-primary">{request.title}</p>
-      {/* 删除范围说明：解释正文、标题缓存与列表记录都会被清掉且无法恢复 */}
-      <p className="mt-3 text-[12px] leading-[18px] text-secondary">{t('confirmMessage')}</p>
-      {/* 删除失败原因：宿主拒绝时保留弹窗，用户可重试或取消 */}
+      {/* 批量删除时显示本次会删掉多少条会话 */}
+      {request.kind === 'workspace' ? (
+        <p className="mt-1 text-[12px] leading-[18px] text-secondary">
+          {t('confirmAllCount').replace('{count}', String(request.sessionIds.length))}
+        </p>
+      ) : null}
+      {/* 删除范围说明：解释哪些本地记录会被清掉且无法恢复 */}
+      <p className="mt-3 text-[12px] leading-[18px] text-secondary">
+        {isWorkspace ? t('confirmAllMessage') : t('confirmMessage')}
+      </p>
+      {/* 删除失败或部分失败提示：保留弹窗，用户可重试或取消 */}
       {error !== null ? (
         <p className="mt-2 text-[12px] leading-[18px] text-danger" role="alert">
-          {`${t('deleteFailed')}：${error}`}
+          {error}
         </p>
       ) : null}
     </Modal>

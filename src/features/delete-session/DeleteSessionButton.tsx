@@ -76,7 +76,7 @@ export function DeleteSessionButton({
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     // 行本身可点击进入会话，按钮只发起确认请求
     event.stopPropagation()
-    requestConfirm({ sessionId, title: displayTitle ?? sessionId })
+    requestConfirm({ kind: 'session', sessionId, title: displayTitle ?? sessionId })
   }
 
   return (

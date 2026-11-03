@@ -2017,14 +2017,43 @@ async function deleteStoredSession(sessionId) {
   if (dirs.length > 0) console.info("[delete-session] \u5DF2\u5220\u9664\u4F1A\u8BDD:", sessionId, dirs.length, records);
   return { directories: dirs.length, records };
 }
+async function deleteStoredSessions(sessionIds) {
+  const deleted = [];
+  const failed = [];
+  for (const sessionId of sessionIds) {
+    try {
+      const report = await deleteStoredSession(sessionId);
+      if (report.directories === 0 && report.records === 0) {
+        failed.push({ sessionId, error: "\u4F1A\u8BDD\u4E0D\u5B58\u5728\u6216\u5DF2\u88AB\u5220\u9664" });
+        continue;
+      }
+      deleted.push(sessionId);
+    } catch (error) {
+      console.error("[delete-session] \u6279\u91CF\u5220\u9664\u4F1A\u8BDD\u5931\u8D25:", sessionId, error);
+      failed.push({ sessionId, error: error instanceof Error ? error.message : String(error) });
+    }
+  }
+  console.info("[delete-session] \u6279\u91CF\u5220\u9664\u5B8C\u6210:", deleted.length, "\u6761\uFF0C\u5931\u8D25", failed.length, "\u6761");
+  return { deleted, failed };
+}
 
 // src/features/delete-session/host/routes.ts
 var ROUTE_PATH3 = "/dsh-all-in-one/sessions";
+var BATCH_PATH = "/dsh-all-in-one/sessions/batch";
 var MAX_BODY_BYTES2 = 8 * 1024;
+var MAX_BATCH_BODY_BYTES = 256 * 1024;
+var MAX_BATCH_SIZE = 1e3;
 function readSessionId(body) {
   if (typeof body !== "object" || body === null) return void 0;
   const candidate = body.sessionId;
   return isValidSessionId(candidate) ? candidate : void 0;
+}
+function readSessionIds(body) {
+  if (typeof body !== "object" || body === null) return void 0;
+  const candidate = body.sessionIds;
+  if (!Array.isArray(candidate) || candidate.length === 0) return void 0;
+  if (candidate.length > MAX_BATCH_SIZE) return void 0;
+  return candidate.every(isValidSessionId) ? candidate : void 0;
 }
 function installDeleteSessionRoutes(webServer) {
   return webServer.register({
@@ -2039,6 +2068,17 @@ function installDeleteSessionRoutes(webServer) {
         if (request.method !== "POST") {
           response.writeHead(405, { allow: "POST" });
           response.end();
+          return;
+        }
+        const pathname = new URL(request.url ?? "/", "http://localhost").pathname;
+        if (pathname === BATCH_PATH) {
+          const body2 = await readJsonBody(request, MAX_BATCH_BODY_BYTES);
+          const sessionIds = readSessionIds(body2);
+          if (sessionIds === void 0) {
+            sendJson(response, 400, { error: "\u4F1A\u8BDD\u6807\u8BC6\u5217\u8868\u4E0D\u5408\u6CD5" });
+            return;
+          }
+          sendJson(response, 200, await deleteStoredSessions(sessionIds));
           return;
         }
         const body = await readJsonBody(request, MAX_BODY_BYTES2);
