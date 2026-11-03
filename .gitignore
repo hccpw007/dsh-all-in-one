@@ -34,3 +34,4 @@ Agent.md
 .env
 .env.*
 !.env.example
+!/AGENT.md
