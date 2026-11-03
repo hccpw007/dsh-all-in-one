@@ -1,7 +1,7 @@
 /**
  * 「All In One」外壳页面。
  *
- * 页面只负责网格布局、功能切换与返回入口；每张入口卡片由功能自己渲染，
+ * 页面只负责按分组布置网格、功能切换与返回入口；每张入口卡片由功能自己渲染，
  * 功能页面的标题与内容也都留在各自的文件夹里。
  */
 import React, { useCallback, useState } from 'react'
@@ -11,6 +11,8 @@ import { Button } from '../components/Button'
 import { registry } from '../features/registry'
 import type { Translate } from '../types/plugin'
 import { PageActionsContext } from './page-actions'
+import { FEATURE_GROUP_ORDER } from './registry'
+import type { FeatureDefinition } from './registry'
 
 /** 功能页返回网格时显示的箭头图标。 */
 function BackGlyph() {
@@ -34,6 +36,91 @@ function BackGlyph() {
 interface AllInOnePageProps {
   /** 宿主注入的翻译函数。 */
   t: Translate
+}
+
+/** 未声明 group、或 group 值不在 FEATURE_GROUP_ORDER 中的功能归入此分组。 */
+const FALLBACK_GROUP = 'other'
+
+/** 网格中的一个分组区块。 */
+interface FeatureSection {
+  /** 分组 id，同时拼进 `shell.group.<id>` 语言 key */
+  group: string
+  /** 该分组下的功能，保持注册表给出的组内顺序 */
+  features: FeatureDefinition[]
+}
+
+/**
+ * 按 feature.group 归集功能，并按固定顺序返回非空分组。
+ *
+ * 分组不影响功能是否可用：未声明或拼错的分组落到兜底组，功能照常显示。
+ * @param features 注册表返回的、已按 order 排序的功能列表
+ * @returns 只包含非空分组的区块列表
+ */
+function groupFeatures(features: readonly FeatureDefinition[]): FeatureSection[] {
+  const buckets = new Map<string, FeatureDefinition[]>()
+
+  // 逐条归组；未声明或未知的分组统一落到兜底组，避免功能从网格中消失
+  for (const feature of features) {
+    const group =
+      feature.group !== undefined && FEATURE_GROUP_ORDER.includes(feature.group)
+        ? feature.group
+        : FALLBACK_GROUP
+    const bucket = buckets.get(group)
+
+    if (bucket) bucket.push(feature)
+    else buckets.set(group, [feature])
+  }
+
+  const sections: FeatureSection[] = []
+
+  // 兜底组永远排在最后
+  for (const group of [...FEATURE_GROUP_ORDER, FALLBACK_GROUP]) {
+    const bucket = buckets.get(group)
+
+    if (bucket !== undefined && bucket.length > 0) sections.push({ group, features: bucket })
+  }
+
+  return sections
+}
+
+/** 网格中的单个功能入口。 */
+interface FeatureCardProps {
+  /** 通过注册表校验的功能定义 */
+  feature: FeatureDefinition
+  /** 宿主翻译函数 */
+  t: Translate
+  /** 打开页面型功能 */
+  open: (id: string) => void
+}
+
+/**
+ * 渲染单个功能入口：开关型直接渲染开关，页面型渲染可点击的入口卡片。
+ *
+ * 两种形态都包一层 `min-w-0`，让卡片按网格行高撑到统一高度。
+ * @param props 功能定义与外壳注入的翻译、打开动作
+ */
+function FeatureCard({ feature, t, open }: FeatureCardProps) {
+  const featureT = (key: string) => t(`${feature.id}.${key}`)
+
+  // 开关型 feature 与入口卡片同列渲染（各占一半宽度），没有独立功能页
+  if ('switch' in feature) {
+    const SwitchEntry = feature.switch
+
+    return (
+      <div className="min-w-0">
+        <SwitchEntry t={featureT} />
+      </div>
+    )
+  }
+
+  const Entry = feature.entry
+
+  // 入口卡片由功能自己渲染，外壳只负责布局与打开动作
+  return (
+    <div className="min-w-0">
+      <Entry t={featureT} open={() => open(feature.id)} />
+    </div>
+  )
 }
 
 /**
@@ -105,32 +192,27 @@ export function AllInOnePage({ t }: AllInOnePageProps) {
           {t('shell.empty')}
         </p>
       ) : (
-        <div className="aio-card-grid mt-4 grid auto-rows-fr gap-2.5">
-          {registry.list.map((feature) => {
-            const featureT = (key: string) => t(`${feature.id}.${key}`)
-
-            // 开关型 feature 与入口卡片同列渲染（各占一半宽度），没有独立功能页；
-            // 外层撑满整行高度，让同一行的两个开关卡片等高
-            if ('switch' in feature) {
-              const SwitchEntry = feature.switch
-
-              return (
-                <div key={feature.id} className="min-w-0">
-                  <SwitchEntry t={featureT} />
-                </div>
-              )
-            }
-
-            const Entry = feature.entry
-
-            // 入口卡片由功能自己渲染，外壳只负责布局与打开动作；
-            // 外层与开关卡片一样包一层，卡片才能按网格行高撑到统一高度
-            return (
-              <div key={feature.id} className="min-w-0">
-                <Entry t={featureT} open={() => setActiveId(feature.id)} />
+        // 按分组逐块渲染：组标题说明这一块功能解决什么问题，组内仍是一张网格
+        <div className="mt-4 space-y-4">
+          {groupFeatures(registry.list).map((section) => (
+            <section key={section.group}>
+              {/* 分组标题 */}
+              <h2 className="mb-2 text-[12px] font-medium text-secondary">
+                {t(`shell.group.${section.group}`)}
+              </h2>
+              {/* 分组内的功能网格 */}
+              <div className="aio-card-grid grid auto-rows-fr gap-2.5">
+                {section.features.map((feature) => (
+                  <FeatureCard
+                    key={feature.id}
+                    feature={feature}
+                    t={t}
+                    open={(id) => setActiveId(id)}
+                  />
+                ))}
               </div>
-            )
-          })}
+            </section>
+          ))}
         </div>
       )}
     </div>

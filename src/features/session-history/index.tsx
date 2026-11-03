@@ -11,6 +11,7 @@ import { SessionHistoryToggle } from './toggle'
  */
 const sessionHistoryFeature: FeatureDefinition = {
   id: 'session-history',
+  group: 'layout',
   order: 16,
   switch: SessionHistoryToggle,
   client: { apply: applyClient },

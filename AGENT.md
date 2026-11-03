@@ -28,13 +28,19 @@
 | 字段 | 类型 | 说明 |
 |------|------|------|
 | `id` | `string` | 唯一标识，同时作为语言 key 前缀与渲染 key，重复时只保留第一个 |
+| `group` | `FeatureGroup` 可选 | 分组 id（`conversation` / `layout` / `config`），决定网格分块位置；未声明归入「其他」 |
 | `locales` | `LocaleDictionaries` | 本功能中英文文案，外壳统一加 `<id>.` 前缀后注册 |
-| `order` | `number` 可选 | 网格排序权重，越小越靠前，默认 100，相同权重保持注册顺序 |
+| `order` | `number` 可选 | 同一分组内的排序权重，越小越靠前，默认 100，相同权重保持注册顺序 |
 | `entry` + `page` | `ComponentType<FeatureEntryProps>` + `ComponentType<FeaturePageProps>` | 页面型入口：网格入口 + 功能页面，二者必须同时提供 |
 | `switch` | `ComponentType<FeatureSwitchProps>` | 开关型入口：网格中直接渲染开关，没有功能页面 |
 | `client` | `FeatureClientExtension` 可选 | 网格与功能页之外的客户端扩展（如新会话界面选择器），由外壳统一执行 |
 
 入口形态二选一：页面型提供 `entry` 与 `page`，开关型只提供 `switch`，不得混用。
+
+分组只决定设置页网格里的分块位置，**不改变目录结构**：功能目录保持平铺，调整分组只改
+`index.tsx` 里的一行。渲染顺序由 `src/shell/registry.ts` 的 `FEATURE_GROUP_ORDER` 决定，
+未声明或不在该列表中的值归入兜底的「其他」分组，功能照常显示；新增分组时同步补
+`entry.tsx` 的 `shell.group.<id>` 中英文文案。
 
 客户端扩展（可选）由 feature 目录内的 `client.tsx` 导出 `apply(ctx, t)`，
 外壳在设置页注册后统一执行。扩展用于网格与功能页之外的宿主界面（如新会话界面的
@@ -56,7 +62,7 @@
 页面型：
 
 1. 参考 `src/features/power-pack/`，在 `src/features/<id>/` 下新建 `index.tsx`、`entry.tsx`、`page.tsx` 与 `locales.ts`。
-2. 修改 `index.tsx` 的 `id`（与文件夹名一致），并重写入口、页面与文案。
+2. 修改 `index.tsx` 的 `id`（与文件夹名一致）与 `group`（所属分组），并重写入口、页面与文案。
 3. 入口在卡片右下角放一个「设置 ›」入口（`src/components/CardChevron` 提供箭头）：网格里页面型
    与开关型卡片外观一致，用户只能靠这个入口判断哪些格子点得进去；开关型入口不放该按钮。
 4. 在 `src/features/index.ts` 的 `featureList` 中追加该文件夹的默认导出。
@@ -65,7 +71,7 @@
 开关型：
 
 1. 复制 `src/features/expand-process/` 为 `src/features/<id>/`。
-2. 修改 `index.tsx` 的 `id`，重写 `toggle.tsx` 与 `locales.ts`；不要提供 `entry` / `page`。
+2. 修改 `index.tsx` 的 `id` 与 `group`，重写 `toggle.tsx` 与 `locales.ts`；不要提供 `entry` / `page`。
 3. 在 `featureList` 中追加该文件夹的默认导出。
 4. 执行 `npm run build`，刷新 Harness 页面确认开关可用。
 
@@ -236,6 +242,14 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 
 修改这几条规则前先确认真实目录里已有文件仍被正确解析（`parseMemoryFile` 只认上述字段，
 其余内容原样留在正文）；本插件不得写出 Claude Code 读不懂的文件。
+
+功能按使用场景分三组，分组只影响设置页网格的分块，目录保持平铺：
+
+| 分组 | group id | 包含功能 |
+|---|---|---|
+| 对话体验 | `conversation` | 展开过程、会话图片预览、删除会话、自动压缩会话 |
+| 界面布局 | `layout` | 会话历史左侧、菜单收进更多、项目会话数 |
+| 配置与维护 | `config` | 技能包、项目记忆、Cookie 清理 |
 
 | 目录 | 职责 |
 |------|------|

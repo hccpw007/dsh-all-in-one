@@ -25,6 +25,14 @@ const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
     'shell.pageTitle': 'All In One',
     // 页面说明，解释这一页的用途
     'shell.pageDescription': '所有独立的小工具都收拢在这里，点击卡片进入对应的功能。',
+    // 分组标题：改变对话阅读与操作行为的功能
+    'shell.group.conversation': '对话体验',
+    // 分组标题：改变侧边栏、导航等界面结构的功能
+    'shell.group.layout': '界面布局',
+    // 分组标题：需要先配置再使用的功能
+    'shell.group.config': '配置与维护',
+    // 分组标题：未声明分组的兜底分组
+    'shell.group.other': '其他',
     // 尚未注册任何功能时的空态提示
     'shell.empty': '还没有注册任何功能，在 src/features 下新建文件夹即可添加。',
     // 从功能页面返回功能网格的按钮文案
@@ -37,6 +45,14 @@ const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
     'shell.pageTitle': 'All In One',
     // Page description explaining the purpose of this section
     'shell.pageDescription': 'Every standalone tool lives here. Pick a card to open it.',
+    // Group heading: features that change how conversations are read and operated
+    'shell.group.conversation': 'Conversation',
+    // Group heading: features that restructure the sidebar and navigation
+    'shell.group.layout': 'Layout',
+    // Group heading: features that need configuration before use
+    'shell.group.config': 'Configuration & maintenance',
+    // Group heading: fallback for features that declare no group
+    'shell.group.other': 'Other',
     // Empty state shown when no feature is registered
     'shell.empty': 'No features registered yet. Add a folder under src/features.',
     // Button that leaves a feature page and returns to the grid

@@ -11,6 +11,7 @@ import { ImagePreviewToggle } from './toggle'
  */
 const imagePreviewFeature: FeatureDefinition = {
   id: 'image-preview',
+  group: 'conversation',
   order: 15,
   switch: ImagePreviewToggle,
   client: { apply: applyClient },

@@ -38,11 +38,29 @@ export interface FeatureClientExtension {
   apply(ctx: PluginContext, t: Translate): void
 }
 
+/**
+ * feature 所属分组。
+ *
+ * 分组只决定设置页网格里的分块位置，不影响目录结构：功能目录保持平铺，
+ * 分类信息由这里的声明承载，调整分组只改一行，不必移动文件。
+ */
+export type FeatureGroup = 'conversation' | 'layout' | 'config'
+
+/**
+ * 分组在网格中的渲染顺序。
+ *
+ * 新增分组时同时补 `entry.tsx` 的 `shell.group.<id>` 文案；不在本列表中的
+ * group 值会被外壳归入兜底的「其他」分组，功能不会从网格中消失。
+ */
+export const FEATURE_GROUP_ORDER: readonly FeatureGroup[] = ['conversation', 'layout', 'config']
+
 /** 所有 feature 共有的字段。 */
 interface FeatureCommon {
   /** 唯一标识，同时作为语言 key 前缀与渲染 key，重复时只保留第一个。 */
   id: string
-  /** 网格排序权重，越小越靠前，默认 100，相同权重保持注册顺序。 */
+  /** 所属分组，决定网格中的分块位置；未声明时归入「其他」。 */
+  group?: FeatureGroup
+  /** 同一分组内的排序权重，越小越靠前，默认 100，相同权重保持注册顺序。 */
   order?: number
   /** 本功能的中英文文案，外壳统一加 id 前缀后注册。 */
   locales: FeatureLocales
@@ -64,8 +82,9 @@ export interface FeatureSwitchDefinition extends FeatureCommon {
 /**
  * Feature 定义契约，新增功能的模板结构见 src/features/ 下的示例目录：
  *   id       string   唯一标识，同时作为语言 key 前缀与渲染 key
+ *   group    string   可选，分组 id（conversation / layout / config），未声明归入「其他」
  *   locales  object   本功能的中英文文案，外壳统一注册，新增功能无需改外壳
- *   order    number   可选，网格排序权重，越小越靠前，默认 100
+ *   order    number   可选，同一分组内的排序权重，越小越靠前，默认 100
  *
  * 入口形态二选一：
  *   页面型  entry + page   网格入口由 feature 自行渲染，点击打开功能页
