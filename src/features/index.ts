@@ -9,6 +9,7 @@ import deleteSession from './delete-session'
 import projectMemory from './project-memory'
 import autoCompact from './auto-compact'
 import desktopCookie from './desktop-cookie'
+import workspaceSessionCount from './workspace-session-count'
 
 /**
  * 所有已注册的 feature。
@@ -31,4 +32,5 @@ export const featureList: FeatureDefinition[] = [
   powerPack,
   autoCompact,
   desktopCookie,
+  workspaceSessionCount,
 ]

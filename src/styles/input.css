@@ -86,3 +86,17 @@
   --dsw-corner-shape: initial;
   corner-shape: round;
 }
+
+/*
+ * 侧边栏项目名后的会话数量。
+ * 数字由「项目会话数」功能写进标题元素的 data 属性，括号与样式交给伪元素：
+ * 伪元素不是 React 管理的子节点，宿主重渲染标题文本时不会把它覆盖掉。
+ */
+.aio-workspace-count::after {
+  content: '（' attr(data-aio-workspace-count) '）';
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 12px;
+  font-weight: 400;
+  margin-inline-start: 1px;
+}
+

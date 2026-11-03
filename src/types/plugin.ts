@@ -102,6 +102,8 @@ export interface UiWorkspaceApi {
         /** 已归档的会话；默认视图不展示它们。 */
         archivedSessionIds?: string[]
       }
+      /** 工作区快照变化通知，返回注销函数；宿主版本不带该能力时省略。 */
+      subscribe?(listener: () => void): () => void
     }
   }
 }
@@ -110,6 +112,8 @@ export interface UiWorkspaceApi {
 export interface SessionsApi {
   list: {
     getSnapshot(): { ids: string[]; byId: Record<string, SessionSummary> }
+    /** 会话快照变化通知，返回注销函数；宿主版本不带该能力时省略。 */
+    subscribe?(listener: () => void): () => void
   }
   /**
    * 本地摘掉一条会话（宿主列表快照层的移除入口）。
