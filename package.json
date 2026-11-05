@@ -1,6 +1,6 @@
 {
   "name": "dsh-all-in-one",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "description": "All In One：把独立小工具收拢到设置页的统一外壳。",
