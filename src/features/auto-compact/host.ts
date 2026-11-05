@@ -14,6 +14,9 @@ import { installAutoCompactRoutes } from './host/routes'
 import { installAutoCompactWatcher } from './host/watcher'
 
 /** 设置接口挂在 Web 服务器上；服务缺失时本扩展不生效。 */
+/** 功能标识，与 feature 目录名一致；装配失败时用于定位。 */
+export const id = 'auto-compact'
+
 export const inject = ['webServer']
 
 /**

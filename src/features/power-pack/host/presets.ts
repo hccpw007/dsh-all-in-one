@@ -28,9 +28,16 @@ const PRESET_ID_PREFIX = 'power-pack-'
 /** 组合预设的排序，排在标准、PTC、极简等内置模式之后。 */
 const PRESET_ORDER = 200
 
-/** 等待宿主注册某个模式预设的次数与间隔。 */
-const PRESET_READ_ATTEMPTS = 12
-const PRESET_READ_INTERVAL_MS = 250
+/** 等待宿主注册某个模式预设的次数与退避参数：总预算控制在 1 秒以内。 */
+const PRESET_READ_ATTEMPTS = 5
+const PRESET_READ_INITIAL_MS = 40
+const PRESET_READ_MAX_MS = 300
+
+/** 模式读取失败的负缓存时长：历史会话引用已删除的模式时，避免每次打开都等满一轮退避。 */
+const PRESET_MISS_TTL_MS = 30_000
+
+/** 已注册组合预设的容量上限；超出后淘汰最早注册的一条，避免极端情况下无界增长。 */
+const MAX_COMPOSED_PRESETS = 64
 
 /** 技能包注入预设的行 id：只有这些行会随技能包配置变化。 */
 const PACK_ROW_IDS = new Set(['power-pack-isolate', 'power-pack-prompt', 'skill-filesystem', 'tool-skill'])
@@ -213,18 +220,46 @@ function delay(ms: number): Promise<void> {
 }
 
 /**
+ * 模式读取失败的负缓存：modeId → 失效时间戳。
+ *
+ * 会话引用了已被删除的模式时，每次恢复都会等满一轮退避；负缓存让随后的 30 秒内
+ * 立即失败并给出可诊断错误，而不是反复把会话打开拖慢。
+ */
+const modeMisses = new Map<string, number>()
+
+/**
  * 等待宿主注册某个模式预设。
  *
  * 插件可能先于内置模式完成加载，此时读不到该模式的组合行；合成前必须先等到
- * 它出现，否则组合会缺掉模式提供的全部工具行。
+ * 它出现，否则组合会缺掉模式提供的全部工具行。间隔指数退避：首次 40ms 即可命中
+ * 常见情况，最坏 5 次合计约 580ms，不再固定阻塞 3 秒。
  * @param api 宿主的 Agent 预设服务
  * @param modeId 模式预设标识
  * @returns 是否在限定次数内读到组合行
  */
 export async function waitPresetRows(api: AgentPresetApi, modeId: string): Promise<boolean> {
+  const missUntil = modeMisses.get(modeId)
+  if (missUntil !== undefined && missUntil > Date.now()) return false
+
+  let interval = PRESET_READ_INITIAL_MS
+
   for (let attempt = 0; attempt < PRESET_READ_ATTEMPTS; attempt += 1) {
-    if (readPresetRows(api, modeId) !== undefined) return true
-    await delay(PRESET_READ_INTERVAL_MS)
+    if (readPresetRows(api, modeId) !== undefined) {
+      modeMisses.delete(modeId)
+
+      return true
+    }
+
+    if (attempt + 1 < PRESET_READ_ATTEMPTS) {
+      await delay(interval)
+      interval = Math.min(PRESET_READ_MAX_MS, interval * 2)
+    }
+  }
+
+  modeMisses.set(modeId, Date.now() + PRESET_MISS_TTL_MS)
+  if (modeMisses.size > MAX_COMPOSED_PRESETS) {
+    const oldest = modeMisses.keys().next()
+    if (!oldest.done) modeMisses.delete(oldest.value)
   }
 
   return false
@@ -328,6 +363,13 @@ export async function ensureComposedPreset(
     })
 
     composed.set(key, { key, id, dispose })
+    // 表只用于注销与复用判断：超出容量后淘汰最早的一条，避免技能包 × 模式
+    // 的组合在长期运行里无界增长（每个条目都持有一个 dispose 闭包）
+    while (composed.size > MAX_COMPOSED_PRESETS) {
+      const oldest = composed.values().next()
+      if (oldest.done || oldest.value.key === key) break
+      await disposeOne(oldest.value)
+    }
 
     return id
   } catch (error) {

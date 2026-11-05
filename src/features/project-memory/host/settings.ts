@@ -7,23 +7,14 @@
  * 提示词注入在每次装配时都要读设置，因此读取结果按文件 mtime 缓存，
  * 开关与路径变更后下一次装配即可生效。
  */
-import { mkdirSync, readFileSync, renameSync, statSync, writeFileSync } from 'node:fs'
-import { dirname, join } from 'node:path'
+import { join } from 'node:path'
 
+import { createJsonSettingsStore } from '../../../common/json-settings'
 import { resolveDshHome } from '../../../common/dsh-home'
 import type { MemorySettings } from '../types'
 
 /** 设置文件的默认内容：默认关闭，根目录使用插件默认目录。 */
 const DEFAULT_SETTINGS: MemorySettings = { enabled: false, root: '' }
-
-/** 缓存的解析结果，与文件的 mtime、大小一并记录，文件未变时直接复用。 */
-interface SettingsCache {
-  mtimeMs: number
-  size: number
-  value: MemorySettings
-}
-
-let cache: SettingsCache | undefined
 
 /**
  * 设置文件路径。
@@ -49,49 +40,26 @@ function normalizeSettings(value: unknown): MemorySettings {
   }
 }
 
+/** 设置存储：提示词每次装配都要读，读取结果按文件状态缓存。 */
+const store = createJsonSettingsStore<MemorySettings>({
+  file: memorySettingsFile,
+  normalize: normalizeSettings,
+  defaults: () => ({ ...DEFAULT_SETTINGS }),
+  label: '[project-memory]',
+})
+
 /**
  * 读取设置；文件不存在时返回默认值。
  * @returns 当前设置
  */
 export function readMemorySettings(): MemorySettings {
-  const file = memorySettingsFile()
-
-  try {
-    const info = statSync(file)
-    if (cache !== undefined && cache.mtimeMs === info.mtimeMs && cache.size === info.size) {
-      return cache.value
-    }
-
-    const value = normalizeSettings(JSON.parse(readFileSync(file, 'utf8')) as unknown)
-    cache = { mtimeMs: info.mtimeMs, size: info.size, value }
-
-    return value
-  } catch (error) {
-    // 首次运行时文件不存在是正常情况，按默认关闭处理
-    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
-      console.error('[project-memory] 读取记忆设置失败:', file, error)
-    }
-
-    return { ...DEFAULT_SETTINGS }
-  }
+  return store.read()
 }
 
 /**
- * 原子写入设置：先写临时文件再改名，避免写入中断留下半份配置。
+ * 原子写入设置。
  * @param next 新设置
  */
 export function writeMemorySettings(next: MemorySettings): void {
-  const file = memorySettingsFile()
-  const temp = `${file}.tmp`
-
-  try {
-    mkdirSync(dirname(file), { recursive: true })
-    writeFileSync(temp, `${JSON.stringify(next, null, 2)}\n`, 'utf8')
-    renameSync(temp, file)
-    // 文件已被替换，缓存失效；下一次读取会重新解析
-    cache = undefined
-  } catch (error) {
-    console.error('[project-memory] 写入记忆设置失败:', file, error)
-    throw error
-  }
+  store.write(next)
 }

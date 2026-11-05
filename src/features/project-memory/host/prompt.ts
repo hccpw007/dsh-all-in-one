@@ -28,6 +28,9 @@ interface RenderCache {
   text: string
 }
 
+/** 渲染缓存的容量上限：访问过的历史项目不能无限驻留索引全文。 */
+const MAX_RENDER_CACHES = 32
+
 const caches = new Map<string, RenderCache>()
 
 /**
@@ -38,10 +41,23 @@ const caches = new Map<string, RenderCache>()
 function memoryText(dir: string): string {
   const fingerprint = memoryIndexFingerprint(dir)
   const cached = caches.get(dir)
-  if (cached !== undefined && cached.fingerprint === fingerprint) return cached.text
+  if (cached !== undefined && cached.fingerprint === fingerprint) {
+    // 命中后移到队尾：淘汰时丢掉的总是最久未用的那个项目
+    caches.delete(dir)
+    caches.set(dir, cached)
+
+    return cached.text
+  }
 
   const text = renderMemoryIndex(dir, readMemoryIndex(dir))
   caches.set(dir, { fingerprint, text })
+
+  // 超出上限时淘汰最久未用的一条，避免切换过大量项目后驻留线性上升
+  while (caches.size > MAX_RENDER_CACHES) {
+    const oldest = caches.keys().next()
+    if (oldest.done) break
+    caches.delete(oldest.value)
+  }
 
   return text
 }

@@ -11,10 +11,15 @@ import { join } from 'node:path'
 import type { PluginCatalogItem } from '../types'
 
 import { resolveDshHome } from '../../../common/dsh-home'
+import { logPerf } from '../../../common/perf'
+import { createReadCache } from './read-cache'
 import { STANDARD_PLUGIN_ITEMS, type StandardPluginItem } from './standard-rows'
 
 /** 本插件自身不进入可选插件清单，避免预设重复加载设置页。 */
 const SELF_PACKAGE = 'dsh-all-in-one'
+
+/** 已装插件清单的缓存时长：profile 的依赖在进程生命周期内不会变化。 */
+const INSTALLED_PLUGINS_TTL_MS = 5000
 
 /** 已安装插件项，id 用 `pkg:` 前缀与标准项区分。 */
 export interface InstalledPluginItem extends PluginCatalogItem {
@@ -79,14 +84,35 @@ export async function resolveProfileDirs(currentProfileDir?: string): Promise<st
  * @param currentProfileDir 宿主报告的当前 profile 目录；缺省时扫描全部 profile
  * @returns 去重后的插件包名，按字母排序
  */
-export async function findInstalledPlugins(currentProfileDir?: string): Promise<string[]> {
+/** 已装插件清单缓存，键为 profile 目录。 */
+const installedPluginsCache = createReadCache<string[]>(INSTALLED_PLUGINS_TTL_MS)
+
+/**
+ * 扫描一次 profile 中已启用的插件包。
+ * @param currentProfileDir 宿主报告的当前 profile 目录；缺省时扫描全部 profile
+ * @returns 去重后的插件包名，按字母排序
+ */
+async function scanInstalledPlugins(currentProfileDir?: string): Promise<string[]> {
+  const startedAt = performance.now()
   const names = new Set<string>()
 
   for (const dir of await resolveProfileDirs(currentProfileDir)) {
     await collectProfilePlugins(dir, names)
   }
 
+  logPerf('findInstalledPlugins', startedAt, { plugins: names.size })
+
   return [...names].sort((left, right) => left.localeCompare(right))
+}
+
+/**
+ * 扫描 profile 中已启用的插件包；结果按 5 秒 TTL 缓存并合并并发读取。
+ * @param currentProfileDir 宿主报告的当前 profile 目录；缺省时扫描全部 profile
+ * @returns 去重后的插件包名，按字母排序
+ */
+export async function findInstalledPlugins(currentProfileDir?: string): Promise<string[]> {
+  return installedPluginsCache.read(currentProfileDir ?? '*', () =>
+    scanInstalledPlugins(currentProfileDir))
 }
 
 /**

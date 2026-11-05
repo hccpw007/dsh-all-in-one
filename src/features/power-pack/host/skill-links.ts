@@ -64,10 +64,14 @@ export async function syncPackSkillDir(packId: string, skills: SkillEntry[]): Pr
     await rm(dir, { recursive: true, force: true })
     await mkdir(dir, { recursive: true })
 
-    for (const skill of skills) {
-      const target = join(dir, `${skill.name}${skill.kind === 'file' ? '.md' : ''}`)
-      await symlink(skill.path, target, skill.kind === 'directory' ? 'dir' : 'file')
-    }
+    // 并发建链：技能数 N 时串行 syscall 会把一次保存拖到 N 倍，链接之间互不依赖
+    await Promise.all(
+      skills.map((skill) => {
+        const target = join(dir, `${skill.name}${skill.kind === 'file' ? '.md' : ''}`)
+
+        return symlink(skill.path, target, skill.kind === 'directory' ? 'dir' : 'file')
+      }),
+    )
 
     return dir
   } catch (error) {

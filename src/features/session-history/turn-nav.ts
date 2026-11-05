@@ -14,9 +14,6 @@ const NAV_ATTRIBUTE = 'data-aio-turn-nav'
 /** 插件样式节点 id，卸载时据此整体移除。 */
 const STYLE_ID = 'dsh-all-in-one-session-history'
 
-/** 导航条检测间隔；宿主重建会话视图时不发通知，只能轮询兜底。 */
-const TICK_INTERVAL_MS = 1200
-
 /** 会话区左侧的宽度拖拽手柄：正文从这里开始，导航条贴在它左边。 */
 const WIDTH_HANDLE_SELECTOR = '[data-width-handle="left"]'
 
@@ -63,45 +60,90 @@ export function installTurnNav(): () => void {
   }
 
   let disposed = false
+  let nav: HTMLElement | null = null
+  let slot: HTMLElement | null = null
+  let handle: HTMLElement | null = null
+  let frame = 0
+  let resizeObserver: ResizeObserver | undefined
 
   /**
    * 把导航条贴到左侧宽度手柄的左边。
    *
    * 手柄是正文区域的左边界，位置随窗口与侧边栏变化；直接用它的实时坐标换算成相对
    * 导航条定位容器的偏移，宽度、留白怎么变都能贴住。
-   * @param nav 导航条
    */
-  function positionNav(nav: HTMLElement): void {
-    const slot = nav.parentElement
-    const handle = document.querySelector(WIDTH_HANDLE_SELECTOR)
-    if (slot === null || !(handle instanceof HTMLElement)) return
+  const positionNav = (): void => {
+    if (nav === null || slot === null || handle === null) return
 
     const left = Math.round(
       handle.getBoundingClientRect().left - slot.getBoundingClientRect().left - nav.offsetWidth - NAV_EDGE_GAP,
     )
+    const target = `${Math.max(0, left)}px`
 
-    nav.style.setProperty('left', `${Math.max(0, left)}px`, 'important')
+    // 值没变时不写样式：重复写会触发样式重算，下一次读取又强制布局，形成抖动
+    if (nav.style.getPropertyValue('left') === target) return
+
+    nav.style.setProperty('left', target, 'important')
+  }
+
+  /** 把同一帧内的多次尺寸变化合并成一次定位。 */
+  const schedule = (): void => {
+    if (disposed || frame !== 0) return
+
+    frame = window.requestAnimationFrame(() => {
+      frame = 0
+      positionNav()
+    })
   }
 
   /**
-   * 补上导航条标记并摆正位置；宿主重建会话视图后会生成新的导航条。
+   * 重新认领导航条与定位参照物。
+   *
+   * 只在节点被宿主重建时重新查询；尺寸变化交给 ResizeObserver，不再按固定间隔
+   * 做全文档查询与强制布局。
    */
-  function tick(): void {
+  const track = (): void => {
     if (disposed) return
 
-    const nav = document.querySelector(NAV_SELECTOR)
-    if (!(nav instanceof HTMLElement)) return
+    const nextNav = document.querySelector(NAV_SELECTOR)
+    const nextSlot = nextNav instanceof HTMLElement ? nextNav.parentElement : null
+    const nextHandle = document.querySelector(WIDTH_HANDLE_SELECTOR)
+
+    if (nextNav !== nav || nextSlot !== slot || nextHandle !== handle) {
+      nav = nextNav instanceof HTMLElement ? nextNav : null
+      slot = nextSlot instanceof HTMLElement ? nextSlot : null
+      handle = nextHandle instanceof HTMLElement ? nextHandle : null
+
+      if (resizeObserver !== undefined) {
+        resizeObserver.disconnect()
+        if (slot !== null) resizeObserver.observe(slot)
+        if (handle !== null && handle !== slot) resizeObserver.observe(handle)
+      }
+    }
+
+    if (nav === null) return
 
     if (!nav.hasAttribute(NAV_ATTRIBUTE)) nav.setAttribute(NAV_ATTRIBUTE, '')
-    positionNav(nav)
+    positionNav()
   }
 
-  tick()
-  const timer = window.setInterval(tick, TICK_INTERVAL_MS)
+  if (typeof ResizeObserver === 'function') {
+    // 侧边栏展开、窗口缩放、正文宽度调整都会改变容器尺寸；回调里只做一次定位
+    resizeObserver = new ResizeObserver(schedule)
+  }
+
+  track()
+  window.addEventListener('resize', schedule)
+
+  // 宿主重建会话视图时不发通知：低频兜底重新认领导航条，正常路径由 ResizeObserver 驱动
+  const timer = window.setInterval(track, 2000)
 
   return () => {
     disposed = true
     window.clearInterval(timer)
+    window.removeEventListener('resize', schedule)
+    resizeObserver?.disconnect()
+    if (frame !== 0) window.cancelAnimationFrame(frame)
 
     for (const element of document.querySelectorAll(`[${NAV_ATTRIBUTE}]`)) {
       element.removeAttribute(NAV_ATTRIBUTE)

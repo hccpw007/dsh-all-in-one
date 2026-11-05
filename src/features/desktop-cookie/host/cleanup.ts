@@ -12,7 +12,7 @@ import { existsSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { join } from 'node:path'
 
-import type { DatabaseSync } from 'node:sqlite'
+import type { DatabaseSync, StatementSync } from 'node:sqlite'
 
 import type { DesktopCookieSettings } from '../types'
 
@@ -24,6 +24,14 @@ const AUTH_COOKIE_PREFIX = 'dsh-auth-'
 
 /** 桌面版认证 cookie 的 host：Host 只监听回环地址。 */
 const AUTH_COOKIE_HOST = '127.0.0.1'
+
+/**
+ * 单条 DELETE 语句最多绑定的名字数。
+ *
+ * SQLite 的绑定变量上限允许更大值，但过长的语句会让准备阶段变慢；按块提交还能
+ * 把「一次删除很多条」拆成若干次短事务，避免长写锁。
+ */
+const DELETE_CHUNK_SIZE = 200
 
 /** 一次清理的结果，供启动日志与排障使用。 */
 interface CookieCleanupReport {
@@ -59,6 +67,58 @@ function desktopCookiesFile(): string {
 }
 
 /**
+ * 取 Node 内置的 sqlite 模块。
+ *
+ * `process.getBuiltinModule` 是 Node 22.3+ 的 API：更老的运行时上它本身是
+ * `undefined`，直接调用会抛 TypeError 并穿过启动清理，最终让整个插件装配失败。
+ * 因此守卫必须先判断函数是否存在，再把任何异常收在这次读取里。
+ * @returns sqlite 模块；当前运行时不可用时返回 undefined
+ */
+function loadSqlite(): typeof import('node:sqlite') | undefined {
+  try {
+    const processLike = process as unknown as { getBuiltinModule?: (id: string) => unknown }
+    const getBuiltin = processLike.getBuiltinModule
+    if (typeof getBuiltin !== 'function') return undefined
+
+    const module = getBuiltin.call(process, 'node:sqlite')
+    if (typeof module !== 'object' || module === null) return undefined
+
+    return module as typeof import('node:sqlite')
+  } catch (error) {
+    console.error('[desktop-cookie] 读取 node:sqlite 失败:', error)
+
+    return undefined
+  }
+}
+
+/**
+ * 按名字批量删除认证 cookie。
+ *
+ * 此前逐条 DELETE，每条各自一个隐式事务并落盘；记录攒到几十条时启动路径会被
+ * 磁盘同步拖住。改成按块的单条 `DELETE ... WHERE name IN (...)`：一个块一次事务。
+ * @param database 已打开的 cookie 库
+ * @param names 要删除的 cookie 名
+ */
+function deleteByNames(database: DatabaseSync, names: string[]): void {
+  let statement: StatementSync | undefined
+  let preparedSize = 0
+
+  for (let offset = 0; offset < names.length; offset += DELETE_CHUNK_SIZE) {
+    const chunk = names.slice(offset, offset + DELETE_CHUNK_SIZE)
+    // 块大小在末尾可能变小，按实际大小重新准备一次语句
+    if (statement === undefined || preparedSize !== chunk.length) {
+      const placeholders = chunk.map(() => '?').join(', ')
+      statement = database.prepare(
+        `DELETE FROM cookies WHERE host_key = ? AND name IN (${placeholders})`,
+      )
+      preparedSize = chunk.length
+    }
+
+    statement.run(AUTH_COOKIE_HOST, ...chunk)
+  }
+}
+
+/**
  * 按阈值清理桌面版认证 cookie，保留最近的若干条。
  * @param settings 当前设置
  * @returns 清理结果
@@ -72,7 +132,7 @@ export function cleanupAuthCookies(settings: DesktopCookieSettings): CookieClean
     return { status: 'skipped', before: 0, after: 0, reason: `cookie library not found: ${file}` }
   }
 
-  const sqlite = process.getBuiltinModule('node:sqlite')
+  const sqlite = loadSqlite()
   if (sqlite === undefined) {
     console.error('[desktop-cookie] 当前 Node 未提供 node:sqlite，跳过清理:', file)
 
@@ -104,9 +164,7 @@ export function cleanupAuthCookies(settings: DesktopCookieSettings): CookieClean
 
     // 按创建时间倒序保留最近 retain 条，其余视为过期记录
     const stale = names.slice(settings.retain)
-    const remove = database.prepare('DELETE FROM cookies WHERE host_key = ? AND name = ?')
-
-    for (const name of stale) remove.run(AUTH_COOKIE_HOST, name)
+    deleteByNames(database, stale)
 
     return { status: 'cleaned', before: names.length, after: names.length - stale.length }
   } catch (error) {

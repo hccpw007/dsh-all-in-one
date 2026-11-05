@@ -315,6 +315,8 @@ export interface PresetIsolateContext {
  * 壳子不承载任何具体功能实现。
  */
 export interface FeatureHostExtension {
+  /** 功能标识，与 feature 目录名一致；启动失败时用于定位是哪个功能。 */
+  id: string
   /** 本扩展依赖的宿主服务，壳子合并去重后作为插件的 inject。 */
   inject?: string[]
   /** 注册本扩展的宿主能力。 */

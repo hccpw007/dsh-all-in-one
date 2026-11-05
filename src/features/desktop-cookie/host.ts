@@ -15,6 +15,9 @@ import { installDesktopCookieRoutes } from './host/routes'
 import { readDesktopCookieSettings } from './host/settings'
 
 /** 设置接口挂在 Web 服务器上；服务缺失时只跳过路由，启动清理照常执行。 */
+/** 功能标识，与 feature 目录名一致；装配失败时用于定位。 */
+export const id = 'desktop-cookie'
+
 export const inject = ['webServer']
 
 /**
@@ -44,13 +47,19 @@ function isDesktopProfile(ctx: HostPluginContext): boolean {
  */
 export function apply(ctx: HostPluginContext): void {
   if (isDesktopProfile(ctx)) {
-    const report = cleanupAuthCookies(readDesktopCookieSettings())
+    // 启动清理只是「尽量修好认证」的辅助步骤：任何失败都不能拖垮插件装配，
+    // 因此这里整体兜底，把原因留给日志
+    try {
+      const report = cleanupAuthCookies(readDesktopCookieSettings())
 
-    // 只在真删了记录时留一行日志，未达阈值的跳过属正常情况
-    if (report.status === 'cleaned') {
-      console.log(
-        `[desktop-cookie] 已清理 ${report.before - report.after} 条过期认证 cookie，保留 ${report.after} 条`,
-      )
+      // 只在真删了记录时留一行日志，未达阈值的跳过属正常情况
+      if (report.status === 'cleaned') {
+        console.log(
+          `[desktop-cookie] 已清理 ${report.before - report.after} 条过期认证 cookie，保留 ${report.after} 条`,
+        )
+      }
+    } catch (error) {
+      console.error('[desktop-cookie] 启动清理失败，跳过本次清理:', error)
     }
   }
 

@@ -4,6 +4,7 @@
  * 数据存放在 `$DSH_HOME/all-in-one/power-packs.json`：技能包属于用户级配置，
  * 不写进 profile 的 patch，避免升级或切换 bundle 时被覆盖。
  */
+import { randomBytes } from 'node:crypto'
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 
@@ -19,6 +20,14 @@ const LEGACY_FILE_NAMES = ['skill-packs.json', 'chat-styles.json']
 
 /** 技能包标识只允许安全字符：它会被拼进存储路径与预设 id。 */
 const PACK_ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/
+
+/**
+ * 是否已经探测过重命名前的配置。
+ *
+ * 没用过技能包的用户每次读配置都会多两次 ENOENT 探测，而读取在设置页的每次请求
+ * 上都会发生；迁移只可能发生一次，探测成功与否都记在进程内。
+ */
+let legacyProbed = false
 
 /**
  * 存储文件路径。
@@ -116,15 +125,21 @@ async function parsePackFile(file: string): Promise<PowerPackDocument | undefine
 export async function readPacks(): Promise<PowerPackDocument> {
   const current = await parsePackFile(powerPacksFile())
   if (current !== undefined) return current
+  if (legacyProbed) return { version: 1, packs: [], defaultPackId: '', enabled: false }
 
-  // 依次尝试历史文件名，迁移一次后以新文件为准
+  // 依次尝试历史文件名，迁移一次后以新文件为准。
+  // 只有迁移成功（或确认没有历史文件）才记下探测结果：写入失败时下次请求仍会重试
   for (const name of LEGACY_FILE_NAMES) {
     const migrated = await parsePackFile(join(resolveDshHome(), 'all-in-one', name))
     if (migrated === undefined) continue
 
     await writePacks(migrated)
+    legacyProbed = true
+
     return migrated
   }
+
+  legacyProbed = true
 
   return { version: 1, packs: [], defaultPackId: '', enabled: false }
 }
@@ -135,7 +150,8 @@ export async function readPacks(): Promise<PowerPackDocument> {
  */
 export async function writePacks(document: PowerPackDocument): Promise<void> {
   const file = powerPacksFile()
-  const temp = `${file}.tmp`
+  // 临时名带进程与随机后缀：多个 profile 实例同时写同一份配置时不会交错
+  const temp = `${file}.${process.pid}.${randomBytes(4).toString('hex')}.tmp`
 
   try {
     await mkdir(dirname(file), { recursive: true })

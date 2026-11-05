@@ -24,6 +24,7 @@ import type {
 } from '../../types/plugin'
 import { requestDeleteSession, requestDeleteSessions } from './api'
 import { deleteConfirmStore } from './confirm-store'
+import { readDeleteSessionEnabled } from './delete-session'
 import { DeleteSessionButton, type DeleteSessionButtonProps } from './DeleteSessionButton'
 import { DeleteSessionDialog, type DeleteSessionDialogProps } from './DeleteSessionDialog'
 import type { DeleteSessionsResponse, SessionDeletableState } from './types'
@@ -133,10 +134,13 @@ export function apply(ctx: PluginContext, t: Translate): void {
       const workspaceId = findWorkspaceId(uiWorkspace, sessionId)
 
       await requestDeleteSession(sessionId)
+      // 等待期间用户可能已经切到别的会话：删除前的主视图归属不再可信，
+      // 必须在摘掉快照之前重新读一次，避免把界面拉回被删会话所在的工作区
+      const stillCurrent = resolveSession(sessions, sessionId).isCurrent
       // 磁盘上的会话已删除，但客户端快照仍留着这条：同步摘掉，行立即消失
       sessions.handleSessionRemoved?.(sessionId)
 
-      if (!wasCurrent) return
+      if (!wasCurrent || !stillCurrent) return
 
       // 删掉的是当前对话：先回到进行中的任务或第一条对话
       const next = pickNextSession(sessions, uiWorkspace, workspaceId, new Set([sessionId]))
@@ -158,11 +162,15 @@ export function apply(ctx: PluginContext, t: Translate): void {
       const currentId = sessionIds.find((id) => resolveSession(sessions, id).isCurrent)
 
       const report = await requestDeleteSessions(sessionIds)
+      // 等待期间用户可能已经切走：摘快照前重新确认主视图仍停在待删会话上
+      const stillCurrent = currentId !== undefined
+        && report.deleted.includes(currentId)
+        && resolveSession(sessions, currentId).isCurrent
       // 磁盘上的会话已删除，但客户端快照仍留着它们：逐条摘掉，列表立即刷新
       for (const id of report.deleted) sessions.handleSessionRemoved?.(id)
 
-      // 当前对话没被删掉（例如删除失败）时界面不用动
-      if (currentId === undefined || !report.deleted.includes(currentId)) return report
+      // 当前对话没被删掉（例如删除失败）或用户已切走时，界面不用动
+      if (!stillCurrent) return report
 
       // 删掉的是当前对话：先回到进行中的任务或第一条对话
       const next = pickNextSession(sessions, uiWorkspace, workspaceId, new Set(report.deleted))
@@ -219,10 +227,14 @@ export function apply(ctx: PluginContext, t: Translate): void {
       ),
     )
 
-    // 工作区「更多」菜单没有宿主扩展点，按菜单 DOM 结构注入入口
-    ctx.effect(
-      () => installWorkspaceMenu(t, sessions, () => uiWorkspace),
-      'delete-session: workspace menu',
-    )
+    // 工作区「更多」菜单没有宿主扩展点，按菜单 DOM 结构注入入口。
+    // 开关关闭时不安装任何观察器（与其它 feature「关闭即不安装」的契约一致）；
+    // 开关变更本来就会整页刷新，安装期的读取足以决定是否生效
+    if (readDeleteSessionEnabled()) {
+      ctx.effect(
+        () => installWorkspaceMenu(t, sessions, () => uiWorkspace),
+        'delete-session: workspace menu',
+      )
+    }
   })
 }

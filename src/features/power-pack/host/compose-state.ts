@@ -8,6 +8,7 @@
  * 数据存放在 `$DSH_HOME/all-in-one/compose-state.json`：它属于本机运行状态，
  * 不写进技能包文档，避免影响可编辑配置的格式。
  */
+import { randomBytes } from 'node:crypto'
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 
@@ -83,7 +84,8 @@ export async function readComposeState(): Promise<ComposedSelection[]> {
  */
 export async function writeComposeState(recent: ComposedSelection[]): Promise<void> {
   const file = composeStateFile()
-  const temp = `${file}.tmp`
+  // 防止多个 profile 实例同时写同一份记录时交错出半份内容
+  const temp = `${file}.${process.pid}.${randomBytes(4).toString('hex')}.tmp`
   const document = { version: STATE_VERSION, recent: recent.slice(0, MAX_RECENT) }
 
   try {

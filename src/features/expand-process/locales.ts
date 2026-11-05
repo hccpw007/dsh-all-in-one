@@ -7,6 +7,8 @@ export const expandProcessLocales: FeatureLocales = {
     title: '展开过程',
     // 开关用途说明：解释打开后会话里的哪些内容会展开
     description: '会话里的「思考」与「运行命令」默认展开，无需逐条点开。',
+    // 提示切换开关会刷新页面，避免用户丢失滚动位置与未保存的输入
+    reloadHint: '切换后会刷新页面以生效。',
     // 展开范围标签
     modeLabel: '范围',
     // 展开范围选项：所有历史轮次的过程都展开
@@ -21,6 +23,8 @@ export const expandProcessLocales: FeatureLocales = {
     title: 'Expand process',
     // Switch description explaining what expands when enabled
     description: 'Keep reasoning and command rows expanded so they need no manual opening.',
+    // Tells the user that toggling reloads the page so state applies everywhere
+    reloadHint: 'Reloads the page so the change takes effect.',
     // Expansion scope label
     modeLabel: 'Scope',
     // Scope option: expand process rows in every turn

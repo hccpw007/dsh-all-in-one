@@ -67,6 +67,8 @@ export function ImagePreviewToggle({ t }: FeatureSwitchProps) {
           <span className="block text-[11px] leading-[14px] text-secondary">
             {t('description')}
           </span>
+          {/* 切换会刷新页面：提前告知，避免用户丢失滚动位置与未保存的输入 */}
+          <span className="block text-[10px] leading-[13px] text-secondary">{t('reloadHint')}</span>
         </span>
         {/* 开关轨道与滑块：整卡唯一的交互区，开关语义由 role 与 aria-checked 表达 */}
         <button

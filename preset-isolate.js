@@ -38,7 +38,10 @@ function writeDiagnostic(message) {
     const file = join(dir, "isolate.log");
     try {
       if (statSync(file).size > LOG_MAX_BYTES) writeFileSync(file, "", "utf8");
-    } catch {
+    } catch (error) {
+      if (error.code !== "ENOENT") {
+        console.error("[power-pack] \u68C0\u67E5\u9694\u79BB\u65E5\u5FD7\u5927\u5C0F\u5931\u8D25:", file, error);
+      }
     }
     appendFileSync(file, `${(/* @__PURE__ */ new Date()).toISOString()} ${message}
 `, "utf8");
@@ -92,6 +95,7 @@ function installToolIsolation(ctx, deny, mcpServers) {
     let lift;
     let applying = false;
     let lastApplyAt = 0;
+    let lastSignature;
     let pending;
     const apply2 = () => {
       if (applying) return;
@@ -109,16 +113,6 @@ function installToolIsolation(ctx, deny, mcpServers) {
       lastApplyAt = Date.now();
       applying = true;
       try {
-        if (lift !== void 0) {
-          try {
-            lift();
-          } catch (error) {
-            if (!isInactiveContextError(error)) {
-              console.error("[power-pack] \u64A4\u9500\u5DE5\u5177\u63A9\u7801\u5931\u8D25:", error);
-            }
-          }
-          lift = void 0;
-        }
         const names = [.../* @__PURE__ */ new Set([...deny, ...mcpToolNames(ctx.tools, mcpServers)])];
         const existing = names.filter((name) => {
           try {
@@ -130,9 +124,26 @@ function installToolIsolation(ctx, deny, mcpServers) {
             return false;
           }
         });
-        if (existing.length === 0) return;
+        const signature = existing.join("\n");
+        if (lift !== void 0 && signature === lastSignature) return;
+        if (lift !== void 0) {
+          try {
+            lift();
+          } catch (error) {
+            if (!isInactiveContextError(error)) {
+              console.error("[power-pack] \u64A4\u9500\u5DE5\u5177\u63A9\u7801\u5931\u8D25:", error);
+            }
+          }
+          lift = void 0;
+        }
+        lastSignature = void 0;
+        if (existing.length === 0) {
+          lastSignature = signature;
+          return;
+        }
         try {
           lift = ctx.tools.restrict({ deny: existing });
+          lastSignature = signature;
         } catch (error) {
           if (!isInactiveContextError(error)) {
             console.error("[power-pack] \u5E94\u7528\u5DE5\u5177\u63A9\u7801\u5931\u8D25:", error);
@@ -174,13 +185,14 @@ function installPromptIsolation(ctx, strict, hidePrefixes) {
         const next = args[args.length - 1];
         if (!isAssembly(assembly)) return next;
         if (context?.scope === void 0) return next;
-        const snapshot = captureSnapshot(assembly);
+        const snapshot = strict ? captureSnapshot(assembly) : void 0;
         if (!firstAssembly) {
           firstAssembly = true;
           writeDiagnostic(`prompt isolated: strict=${strict} hide=${hidePrefixes.join(",") || "(none)"}`);
         }
-        if (strict && typeof context.scope === "object" && context.scope !== null) {
-          isolationState().snapshots.set(context.scope, hideByPrefix(snapshot.sections, hidePrefixes));
+        const cleanSections = snapshot === void 0 ? void 0 : hideByPrefix(snapshot.sections, hidePrefixes);
+        if (cleanSections !== void 0 && typeof context.scope === "object" && context.scope !== null) {
+          isolationState().snapshots.set(context.scope, cleanSections);
         }
         let result = assembly;
         if (typeof next === "function") {
@@ -192,10 +204,10 @@ function installPromptIsolation(ctx, strict, hidePrefixes) {
           }
         }
         if (!isAssembly(result)) return result;
-        if (strict) {
+        if (cleanSections !== void 0) {
           return {
             ...result,
-            sections: hideByPrefix(snapshot.sections, hidePrefixes),
+            sections: cleanSections,
             // 运行时上下文（工作目录等）由下游按当前会话补齐，不能回退成快照
             contexts: hideByPrefix(result.contexts, hidePrefixes)
           };

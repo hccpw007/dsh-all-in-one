@@ -42,7 +42,7 @@ window.__ModuleLoader__.load({
     var import_react24 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = '*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-8{height:2rem}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.transform,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-xl{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.aio-workspace-count:after{content:"\uFF08" attr(data-aio-workspace-count) "\uFF09";color:var(--dsw-alias-label-tertiary);font-size:12px;font-weight:400;margin-inline-start:1px}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}';
+    var styles_default = '*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-8{height:2rem}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.transform,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[13px\\]{line-height:13px}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-xl{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.\\[all-in-one\\:perf\\]{all-in-one:perf}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.aio-workspace-count:after{content:"\uFF08" attr(data-aio-workspace-count) "\uFF09";color:var(--dsw-alias-label-tertiary);font-size:12px;font-weight:400;margin-inline-start:1px}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}';
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -1279,6 +1279,8 @@ window.__ModuleLoader__.load({
         title: "\u5C55\u5F00\u8FC7\u7A0B",
         // 开关用途说明：解释打开后会话里的哪些内容会展开
         description: "\u4F1A\u8BDD\u91CC\u7684\u300C\u601D\u8003\u300D\u4E0E\u300C\u8FD0\u884C\u547D\u4EE4\u300D\u9ED8\u8BA4\u5C55\u5F00\uFF0C\u65E0\u9700\u9010\u6761\u70B9\u5F00\u3002",
+        // 提示切换开关会刷新页面，避免用户丢失滚动位置与未保存的输入
+        reloadHint: "\u5207\u6362\u540E\u4F1A\u5237\u65B0\u9875\u9762\u4EE5\u751F\u6548\u3002",
         // 展开范围标签
         modeLabel: "\u8303\u56F4",
         // 展开范围选项：所有历史轮次的过程都展开
@@ -1293,6 +1295,8 @@ window.__ModuleLoader__.load({
         title: "Expand process",
         // Switch description explaining what expands when enabled
         description: "Keep reasoning and command rows expanded so they need no manual opening.",
+        // Tells the user that toggling reloads the page so state applies everywhere
+        reloadHint: "Reloads the page so the change takes effect.",
         // Expansion scope label
         modeLabel: "Scope",
         // Scope option: expand process rows in every turn
@@ -1365,14 +1369,16 @@ window.__ModuleLoader__.load({
       const binders = [];
       let observer = null;
       let scheduled = false;
+      let timer = 0;
       let lastRunning = null;
       let lastTurn = null;
+      const REFRESH_DEBOUNCE_MS = 150;
       function latestTurn() {
         const nodes = document.querySelectorAll("[data-chat-turn]");
         if (!nodes.length) return null;
         let best = null;
         let bestValue = -Infinity;
-        for (const node of Array.from(nodes)) {
+        for (const node of nodes) {
           const raw = node.getAttribute("data-chat-turn") ?? "";
           const value = Number(raw);
           if (Number.isFinite(value) && value > bestValue) {
@@ -1391,20 +1397,33 @@ window.__ModuleLoader__.load({
         if (running === lastRunning && turn === lastTurn) return;
         lastRunning = running;
         lastTurn = turn;
-        for (const update of [...binders]) update();
+        for (const update of [...binders]) update(running, turn);
       }
       function schedule() {
         if (scheduled) return;
         scheduled = true;
-        window.requestAnimationFrame(() => {
+        timer = window.setTimeout(() => {
+          timer = 0;
           scheduled = false;
           refresh();
-        });
+        }, REFRESH_DEBOUNCE_MS);
       }
       function observe() {
         if (observer !== null || document.body === null) return;
         observer = new MutationObserver(schedule);
         observer.observe(document.body, { childList: true, subtree: true });
+      }
+      function unobserve() {
+        if (observer === null) return;
+        observer.disconnect();
+        observer = null;
+        lastRunning = null;
+        lastTurn = null;
+        if (timer !== 0) {
+          window.clearTimeout(timer);
+          timer = 0;
+          scheduled = false;
+        }
       }
       function bind(element, setExpanded, manual) {
         if (!enabled || readMode() !== "active") return void 0;
@@ -1412,16 +1431,17 @@ window.__ModuleLoader__.load({
         const turnElement = element.closest("[data-chat-turn]");
         if (turnElement === null) return void 0;
         const turn = turnElement.getAttribute("data-chat-turn");
-        const update = () => {
+        const update = (running, latest) => {
           if (manual.current) return;
-          setExpanded(isRunning() && turn !== null && turn === latestTurn());
+          setExpanded(running && turn !== null && turn === latest);
         };
         binders.push(update);
         observe();
-        update();
+        update(isRunning(), latestTurn());
         return () => {
           const index = binders.indexOf(update);
           if (index >= 0) binders.splice(index, 1);
+          if (binders.length === 0) unobserve();
         };
       }
       win["__DSH_EXPAND_PROCESS_BIND__"] = bind;
@@ -1602,7 +1622,7 @@ window.__ModuleLoader__.load({
         if (next === mode) return;
         save(() => writeExpandProcessMode(next));
       };
-      return /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex w-full flex-1 flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react10.default.createElement(ExpandIcon, null)), /* @__PURE__ */ import_react10.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react10.default.createElement(
+      return /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex w-full flex-1 flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react10.default.createElement(ExpandIcon, null)), /* @__PURE__ */ import_react10.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[10px] leading-[13px] text-secondary" }, t("reloadHint"))), /* @__PURE__ */ import_react10.default.createElement(
         "button",
         {
           type: "button",
@@ -2071,6 +2091,8 @@ window.__ModuleLoader__.load({
     var renderedBlockKeys = /* @__PURE__ */ new WeakMap();
     var failedPaths = /* @__PURE__ */ new Set();
     var MAX_FAILED_PATHS = 200;
+    var warnedDecodeFailures = /* @__PURE__ */ new Set();
+    var MAX_DECODE_WARNINGS = 100;
     var HOST_MESSAGE_ROW_SELECTOR = "[data-chat-anchor-key]";
     var TOOL_CALL_SELECTOR = "[data-tool]";
     var PRIVATE_ALIASES = ["/tmp", "/var", "/etc"];
@@ -2117,7 +2139,11 @@ window.__ModuleLoader__.load({
       try {
         decoded = decodeURI(withoutPunctuation);
       } catch (error) {
-        console.warn("[image-preview] \u8DEF\u5F84\u4E0D\u662F\u5408\u6CD5 URI \u7F16\u7801\uFF0C\u6309\u539F\u6837\u4F7F\u7528:", withoutPunctuation, error);
+        if (!warnedDecodeFailures.has(withoutPunctuation)) {
+          if (warnedDecodeFailures.size >= MAX_DECODE_WARNINGS) warnedDecodeFailures.clear();
+          warnedDecodeFailures.add(withoutPunctuation);
+          console.warn("[image-preview] \u8DEF\u5F84\u4E0D\u662F\u5408\u6CD5 URI \u7F16\u7801\uFF0C\u6309\u539F\u6837\u4F7F\u7528:", withoutPunctuation, error);
+        }
       }
       const isAbsolute = decoded.startsWith("/") || decoded.startsWith("~/") || /^[A-Za-z]:[\\/]/.test(decoded);
       if (!isAbsolute) return ATTACHMENT_ID_PATTERN.test(decoded) ? decoded : void 0;
@@ -2149,8 +2175,12 @@ window.__ModuleLoader__.load({
       const wrapper = existing instanceof HTMLElement && existing.hasAttribute(PREVIEW_ATTRIBUTE) ? existing : void 0;
       const candidates = hasHostImage(block) ? [] : dedupeByCanonicalPath(paths.filter((path) => !failedPaths.has(canonicalPathKey(path))));
       const usablePaths = candidates.filter((path) => {
-        const owner = previewOwners.get(canonicalPathKey(path));
-        return owner === void 0 || !owner.isConnected || owner === wrapper;
+        const key2 = canonicalPathKey(path);
+        const owner = previewOwners.get(key2);
+        if (owner === void 0 || owner === wrapper) return true;
+        if (owner.isConnected) return false;
+        previewOwners.delete(key2);
+        return true;
       });
       const key = usablePaths.map(canonicalPathKey).sort().join("\n");
       if (wrapper !== void 0) {
@@ -2242,9 +2272,14 @@ window.__ModuleLoader__.load({
       const scope = isChatFlowRegion(root) ? root : root.querySelector(CHAT_FLOW_SELECTOR);
       if (scope === null) return;
       const grouped = /* @__PURE__ */ new Map();
-      const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT);
+      const walker = document.createTreeWalker(scope, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          if (node instanceof Element && isOwnPreviewNode(node)) return NodeFilter.FILTER_REJECT;
+          return node.nodeType === Node.TEXT_NODE ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+        }
+      });
       for (let node = walker.nextNode(); node !== null; node = walker.nextNode()) {
-        if (isOwnPreviewNode(node)) continue;
+        if (node.nodeType !== Node.TEXT_NODE) continue;
         const text = node;
         const paths = collectImagePaths(text.data);
         if (paths.length === 0) continue;
@@ -2273,12 +2308,14 @@ window.__ModuleLoader__.load({
         }
         const nodes = Array.from(pending2).slice(0, MAX_NODES_PER_FRAME);
         for (const node of nodes) pending2.delete(node);
+        const blocks = /* @__PURE__ */ new Set();
+        let rescanContainer = false;
         for (const node of nodes) {
           if (node.nodeType === Node.TEXT_NODE) {
             const parent = node.parentElement;
             if (parent === null || !container.contains(parent) || isOwnPreviewNode(node)) continue;
             const block = closestBlock(parent);
-            if (block !== void 0) scanSubtree(block);
+            if (block !== void 0) blocks.add(block);
             continue;
           }
           if (!(node instanceof Element) || isOwnPreviewNode(node)) continue;
@@ -2288,12 +2325,19 @@ window.__ModuleLoader__.load({
               if (node instanceof HTMLImageElement || node.querySelector("img") !== null) {
                 dropPreviewsForHostImage(block);
               }
-              scanSubtree(block);
+              blocks.add(block);
             }
             continue;
           }
-          if (node.contains(container)) scanSubtree(container);
+          if (node.contains(container)) rescanContainer = true;
         }
+        if (rescanContainer) {
+          const chatFlow = container.querySelector(CHAT_FLOW_SELECTOR) ?? container;
+          enqueueTree(chatFlow);
+          schedule();
+          return;
+        }
+        for (const block of blocks) scanSubtree(block);
       }
       function schedule() {
         if (disposed || frame !== 0) return;
@@ -2408,6 +2452,8 @@ window.__ModuleLoader__.load({
         title: "\u4F1A\u8BDD\u56FE\u7247\u9884\u89C8",
         // 开关用途说明：解释打开后会话里的哪些内容会出现预览，并点明只读
         description: "\u672C\u5730\u56FE\u7247\u5730\u5740\u4E0B\u65B9\u76F4\u63A5\u663E\u793A\u9884\u89C8\uFF0C\u70B9\u5F00\u540E\u53EF\u7F29\u653E\u770B\u6E05\u7EC6\u8282\uFF0C\u53EA\u8BFB\u53D6\u6587\u4EF6\uFF0C\u4E0D\u6539\u52A8\u4EFB\u4F55\u5185\u5BB9\u3002",
+        // 提示切换开关会刷新页面，避免用户丢失滚动位置与未保存的输入
+        reloadHint: "\u5207\u6362\u540E\u4F1A\u5237\u65B0\u9875\u9762\u4EE5\u751F\u6548\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 放大层的无障碍名称，读屏软件据此说明当前是图片查看对话框
@@ -2430,6 +2476,8 @@ window.__ModuleLoader__.load({
         title: "Inline image preview",
         // Switch description explaining what gets previewed, that images zoom, and that files stay untouched
         description: "Show previews under local image paths. Click to zoom into details; files are only read, never changed.",
+        // Tells the user that toggling reloads the page so state applies everywhere
+        reloadHint: "Reloads the page so the change takes effect.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions.",
         // Accessible name of the zoom layer dialog
@@ -2483,7 +2531,7 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react11.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react11.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react11.default.createElement(ImageIcon, null)), /* @__PURE__ */ import_react11.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react11.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react11.default.createElement(
+      return /* @__PURE__ */ import_react11.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react11.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react11.default.createElement(ImageIcon, null)), /* @__PURE__ */ import_react11.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react11.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), /* @__PURE__ */ import_react11.default.createElement("span", { className: "block text-[10px] leading-[13px] text-secondary" }, t("reloadHint"))), /* @__PURE__ */ import_react11.default.createElement(
         "button",
         {
           type: "button",
@@ -2545,7 +2593,6 @@ window.__ModuleLoader__.load({
     var NAV_SELECTOR = 'nav[aria-label="\u8F6E\u6B21\u5BFC\u822A"]';
     var NAV_ATTRIBUTE = "data-aio-turn-nav";
     var STYLE_ID = "dsh-all-in-one-session-history";
-    var TICK_INTERVAL_MS = 1200;
     var WIDTH_HANDLE_SELECTOR = '[data-width-handle="left"]';
     var NAV_EDGE_GAP = 10;
     var STYLE_TEXT = `
@@ -2567,27 +2614,58 @@ window.__ModuleLoader__.load({
         document.head.appendChild(style);
       }
       let disposed = false;
-      function positionNav(nav) {
-        const slot = nav.parentElement;
-        const handle = document.querySelector(WIDTH_HANDLE_SELECTOR);
-        if (slot === null || !(handle instanceof HTMLElement)) return;
+      let nav = null;
+      let slot = null;
+      let handle = null;
+      let frame = 0;
+      let resizeObserver;
+      const positionNav = () => {
+        if (nav === null || slot === null || handle === null) return;
         const left = Math.round(
           handle.getBoundingClientRect().left - slot.getBoundingClientRect().left - nav.offsetWidth - NAV_EDGE_GAP
         );
-        nav.style.setProperty("left", `${Math.max(0, left)}px`, "important");
-      }
-      function tick() {
+        const target = `${Math.max(0, left)}px`;
+        if (nav.style.getPropertyValue("left") === target) return;
+        nav.style.setProperty("left", target, "important");
+      };
+      const schedule = () => {
+        if (disposed || frame !== 0) return;
+        frame = window.requestAnimationFrame(() => {
+          frame = 0;
+          positionNav();
+        });
+      };
+      const track = () => {
         if (disposed) return;
-        const nav = document.querySelector(NAV_SELECTOR);
-        if (!(nav instanceof HTMLElement)) return;
+        const nextNav = document.querySelector(NAV_SELECTOR);
+        const nextSlot = nextNav instanceof HTMLElement ? nextNav.parentElement : null;
+        const nextHandle = document.querySelector(WIDTH_HANDLE_SELECTOR);
+        if (nextNav !== nav || nextSlot !== slot || nextHandle !== handle) {
+          nav = nextNav instanceof HTMLElement ? nextNav : null;
+          slot = nextSlot instanceof HTMLElement ? nextSlot : null;
+          handle = nextHandle instanceof HTMLElement ? nextHandle : null;
+          if (resizeObserver !== void 0) {
+            resizeObserver.disconnect();
+            if (slot !== null) resizeObserver.observe(slot);
+            if (handle !== null && handle !== slot) resizeObserver.observe(handle);
+          }
+        }
+        if (nav === null) return;
         if (!nav.hasAttribute(NAV_ATTRIBUTE)) nav.setAttribute(NAV_ATTRIBUTE, "");
-        positionNav(nav);
+        positionNav();
+      };
+      if (typeof ResizeObserver === "function") {
+        resizeObserver = new ResizeObserver(schedule);
       }
-      tick();
-      const timer = window.setInterval(tick, TICK_INTERVAL_MS);
+      track();
+      window.addEventListener("resize", schedule);
+      const timer = window.setInterval(track, 2e3);
       return () => {
         disposed = true;
         window.clearInterval(timer);
+        window.removeEventListener("resize", schedule);
+        resizeObserver?.disconnect();
+        if (frame !== 0) window.cancelAnimationFrame(frame);
         for (const element of document.querySelectorAll(`[${NAV_ATTRIBUTE}]`)) {
           element.removeAttribute(NAV_ATTRIBUTE);
           if (element instanceof HTMLElement) element.style.removeProperty("left");
@@ -2607,11 +2685,15 @@ window.__ModuleLoader__.load({
       zh: {
         title: "\u4F1A\u8BDD\u5386\u53F2\u5DE6\u4FA7",
         description: "\u8F6E\u6B21\u5BFC\u822A\u6761\u4ECE\u5BF9\u8BDD\u53F3\u4FA7\u79FB\u5230\u5DE6\u4FA7\uFF0C\u70B9\u51FB\u8DF3\u8F6C\u4FDD\u6301\u4E0D\u53D8\u3002",
+        // 提示切换开关会刷新页面，避免用户丢失滚动位置与未保存的输入
+        reloadHint: "\u5207\u6362\u540E\u4F1A\u5237\u65B0\u9875\u9762\u4EE5\u751F\u6548\u3002",
         saveFailed: "\u5F00\u5173\u72B6\u6001\u4FDD\u5B58\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u3002"
       },
       en: {
         title: "Turn history on the left",
         description: "Move the turn navigator to the left side; jump-on-click is unchanged.",
+        // Tells the user that toggling reloads the page so state applies everywhere
+        reloadHint: "Reloads the page so the change takes effect.",
         saveFailed: "Failed to save the switch state. Check browser storage."
       }
     };
@@ -2649,7 +2731,7 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react12.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react12.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react12.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react12.default.createElement(LayoutLeftIcon, null)), /* @__PURE__ */ import_react12.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react12.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react12.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react12.default.createElement(
+      return /* @__PURE__ */ import_react12.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react12.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react12.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react12.default.createElement(LayoutLeftIcon, null)), /* @__PURE__ */ import_react12.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react12.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react12.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), /* @__PURE__ */ import_react12.default.createElement("span", { className: "block text-[10px] leading-[13px] text-secondary" }, t("reloadHint"))), /* @__PURE__ */ import_react12.default.createElement(
         "button",
         {
           type: "button",
@@ -2740,6 +2822,7 @@ window.__ModuleLoader__.load({
     var SUPPRESS_RELEASE_MS = 300;
     var cachedTrigger = null;
     var cachedPanelList = null;
+    var suppressTimer;
     var SVG_NAMESPACE = "http://www.w3.org/2000/svg";
     var ICON_SIZE = 16;
     var ICON_CELLS = [
@@ -2837,7 +2920,13 @@ window.__ModuleLoader__.load({
       }
       const before = new Set(document.querySelectorAll('[role="menu"]'));
       document.documentElement.setAttribute(SUPPRESS_ATTRIBUTE, "");
-      more.click();
+      try {
+        more.click();
+      } catch (error) {
+        console.error("[sidebar-more] \u6253\u5F00\u9876\u90E8\u300C\u66F4\u591A\u300D\u5931\u8D25:", error);
+        document.documentElement.removeAttribute(SUPPRESS_ATTRIBUTE);
+        return;
+      }
       clickNewMenuItem(before, index, 1);
     }
     function clickNewMenuItem(before, index, attempt) {
@@ -2845,7 +2934,11 @@ window.__ModuleLoader__.load({
       const item = menu?.querySelectorAll('[role="menuitem"]')[index];
       if (item instanceof HTMLElement) {
         item.click();
-        window.setTimeout(() => document.documentElement.removeAttribute(SUPPRESS_ATTRIBUTE), SUPPRESS_RELEASE_MS);
+        if (suppressTimer !== void 0) window.clearTimeout(suppressTimer);
+        suppressTimer = window.setTimeout(() => {
+          suppressTimer = void 0;
+          document.documentElement.removeAttribute(SUPPRESS_ATTRIBUTE);
+        }, SUPPRESS_RELEASE_MS);
         return;
       }
       if (attempt < SUBITEM_MAX_ATTEMPTS) {
@@ -2904,7 +2997,9 @@ window.__ModuleLoader__.load({
       ensureStyle();
       let disposed = false;
       let scheduled = false;
+      let frame = 0;
       const scan = () => {
+        frame = 0;
         scheduled = false;
         if (disposed) return;
         injectFooterItems(t);
@@ -2912,7 +3007,7 @@ window.__ModuleLoader__.load({
       const schedule = () => {
         if (scheduled || disposed) return;
         scheduled = true;
-        window.requestAnimationFrame(scan);
+        frame = window.requestAnimationFrame(scan);
       };
       const observer = new MutationObserver(schedule);
       observer.observe(document.body, { childList: true, subtree: true });
@@ -2920,6 +3015,11 @@ window.__ModuleLoader__.load({
       return () => {
         disposed = true;
         observer.disconnect();
+        if (frame !== 0) window.cancelAnimationFrame(frame);
+        if (suppressTimer !== void 0) {
+          window.clearTimeout(suppressTimer);
+          suppressTimer = void 0;
+        }
         cachedTrigger = null;
         cachedPanelList = null;
         document.getElementById(STYLE_ID2)?.remove();
@@ -2960,6 +3060,8 @@ window.__ModuleLoader__.load({
         title: "\u83DC\u5355\u6536\u8FDB\u66F4\u591A",
         // 开关用途说明：解释打开后侧边栏顶部的哪些入口会被搬进底部菜单
         description: "\u9876\u90E8\u63D2\u4EF6\u3001Skill / MCP \u4E0E\u81EA\u52A8\u5316\u4EFB\u52A1\u6536\u8FDB\u5DE6\u4E0B\u89D2\u300C\u66F4\u591A\u300D\u83DC\u5355\u3002",
+        // 提示切换开关会刷新页面，避免用户丢失滚动位置与未保存的输入
+        reloadHint: "\u5207\u6362\u540E\u4F1A\u5237\u65B0\u9875\u9762\u4EE5\u751F\u6548\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 底部菜单里打开本插件设置页的入口
@@ -2974,6 +3076,8 @@ window.__ModuleLoader__.load({
         title: "Tuck menus into More",
         // Switch description explaining which sidebar entries move into the bottom menu
         description: "Move Plugins, Skill / MCP and Automation into the bottom-left More menu.",
+        // Tells the user that toggling reloads the page so state applies everywhere
+        reloadHint: "Reloads the page so the change takes effect.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions.",
         // Entry that opens this plugin's settings page
@@ -3022,7 +3126,7 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react13.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react13.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react13.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react13.default.createElement(TuckMenuIcon, null)), /* @__PURE__ */ import_react13.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react13.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react13.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react13.default.createElement(
+      return /* @__PURE__ */ import_react13.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react13.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react13.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react13.default.createElement(TuckMenuIcon, null)), /* @__PURE__ */ import_react13.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react13.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react13.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), /* @__PURE__ */ import_react13.default.createElement("span", { className: "block text-[10px] leading-[13px] text-secondary" }, t("reloadHint"))), /* @__PURE__ */ import_react13.default.createElement(
         "button",
         {
           type: "button",
@@ -3146,9 +3250,6 @@ window.__ModuleLoader__.load({
       }
     };
 
-    // src/features/delete-session/DeleteSessionButton.tsx
-    var import_react14 = __toESM(require("react"), 1);
-
     // src/features/delete-session/delete-session.ts
     var DELETE_SESSION_STORAGE_KEY = "dsh-all-in-one:delete-session";
     function readDeleteSessionEnabled() {
@@ -3170,6 +3271,8 @@ window.__ModuleLoader__.load({
     }
 
     // src/features/delete-session/DeleteSessionButton.tsx
+    var import_react14 = __toESM(require("react"), 1);
+    var ENABLED_AT_INSTALL = readDeleteSessionEnabled();
     function TrashGlyph() {
       return /* @__PURE__ */ import_react14.default.createElement(
         "svg",
@@ -3198,7 +3301,7 @@ window.__ModuleLoader__.load({
       resolveSession: resolveSession2,
       requestConfirm
     }) {
-      if (!readDeleteSessionEnabled()) return null;
+      if (!ENABLED_AT_INSTALL) return null;
       if (sessionId === void 0 || requestConfirm === void 0) return null;
       const state = resolveSession2?.(sessionId);
       if (state !== void 0 && state.running) return null;
@@ -3446,8 +3549,9 @@ window.__ModuleLoader__.load({
           const wasCurrent = resolveSession(sessions, sessionId).isCurrent;
           const workspaceId = findWorkspaceId(uiWorkspace, sessionId);
           await requestDeleteSession(sessionId);
+          const stillCurrent = resolveSession(sessions, sessionId).isCurrent;
           sessions.handleSessionRemoved?.(sessionId);
-          if (!wasCurrent) return;
+          if (!wasCurrent || !stillCurrent) return;
           const next = pickNextSession(sessions, uiWorkspace, workspaceId, /* @__PURE__ */ new Set([sessionId]));
           if (next !== void 0) {
             uiWorkspace?.openSession?.(next);
@@ -3458,8 +3562,9 @@ window.__ModuleLoader__.load({
         const deleteWorkspaceSessions = async (workspaceId, sessionIds) => {
           const currentId = sessionIds.find((id) => resolveSession(sessions, id).isCurrent);
           const report = await requestDeleteSessions(sessionIds);
+          const stillCurrent = currentId !== void 0 && report.deleted.includes(currentId) && resolveSession(sessions, currentId).isCurrent;
           for (const id of report.deleted) sessions.handleSessionRemoved?.(id);
-          if (currentId === void 0 || !report.deleted.includes(currentId)) return report;
+          if (!stillCurrent) return report;
           const next = pickNextSession(sessions, uiWorkspace, workspaceId, new Set(report.deleted));
           if (next !== void 0) {
             uiWorkspace?.openSession?.(next);
@@ -3512,10 +3617,12 @@ window.__ModuleLoader__.load({
             )
           )
         );
-        ctx.effect(
-          () => installWorkspaceMenu(t, sessions, () => uiWorkspace),
-          "delete-session: workspace menu"
-        );
+        if (readDeleteSessionEnabled()) {
+          ctx.effect(
+            () => installWorkspaceMenu(t, sessions, () => uiWorkspace),
+            "delete-session: workspace menu"
+          );
+        }
       });
     }
 
@@ -3526,6 +3633,8 @@ window.__ModuleLoader__.load({
         title: "\u5220\u9664\u4F1A\u8BDD",
         // 开关用途说明：说明打开后会话行会出现删除入口、工作区菜单会出现批量删除入口，且删除前需要先在弹窗里确认
         description: "\u4F1A\u8BDD\u60AC\u505C\u64CD\u4F5C\u91CC\u65B0\u589E\u5220\u9664\u6309\u94AE\uFF0C\u5DE5\u4F5C\u533A\u300C\u66F4\u591A\u300D\u83DC\u5355\u53EF\u4E00\u952E\u5220\u9664\u5168\u90E8\u4F1A\u8BDD\uFF0C\u786E\u8BA4\u540E\u6E05\u9664\u672C\u5730\u8BB0\u5F55\u3002",
+        // 提示切换开关会刷新页面，避免用户丢失滚动位置与未保存的输入
+        reloadHint: "\u5207\u6362\u540E\u4F1A\u5237\u65B0\u9875\u9762\u4EE5\u751F\u6548\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 会话行删除按钮的可访问名称与悬停提示
@@ -3562,6 +3671,8 @@ window.__ModuleLoader__.load({
         title: "Delete sessions",
         // Switch description covering the row action, the bulk workspace entry, and the confirmation step
         description: "Adds a delete button to session hover actions and a delete-all entry to the workspace menu; a dialog confirms first.",
+        // Tells the user that toggling reloads the page so state applies everywhere
+        reloadHint: "Reloads the page so the change takes effect.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions.",
         // Accessible name and hover hint of the row delete button
@@ -3631,7 +3742,7 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react17.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react17.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react17.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react17.default.createElement(TrashIcon, null)), /* @__PURE__ */ import_react17.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react17.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react17.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react17.default.createElement(
+      return /* @__PURE__ */ import_react17.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react17.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react17.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react17.default.createElement(TrashIcon, null)), /* @__PURE__ */ import_react17.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react17.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react17.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), /* @__PURE__ */ import_react17.default.createElement("span", { className: "block text-[10px] leading-[13px] text-secondary" }, t("reloadHint"))), /* @__PURE__ */ import_react17.default.createElement(
         "button",
         {
           type: "button",
@@ -3922,6 +4033,14 @@ window.__ModuleLoader__.load({
       const [error, setError] = (0, import_react19.useState)(null);
       const [saved, setSaved] = (0, import_react19.useState)(false);
       const setPageActions = (0, import_react19.useContext)(PageActionsContext);
+      const draftRef = (0, import_react19.useRef)(draft);
+      const savingRef = (0, import_react19.useRef)(saving);
+      (0, import_react19.useEffect)(() => {
+        draftRef.current = draft;
+      }, [draft]);
+      (0, import_react19.useEffect)(() => {
+        savingRef.current = saving;
+      }, [saving]);
       (0, import_react19.useEffect)(() => {
         let active = true;
         void loadMemorySettings().then((next) => {
@@ -3940,8 +4059,8 @@ window.__ModuleLoader__.load({
         };
       }, [t]);
       const handleSave = (0, import_react19.useCallback)(async () => {
-        if (saving) return;
-        const trimmed = draft.trim();
+        if (savingRef.current) return;
+        const trimmed = draftRef.current.trim();
         if (!isValidRoot(trimmed)) {
           setError(t("pathInvalid"));
           setSaved(false);
@@ -3961,7 +4080,7 @@ window.__ModuleLoader__.load({
         } finally {
           setSaving(false);
         }
-      }, [draft, saving, t]);
+      }, [t]);
       const saveAction = (0, import_react19.useMemo)(
         () => /* @__PURE__ */ import_react19.default.createElement(Button, { variant: "outline", disabled: loading || saving, onClick: () => void handleSave() }, saving ? t("saving") : t("save")),
         [handleSave, loading, saving, t]
@@ -4577,12 +4696,20 @@ window.__ModuleLoader__.load({
       }
       return counts;
     }
+    var titleCache = /* @__PURE__ */ new WeakMap();
+    function titleOf(row) {
+      const cached = titleCache.get(row);
+      if (cached !== void 0 && (cached === null || cached.isConnected)) return cached;
+      const title = row.querySelector(TITLE_SELECTOR);
+      titleCache.set(row, title);
+      return title;
+    }
     function applyCounts(counts) {
       const rows = document.querySelectorAll(WORKSPACE_ROW_SELECTOR2);
       for (const row of rows) {
         const workspaceId = readWorkspaceId(row);
         if (workspaceId === void 0) continue;
-        const title = row.querySelector(TITLE_SELECTOR);
+        const title = titleOf(row);
         if (title === null) continue;
         const count = counts.get(workspaceId);
         const next = count === void 0 ? null : String(count);
@@ -4604,13 +4731,22 @@ window.__ModuleLoader__.load({
       }
     }
     function installWorkspaceSessionCount(sessions, uiWorkspace) {
-      let scheduled = false;
+      let frame = 0;
       let disposed = false;
       let lastWorkspaces;
       let lastSessions;
       let lastCounts = /* @__PURE__ */ new Map();
+      let lastApplied = /* @__PURE__ */ new Map();
+      let rowsDirty = true;
+      const sameCounts = (left, right) => {
+        if (left.size !== right.size) return false;
+        for (const [key, count] of left) {
+          if (right.get(key) !== count) return false;
+        }
+        return true;
+      };
       const render = () => {
-        scheduled = false;
+        frame = 0;
         if (disposed) return;
         const workspaces = uiWorkspace.workspaces?.list.getSnapshot().items;
         if (workspaces === void 0) return;
@@ -4620,16 +4756,33 @@ window.__ModuleLoader__.load({
           lastWorkspaces = workspaces;
           lastSessions = sessionState;
         }
+        if (!rowsDirty && sameCounts(lastCounts, lastApplied)) return;
         applyCounts(lastCounts);
+        lastApplied = lastCounts;
+        rowsDirty = false;
       };
       const schedule = () => {
-        if (scheduled || disposed) return;
-        scheduled = true;
-        window.requestAnimationFrame(render);
+        if (frame !== 0 || disposed) return;
+        frame = window.requestAnimationFrame(render);
+      };
+      const touchesRows = (records) => {
+        for (const record of records) {
+          for (const node of [...record.addedNodes, ...record.removedNodes]) {
+            if (!(node instanceof Element)) continue;
+            if (node.matches(WORKSPACE_ROW_SELECTOR2) || node.querySelector(WORKSPACE_ROW_SELECTOR2) !== null) {
+              return true;
+            }
+          }
+        }
+        return false;
       };
       const unsubscribeWorkspaces = uiWorkspace.workspaces?.list.subscribe?.(schedule);
       const unsubscribeSessions = sessions.list.subscribe?.(schedule);
-      const observer = new MutationObserver(schedule);
+      const observer = new MutationObserver((records) => {
+        if (!touchesRows(records)) return;
+        rowsDirty = true;
+        schedule();
+      });
       observer.observe(document.body, { childList: true, subtree: true });
       schedule();
       return () => {
@@ -4637,6 +4790,7 @@ window.__ModuleLoader__.load({
         unsubscribeWorkspaces?.();
         unsubscribeSessions?.();
         observer.disconnect();
+        if (frame !== 0) window.cancelAnimationFrame(frame);
         clearCounts();
       };
     }
@@ -4662,6 +4816,8 @@ window.__ModuleLoader__.load({
         title: "\u9879\u76EE\u4F1A\u8BDD\u6570",
         // 开关用途说明：解释项目名后会显示该项目自身的会话数量
         description: "\u4FA7\u8FB9\u680F\u9879\u76EE\u540D\u540E\u663E\u793A\u8BE5\u9879\u76EE\u81EA\u8EAB\u7684\u4F1A\u8BDD\u6570\u91CF\u3002",
+        // 提示切换开关会刷新页面，避免用户丢失滚动位置与未保存的输入
+        reloadHint: "\u5207\u6362\u540E\u4F1A\u5237\u65B0\u9875\u9762\u4EE5\u751F\u6548\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002"
       },
@@ -4670,6 +4826,8 @@ window.__ModuleLoader__.load({
         title: "Workspace session count",
         // Switch description explaining where the count appears and what it counts
         description: "Show each workspace\u2019s own session count after its name in the sidebar.",
+        // Tells the user that toggling reloads the page so state applies everywhere
+        reloadHint: "Reloads the page so the change takes effect.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions."
       }
@@ -4710,7 +4868,7 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react22.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react22.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react22.default.createElement(FolderCountIcon, null)), /* @__PURE__ */ import_react22.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react22.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react22.default.createElement(
+      return /* @__PURE__ */ import_react22.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react22.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react22.default.createElement(FolderCountIcon, null)), /* @__PURE__ */ import_react22.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react22.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), /* @__PURE__ */ import_react22.default.createElement("span", { className: "block text-[10px] leading-[13px] text-secondary" }, t("reloadHint"))), /* @__PURE__ */ import_react22.default.createElement(
         "button",
         {
           type: "button",
@@ -4835,7 +4993,7 @@ window.__ModuleLoader__.load({
       return sections;
     }
     function FeatureCard({ feature, t, open }) {
-      const featureT = (key) => t(`${feature.id}.${key}`);
+      const featureT = (0, import_react23.useMemo)(() => (key) => t(`${feature.id}.${key}`), [feature.id, t]);
       if ("switch" in feature) {
         const SwitchEntry = feature.switch;
         return /* @__PURE__ */ import_react23.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react23.default.createElement(SwitchEntry, { t: featureT }));
@@ -4876,7 +5034,9 @@ window.__ModuleLoader__.load({
 
     // src/shell/settings-nav-icon.ts
     var NAV_ICON_MARKER = "data-dsh-all-in-one-nav-icon";
-    var NAV_ROW_SELECTOR = '[role="dialog"] nav button';
+    var DIALOG_SELECTOR = '[role="dialog"]';
+    var NAV_ROW_SELECTOR = "nav button";
+    var SYNC_DEBOUNCE_MS = 200;
     var NAV_ICON_SIZE = 16;
     function isOwnNavRow(rowText, wantedLabel) {
       const wanted = wantedLabel.trim();
@@ -4907,32 +5067,69 @@ window.__ModuleLoader__.load({
         style.textContent = navIconCss(iconDataUrl);
         document.head.appendChild(style);
         let disposed = false;
-        let scheduled = false;
-        let frame = 0;
-        const sync = () => {
-          scheduled = false;
-          if (disposed) return;
-          const wantedLabel = t("shell.navTitle");
-          for (const row of document.querySelectorAll(NAV_ROW_SELECTOR)) {
-            if (isOwnNavRow(row.textContent, wantedLabel)) {
-              row.setAttribute(NAV_ICON_MARKER, "");
-            } else {
-              row.removeAttribute(NAV_ICON_MARKER);
+        let timer = 0;
+        let dialog = null;
+        const findDialog = () => {
+          if (dialog !== null && dialog.isConnected) return dialog;
+          dialog = document.querySelector(DIALOG_SELECTOR);
+          return dialog;
+        };
+        const markRows = (root, wantedLabel) => {
+          let matched = false;
+          for (const row of root.querySelectorAll(NAV_ROW_SELECTOR)) {
+            const own = isOwnNavRow(row.textContent, wantedLabel);
+            if (own) matched = true;
+            if (!own) {
+              if (row.hasAttribute(NAV_ICON_MARKER)) row.removeAttribute(NAV_ICON_MARKER);
+              continue;
             }
+            if (!row.hasAttribute(NAV_ICON_MARKER)) row.setAttribute(NAV_ICON_MARKER, "");
+          }
+          return matched;
+        };
+        const sync = () => {
+          timer = 0;
+          if (disposed) return;
+          const first = findDialog();
+          if (first === null) return;
+          const wantedLabel = t("shell.navTitle");
+          if (markRows(first, wantedLabel)) return;
+          const dialogs = document.querySelectorAll(DIALOG_SELECTOR);
+          if (dialogs.length <= 1) return;
+          for (const candidate of dialogs) {
+            if (candidate === first) continue;
+            if (!markRows(candidate, wantedLabel)) continue;
+            dialog = candidate;
+            return;
           }
         };
         const schedule = () => {
-          if (scheduled || disposed) return;
-          scheduled = true;
-          frame = window.requestAnimationFrame(sync);
+          if (timer !== 0 || disposed) return;
+          timer = window.setTimeout(sync, SYNC_DEBOUNCE_MS);
+        };
+        const isRelevant = (records) => {
+          const current = dialog !== null && dialog.isConnected ? dialog : null;
+          for (const record of records) {
+            if (current !== null && current.contains(record.target)) return true;
+            for (const node of record.addedNodes) {
+              if (!(node instanceof Element)) continue;
+              if (node.matches(DIALOG_SELECTOR)) return true;
+              const topLevel = node.parentElement === document.body;
+              if (topLevel && node.querySelector(DIALOG_SELECTOR) !== null) return true;
+              if (current !== null && node.contains(current)) return true;
+            }
+          }
+          return false;
         };
         sync();
-        const observer = new MutationObserver(schedule);
+        const observer = new MutationObserver((records) => {
+          if (isRelevant(records)) schedule();
+        });
         observer.observe(document.body, { childList: true, subtree: true });
         return () => {
           disposed = true;
           observer.disconnect();
-          if (frame !== 0) window.cancelAnimationFrame(frame);
+          if (timer !== 0) window.clearTimeout(timer);
           for (const row of document.querySelectorAll(`[${NAV_ICON_MARKER}]`)) {
             row.removeAttribute(NAV_ICON_MARKER);
           }

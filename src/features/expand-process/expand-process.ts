@@ -127,13 +127,16 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
   }
 
   /** 所有已绑定行的重算函数；轮次或运行状态变化时统一调用。 */
-  const binders: Array<() => void> = []
+  const binders: Array<(running: boolean, turn: string | null) => void> = []
   /** 整页变动观察器与合并标记，避免流式输出期间每帧重算多次。 */
   let observer: MutationObserver | null = null
   let scheduled = false
+  let timer = 0
   /** 上次参与判定的运行状态与轮次，两者都没变时不需要重算。 */
   let lastRunning: boolean | null = null
   let lastTurn: string | null = null
+  /** 合并窗口：流式输出每帧都在加节点，逐帧查询 DOM 没有意义。 */
+  const REFRESH_DEBOUNCE_MS = 150
 
   /** 取 DOM 中最新一轮的标识；会话没有内容时返回 null。 */
   function latestTurn(): string | null {
@@ -143,7 +146,7 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
     let best: string | null = null
     let bestValue = -Infinity
 
-    for (const node of Array.from(nodes)) {
+    for (const node of nodes) {
       const raw = node.getAttribute('data-chat-turn') ?? ''
       const value = Number(raw)
 
@@ -162,7 +165,12 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
     return document.querySelector('[data-chat-running]') !== null
   }
 
-  /** 重算所有已绑定行；运行状态与最新轮次都没变时直接跳过。 */
+  /**
+   * 重算所有已绑定行；运行状态与最新轮次都没变时直接跳过。
+   *
+   * 每次重算只查一次 DOM，把结果传给所有行：此前每个绑定行各自调用
+   * `isRunning()` / `latestTurn()`，N 行就是 2N 次全文档查询。
+   */
   function refresh(): void {
     const running = isRunning()
     const turn = latestTurn()
@@ -171,18 +179,19 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
     lastRunning = running
     lastTurn = turn
 
-    for (const update of [...binders]) update()
+    for (const update of [...binders]) update(running, turn)
   }
 
-  /** 把多次 DOM 变动合并到下一帧，避免流式输出期间反复重算。 */
+  /** 把多次 DOM 变动合并到一个短窗口里，避免流式输出期间反复重算。 */
   function schedule(): void {
     if (scheduled) return
     scheduled = true
 
-    window.requestAnimationFrame(() => {
+    timer = window.setTimeout(() => {
+      timer = 0
       scheduled = false
       refresh()
-    })
+    }, REFRESH_DEBOUNCE_MS)
   }
 
   /** 观察整页变动：运行标记出现或消失、新轮次挂载都会触发重算。 */
@@ -191,6 +200,21 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
 
     observer = new MutationObserver(schedule)
     observer.observe(document.body, { childList: true, subtree: true })
+  }
+
+  /** 没有绑定行时断开观察器：离开会话后不再为整页变化执行空刷新。 */
+  function unobserve(): void {
+    if (observer === null) return
+
+    observer.disconnect()
+    observer = null
+    lastRunning = null
+    lastTurn = null
+    if (timer !== 0) {
+      window.clearTimeout(timer)
+      timer = 0
+      scheduled = false
+    }
   }
 
   /**
@@ -218,19 +242,21 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
 
     const turn = turnElement.getAttribute('data-chat-turn')
 
-    const update = (): void => {
+    const update = (running: boolean, latest: string | null): void => {
       if (manual.current) return
 
-      setExpanded(isRunning() && turn !== null && turn === latestTurn())
+      setExpanded(running && turn !== null && turn === latest)
     }
 
     binders.push(update)
     observe()
-    update()
+    // 首次绑定立即按当前状态判定，不必等下一次 DOM 变化
+    update(isRunning(), latestTurn())
 
     return () => {
       const index = binders.indexOf(update)
       if (index >= 0) binders.splice(index, 1)
+      if (binders.length === 0) unobserve()
     }
   }
 

@@ -53,6 +53,9 @@ let cachedTrigger: HTMLElement | null = null
 /** 顶部面板列表缓存，同上。 */
 let cachedPanelList: HTMLElement | null = null
 
+/** 隐藏弹层的恢复定时器：卸载时据此取消，避免它晚于插件生命周期执行。 */
+let suppressTimer: number | undefined
+
 /** svg 元素必须用命名空间创建，否则在 HTML 文档里不会被当作图形渲染。 */
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 
@@ -229,7 +232,16 @@ function openTopMoreItem(index: number): void {
   // 记录已有的弹层，点击后新出现的那个才是顶部「更多」的子菜单
   const before = new Set(document.querySelectorAll('[role="menu"]'))
   document.documentElement.setAttribute(SUPPRESS_ATTRIBUTE, '')
-  more.click()
+
+  try {
+    more.click()
+  } catch (error) {
+    // 点击抛错时属性会永久残留，配套 CSS 会让全站菜单一直不可见
+    console.error('[sidebar-more] 打开顶部「更多」失败:', error)
+    document.documentElement.removeAttribute(SUPPRESS_ATTRIBUTE)
+
+    return
+  }
 
   clickNewMenuItem(before, index, 1)
 }
@@ -247,7 +259,11 @@ function clickNewMenuItem(before: Set<Element>, index: number, attempt: number):
   if (item instanceof HTMLElement) {
     item.click()
     // 宿主关闭弹层有动画，稍后再恢复显示，避免它在左上角闪一下
-    window.setTimeout(() => document.documentElement.removeAttribute(SUPPRESS_ATTRIBUTE), SUPPRESS_RELEASE_MS)
+    if (suppressTimer !== undefined) window.clearTimeout(suppressTimer)
+    suppressTimer = window.setTimeout(() => {
+      suppressTimer = undefined
+      document.documentElement.removeAttribute(SUPPRESS_ATTRIBUTE)
+    }, SUPPRESS_RELEASE_MS)
     return
   }
 
@@ -339,9 +355,11 @@ export function installSidebarMore(t: Translate): () => void {
 
   let disposed = false
   let scheduled = false
+  let frame = 0
 
   /** 每帧最多检查一次：宿主菜单在点击后才渲染，节点变化本身不需要逐条处理。 */
   const scan = (): void => {
+    frame = 0
     scheduled = false
     if (disposed) return
     injectFooterItems(t)
@@ -350,7 +368,7 @@ export function installSidebarMore(t: Translate): () => void {
   const schedule = (): void => {
     if (scheduled || disposed) return
     scheduled = true
-    window.requestAnimationFrame(scan)
+    frame = window.requestAnimationFrame(scan)
   }
 
   // 只监听节点增删：会话流式输出会频繁触发，但回调里只做几次轻量查询
@@ -361,6 +379,11 @@ export function installSidebarMore(t: Translate): () => void {
   return () => {
     disposed = true
     observer.disconnect()
+    if (frame !== 0) window.cancelAnimationFrame(frame)
+    if (suppressTimer !== undefined) {
+      window.clearTimeout(suppressTimer)
+      suppressTimer = undefined
+    }
     // 卸载后宿主可能整块重建侧边栏，缓存引用随之失效
     cachedTrigger = null
     cachedPanelList = null

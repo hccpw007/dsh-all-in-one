@@ -14,6 +14,14 @@ import type { DeleteConfirmRequest } from './confirm-store'
 import { readDeleteSessionEnabled } from './delete-session'
 import type { SessionDeletableState } from './types'
 
+/**
+ * 安装时读取一次开关。
+ *
+ * 会话列表每刷新一次都会重渲染所有行，逐个组件读 localStorage 是同步存储访问；
+ * 开关变更本来就会整页刷新，安装期的值在整个页面生命周期内都有效。
+ */
+const ENABLED_AT_INSTALL = readDeleteSessionEnabled()
+
 /** 会话行按钮收到的 props：t 由 feature 注入，其余来自插槽。 */
 export interface DeleteSessionButtonProps {
   /** 已绑定本 feature 前缀的翻译函数。 */
@@ -66,7 +74,7 @@ export function DeleteSessionButton({
   requestConfirm,
 }: DeleteSessionButtonProps) {
   // 开关关闭时不渲染任何内容，会话行保持宿主原样
-  if (!readDeleteSessionEnabled()) return null
+  if (!ENABLED_AT_INSTALL) return null
   if (sessionId === undefined || requestConfirm === undefined) return null
 
   const state = resolveSession?.(sessionId)

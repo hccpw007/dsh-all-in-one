@@ -7,6 +7,8 @@ export const deleteSessionLocales: FeatureLocales = {
     title: '删除会话',
     // 开关用途说明：说明打开后会话行会出现删除入口、工作区菜单会出现批量删除入口，且删除前需要先在弹窗里确认
     description: '会话悬停操作里新增删除按钮，工作区「更多」菜单可一键删除全部会话，确认后清除本地记录。',
+    // 提示切换开关会刷新页面，避免用户丢失滚动位置与未保存的输入
+    reloadHint: '切换后会刷新页面以生效。',
     // 开关状态写入失败时的提示
     saveFailed: '保存开关状态失败，请检查浏览器存储权限。',
     // 会话行删除按钮的可访问名称与悬停提示
@@ -45,6 +47,8 @@ export const deleteSessionLocales: FeatureLocales = {
     title: 'Delete sessions',
     // Switch description covering the row action, the bulk workspace entry, and the confirmation step
     description: 'Adds a delete button to session hover actions and a delete-all entry to the workspace menu; a dialog confirms first.',
+    // Tells the user that toggling reloads the page so state applies everywhere
+    reloadHint: 'Reloads the page so the change takes effect.',
     // Shown when the switch state cannot be persisted
     saveFailed: 'Could not save the switch state. Check browser storage permissions.',
     // Accessible name and hover hint of the row delete button

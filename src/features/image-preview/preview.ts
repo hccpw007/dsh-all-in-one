@@ -96,6 +96,12 @@ const failedPaths = new Set<string>()
 /** 正在等待用户刷新页面的失败记录上限，防止长会话里无限增长。 */
 const MAX_FAILED_PATHS = 200
 
+/** 已告警过「不是合法 URI 编码」的 token：流式输出下同一段文本会被反复扫描。 */
+const warnedDecodeFailures = new Set<string>()
+
+/** 编码告警的上限，防止异常输入让集合无限增长。 */
+const MAX_DECODE_WARNINGS = 100
+
 /**
  * 宿主的消息行标记。
  *
@@ -210,8 +216,13 @@ function normalizeCandidate(raw: string): string | undefined {
   try {
     decoded = decodeURI(withoutPunctuation)
   } catch (error) {
-    // 不是合法 URI 编码时按原样使用：路径里的 `%` 是字符本身，不是转义
-    console.warn('[image-preview] 路径不是合法 URI 编码，按原样使用:', withoutPunctuation, error)
+    // 不是合法 URI 编码时按原样使用：路径里的 `%` 是字符本身，不是转义。
+    // 流式输出会让同一段文本每帧重扫一次，同一 token 只告警一次
+    if (!warnedDecodeFailures.has(withoutPunctuation)) {
+      if (warnedDecodeFailures.size >= MAX_DECODE_WARNINGS) warnedDecodeFailures.clear()
+      warnedDecodeFailures.add(withoutPunctuation)
+      console.warn('[image-preview] 路径不是合法 URI 编码，按原样使用:', withoutPunctuation, error)
+    }
   }
 
   // 浏览器端无法把相对路径还原成文件系统位置，只处理绝对路径；
@@ -290,10 +301,17 @@ export function syncBlockPreviews(block: Element, paths: string[]): void {
     ? []
     : dedupeByCanonicalPath(paths.filter((path) => !failedPaths.has(canonicalPathKey(path))))
 
-  // 已被别的块占用的同一张图也不再重复插入（容器断开即视为释放，跟随虚拟滚动）
+  // 已被别的块占用的同一张图也不再重复插入（容器断开即视为释放，跟随虚拟滚动）。
+  // 容器断开时顺手删掉映射：否则虚拟滚动过的历史图片会一直持有已卸载的节点
   const usablePaths = candidates.filter((path) => {
-    const owner = previewOwners.get(canonicalPathKey(path))
-    return owner === undefined || !owner.isConnected || owner === wrapper
+    const key = canonicalPathKey(path)
+    const owner = previewOwners.get(key)
+    if (owner === undefined || owner === wrapper) return true
+    if (owner.isConnected) return false
+
+    previewOwners.delete(key)
+
+    return true
   })
   // key 与顺序无关：同一组路径因扫描顺序不同被当成变化时，会反复删除重建预览
   const key = usablePaths.map(canonicalPathKey).sort().join('\n')

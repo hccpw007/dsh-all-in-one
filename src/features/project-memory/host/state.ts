@@ -5,27 +5,21 @@
  * 避免三处各自解析根目录而出现不一致。
  */
 import { readMemorySettings } from './settings'
-import { defaultMemoryRoot, projectMemoryDir, resolveMemoryRoot } from './paths'
+import { projectMemoryDir, resolveMemoryRoot } from './paths'
 
 /**
- * 是否启用项目记忆。
- * @returns 开关打开且根目录可用时返回 true
+ * 解析当前生效的记忆根目录。
+ *
+ * 一次读取同时得到「是否启用」与「根目录」：此前分成两次读设置，每次装配提示词
+ * 都要多走一遍缓存查找；功能关闭时也不该再为索引指纹 stat 文件。
+ * @returns 记忆根目录；功能关闭或配置的根目录不可用时返回 undefined
  */
-function memoryEnabled(): boolean {
+function activeMemoryRoot(): string | undefined {
   const settings = readMemorySettings()
-  if (!settings.enabled) return false
+  if (!settings.enabled) return undefined
 
-  return resolveMemoryRoot(settings.root) !== undefined
-}
-
-/**
- * 解析当前生效的记忆根目录：用户配置可用时用它，否则回退默认目录。
- * @returns 绝对路径
- */
-function effectiveMemoryRoot(): string {
-  const settings = readMemorySettings()
-
-  return resolveMemoryRoot(settings.root) ?? defaultMemoryRoot()
+  // 用户填了无法解析的路径时按「未启用」处理（与原有行为一致），不静默改用默认目录
+  return resolveMemoryRoot(settings.root)
 }
 
 /**
@@ -34,7 +28,8 @@ function effectiveMemoryRoot(): string {
  * @returns 记忆目录；功能关闭时返回 undefined
  */
 export function memoryDirForSession(projectDirectory: string): string | undefined {
-  if (!memoryEnabled()) return undefined
+  const root = activeMemoryRoot()
+  if (root === undefined) return undefined
 
-  return projectMemoryDir(effectiveMemoryRoot(), projectDirectory)
+  return projectMemoryDir(root, projectDirectory)
 }

@@ -25,6 +25,7 @@ import {
   waitPresetRows,
 } from './presets'
 import { readPacks } from './store'
+import { withTimeout } from './with-timeout'
 
 /** 需要包住的宿主方法：它们都在真正使用预设前解析预设 id。 */
 const GUARDED_METHODS = ['resolve', 'acquireScope', 'select', 'mount'] as const
@@ -48,6 +49,9 @@ const WRAPPED = Symbol.for('dsh-all-in-one.preset-lazy')
 
 /** 待重建的组合，键为组合预设 id；同时用于合并并发请求。 */
 const rebuilding = new Map<string, Promise<string>>()
+
+/** 单次重建（等待模式 + 枚举能力 + 挂载预设行）的预算；超时后释放占位，下次访问可重试。 */
+const REBUILD_TIMEOUT_MS = 30_000
 
 /** 宿主方法在包装层的形态：保持 `this`，参数与返回值原样透传。 */
 type HostMethod = (this: unknown, ...args: unknown[]) => Promise<unknown>
@@ -84,7 +88,7 @@ async function rebuildOnce(deps: LazyPresetDeps, presetId: string): Promise<stri
   const running = rebuilding.get(presetId)
   if (running !== undefined) return running
 
-  const task = (async (): Promise<string> => {
+  const work = (async (): Promise<string> => {
     const { packId, modeId } = splitComposedPresetId(presetId)
     if (packId === '' || modeId === '') throw new Error(`组合预设 ${presetId} 缺少技能包或模式信息`)
 
@@ -108,6 +112,10 @@ async function rebuildOnce(deps: LazyPresetDeps, presetId: string): Promise<stri
 
     return ensureComposedPreset(deps.api, modeId, pack, groups)
   })()
+
+  // 宿主注册与能力枚举都可能不 settle：没有超时会永久挂住该 id，后续所有
+  // 会话创建/恢复都返回同一个挂起 Promise 且没有任何日志
+  const task = withTimeout(work, REBUILD_TIMEOUT_MS, `重建组合预设 ${presetId}`)
 
   rebuilding.set(presetId, task)
   // 无论成败都释放占位，失败后下次访问可重试

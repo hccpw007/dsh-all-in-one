@@ -4,9 +4,9 @@
  * 设置放在 `$DSH_HOME/all-in-one/desktop-cookie.json`：清理由宿主在启动时执行，
  * 浏览器端 localStorage 对它不可见，因此配置必须落在宿主读得到的位置。
  */
-import { mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs'
-import { dirname, join } from 'node:path'
+import { join } from 'node:path'
 
+import { createJsonSettingsStore } from '../../../common/json-settings'
 import { resolveDshHome } from '../../../common/dsh-home'
 import type { DesktopCookieSettings } from '../types'
 
@@ -100,41 +100,20 @@ function applyPatch(current: DesktopCookieSettings, patch: unknown): DesktopCook
   }
 }
 
+/** 设置存储：读取结果按文件状态缓存，写入后内存态同步更新。 */
+const store = createJsonSettingsStore<DesktopCookieSettings>({
+  file: desktopCookieSettingsFile,
+  normalize: normalizeSettings,
+  defaults: () => ({ ...DEFAULT_SETTINGS }),
+  label: '[desktop-cookie]',
+})
+
 /**
  * 读取设置；文件不存在时返回默认值。
  * @returns 当前设置
  */
 export function readDesktopCookieSettings(): DesktopCookieSettings {
-  const file = desktopCookieSettingsFile()
-
-  try {
-    return normalizeSettings(JSON.parse(readFileSync(file, 'utf8')) as unknown)
-  } catch (error) {
-    // 首次运行时文件不存在是正常情况，按默认值处理
-    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
-      console.error('[desktop-cookie] 读取设置失败:', file, error)
-    }
-
-    return { ...DEFAULT_SETTINGS }
-  }
-}
-
-/**
- * 原子写入设置：先写临时文件再改名，避免写入中断留下半份配置。
- * @param next 新设置
- */
-function writeSettings(next: DesktopCookieSettings): void {
-  const file = desktopCookieSettingsFile()
-  const temp = `${file}.tmp`
-
-  try {
-    mkdirSync(dirname(file), { recursive: true })
-    writeFileSync(temp, `${JSON.stringify(next, null, 2)}\n`, 'utf8')
-    renameSync(temp, file)
-  } catch (error) {
-    console.error('[desktop-cookie] 写入设置失败:', file, error)
-    throw error
-  }
+  return store.read()
 }
 
 /**
@@ -143,8 +122,5 @@ function writeSettings(next: DesktopCookieSettings): void {
  * @returns 写入后的完整设置
  */
 export function updateDesktopCookieSettings(patch: unknown): DesktopCookieSettings {
-  const next = applyPatch(readDesktopCookieSettings(), patch)
-  writeSettings(next)
-
-  return next
+  return store.update(patch, applyPatch)
 }

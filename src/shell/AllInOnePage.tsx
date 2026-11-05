@@ -4,7 +4,7 @@
  * 页面只负责按分组布置网格、功能切换与返回入口；每张入口卡片由功能自己渲染，
  * 功能页面的标题与内容也都留在各自的文件夹里。
  */
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 
 import { Button } from '../components/Button'
@@ -100,7 +100,9 @@ interface FeatureCardProps {
  * @param props 功能定义与外壳注入的翻译、打开动作
  */
 function FeatureCard({ feature, t, open }: FeatureCardProps) {
-  const featureT = (key: string) => t(`${feature.id}.${key}`)
+  // t 的引用会随页面重渲染变化；entry/switch 的 effect 依赖 t，若这里每次渲染都造新
+  // 函数，卡片重渲染就会触发一次设置读取。按 feature.id 与 t 记忆化即可保持稳定。
+  const featureT = useMemo(() => (key: string) => t(`${feature.id}.${key}`), [feature.id, t])
 
   // 开关型 feature 与入口卡片同列渲染（各占一半宽度），没有独立功能页
   if ('switch' in feature) {

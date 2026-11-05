@@ -9,8 +9,13 @@
 import type { ToolsApi } from '../../../types/host'
 import type { GlobalToolGroup } from '../types'
 
+import { logPerf } from '../../../common/perf'
 import { findInstalledPlugins } from './catalog'
 import { ownedTools } from './package-scan'
+import { createReadCache } from './read-cache'
+
+/** 全局能力清单的缓存时长：工具表变化时会生成新键，无需手动失效。 */
+const GROUPS_TTL_MS = 5000
 
 /** MCP 工具名格式：`mcp__<serverName>__<rawName>`。 */
 const MCP_TOOL_NAME = /^mcp__([A-Za-z0-9_-]{1,32})__/
@@ -48,12 +53,17 @@ export function collectGlobalToolNames(tools?: ToolsApi): string[] {
  * @param profileDir 宿主报告的当前 profile 目录；缺省时扫描全部 profile
  * @returns 已装插件组在前、全局 MCP 组在后
  */
-export async function listGlobalToolGroups(
-  tools?: ToolsApi,
-  profileDir?: string,
-): Promise<GlobalToolGroup[]> {
-  const names = collectGlobalToolNames(tools)
+/** 全局能力组的缓存；键包含工具名清单，工具增减后自然落到新键。 */
+const groupsCache = createReadCache<GlobalToolGroup[]>(GROUPS_TTL_MS)
 
+/**
+ * 按工具名生成能力组。
+ * @param names 全局工具名
+ * @param profileDir 宿主报告的当前 profile 目录
+ * @returns 已装插件组在前、全局 MCP 组在后
+ */
+async function buildToolGroups(names: string[], profileDir?: string): Promise<GlobalToolGroup[]> {
+  const startedAt = performance.now()
   const mcpTools = new Map<string, string[]>()
   const localTools: string[] = []
   for (const name of names) {
@@ -90,5 +100,27 @@ export async function listGlobalToolGroups(
     })
   }
 
+  logPerf('listGlobalToolGroups', startedAt, { tools: names.length, groups: groups.length })
+
   return groups
+}
+
+/**
+ * 生成编辑页的全局能力分组。
+ *
+ * 只列出确实注册了工具的能力：没有工具的组无从隔离，列出来只会误导。
+ * 结果按「profile + 工具名清单」缓存 5 秒：打开页面、切会话、保存配置都会重复请求
+ * 同一份数据，逐次重扫插件产物是此前最贵的可感知卡顿来源。
+ * @param tools 宿主工具注册表
+ * @param profileDir 宿主报告的当前 profile 目录；缺省时扫描全部 profile
+ * @returns 已装插件组在前、全局 MCP 组在后
+ */
+export async function listGlobalToolGroups(
+  tools?: ToolsApi,
+  profileDir?: string,
+): Promise<GlobalToolGroup[]> {
+  const names = collectGlobalToolNames(tools)
+  const key = `${profileDir ?? '*'}\n${names.join('\n')}`
+
+  return groupsCache.read(key, () => buildToolGroups(names, profileDir))
 }

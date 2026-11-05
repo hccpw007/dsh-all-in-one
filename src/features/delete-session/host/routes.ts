@@ -10,7 +10,7 @@
  */
 import type { WebServerApi } from '../../../types/host'
 
-import { isLocalRequest, readJsonBody, sendJson } from '../../../common/http-route'
+import { isLocalRequest, readJsonBody, sendJson, sendJsonBodyError } from '../../../common/http-route'
 import { deleteStoredSession, deleteStoredSessions, isValidSessionId } from './delete-session'
 
 /** 路由前缀，同时作为客户端请求路径。 */
@@ -83,7 +83,12 @@ export function installDeleteSessionRoutes(webServer: WebServerApi): () => void 
         // 批量删除：一次请求处理一个工作区里的多条会话
         if (pathname === BATCH_PATH) {
           const body = await readJsonBody(request, MAX_BATCH_BODY_BYTES)
-          const sessionIds = readSessionIds(body)
+          if (!body.ok) {
+            sendJsonBodyError(response, body, '会话标识列表不合法')
+            return
+          }
+
+          const sessionIds = readSessionIds(body.value)
           if (sessionIds === undefined) {
             sendJson(response, 400, { error: '会话标识列表不合法' })
             return
@@ -94,7 +99,12 @@ export function installDeleteSessionRoutes(webServer: WebServerApi): () => void 
         }
 
         const body = await readJsonBody(request, MAX_BODY_BYTES)
-        const sessionId = readSessionId(body)
+        if (!body.ok) {
+          sendJsonBodyError(response, body, '会话标识不合法')
+          return
+        }
+
+        const sessionId = readSessionId(body.value)
         if (sessionId === undefined) {
           sendJson(response, 400, { error: '会话标识不合法' })
           return

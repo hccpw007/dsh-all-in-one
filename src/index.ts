@@ -15,8 +15,17 @@ export const inject = Array.from(new Set(featureHosts.flatMap((feature) => featu
 
 /**
  * 宿主加载插件时调用：逐个执行 feature 的宿主扩展。
+ *
+ * 单个 feature 失败只影响它自己：任何异常都不得截断后续 feature 的注册，也不能
+ * 冒泡到宿主插件加载器——那会让整个插件（含设置页）被判为加载失败。
  * @param ctx 宿主插件上下文
  */
 export function apply(ctx: HostPluginContext): void {
-  for (const feature of featureHosts) feature.apply(ctx)
+  for (const feature of featureHosts) {
+    try {
+      feature.apply(ctx)
+    } catch (error) {
+      console.error('[all-in-one] 宿主扩展启动失败:', feature.id, error)
+    }
+  }
 }

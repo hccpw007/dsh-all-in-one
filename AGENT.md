@@ -76,8 +76,9 @@
 4. 执行 `npm run build`，刷新 Harness 页面确认开关可用。
 
 feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目录内新增 `host.ts`，
-导出 `inject` 与 `apply`，再在 `src/features/host.ts` 的 `featureHosts` 中追加该模块。
-禁止把宿主能力直接写进 `src/index.ts`；那里只做聚合与遍历。
+导出 `id`、`inject` 与 `apply`，再在 `src/features/host.ts` 的 `featureHosts` 中追加该模块。
+`id` 与 feature 目录名一致，`src/index.ts` 用它定位启动失败的功能，并在单个 feature
+抛错时继续装配其余功能。禁止把宿主能力直接写进 `src/index.ts`；那里只做聚合、遍历与隔离。
 
 不得为接入新功能修改外壳的网格渲染逻辑、`AllInOnePage.tsx` 或 `entry.tsx` 以外的公共层；
 确需新增公共能力时，先按第四节落位。
@@ -100,7 +101,9 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 │   ├── types/               # 宿主 API（客户端与宿主侧）与资源模块的类型声明
 │   ├── common/              # 被多个 feature 或壳子共用的纯逻辑与工具（kebab-case 文件）
 │   │   ├── dsh-home.ts      # 解析 $DSH_HOME，技能包与删除会话共用
-│   │   └── http-route.ts    # 本地 JSON 路由的回环校验与收发，两个功能的宿主路由共用
+│   │   ├── http-route.ts    # 本地 JSON 路由的回环校验与收发，所有宿主路由共用
+│   │   ├── json-settings.ts # 用户级 JSON 设置的 mtime 缓存、原子写入与补丁合并
+│   │   └── perf.ts          # DSH_ALL_IN_ONE_PERF=1 时的关键路径耗时埋点
 │   ├── components/          # 被多个 feature 或壳子共用的 UI 组件（PascalCase 文件）
 │   │   └── CardChevron.tsx  # 「可进入」箭头标记，页面型入口共用
 │   ├── shell/               # 外壳：feature 契约与注册表、网格页面、设置导航图标
@@ -126,7 +129,9 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 │       │   │   ├── isolation.ts     # 把全局能力规则翻译成隔离计划
 │       │   │   ├── isolate-entry.ts # 预设内隔离行，独立打包为 preset-isolate.js
 │       │   │   ├── global-catalog.ts # 枚举可隔离的全局能力组
-│       │   │   └── package-scan.ts   # 已装插件的工具归属扫描
+│       │   │   ├── package-scan.ts   # 已装插件的工具归属扫描
+│       │   │   ├── read-cache.ts     # 读取链路的 TTL 缓存与 in-flight 合并
+│       │   │   └── with-timeout.ts   # 给宿主异步操作加可诊断的超时
 │       │   └── locales.ts   # 本功能的中英文文案
 │       ├── expand-process/  # 开关型功能：展开过程
 │           ├── index.tsx    # 注册定义：只提供 switch，没有独立页面
@@ -366,7 +371,21 @@ CPU 占用显著抬高（三条组合把冷启动从 5.3 秒拖到 10 秒以上�
 - 监听器里执行会再次触发同类事件的写操作时，必须有「进行中」闸门，否则会无限自激把
   CPU 打满（参考 `isolate-entry.ts` 的 `applying` 标志）。
 - 客户端同理：`MutationObserver` 必须限定观察范围并及时 `disconnect`，回调里合并批次，
-  不要对 `document.body` 全量子树做无节流的同步查询。
+  不要对 `document.body` 全量子树做无节流的同步查询。观察 `document.body` 时，回调必须
+  先用 `MutationRecord` 判断变化是否落在本功能关心的节点上（参考 `settings-nav-icon.ts`、
+  `workspace-count.ts`），并用防抖而不是每帧执行；没有绑定对象时断开观察器。
+
+### 读取链路：短 TTL 缓存 + in-flight 合并
+
+设置页与选择器会在切会话、开页面、保存时重复请求同一份负载。凡是会扫描目录或读多个
+文件的读取函数（技能清单、已装插件、全局能力组、插件产物归属）都必须经过
+`power-pack/host/read-cache.ts`：5–30 秒 TTL 吸收重复请求，同一 key 的并发调用只跑一次。
+写入路径不要绕过缓存层去重扫；缓存键必须包含会影响结果的全部输入（profile、工具名清单）。
+
+### 关键路径埋点
+
+`common/perf.ts` 只在 `DSH_ALL_IN_ONE_PERF=1` 时输出耗时与规模，默认零开销。改动
+`buildPayload`、插件产物扫描、批量删除这类路径时，用它给出前后数字，并写进提交说明。
 
 ### 计费点：任何「按数量增长」的启动开销都是隐患
 

@@ -386,6 +386,38 @@ export function deleteMemory(dir: string, name: string): boolean {
   return true
 }
 
+/** 注入提示词的索引条目上限：超出后只注入前若干条，其余让模型用 memory 工具查询。 */
+const MAX_INJECTED_INDEX_LINES = 80
+
+/**
+ * 截断过长的索引。
+ *
+ * 索引会随记忆条数线性增长，而它每轮都要进入上下文；超过 80 条后只保留前 80 条，
+ * 并提示模型用工具查看余下条目——完整索引仍可通过 `action=list` 读取。
+ * @param index 索引全文
+ * @returns 注入用文本
+ */
+function capIndexLines(index: string): string {
+  const lines = index.split('\n')
+  // 只数有内容的行：索引本身是一行一条，空行不计入上限
+  const filled = lines.filter((line) => line.trim() !== '')
+  if (filled.length <= MAX_INJECTED_INDEX_LINES) return index
+
+  let counted = 0
+  for (let position = 0; position < lines.length; position += 1) {
+    if (lines[position].trim() === '') continue
+    counted += 1
+    if (counted <= MAX_INJECTED_INDEX_LINES) continue
+
+    const rest = filled.length - MAX_INJECTED_INDEX_LINES
+    const notice = `（其余 ${rest} 条未在本轮列出，用 memory 工具 action=list 查看全部。）`
+
+    return [...lines.slice(0, position), notice].join('\n')
+  }
+
+  return index
+}
+
 /**
  * 把记忆索引渲染成注入提示词的文本。
  *
@@ -407,7 +439,8 @@ export function renderMemoryIndex(dir: string, index: string): string {
     '',
   ]
 
-  parts.push(index.trim() === '' ? '（当前还没有记忆。）' : index.trim())
+  const trimmed = index.trim()
+  parts.push(trimmed === '' ? '（当前还没有记忆。）' : capIndexLines(trimmed))
 
   return parts.join('\n')
 }

@@ -5,7 +5,7 @@
  * 指向 `~/.claude/projects` 即可与 Claude Code 共用同一套记忆。页面同时展示
  * 「当前实际使用的目录」，避免用户填了路径却不知道生效的是哪一个（填错会回退默认）。
  */
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { Button } from '../../components/Button'
 import { PageActionsContext } from '../../shell/page-actions'
@@ -44,6 +44,18 @@ export function ProjectMemoryPage({ t }: FeaturePageProps) {
   const [saved, setSaved] = useState(false)
   // 外壳头部右侧的操作区投放口
   const setPageActions = useContext(PageActionsContext)
+  // 保存按钮通过 ref 读取最新草稿与保存状态：让按钮节点的引用在输入时保持不变，
+  // 避免每敲一个字符就「清空头部 → 重新投放」，导致按钮闪烁与整棵子树重渲染
+  const draftRef = useRef(draft)
+  const savingRef = useRef(saving)
+
+  useEffect(() => {
+    draftRef.current = draft
+  }, [draft])
+
+  useEffect(() => {
+    savingRef.current = saving
+  }, [saving])
 
   useEffect(() => {
     let active = true
@@ -73,9 +85,9 @@ export function ProjectMemoryPage({ t }: FeaturePageProps) {
 
   /** 保存草稿中的根目录；服务端会再校验一次并返回解析后的实际目录。 */
   const handleSave = useCallback(async (): Promise<void> => {
-    if (saving) return
+    if (savingRef.current) return
 
-    const trimmed = draft.trim()
+    const trimmed = draftRef.current.trim()
     if (!isValidRoot(trimmed)) {
       setError(t('pathInvalid'))
       setSaved(false)
@@ -98,7 +110,7 @@ export function ProjectMemoryPage({ t }: FeaturePageProps) {
     } finally {
       setSaving(false)
     }
-  }, [draft, saving, t])
+  }, [t])
 
   /** 外壳头部右上角的保存按钮；表单里不再重复放置。 */
   const saveAction = useMemo(

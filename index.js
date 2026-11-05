@@ -8,6 +8,7 @@ var __export = (target, all) => {
 var host_exports = {};
 __export(host_exports, {
   apply: () => apply,
+  id: () => id,
   inject: () => inject
 });
 
@@ -49,10 +50,12 @@ async function syncPackSkillDir(packId, skills) {
   try {
     await rm(dir, { recursive: true, force: true });
     await mkdir(dir, { recursive: true });
-    for (const skill of skills) {
-      const target = join2(dir, `${skill.name}${skill.kind === "file" ? ".md" : ""}`);
-      await symlink(skill.path, target, skill.kind === "directory" ? "dir" : "file");
-    }
+    await Promise.all(
+      skills.map((skill) => {
+        const target = join2(dir, `${skill.name}${skill.kind === "file" ? ".md" : ""}`);
+        return symlink(skill.path, target, skill.kind === "directory" ? "dir" : "file");
+      })
+    );
     return dir;
   } catch (error) {
     console.error("[power-pack] \u540C\u6B65\u6280\u80FD\u76EE\u5F55\u5931\u8D25:", dir, error);
@@ -92,8 +95,8 @@ function buildPackRows(pack, isolate) {
 }
 
 // src/features/power-pack/host/isolation.ts
-function isDenied(rule, id) {
-  const selected = rule.items.includes(id);
+function isDenied(rule, id8) {
+  const selected = rule.items.includes(id8);
   switch (rule.mode) {
     case "include":
       return !selected;
@@ -116,7 +119,7 @@ function sectionPrefixes(packageName) {
 }
 function deniedMcpServers(rule) {
   if (rule.mode !== "exclude") return [];
-  const servers = rule.items.filter((id) => id.startsWith("mcp:") && id.length > 4).map((id) => id.slice(4));
+  const servers = rule.items.filter((id8) => id8.startsWith("mcp:") && id8.length > 4).map((id8) => id8.slice(4));
   return [...new Set(servers)];
 }
 function planIsolation(pack, groups) {
@@ -408,20 +411,23 @@ function composePackRows(modeRows, pack, groups) {
 }
 
 // src/features/power-pack/host/compose-state.ts
+import { randomBytes as randomBytes2 } from "node:crypto";
 import { mkdir as mkdir3, readFile as readFile2, rename as rename2, writeFile as writeFile2 } from "node:fs/promises";
 import { dirname as dirname2, join as join4 } from "node:path";
 
 // src/features/power-pack/host/store.ts
+import { randomBytes } from "node:crypto";
 import { mkdir as mkdir2, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname, join as join3 } from "node:path";
 var RULE_MODES = ["all", "include", "exclude"];
 var LEGACY_FILE_NAMES = ["skill-packs.json", "chat-styles.json"];
 var PACK_ID_PATTERN = /^[A-Za-z0-9_-]{1,64}$/;
+var legacyProbed = false;
 function powerPacksFile() {
   return join3(resolveDshHome(), "all-in-one", "power-packs.json");
 }
-function isValidPackId(id) {
-  return PACK_ID_PATTERN.test(id);
+function isValidPackId(id8) {
+  return PACK_ID_PATTERN.test(id8);
 }
 function stringList(value) {
   return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
@@ -435,11 +441,11 @@ function normalizeRule(value) {
 function normalizePack(value) {
   if (typeof value !== "object" || value === null) return void 0;
   const candidate = value;
-  const id = typeof candidate.id === "string" ? candidate.id.trim() : "";
+  const id8 = typeof candidate.id === "string" ? candidate.id.trim() : "";
   const name = typeof candidate.name === "string" ? candidate.name.trim() : "";
-  if (!PACK_ID_PATTERN.test(id) || name === "") return void 0;
+  if (!PACK_ID_PATTERN.test(id8) || name === "") return void 0;
   return {
-    id,
+    id: id8,
     name,
     description: typeof candidate.description === "string" ? candidate.description : "",
     systemPrompt: typeof candidate.systemPrompt === "string" ? candidate.systemPrompt : "",
@@ -466,17 +472,20 @@ async function parsePackFile(file) {
 async function readPacks() {
   const current = await parsePackFile(powerPacksFile());
   if (current !== void 0) return current;
+  if (legacyProbed) return { version: 1, packs: [], defaultPackId: "", enabled: false };
   for (const name of LEGACY_FILE_NAMES) {
     const migrated = await parsePackFile(join3(resolveDshHome(), "all-in-one", name));
     if (migrated === void 0) continue;
     await writePacks(migrated);
+    legacyProbed = true;
     return migrated;
   }
+  legacyProbed = true;
   return { version: 1, packs: [], defaultPackId: "", enabled: false };
 }
 async function writePacks(document2) {
   const file = powerPacksFile();
-  const temp = `${file}.tmp`;
+  const temp = `${file}.${process.pid}.${randomBytes(4).toString("hex")}.tmp`;
   try {
     await mkdir2(dirname(file), { recursive: true });
     await writeFile(temp, `${JSON.stringify(document2, null, 2)}
@@ -528,7 +537,7 @@ async function readComposeState() {
 }
 async function writeComposeState(recent) {
   const file = composeStateFile();
-  const temp = `${file}.tmp`;
+  const temp = `${file}.${process.pid}.${randomBytes2(4).toString("hex")}.tmp`;
   const document2 = { version: STATE_VERSION, recent: recent.slice(0, MAX_RECENT) };
   try {
     await mkdir3(dirname2(file), { recursive: true });
@@ -563,8 +572,11 @@ function readPresetRows(api, presetId) {
 // src/features/power-pack/host/presets.ts
 var PRESET_ID_PREFIX = "power-pack-";
 var PRESET_ORDER = 200;
-var PRESET_READ_ATTEMPTS = 12;
-var PRESET_READ_INTERVAL_MS = 250;
+var PRESET_READ_ATTEMPTS = 5;
+var PRESET_READ_INITIAL_MS = 40;
+var PRESET_READ_MAX_MS = 300;
+var PRESET_MISS_TTL_MS = 3e4;
+var MAX_COMPOSED_PRESETS = 64;
 var PACK_ROW_IDS = /* @__PURE__ */ new Set(["power-pack-isolate", "power-pack-prompt", "skill-filesystem", "tool-skill"]);
 var SHARED_STATE = Symbol.for("dsh-all-in-one.composed-presets");
 function sharedComposed() {
@@ -630,10 +642,25 @@ function delay(ms) {
     setTimeout(resolve3, ms);
   });
 }
+var modeMisses = /* @__PURE__ */ new Map();
 async function waitPresetRows(api, modeId) {
+  const missUntil = modeMisses.get(modeId);
+  if (missUntil !== void 0 && missUntil > Date.now()) return false;
+  let interval = PRESET_READ_INITIAL_MS;
   for (let attempt = 0; attempt < PRESET_READ_ATTEMPTS; attempt += 1) {
-    if (readPresetRows(api, modeId) !== void 0) return true;
-    await delay(PRESET_READ_INTERVAL_MS);
+    if (readPresetRows(api, modeId) !== void 0) {
+      modeMisses.delete(modeId);
+      return true;
+    }
+    if (attempt + 1 < PRESET_READ_ATTEMPTS) {
+      await delay(interval);
+      interval = Math.min(PRESET_READ_MAX_MS, interval * 2);
+    }
+  }
+  modeMisses.set(modeId, Date.now() + PRESET_MISS_TTL_MS);
+  if (modeMisses.size > MAX_COMPOSED_PRESETS) {
+    const oldest = modeMisses.keys().next();
+    if (!oldest.done) modeMisses.delete(oldest.value);
   }
   return false;
 }
@@ -660,9 +687,9 @@ async function pendingComposedMeta() {
   for (const selection of selections) {
     const pack = byId.get(selection.pack);
     if (pack === void 0) continue;
-    const id = composedPresetId(selection.pack, selection.mode);
-    if (hasComposedPreset(id)) continue;
-    result.set(id, { name: pack.name, description: pack.description });
+    const id8 = composedPresetId(selection.pack, selection.mode);
+    if (hasComposedPreset(id8)) continue;
+    result.set(id8, { name: pack.name, description: pack.description });
   }
   return result;
 }
@@ -672,26 +699,31 @@ async function ensureComposedPreset(api, modeId, pack, groups) {
   if (modeRows === void 0) {
     throw new Error(`\u65E0\u6CD5\u8BFB\u53D6\u6A21\u5F0F ${modeId} \u7684\u7EC4\u5408\u884C`);
   }
-  const id = composedPresetId(pack.id, modeId);
+  const id8 = composedPresetId(pack.id, modeId);
   const rows = composePackRows(modeRows, pack, groups);
-  const registered = readPresetRows(api, id);
+  const registered = readPresetRows(api, id8);
   if (registered !== void 0) {
-    if (packRowSignature(registered) === packRowSignature(rows)) return id;
-    await dropHostPreset(api, id);
+    if (packRowSignature(registered) === packRowSignature(rows)) return id8;
+    await dropHostPreset(api, id8);
     composed.delete(key);
   }
   try {
     const dispose = await api.register({
-      id,
+      id: id8,
       name: pack.name,
       description: pack.description,
       order: PRESET_ORDER,
       plugins: rows
     });
-    composed.set(key, { key, id, dispose });
-    return id;
+    composed.set(key, { key, id: id8, dispose });
+    while (composed.size > MAX_COMPOSED_PRESETS) {
+      const oldest = composed.values().next();
+      if (oldest.done || oldest.value.key === key) break;
+      await disposeOne(oldest.value);
+    }
+    return id8;
   } catch (error) {
-    if (readPresetRows(api, id) !== void 0) return id;
+    if (readPresetRows(api, id8) !== void 0) return id8;
     throw error;
   }
 }
@@ -721,10 +753,62 @@ function isInactiveContextError(error) {
   return typeof message === "string" && message.includes("inactive context");
 }
 
+// src/common/perf.ts
+function perfEnabled() {
+  return process.env.DSH_ALL_IN_ONE_PERF === "1";
+}
+function logPerf(label, startedAt, detail) {
+  if (!perfEnabled()) return;
+  const duration = Math.round((performance.now() - startedAt) * 100) / 100;
+  const suffix = detail === void 0 ? "" : ` ${JSON.stringify(detail)}`;
+  console.info(`[all-in-one:perf] ${label} ${duration}ms${suffix}`);
+}
+
 // src/features/power-pack/host/catalog.ts
 import { readdir, readFile as readFile3 } from "node:fs/promises";
 import { join as join5 } from "node:path";
+
+// src/features/power-pack/host/read-cache.ts
+var MAX_ENTRIES = 64;
+function createReadCache(ttlMs) {
+  const entries = /* @__PURE__ */ new Map();
+  const inflight = /* @__PURE__ */ new Map();
+  const evict = () => {
+    while (entries.size > MAX_ENTRIES) {
+      const oldest = entries.keys().next();
+      if (oldest.done) return;
+      entries.delete(oldest.value);
+    }
+  };
+  const read = (key, load, force = false) => {
+    const now = Date.now();
+    if (!force) {
+      const cached = entries.get(key);
+      if (cached !== void 0 && cached.expiresAt > now) return Promise.resolve(cached.value);
+      const running = inflight.get(key);
+      if (running !== void 0) return running;
+    }
+    const task = load().then((value) => {
+      entries.set(key, { value, expiresAt: Date.now() + ttlMs });
+      evict();
+      return value;
+    }).finally(() => {
+      if (inflight.get(key) === task) inflight.delete(key);
+    });
+    inflight.set(key, task);
+    return task;
+  };
+  return {
+    read,
+    clear: () => {
+      entries.clear();
+    }
+  };
+}
+
+// src/features/power-pack/host/catalog.ts
 var SELF_PACKAGE = "dsh-all-in-one";
+var INSTALLED_PLUGINS_TTL_MS = 5e3;
 async function collectProfilePlugins(dir, names) {
   const manifestPath = join5(dir, "package.json");
   try {
@@ -750,12 +834,18 @@ async function resolveProfileDirs(currentProfileDir2) {
     return [];
   }
 }
-async function findInstalledPlugins(currentProfileDir2) {
+var installedPluginsCache = createReadCache(INSTALLED_PLUGINS_TTL_MS);
+async function scanInstalledPlugins(currentProfileDir2) {
+  const startedAt = performance.now();
   const names = /* @__PURE__ */ new Set();
   for (const dir of await resolveProfileDirs(currentProfileDir2)) {
     await collectProfilePlugins(dir, names);
   }
+  logPerf("findInstalledPlugins", startedAt, { plugins: names.size });
   return [...names].sort((left, right) => left.localeCompare(right));
+}
+async function findInstalledPlugins(currentProfileDir2) {
+  return installedPluginsCache.read(currentProfileDir2 ?? "*", () => scanInstalledPlugins(currentProfileDir2));
 }
 async function listPluginCatalog(currentProfileDir2) {
   const installed = (await findInstalledPlugins(currentProfileDir2)).map(
@@ -772,18 +862,20 @@ async function listPluginCatalog(currentProfileDir2) {
 async function listPluginItems(currentProfileDir2) {
   const { standard, installed } = await listPluginCatalog(currentProfileDir2);
   return [
-    ...standard.map(({ id, label, description, kind }) => ({ id, label, description, kind })),
-    ...installed.map(({ id, label, description, kind }) => ({ id, label, description, kind }))
+    ...standard.map(({ id: id8, label, description, kind }) => ({ id: id8, label, description, kind })),
+    ...installed.map(({ id: id8, label, description, kind }) => ({ id: id8, label, description, kind }))
   ];
 }
 
 // src/features/power-pack/host/package-scan.ts
-import { readFile as readFile4, readdir as readdir2 } from "node:fs/promises";
+import { open, readFile as readFile4, readdir as readdir2, stat } from "node:fs/promises";
 import { join as join6 } from "node:path";
 var SCAN_MAX_FILES = 120;
 var SCAN_MAX_BYTES = 4 * 1024 * 1024;
 var SCAN_MAX_FILE_BYTES = 512 * 1024;
 var SCAN_SUFFIXES = [".js", ".mjs", ".cjs"];
+var MATCH_CHUNK_SIZE = 100;
+var OWNED_TOOLS_TTL_MS = 3e4;
 function toolPrefixes(packageName) {
   const short = packageName.replace(/^dsh-plugin-/, "").replace(/^dsh-/, "");
   const candidates = [packageName, short, short.replace(/-/g, "_"), short.replace(/_/g, "-")];
@@ -793,6 +885,25 @@ function hasPrefix(name, prefixes) {
   return prefixes.some(
     (prefix) => name === prefix || name.startsWith(`${prefix}_`) || name.startsWith(`${prefix}-`) || name.startsWith(`${prefix}.`)
   );
+}
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+function buildMatcher(names) {
+  const ordered = [...names].sort((left, right) => right.length - left.length);
+  const patterns = [];
+  for (let offset = 0; offset < ordered.length; offset += MATCH_CHUNK_SIZE) {
+    const chunk = ordered.slice(offset, offset + MATCH_CHUNK_SIZE).map(escapeRegExp);
+    patterns.push(new RegExp(chunk.join("|"), "g"));
+  }
+  return (text, owned) => {
+    for (const pattern of patterns) {
+      pattern.lastIndex = 0;
+      for (let match = pattern.exec(text); match !== null; match = pattern.exec(text)) {
+        owned.add(match[0]);
+      }
+    }
+  };
 }
 async function resolveScanRoots(dir, packageName) {
   const roots = /* @__PURE__ */ new Set([join6(dir, "lib"), join6(dir, "dist")]);
@@ -820,6 +931,7 @@ async function resolveScanRoots(dir, packageName) {
 async function scanOwnedTools(roots, candidates) {
   if (roots.length === 0 || candidates.length === 0) return [];
   const owned = /* @__PURE__ */ new Set();
+  const match = buildMatcher(candidates);
   let files = 0;
   let bytes = 0;
   for (const root of roots) {
@@ -836,13 +948,22 @@ async function scanOwnedTools(roots, candidates) {
       if (!SCAN_SUFFIXES.some((suffix) => entry.name.endsWith(suffix))) continue;
       const file = join6(entry.parentPath ?? root, entry.name);
       try {
-        const text = await readFile4(file, { encoding: "utf8" });
-        files += 1;
-        bytes += text.length;
-        if (text.length > SCAN_MAX_FILE_BYTES) continue;
-        for (const name of candidates) {
-          if (!owned.has(name) && text.includes(name)) owned.add(name);
+        const info = await stat(file);
+        if (!info.isFile() || info.size === 0) continue;
+        const limit = Math.min(info.size, SCAN_MAX_FILE_BYTES, SCAN_MAX_BYTES - bytes);
+        if (limit <= 0) break;
+        const handle = await open(file, "r");
+        let text = "";
+        try {
+          const buffer = Buffer.allocUnsafe(limit);
+          const { bytesRead } = await handle.read(buffer, 0, limit, 0);
+          files += 1;
+          bytes += bytesRead;
+          text = buffer.subarray(0, bytesRead).toString("utf8");
+        } finally {
+          await handle.close();
         }
+        match(text, owned);
       } catch (error) {
         console.error("[power-pack] \u8BFB\u53D6\u63D2\u4EF6\u4EA7\u7269\u5931\u8D25:", file, error);
       }
@@ -850,19 +971,36 @@ async function scanOwnedTools(roots, candidates) {
   }
   return [...owned];
 }
+var ownedToolsCache = createReadCache(OWNED_TOOLS_TTL_MS);
 async function ownedTools(packageName, globalNames, profileDir) {
   const prefixes = toolPrefixes(packageName);
   const byPrefix = globalNames.filter((name) => hasPrefix(name, prefixes));
   const remaining = globalNames.filter((name) => !byPrefix.includes(name));
-  const roots = [];
-  for (const dir of await resolveProfileDirs(profileDir)) {
-    roots.push(...await resolveScanRoots(join6(dir, "node_modules", packageName), packageName));
-  }
-  const scanned = await scanOwnedTools(roots, remaining);
+  const scanned = remaining.length === 0 ? [] : await ownedToolsCache.read(
+    `${profileDir ?? "*"}
+${packageName}
+${remaining.join("\n")}`,
+    async () => {
+      const startedAt = performance.now();
+      const roots = [];
+      for (const dir of await resolveProfileDirs(profileDir)) {
+        roots.push(...await resolveScanRoots(join6(dir, "node_modules", packageName), packageName));
+      }
+      const found = await scanOwnedTools(roots, remaining);
+      logPerf("ownedTools", startedAt, {
+        package: packageName,
+        roots: roots.length,
+        candidates: remaining.length,
+        matches: found.length
+      });
+      return found;
+    }
+  );
   return [.../* @__PURE__ */ new Set([...byPrefix, ...scanned])].sort((left, right) => left.localeCompare(right));
 }
 
 // src/features/power-pack/host/global-catalog.ts
+var GROUPS_TTL_MS = 5e3;
 var MCP_TOOL_NAME = /^mcp__([A-Za-z0-9_-]{1,32})__/;
 function collectGlobalToolNames(tools) {
   if (tools === void 0) return [];
@@ -878,8 +1016,9 @@ function collectGlobalToolNames(tools) {
     return [];
   }
 }
-async function listGlobalToolGroups(tools, profileDir) {
-  const names = collectGlobalToolNames(tools);
+var groupsCache = createReadCache(GROUPS_TTL_MS);
+async function buildToolGroups(names, profileDir) {
+  const startedAt = performance.now();
   const mcpTools = /* @__PURE__ */ new Map();
   const localTools = [];
   for (const name of names) {
@@ -912,7 +1051,34 @@ async function listGlobalToolGroups(tools, profileDir) {
       tools: serverTools.sort((left, right) => left.localeCompare(right))
     });
   }
+  logPerf("listGlobalToolGroups", startedAt, { tools: names.length, groups: groups.length });
   return groups;
+}
+async function listGlobalToolGroups(tools, profileDir) {
+  const names = collectGlobalToolNames(tools);
+  const key = `${profileDir ?? "*"}
+${names.join("\n")}`;
+  return groupsCache.read(key, () => buildToolGroups(names, profileDir));
+}
+
+// src/features/power-pack/host/with-timeout.ts
+function withTimeout(task, ms, label) {
+  return new Promise((resolve3, reject) => {
+    const timer = setTimeout(() => {
+      reject(new Error(`${label} \u8D85\u65F6\uFF08${ms}ms\uFF09`));
+    }, ms);
+    if (typeof timer.unref === "function") timer.unref();
+    task.then(
+      (value) => {
+        clearTimeout(timer);
+        resolve3(value);
+      },
+      (error) => {
+        clearTimeout(timer);
+        reject(error);
+      }
+    );
+  });
 }
 
 // src/features/power-pack/host/preset-lazy.ts
@@ -926,10 +1092,11 @@ var PRESET_ARG_INDEX = {
 var LIST_METHODS = ["remoteExportList", "list"];
 var WRAPPED = Symbol.for("dsh-all-in-one.preset-lazy");
 var rebuilding = /* @__PURE__ */ new Map();
+var REBUILD_TIMEOUT_MS = 3e4;
 async function rebuildOnce(deps, presetId) {
   const running = rebuilding.get(presetId);
   if (running !== void 0) return running;
-  const task = (async () => {
+  const work = (async () => {
     const { packId, modeId } = splitComposedPresetId(presetId);
     if (packId === "" || modeId === "") throw new Error(`\u7EC4\u5408\u9884\u8BBE ${presetId} \u7F3A\u5C11\u6280\u80FD\u5305\u6216\u6A21\u5F0F\u4FE1\u606F`);
     const { packs } = await readPacks();
@@ -948,6 +1115,7 @@ async function rebuildOnce(deps, presetId) {
     }
     return ensureComposedPreset(deps.api, modeId, pack, groups);
   })();
+  const task = withTimeout(work, REBUILD_TIMEOUT_MS, `\u91CD\u5EFA\u7EC4\u5408\u9884\u8BBE ${presetId}`);
   rebuilding.set(presetId, task);
   const release = () => {
     if (rebuilding.get(presetId) === task) rebuilding.delete(presetId);
@@ -975,11 +1143,11 @@ function mergeRoster(result, meta) {
   const holder = result;
   if (!Array.isArray(holder.presets)) return result;
   const rows = holder.presets;
-  const present = new Set(rows.map((row) => row?.id).filter((id) => typeof id === "string"));
+  const present = new Set(rows.map((row) => row?.id).filter((id8) => typeof id8 === "string"));
   const missing = [];
-  for (const [id, entry] of meta) {
-    if (present.has(id)) continue;
-    missing.push({ id, name: entry.name, description: entry.description, isDefault: false });
+  for (const [id8, entry] of meta) {
+    if (present.has(id8)) continue;
+    missing.push({ id: id8, name: entry.name, description: entry.description, isDefault: false });
   }
   if (missing.length === 0) return result;
   return { ...holder, presets: [...rows, ...missing] };
@@ -1156,6 +1324,11 @@ function isLocalRequest(request) {
   return LOOPBACK_ADDRESSES.has(address);
 }
 function sendJson(response, status, body) {
+  if (response.headersSent) {
+    console.warn("[all-in-one] \u54CD\u5E94\u5DF2\u53D1\u51FA\uFF0C\u8DF3\u8FC7\u91CD\u590D\u5199\u5165:", status);
+    if (!response.writableEnded) response.end();
+    return;
+  }
   const text = JSON.stringify(body);
   response.writeHead(status, {
     "content-type": "application/json; charset=utf-8",
@@ -1170,19 +1343,29 @@ async function readJsonBody(request, maxBytes) {
   for await (const chunk of request) {
     const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
     size += buffer.length;
-    if (size > maxBytes) return void 0;
+    if (size > maxBytes) {
+      request.resume();
+      return { ok: false, reason: "too_large" };
+    }
     chunks.push(buffer);
   }
   try {
-    return JSON.parse(Buffer.concat(chunks).toString("utf8"));
+    return { ok: true, value: JSON.parse(Buffer.concat(chunks).toString("utf8")) };
   } catch (error) {
     console.error("[all-in-one] \u89E3\u6790\u8BF7\u6C42\u4F53\u5931\u8D25:", error);
-    return void 0;
+    return { ok: false, reason: "invalid" };
   }
+}
+function sendJsonBodyError(response, result, invalidMessage) {
+  if (result.reason === "too_large") {
+    sendJson(response, 413, { error: "\u8BF7\u6C42\u4F53\u8D85\u8FC7\u4E0A\u9650" });
+    return;
+  }
+  sendJson(response, 400, { error: invalidMessage });
 }
 
 // src/features/power-pack/host/skill-catalog.ts
-import { readdir as readdir3, readFile as readFile5, stat } from "node:fs/promises";
+import { open as open2, readdir as readdir3, readFile as readFile5, stat as stat2 } from "node:fs/promises";
 import { homedir as homedir2 } from "node:os";
 import { join as join7 } from "node:path";
 function resolveAgentsHome() {
@@ -1191,6 +1374,8 @@ function resolveAgentsHome() {
   return join7(homedir2(), ".agents");
 }
 var SKILL_NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+var FRONTMATTER_PROBE_BYTES = 8 * 1024;
+var SKILL_CACHE_TTL_MS = 5e3;
 function parseFrontmatter(raw) {
   const firstLineEnd = raw.indexOf("\n");
   if (firstLineEnd < 0) return void 0;
@@ -1217,11 +1402,23 @@ function parseFrontmatter(raw) {
   if (!values.name || !values.description) return void 0;
   return { name: values.name, description: values.description };
 }
+async function readFrontmatterText(file) {
+  const handle = await open2(file, "r");
+  try {
+    const buffer = Buffer.alloc(FRONTMATTER_PROBE_BYTES);
+    const { bytesRead } = await handle.read(buffer, 0, FRONTMATTER_PROBE_BYTES, 0);
+    const head = buffer.subarray(0, bytesRead).toString("utf8");
+    if (bytesRead < FRONTMATTER_PROBE_BYTES || /\n---/.test(head)) return head;
+    return await readFile5(file, "utf8");
+  } finally {
+    await handle.close();
+  }
+}
 async function readSkillEntry(path, kind) {
   const file = kind === "directory" ? join7(path, "SKILL.md") : path;
   try {
-    const raw = await readFile5(file, "utf8");
-    const parsed = parseFrontmatter(raw);
+    const raw = await readFrontmatterText(file);
+    const parsed = raw === void 0 ? void 0 : parseFrontmatter(raw);
     if (!parsed || !SKILL_NAME_PATTERN.test(parsed.name)) return void 0;
     return { name: parsed.name, description: parsed.description, path, kind };
   } catch (error) {
@@ -1239,30 +1436,32 @@ async function scanRoot(root) {
     console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u6839\u76EE\u5F55\u5931\u8D25:", root, error);
     return [];
   }
-  const skills = [];
-  for (const entry of entries) {
-    if (entry.name.startsWith(".")) continue;
-    const path = join7(root, entry.name);
-    let kind;
-    if (entry.isDirectory()) kind = "directory";
-    else if (entry.isFile() && entry.name.endsWith(".md")) kind = "file";
-    else if (entry.isSymbolicLink()) {
-      try {
-        const info = await stat(path);
-        if (info.isDirectory()) kind = "directory";
-        else if (info.isFile() && entry.name.endsWith(".md")) kind = "file";
-      } catch (error) {
-        console.error("[power-pack] \u8DDF\u968F\u6280\u80FD\u7B26\u53F7\u94FE\u63A5\u5931\u8D25:", path, error);
-        kind = void 0;
+  const resolved = await Promise.all(
+    entries.map(async (entry) => {
+      if (entry.name.startsWith(".")) return void 0;
+      const path = join7(root, entry.name);
+      let kind;
+      if (entry.isDirectory()) kind = "directory";
+      else if (entry.isFile() && entry.name.endsWith(".md")) kind = "file";
+      else if (entry.isSymbolicLink()) {
+        try {
+          const info = await stat2(path);
+          if (info.isDirectory()) kind = "directory";
+          else if (info.isFile() && entry.name.endsWith(".md")) kind = "file";
+        } catch (error) {
+          console.error("[power-pack] \u8DDF\u968F\u6280\u80FD\u7B26\u53F7\u94FE\u63A5\u5931\u8D25:", path, error);
+          kind = void 0;
+        }
       }
-    }
-    if (!kind) continue;
-    const skill = await readSkillEntry(path, kind);
-    if (skill) skills.push(skill);
-  }
-  return skills;
+      if (!kind) return void 0;
+      return readSkillEntry(path, kind);
+    })
+  );
+  return resolved.filter((skill) => skill !== void 0);
 }
-async function listSkillEntries() {
+var skillsCache = createReadCache(SKILL_CACHE_TTL_MS);
+async function scanSkillEntries() {
+  const startedAt = performance.now();
   const roots = [join7(resolveDshHome(), "skills"), join7(resolveAgentsHome(), "skills")];
   const seen = /* @__PURE__ */ new Set();
   const result = [];
@@ -1273,18 +1472,33 @@ async function listSkillEntries() {
       result.push(skill);
     }
   }
+  logPerf("listSkillEntries", startedAt, { roots: roots.length, skills: result.length });
   return result.sort((left, right) => left.name.localeCompare(right.name));
+}
+async function listSkillEntries(force = false) {
+  return skillsCache.read("skills", scanSkillEntries, force);
 }
 
 // src/features/power-pack/host/routes.ts
 var ROUTE_PATH = "/dsh-all-in-one/power-packs";
 var MAX_BODY_BYTES = 1024 * 1024;
+var WRITE_QUEUE_LIMIT = 4;
+var WRITE_TIMEOUT_MS = 15e3;
 async function buildPayload(host) {
-  const document2 = await readPacks();
-  const skills = await listSkillEntries();
-  const plugins = await listPluginItems(host.profileDir);
-  const globalGroups = await listGlobalToolGroups(host.tools, host.profileDir);
-  const recentComposed = await readComposeState();
+  const startedAt = performance.now();
+  const [document2, skills, plugins, globalGroups, recentComposed] = await Promise.all([
+    readPacks(),
+    listSkillEntries(),
+    listPluginItems(host.profileDir),
+    listGlobalToolGroups(host.tools, host.profileDir),
+    readComposeState()
+  ]);
+  logPerf("buildPayload", startedAt, {
+    packs: document2.packs.length,
+    skills: skills.length,
+    plugins: plugins.length,
+    groups: globalGroups.length
+  });
   return {
     packs: document2.packs,
     defaultPackId: document2.defaultPackId,
@@ -1347,6 +1561,17 @@ async function buildDiagnostics(host) {
   };
 }
 var writeChain = Promise.resolve();
+var queuedWrites = 0;
+function enqueueWrite(task) {
+  queuedWrites += 1;
+  const next = writeChain.then(() => withTimeout(task(), WRITE_TIMEOUT_MS, "\u5199\u5165\u6280\u80FD\u5305"));
+  writeChain = next.catch((error) => {
+    console.error("[power-pack] \u5199\u5165\u6280\u80FD\u5305\u5931\u8D25:", error);
+  }).finally(() => {
+    queuedWrites -= 1;
+  });
+  return next;
+}
 async function handleWrite(request, api, host) {
   if (request.action === "compose") {
     const document2 = await readPacks();
@@ -1396,27 +1621,43 @@ function installPowerPackRoutes(webServer, api, host) {
         return;
       }
       try {
+        const pathname = new URL(request.url ?? ROUTE_PATH, "http://localhost").pathname;
+        const isRoute = pathname === ROUTE_PATH || pathname === `${ROUTE_PATH}/`;
         if (request.method === "GET") {
-          if ((request.url ?? "").includes("/diagnose")) {
+          if (pathname === `${ROUTE_PATH}/diagnose`) {
             sendJson(response, 200, await buildDiagnostics(host));
+            return;
+          }
+          if (!isRoute) {
+            sendJson(response, 404, { error: "\u672A\u77E5\u63A5\u53E3" });
             return;
           }
           sendJson(response, 200, await buildPayload(host));
           return;
         }
         if (request.method === "POST") {
-          const body = await readJsonBody(request, MAX_BODY_BYTES);
-          if (!body || typeof body !== "object") {
-            sendJson(response, 400, { error: "\u8BF7\u6C42\u4F53\u4E0D\u662F\u5408\u6CD5 JSON" });
+          if (!isRoute) {
+            sendJson(response, 404, { error: "\u672A\u77E5\u63A5\u53E3" });
             return;
           }
-          const task = writeChain.then(
-            () => handleWrite(body, api, host)
+          if (queuedWrites >= WRITE_QUEUE_LIMIT) {
+            sendJson(response, 429, { error: "\u5199\u5165\u8BF7\u6C42\u8FC7\u591A\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5" });
+            return;
+          }
+          const body = await readJsonBody(request, MAX_BODY_BYTES);
+          if (!body.ok) {
+            sendJsonBodyError(response, body, "\u8BF7\u6C42\u4F53\u4E0D\u662F\u5408\u6CD5 JSON");
+            return;
+          }
+          if (typeof body.value !== "object" || body.value === null) {
+            sendJson(response, 400, { error: "\u8BF7\u6C42\u4F53\u4E0D\u662F\u5BF9\u8C61" });
+            return;
+          }
+          sendJson(
+            response,
+            200,
+            await enqueueWrite(() => handleWrite(body.value, api, host))
           );
-          writeChain = task.catch((error) => {
-            console.error("[power-pack] \u5199\u5165\u6280\u80FD\u5305\u5931\u8D25:", error);
-          });
-          sendJson(response, 200, await task);
           return;
         }
         response.writeHead(405, { allow: "GET, POST" });
@@ -1432,6 +1673,7 @@ function installPowerPackRoutes(webServer, api, host) {
 }
 
 // src/features/power-pack/host.ts
+var id = "power-pack";
 var inject = ["agentPresets", "tools", "systemPrompt"];
 function apply(ctx) {
   const api = ctx.agentPresets;
@@ -1465,6 +1707,7 @@ function resolveWebServer(ctx) {
 var host_exports2 = {};
 __export(host_exports2, {
   apply: () => apply2,
+  id: () => id2,
   inject: () => inject2
 });
 
@@ -1526,14 +1769,16 @@ function bootExpandProcess(keys) {
   const binders = [];
   let observer = null;
   let scheduled = false;
+  let timer = 0;
   let lastRunning = null;
   let lastTurn = null;
+  const REFRESH_DEBOUNCE_MS = 150;
   function latestTurn() {
     const nodes = document.querySelectorAll("[data-chat-turn]");
     if (!nodes.length) return null;
     let best = null;
     let bestValue = -Infinity;
-    for (const node of Array.from(nodes)) {
+    for (const node of nodes) {
       const raw = node.getAttribute("data-chat-turn") ?? "";
       const value = Number(raw);
       if (Number.isFinite(value) && value > bestValue) {
@@ -1552,20 +1797,33 @@ function bootExpandProcess(keys) {
     if (running === lastRunning && turn === lastTurn) return;
     lastRunning = running;
     lastTurn = turn;
-    for (const update of [...binders]) update();
+    for (const update of [...binders]) update(running, turn);
   }
   function schedule() {
     if (scheduled) return;
     scheduled = true;
-    window.requestAnimationFrame(() => {
+    timer = window.setTimeout(() => {
+      timer = 0;
       scheduled = false;
       refresh();
-    });
+    }, REFRESH_DEBOUNCE_MS);
   }
   function observe() {
     if (observer !== null || document.body === null) return;
     observer = new MutationObserver(schedule);
     observer.observe(document.body, { childList: true, subtree: true });
+  }
+  function unobserve() {
+    if (observer === null) return;
+    observer.disconnect();
+    observer = null;
+    lastRunning = null;
+    lastTurn = null;
+    if (timer !== 0) {
+      window.clearTimeout(timer);
+      timer = 0;
+      scheduled = false;
+    }
   }
   function bind(element, setExpanded, manual) {
     if (!enabled || readMode() !== "active") return void 0;
@@ -1573,16 +1831,17 @@ function bootExpandProcess(keys) {
     const turnElement = element.closest("[data-chat-turn]");
     if (turnElement === null) return void 0;
     const turn = turnElement.getAttribute("data-chat-turn");
-    const update = () => {
+    const update = (running, latest) => {
       if (manual.current) return;
-      setExpanded(isRunning() && turn !== null && turn === latestTurn());
+      setExpanded(running && turn !== null && turn === latest);
     };
     binders.push(update);
     observe();
-    update();
+    update(isRunning(), latestTurn());
     return () => {
       const index = binders.indexOf(update);
       if (index >= 0) binders.splice(index, 1);
+      if (binders.length === 0) unobserve();
     };
   }
   win["__DSH_EXPAND_PROCESS_BIND__"] = bind;
@@ -1690,6 +1949,7 @@ var EXPAND_PROCESS_SCRIPT = `(${bootExpandProcess.toString()})(${JSON.stringify(
 })});`;
 
 // src/features/expand-process/host.ts
+var id2 = "expand-process";
 var inject2 = ["webServer"];
 function apply2(ctx) {
   ctx.effect(
@@ -1703,15 +1963,18 @@ function apply2(ctx) {
 var host_exports3 = {};
 __export(host_exports3, {
   apply: () => apply3,
+  id: () => id3,
   inject: () => inject3
 });
 
 // src/features/image-preview/host/routes.ts
-import { readFile as readFile6, stat as stat2 } from "node:fs/promises";
-import { homedir as homedir3 } from "node:os";
+import { createReadStream } from "node:fs";
+import { open as open3, realpath, stat as stat3 } from "node:fs/promises";
+import { homedir as homedir3, tmpdir } from "node:os";
 import { basename, dirname as dirname3, extname, isAbsolute, join as join8, resolve, sep } from "node:path";
 var ROUTE_PATH2 = "/dsh-all-in-one/image";
 var MAX_FILE_BYTES = 32 * 1024 * 1024;
+var TYPE_PROBE_BYTES = 64;
 var CONTENT_TYPES = {
   ".png": "image/png",
   ".jpg": "image/jpeg",
@@ -1727,6 +1990,45 @@ var ATTACHMENT_OBJECT_DIR = join8("attachments", "v1", "objects");
 var ATTACHMENT_OBJECT_NAME = /^[0-9a-f]{64}$/;
 var ATTACHMENT_SHARD_NAME = /^[0-9a-f]{2}$/;
 var ATTACHMENT_ID_PATTERN = /^(?:sha256:)?([0-9a-f]{64})$/;
+function allowedImageRoots() {
+  const roots = [resolveDshHome(), homedir3(), tmpdir(), "/tmp", "/private/tmp"];
+  return [...new Set(roots)];
+}
+var resolvedRoots;
+async function allowedRootsResolved() {
+  if (resolvedRoots !== void 0) return resolvedRoots;
+  const resolved = await Promise.all(
+    allowedImageRoots().map(async (root) => {
+      try {
+        return await realpath(root);
+      } catch (error) {
+        if (error.code !== "ENOENT") {
+          console.warn("[image-preview] \u89E3\u6790\u5141\u8BB8\u76EE\u5F55\u5931\u8D25:", root, error);
+        }
+        return root;
+      }
+    })
+  );
+  resolvedRoots = [...new Set(resolved)];
+  return resolvedRoots;
+}
+async function resolveAllowedPath(filePath) {
+  let real;
+  try {
+    real = await realpath(filePath);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      return { ok: false, reason: "missing" };
+    }
+    console.warn("[image-preview] \u89E3\u6790\u56FE\u7247\u771F\u5B9E\u8DEF\u5F84\u5931\u8D25:", filePath, error);
+    return { ok: false, reason: "denied" };
+  }
+  for (const realRoot of await allowedRootsResolved()) {
+    if (real === realRoot || real.startsWith(`${realRoot}${sep}`)) return { ok: true, path: real };
+  }
+  console.warn("[image-preview] \u56FE\u7247\u4E0D\u5728\u5141\u8BB8\u7684\u76EE\u5F55\u5185\uFF0C\u5DF2\u62D2\u7EDD:", filePath);
+  return { ok: false, reason: "denied" };
+}
 function isAttachmentObject(filePath) {
   const root = join8(resolveDshHome(), ATTACHMENT_OBJECT_DIR);
   const resolvedPath = resolve(filePath);
@@ -1763,6 +2065,25 @@ function detectImageType(data) {
   }
   return void 0;
 }
+async function readHead(filePath) {
+  let handle;
+  try {
+    handle = await open3(filePath, "r");
+    const buffer = Buffer.alloc(TYPE_PROBE_BYTES);
+    const { bytesRead } = await handle.read(buffer, 0, TYPE_PROBE_BYTES, 0);
+    return buffer.subarray(0, bytesRead);
+  } catch (error) {
+    console.warn("[image-preview] \u8BFB\u53D6\u56FE\u7247\u5934\u90E8\u5931\u8D25:", filePath, error);
+    return void 0;
+  } finally {
+    await handle?.close();
+  }
+}
+var IMAGE_HEADERS = {
+  "cache-control": "no-store, no-cache, must-revalidate",
+  "x-content-type-options": "nosniff",
+  "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'"
+};
 async function sendImage(request, response, filePath) {
   const extensionType = CONTENT_TYPES[extname(filePath).toLowerCase()];
   const attachmentObject = extensionType === void 0 && isAttachmentObject(filePath);
@@ -1770,40 +2091,69 @@ async function sendImage(request, response, filePath) {
     sendJson(response, 415, { error: "\u53EA\u5141\u8BB8\u8BFB\u53D6\u56FE\u7247\u6587\u4EF6" });
     return;
   }
+  const decision = await resolveAllowedPath(filePath);
+  if (!decision.ok) {
+    if (decision.reason === "missing") {
+      sendJson(response, 404, { error: "\u56FE\u7247\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BFB" });
+      return;
+    }
+    sendJson(response, 403, { error: "\u56FE\u7247\u8DEF\u5F84\u4E0D\u5728\u5141\u8BB8\u7684\u76EE\u5F55\u5185" });
+    return;
+  }
+  const realPath = decision.path;
+  if (attachmentObject) {
+    const root = join8(resolveDshHome(), ATTACHMENT_OBJECT_DIR);
+    if (!realPath.startsWith(`${resolve(root)}${sep}`) && realPath !== resolve(root)) {
+      sendJson(response, 403, { error: "\u9644\u4EF6\u8DEF\u5F84\u8D8A\u754C" });
+      return;
+    }
+  }
+  let info;
   try {
-    const info = await stat2(filePath);
-    if (!info.isFile()) {
-      sendJson(response, 404, { error: "\u4E0D\u662F\u6587\u4EF6" });
-      return;
-    }
-    if (info.size > MAX_FILE_BYTES) {
-      sendJson(response, 413, { error: "\u56FE\u7247\u4F53\u79EF\u8D85\u8FC7\u4E0A\u9650" });
-      return;
-    }
-    const data = await readFile6(filePath);
-    const contentType = extensionType ?? detectImageType(data);
-    if (contentType === void 0) {
+    info = await stat3(realPath);
+  } catch (error) {
+    console.warn("[image-preview] \u8BFB\u53D6\u56FE\u7247\u72B6\u6001\u5931\u8D25:", realPath, error);
+    sendJson(response, 404, { error: "\u56FE\u7247\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BFB" });
+    return;
+  }
+  if (!info.isFile()) {
+    sendJson(response, 404, { error: "\u4E0D\u662F\u6587\u4EF6" });
+    return;
+  }
+  if (info.size > MAX_FILE_BYTES) {
+    sendJson(response, 413, { error: "\u56FE\u7247\u4F53\u79EF\u8D85\u8FC7\u4E0A\u9650" });
+    return;
+  }
+  let contentType = extensionType;
+  if (contentType === void 0) {
+    const head = await readHead(realPath);
+    const detected = head === void 0 ? void 0 : detectImageType(head);
+    if (detected === void 0) {
       sendJson(response, 415, { error: "\u6587\u4EF6\u5185\u5BB9\u4E0D\u662F\u53D7\u652F\u6301\u7684\u56FE\u7247" });
       return;
     }
-    response.writeHead(200, {
-      "content-type": contentType,
-      "content-length": data.length,
-      // 文件可能被同名覆盖或已被删除，禁止浏览器缓存，避免刷新后仍显示旧图
-      "cache-control": "no-store, no-cache, must-revalidate",
-      "x-content-type-options": "nosniff",
-      // SVG 直接打开时可能带脚本，用 CSP 禁掉资源加载与脚本执行
-      "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'"
-    });
-    response.end(request.method === "HEAD" ? void 0 : data);
-  } catch (error) {
-    console.warn("[image-preview] \u8BFB\u53D6\u56FE\u7247\u5931\u8D25:", filePath, error);
-    if (response.headersSent) {
-      response.end();
+    contentType = detected;
+  }
+  response.writeHead(200, {
+    ...IMAGE_HEADERS,
+    "content-type": contentType,
+    "content-length": info.size
+  });
+  if (request.method === "HEAD") {
+    response.end();
+    return;
+  }
+  const stream = createReadStream(realPath);
+  stream.on("error", (error) => {
+    console.warn("[image-preview] \u8BFB\u53D6\u56FE\u7247\u6D41\u5931\u8D25:", realPath, error);
+    if (!response.headersSent) {
+      sendJson(response, 404, { error: "\u56FE\u7247\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BFB" });
       return;
     }
-    sendJson(response, 404, { error: "\u56FE\u7247\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BFB" });
-  }
+    response.destroy(error);
+  });
+  response.on("close", () => stream.destroy());
+  stream.pipe(response);
 }
 function installImagePreviewRoutes(webServer) {
   return webServer.register({
@@ -1814,38 +2164,54 @@ function installImagePreviewRoutes(webServer) {
         sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
         return;
       }
-      if (request.method !== "GET" && request.method !== "HEAD") {
-        response.writeHead(405, { allow: "GET, HEAD" });
-        response.end();
-        return;
-      }
-      const url = new URL(request.url ?? ROUTE_PATH2, "http://localhost");
-      const attachmentId = url.searchParams.get("attachment");
-      if (attachmentId !== null) {
-        const attachmentPath = resolveAttachmentPath(attachmentId);
-        if (attachmentPath === void 0) {
-          sendJson(response, 400, { error: "\u9644\u4EF6 ID \u683C\u5F0F\u4E0D\u6B63\u786E" });
+      try {
+        const url = new URL(request.url ?? ROUTE_PATH2, "http://localhost");
+        if (url.pathname !== ROUTE_PATH2) {
+          sendJson(response, 404, { error: "\u672A\u77E5\u63A5\u53E3" });
           return;
         }
-        await sendImage(request, response, attachmentPath);
-        return;
+        if (request.method !== "GET" && request.method !== "HEAD") {
+          response.writeHead(405, { allow: "GET, HEAD" });
+          response.end();
+          return;
+        }
+        const attachmentId = url.searchParams.get("attachment");
+        if (attachmentId !== null) {
+          const attachmentPath = resolveAttachmentPath(attachmentId);
+          if (attachmentPath === void 0) {
+            sendJson(response, 400, { error: "\u9644\u4EF6 ID \u683C\u5F0F\u4E0D\u6B63\u786E" });
+            return;
+          }
+          await sendImage(request, response, attachmentPath);
+          return;
+        }
+        const rawPath = url.searchParams.get("path");
+        if (rawPath === null || rawPath === "") {
+          sendJson(response, 400, { error: "\u7F3A\u5C11 path \u6216 attachment \u53C2\u6570" });
+          return;
+        }
+        const filePath = rawPath.startsWith("~/") ? join8(homedir3(), rawPath.slice(2)) : rawPath;
+        if (!isAbsolute(filePath)) {
+          sendJson(response, 400, { error: "\u53EA\u63A5\u53D7\u7EDD\u5BF9\u8DEF\u5F84" });
+          return;
+        }
+        await sendImage(request, response, filePath);
+      } catch (error) {
+        console.error("[image-preview] \u5904\u7406\u56FE\u7247\u8BF7\u6C42\u5931\u8D25:", error);
+        if (!response.headersSent) {
+          sendJson(response, 500, {
+            error: error instanceof Error ? error.message : String(error)
+          });
+          return;
+        }
+        if (!response.writableEnded) response.end();
       }
-      const rawPath = url.searchParams.get("path");
-      if (rawPath === null || rawPath === "") {
-        sendJson(response, 400, { error: "\u7F3A\u5C11 path \u6216 attachment \u53C2\u6570" });
-        return;
-      }
-      const filePath = rawPath.startsWith("~/") ? join8(homedir3(), rawPath.slice(2)) : rawPath;
-      if (!isAbsolute(filePath)) {
-        sendJson(response, 400, { error: "\u53EA\u63A5\u53D7\u7EDD\u5BF9\u8DEF\u5F84" });
-        return;
-      }
-      await sendImage(request, response, filePath);
     }
   });
 }
 
 // src/features/image-preview/host.ts
+var id3 = "image-preview";
 var inject3 = ["webServer"];
 function apply3(ctx) {
   const webServer = ctx.webServer;
@@ -1860,15 +2226,17 @@ function apply3(ctx) {
 var host_exports4 = {};
 __export(host_exports4, {
   apply: () => apply4,
+  id: () => id4,
   inject: () => inject4
 });
 
 // src/features/delete-session/host/delete-session.ts
-import { readdir as readdir4, rm as rm3, stat as stat4 } from "node:fs/promises";
+import { readdir as readdir4, rm as rm3 } from "node:fs/promises";
 import { join as join10 } from "node:path";
 
 // src/features/delete-session/host/session-records.ts
-import { readFile as readFile7, rename as rename3, rm as rm2, stat as stat3, unlink, writeFile as writeFile3 } from "node:fs/promises";
+import { randomBytes as randomBytes3 } from "node:crypto";
+import { readFile as readFile6, rename as rename3, rm as rm2, stat as stat4, unlink, writeFile as writeFile3 } from "node:fs/promises";
 import { join as join9 } from "node:path";
 var WORKSPACE_STORAGE_PATH = ["storages", "workspace.json"];
 var GLOBAL_SESSION_LISTS = ["archivedSessionIds", "pinnedSessionIds"];
@@ -1878,54 +2246,67 @@ function isEnoent(error) {
 function isRecord(value) {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
-function dropId(value, sessionId) {
+function dropIds(value, sessionIds, counts) {
   if (!Array.isArray(value)) return { list: value, removed: false };
-  const next = value.filter((item) => item !== sessionId);
-  return { list: next, removed: next.length !== value.length };
-}
-async function forgetProjectionCache(dshHome, sessionId) {
-  const dir = join9(dshHome, "storages", "session_projcache", "sessions");
-  const plainId = sessionId.replace(/^session-/, "");
-  const candidates = /* @__PURE__ */ new Set([`${sessionId}.json`, `${plainId}.json`]);
-  let removed = 0;
-  for (const name of candidates) {
-    try {
-      await unlink(join9(dir, name));
-      removed += 1;
-    } catch (error) {
-      if (isEnoent(error)) continue;
-      console.error("[delete-session] \u5220\u9664\u6295\u5F71\u7F13\u5B58\u5931\u8D25:", name, error);
-      throw error;
+  const next = [];
+  let removed = false;
+  for (const item of value) {
+    if (typeof item === "string" && sessionIds.has(item)) {
+      removed = true;
+      counts.set(item, (counts.get(item) ?? 0) + 1);
+      continue;
     }
+    next.push(item);
   }
-  return removed;
+  return { list: next, removed };
 }
-async function forgetWorkspaceAccount(dshHome, sessionId) {
+async function forgetProjectionCaches(dshHome, sessionIds) {
+  const dir = join9(dshHome, "storages", "session_projcache", "sessions");
+  const counts = /* @__PURE__ */ new Map();
+  await Promise.all(
+    [...sessionIds].map(async (sessionId) => {
+      const plainId = sessionId.replace(/^session-/, "");
+      const candidates = /* @__PURE__ */ new Set([`${sessionId}.json`, `${plainId}.json`]);
+      for (const name of candidates) {
+        try {
+          await unlink(join9(dir, name));
+          counts.set(sessionId, (counts.get(sessionId) ?? 0) + 1);
+        } catch (error) {
+          if (isEnoent(error)) continue;
+          console.error("[delete-session] \u5220\u9664\u6295\u5F71\u7F13\u5B58\u5931\u8D25:", name, error);
+        }
+      }
+    })
+  );
+  return counts;
+}
+async function forgetWorkspaceAccounts(dshHome, sessionIds) {
+  const counts = /* @__PURE__ */ new Map();
   const file = join9(dshHome, ...WORKSPACE_STORAGE_PATH);
   let before;
   try {
-    before = await stat3(file);
+    before = await stat4(file);
   } catch (error) {
-    if (isEnoent(error)) return 0;
+    if (isEnoent(error)) return counts;
     console.error("[delete-session] \u8BFB\u53D6\u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u72B6\u6001\u5931\u8D25:", error);
     throw error;
   }
   let document2;
   try {
-    document2 = JSON.parse(await readFile7(file, "utf8"));
+    document2 = JSON.parse(await readFile6(file, "utf8"));
   } catch (error) {
     console.error("[delete-session] \u89E3\u6790\u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u5931\u8D25:", file, error);
-    return 0;
+    return counts;
   }
   if (!isRecord(document2)) {
     console.warn("[delete-session] \u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u7ED3\u6784\u4E0D\u662F\u5BF9\u8C61\uFF0C\u8DF3\u8FC7\u6E05\u7406:", file);
-    return 0;
+    return counts;
   }
   let removed = 0;
   const global = isRecord(document2["global"]) ? document2["global"] : void 0;
   if (global !== void 0) {
     for (const key of GLOBAL_SESSION_LISTS) {
-      const result = dropId(global[key], sessionId);
+      const result = dropIds(global[key], sessionIds, counts);
       if (!result.removed) continue;
       global[key] = result.list;
       removed += 1;
@@ -1936,46 +2317,77 @@ async function forgetWorkspaceAccount(dshHome, sessionId) {
   if (workspaces !== void 0) {
     for (const record of Object.values(workspaces)) {
       if (!isRecord(record)) continue;
-      const result = dropId(record["sessionIds"], sessionId);
+      const result = dropIds(record["sessionIds"], sessionIds, counts);
       if (!result.removed) continue;
       record["sessionIds"] = result.list;
       removed += 1;
     }
   }
-  if (removed === 0) return 0;
-  const after = await stat3(file);
-  if (after.mtimeMs !== before.mtimeMs || after.size !== before.size) {
-    console.warn("[delete-session] \u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u521A\u88AB\u5BBF\u4E3B\u6539\u5199\uFF0C\u8DF3\u8FC7\u672C\u6B21\u6E05\u7406:", file);
-    return 0;
-  }
-  const temporary = `${file}.${process.pid}.tmp`;
+  if (removed === 0) return counts;
+  const temporary = `${file}.${process.pid}.${randomBytes3(4).toString("hex")}.tmp`;
   try {
     await writeFile3(temporary, `${JSON.stringify(document2, null, 2)}
 `, {
       encoding: "utf8",
       mode: before.mode
     });
+    const latest = await stat4(file);
+    if (latest.mtimeMs !== before.mtimeMs || latest.size !== before.size) {
+      console.warn("[delete-session] \u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u521A\u88AB\u5BBF\u4E3B\u6539\u5199\uFF0C\u8DF3\u8FC7\u672C\u6B21\u6E05\u7406:", file);
+      await rm2(temporary, { force: true });
+      return /* @__PURE__ */ new Map();
+    }
     await rename3(temporary, file);
   } catch (error) {
     console.error("[delete-session] \u5199\u56DE\u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u5931\u8D25:", file, error);
     await rm2(temporary, { force: true });
-    return 0;
+    return /* @__PURE__ */ new Map();
   }
-  return removed;
+  return counts;
+}
+async function forgetSessionRecordsBatch(dshHome, sessionIds) {
+  const caches2 = await forgetProjectionCaches(dshHome, sessionIds);
+  let accounts = /* @__PURE__ */ new Map();
+  try {
+    accounts = await forgetWorkspaceAccounts(dshHome, sessionIds);
+  } catch (error) {
+    console.error("[delete-session] \u6E05\u7406\u5DE5\u4F5C\u533A\u6CE8\u518C\u8868\u5931\u8D25:", error);
+  }
+  const merged = new Map(caches2);
+  for (const [sessionId, count] of accounts) {
+    merged.set(sessionId, (merged.get(sessionId) ?? 0) + count);
+  }
+  return merged;
 }
 async function forgetSessionRecords(dshHome, sessionId) {
-  const cache3 = await forgetProjectionCache(dshHome, sessionId);
-  const account = await forgetWorkspaceAccount(dshHome, sessionId);
-  return cache3 + account;
+  const counts = await forgetSessionRecordsBatch(dshHome, /* @__PURE__ */ new Set([sessionId]));
+  return counts.get(sessionId) ?? 0;
 }
 
 // src/features/delete-session/host/delete-session.ts
 var SESSION_ID_PATTERN = /^session-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+var REMOVE_CONCURRENCY = 6;
 function isValidSessionId(value) {
   return typeof value === "string" && SESSION_ID_PATTERN.test(value);
 }
-async function findSessionDirs(sessionId) {
+async function mapWithConcurrency(items, limit, worker) {
+  const results = new Array(items.length);
+  let cursor = 0;
+  const runners = Array.from({ length: Math.min(limit, items.length) }, async () => {
+    while (true) {
+      const index = cursor;
+      cursor += 1;
+      if (index >= items.length) return;
+      results[index] = await worker(items[index]);
+    }
+  });
+  await Promise.all(runners);
+  return results;
+}
+async function listSessionDirs(sessionIds) {
   const root = join10(resolveDshHome(), "sessions");
+  const found = /* @__PURE__ */ new Map();
+  if (sessionIds.size === 0) return found;
   let projects;
   try {
     const entries = await readdir4(root, { withFileTypes: true });
@@ -1984,22 +2396,28 @@ async function findSessionDirs(sessionId) {
     console.error("[delete-session] \u679A\u4E3E\u4F1A\u8BDD\u6839\u76EE\u5F55\u5931\u8D25:", error);
     throw error;
   }
-  const found = [];
-  for (const project of projects) {
-    const candidate = join10(project, sessionId);
+  await mapWithConcurrency(projects, REMOVE_CONCURRENCY, async (project) => {
+    let entries;
     try {
-      const info = await stat4(candidate);
-      if (info.isDirectory()) found.push(candidate);
+      entries = await readdir4(project, { withFileTypes: true });
     } catch (error) {
-      if (error.code === "ENOENT") continue;
-      console.error("[delete-session] \u68C0\u67E5\u4F1A\u8BDD\u76EE\u5F55\u5931\u8D25:", candidate, error);
+      if (error.code === "ENOENT") return;
+      console.error("[delete-session] \u8BFB\u53D6\u9879\u76EE\u76EE\u5F55\u5931\u8D25:", project, error);
       throw error;
     }
-  }
+    for (const entry of entries) {
+      if (!entry.isDirectory() && !entry.isSymbolicLink()) continue;
+      if (!sessionIds.has(entry.name)) continue;
+      const list = found.get(entry.name) ?? [];
+      list.push(join10(project, entry.name));
+      found.set(entry.name, list);
+    }
+  });
   return found;
 }
 async function deleteStoredSession(sessionId) {
-  const dirs = await findSessionDirs(sessionId);
+  const startedAt = performance.now();
+  const dirs = (await listSessionDirs(/* @__PURE__ */ new Set([sessionId]))).get(sessionId) ?? [];
   for (const dir of dirs) {
     try {
       await rm3(dir, { recursive: true, force: true });
@@ -2014,25 +2432,49 @@ async function deleteStoredSession(sessionId) {
   } catch (error) {
     console.error("[delete-session] \u6E05\u7406\u4F1A\u8BDD\u6D3E\u751F\u8BB0\u5F55\u5931\u8D25:", sessionId, error);
   }
+  logPerf("deleteStoredSession", startedAt, { directories: dirs.length, records });
   if (dirs.length > 0) console.info("[delete-session] \u5DF2\u5220\u9664\u4F1A\u8BDD:", sessionId, dirs.length, records);
   return { directories: dirs.length, records };
 }
 async function deleteStoredSessions(sessionIds) {
-  const deleted = [];
-  const failed = [];
-  for (const sessionId of sessionIds) {
-    try {
-      const report = await deleteStoredSession(sessionId);
-      if (report.directories === 0 && report.records === 0) {
-        failed.push({ sessionId, error: "\u4F1A\u8BDD\u4E0D\u5B58\u5728\u6216\u5DF2\u88AB\u5220\u9664" });
-        continue;
+  const startedAt = performance.now();
+  const wanted = [...new Set(sessionIds)];
+  const dirsById = await listSessionDirs(new Set(wanted));
+  const failures = /* @__PURE__ */ new Map();
+  await mapWithConcurrency(wanted, REMOVE_CONCURRENCY, async (sessionId) => {
+    for (const dir of dirsById.get(sessionId) ?? []) {
+      try {
+        await rm3(dir, { recursive: true, force: true });
+      } catch (error) {
+        console.error("[delete-session] \u6279\u91CF\u5220\u9664\u4F1A\u8BDD\u76EE\u5F55\u5931\u8D25:", dir, error);
+        failures.set(sessionId, error instanceof Error ? error.message : String(error));
+        return;
       }
-      deleted.push(sessionId);
-    } catch (error) {
-      console.error("[delete-session] \u6279\u91CF\u5220\u9664\u4F1A\u8BDD\u5931\u8D25:", sessionId, error);
-      failed.push({ sessionId, error: error instanceof Error ? error.message : String(error) });
     }
+  });
+  const removable = wanted.filter((sessionId) => !failures.has(sessionId));
+  let records = /* @__PURE__ */ new Map();
+  try {
+    records = await forgetSessionRecordsBatch(resolveDshHome(), new Set(removable));
+  } catch (error) {
+    console.error("[delete-session] \u6279\u91CF\u6E05\u7406\u4F1A\u8BDD\u6D3E\u751F\u8BB0\u5F55\u5931\u8D25:", error);
   }
+  const deleted = [];
+  const failed = wanted.filter((sessionId) => failures.has(sessionId)).map((sessionId) => ({ sessionId, error: failures.get(sessionId) ?? "\u5220\u9664\u5931\u8D25" }));
+  for (const sessionId of removable) {
+    const directories = dirsById.get(sessionId)?.length ?? 0;
+    const cleaned = records.get(sessionId) ?? 0;
+    if (directories === 0 && cleaned === 0) {
+      failed.push({ sessionId, error: "\u4F1A\u8BDD\u4E0D\u5B58\u5728\u6216\u5DF2\u88AB\u5220\u9664" });
+      continue;
+    }
+    deleted.push(sessionId);
+  }
+  logPerf("deleteStoredSessions", startedAt, {
+    requested: wanted.length,
+    deleted: deleted.length,
+    failed: failed.length
+  });
   console.info("[delete-session] \u6279\u91CF\u5220\u9664\u5B8C\u6210:", deleted.length, "\u6761\uFF0C\u5931\u8D25", failed.length, "\u6761");
   return { deleted, failed };
 }
@@ -2073,7 +2515,11 @@ function installDeleteSessionRoutes(webServer) {
         const pathname = new URL(request.url ?? "/", "http://localhost").pathname;
         if (pathname === BATCH_PATH) {
           const body2 = await readJsonBody(request, MAX_BATCH_BODY_BYTES);
-          const sessionIds = readSessionIds(body2);
+          if (!body2.ok) {
+            sendJsonBodyError(response, body2, "\u4F1A\u8BDD\u6807\u8BC6\u5217\u8868\u4E0D\u5408\u6CD5");
+            return;
+          }
+          const sessionIds = readSessionIds(body2.value);
           if (sessionIds === void 0) {
             sendJson(response, 400, { error: "\u4F1A\u8BDD\u6807\u8BC6\u5217\u8868\u4E0D\u5408\u6CD5" });
             return;
@@ -2082,7 +2528,11 @@ function installDeleteSessionRoutes(webServer) {
           return;
         }
         const body = await readJsonBody(request, MAX_BODY_BYTES2);
-        const sessionId = readSessionId(body);
+        if (!body.ok) {
+          sendJsonBodyError(response, body, "\u4F1A\u8BDD\u6807\u8BC6\u4E0D\u5408\u6CD5");
+          return;
+        }
+        const sessionId = readSessionId(body.value);
         if (sessionId === void 0) {
           sendJson(response, 400, { error: "\u4F1A\u8BDD\u6807\u8BC6\u4E0D\u5408\u6CD5" });
           return;
@@ -2104,6 +2554,7 @@ function installDeleteSessionRoutes(webServer) {
 }
 
 // src/features/delete-session/host.ts
+var id4 = "delete-session";
 var inject4 = ["webServer"];
 function apply4(ctx) {
   const webServer = ctx.webServer;
@@ -2118,14 +2569,82 @@ function apply4(ctx) {
 var host_exports5 = {};
 __export(host_exports5, {
   apply: () => apply5,
+  id: () => id5,
   inject: () => inject5
 });
 
 // src/features/project-memory/host/settings.ts
+import { join as join11 } from "node:path";
+
+// src/common/json-settings.ts
+import { randomBytes as randomBytes4 } from "node:crypto";
 import { mkdirSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs";
-import { dirname as dirname4, join as join11 } from "node:path";
+import { dirname as dirname4 } from "node:path";
+var EXTERNAL_RECHECK_MS = 3e4;
+function isEnoent2(error) {
+  return error.code === "ENOENT";
+}
+function createJsonSettingsStore(options) {
+  let cache;
+  const load = () => {
+    const file = options.file();
+    try {
+      const info = statSync(file);
+      const value = options.normalize(JSON.parse(readFileSync(file, "utf8")));
+      return { mtimeMs: info.mtimeMs, size: info.size, value, checkedAt: Date.now() };
+    } catch (error) {
+      if (!isEnoent2(error)) {
+        console.error(`${options.label} \u8BFB\u53D6\u8BBE\u7F6E\u5931\u8D25:`, file, error);
+      }
+      return { mtimeMs: 0, size: 0, value: options.defaults(), checkedAt: Date.now() };
+    }
+  };
+  const read = () => {
+    const now = Date.now();
+    if (cache !== void 0 && now - cache.checkedAt < EXTERNAL_RECHECK_MS) return cache.value;
+    const file = options.file();
+    try {
+      const info = statSync(file);
+      if (cache !== void 0 && cache.mtimeMs === info.mtimeMs && cache.size === info.size) {
+        cache.checkedAt = now;
+        return cache.value;
+      }
+    } catch (error) {
+      if (isEnoent2(error)) {
+        cache = { mtimeMs: 0, size: 0, value: options.defaults(), checkedAt: now };
+        return cache.value;
+      }
+      console.error(`${options.label} \u68C0\u67E5\u8BBE\u7F6E\u6587\u4EF6\u5931\u8D25:`, file, error);
+      return cache?.value ?? options.defaults();
+    }
+    cache = load();
+    return cache.value;
+  };
+  const write = (next) => {
+    const file = options.file();
+    const temp = `${file}.${process.pid}.${randomBytes4(4).toString("hex")}.tmp`;
+    try {
+      mkdirSync(dirname4(file), { recursive: true });
+      writeFileSync(temp, `${JSON.stringify(next, null, 2)}
+`, "utf8");
+      renameSync(temp, file);
+      const info = statSync(file);
+      cache = { mtimeMs: info.mtimeMs, size: info.size, value: next, checkedAt: Date.now() };
+    } catch (error) {
+      console.error(`${options.label} \u5199\u5165\u8BBE\u7F6E\u5931\u8D25:`, file, error);
+      throw error;
+    }
+  };
+  const update = (patch, applyPatch3) => {
+    const next = applyPatch3(read(), patch);
+    write(next);
+    return next;
+  };
+  return { file: options.file, read, write, update };
+}
+
+// src/features/project-memory/host/settings.ts
 var DEFAULT_SETTINGS = { enabled: false, root: "" };
-var cache;
 function memorySettingsFile() {
   return join11(resolveDshHome(), "all-in-one", "project-memory.json");
 }
@@ -2137,36 +2656,17 @@ function normalizeSettings(value) {
     root: typeof candidate.root === "string" ? candidate.root : ""
   };
 }
+var store = createJsonSettingsStore({
+  file: memorySettingsFile,
+  normalize: normalizeSettings,
+  defaults: () => ({ ...DEFAULT_SETTINGS }),
+  label: "[project-memory]"
+});
 function readMemorySettings() {
-  const file = memorySettingsFile();
-  try {
-    const info = statSync(file);
-    if (cache !== void 0 && cache.mtimeMs === info.mtimeMs && cache.size === info.size) {
-      return cache.value;
-    }
-    const value = normalizeSettings(JSON.parse(readFileSync(file, "utf8")));
-    cache = { mtimeMs: info.mtimeMs, size: info.size, value };
-    return value;
-  } catch (error) {
-    if (error.code !== "ENOENT") {
-      console.error("[project-memory] \u8BFB\u53D6\u8BB0\u5FC6\u8BBE\u7F6E\u5931\u8D25:", file, error);
-    }
-    return { ...DEFAULT_SETTINGS };
-  }
+  return store.read();
 }
 function writeMemorySettings(next) {
-  const file = memorySettingsFile();
-  const temp = `${file}.tmp`;
-  try {
-    mkdirSync(dirname4(file), { recursive: true });
-    writeFileSync(temp, `${JSON.stringify(next, null, 2)}
-`, "utf8");
-    renameSync(temp, file);
-    cache = void 0;
-  } catch (error) {
-    console.error("[project-memory] \u5199\u5165\u8BB0\u5FC6\u8BBE\u7F6E\u5931\u8D25:", file, error);
-    throw error;
-  }
+  store.write(next);
 }
 
 // src/features/project-memory/host/paths.ts
@@ -2190,18 +2690,15 @@ function projectMemoryDir(root, projectDirectory) {
 }
 
 // src/features/project-memory/host/state.ts
-function memoryEnabled() {
+function activeMemoryRoot() {
   const settings = readMemorySettings();
-  if (!settings.enabled) return false;
-  return resolveMemoryRoot(settings.root) !== void 0;
-}
-function effectiveMemoryRoot() {
-  const settings = readMemorySettings();
-  return resolveMemoryRoot(settings.root) ?? defaultMemoryRoot();
+  if (!settings.enabled) return void 0;
+  return resolveMemoryRoot(settings.root);
 }
 function memoryDirForSession(projectDirectory) {
-  if (!memoryEnabled()) return void 0;
-  return projectMemoryDir(effectiveMemoryRoot(), projectDirectory);
+  const root = activeMemoryRoot();
+  if (root === void 0) return void 0;
+  return projectMemoryDir(root, projectDirectory);
 }
 
 // src/features/project-memory/host/session-dir.ts
@@ -2403,6 +2900,22 @@ function deleteMemory(dir, name) {
   writeMemoryIndex(dir, removeIndexLine(readMemoryIndex(dir), name));
   return true;
 }
+var MAX_INJECTED_INDEX_LINES = 80;
+function capIndexLines(index) {
+  const lines = index.split("\n");
+  const filled = lines.filter((line) => line.trim() !== "");
+  if (filled.length <= MAX_INJECTED_INDEX_LINES) return index;
+  let counted = 0;
+  for (let position = 0; position < lines.length; position += 1) {
+    if (lines[position].trim() === "") continue;
+    counted += 1;
+    if (counted <= MAX_INJECTED_INDEX_LINES) continue;
+    const rest = filled.length - MAX_INJECTED_INDEX_LINES;
+    const notice = `\uFF08\u5176\u4F59 ${rest} \u6761\u672A\u5728\u672C\u8F6E\u5217\u51FA\uFF0C\u7528 memory \u5DE5\u5177 action=list \u67E5\u770B\u5168\u90E8\u3002\uFF09`;
+    return [...lines.slice(0, position), notice].join("\n");
+  }
+  return index;
+}
 function renderMemoryIndex(dir, index) {
   const parts = [
     "# \u9879\u76EE\u8BB0\u5FC6",
@@ -2413,7 +2926,8 @@ function renderMemoryIndex(dir, index) {
     "\u8BB0\u5FC6\u662F\u672C\u9879\u76EE\u591A\u4E2A\u4F1A\u8BDD\u5171\u4EAB\u7684\u80CC\u666F\u4E8B\u5B9E\uFF0C\u4E0E\u5F53\u524D\u7528\u6237\u6307\u4EE4\u51B2\u7A81\u65F6\u4EE5\u7528\u6237\u6307\u4EE4\u4E3A\u51C6\uFF1B\u53D1\u73B0\u6709\u8BEF\u65F6\u66F4\u65B0\u6216\u5220\u9664\u5BF9\u5E94\u6761\u76EE\uFF0C\u4E0D\u8981\u7167\u642C\u3002",
     ""
   ];
-  parts.push(index.trim() === "" ? "\uFF08\u5F53\u524D\u8FD8\u6CA1\u6709\u8BB0\u5FC6\u3002\uFF09" : index.trim());
+  const trimmed = index.trim();
+  parts.push(trimmed === "" ? "\uFF08\u5F53\u524D\u8FD8\u6CA1\u6709\u8BB0\u5FC6\u3002\uFF09" : capIndexLines(trimmed));
   return parts.join("\n");
 }
 function memoryIndexFingerprint(dir) {
@@ -2431,13 +2945,23 @@ function memoryIndexFingerprint(dir) {
 // src/features/project-memory/host/prompt.ts
 var SECTION_NAME = "project-memory:index";
 var SECTION_ORDER = 9500;
+var MAX_RENDER_CACHES = 32;
 var caches = /* @__PURE__ */ new Map();
 function memoryText(dir) {
   const fingerprint = memoryIndexFingerprint(dir);
   const cached = caches.get(dir);
-  if (cached !== void 0 && cached.fingerprint === fingerprint) return cached.text;
+  if (cached !== void 0 && cached.fingerprint === fingerprint) {
+    caches.delete(dir);
+    caches.set(dir, cached);
+    return cached.text;
+  }
   const text = renderMemoryIndex(dir, readMemoryIndex(dir));
   caches.set(dir, { fingerprint, text });
+  while (caches.size > MAX_RENDER_CACHES) {
+    const oldest = caches.keys().next();
+    if (oldest.done) break;
+    caches.delete(oldest.value);
+  }
   return text;
 }
 function invalidateMemoryText(dir) {
@@ -2521,7 +3045,11 @@ function installMemoryRoutes(webServer) {
         }
         if (request.method === "POST") {
           const body = await readJsonBody(request, MAX_BODY_BYTES3);
-          const update = readRequest(body);
+          if (!body.ok) {
+            sendJsonBodyError(response, body, "\u8BBE\u7F6E\u5185\u5BB9\u4E0D\u5408\u6CD5");
+            return;
+          }
+          const update = readRequest(body.value);
           if (update === void 0) {
             sendJson(response, 400, { error: "\u8BBE\u7F6E\u5185\u5BB9\u4E0D\u5408\u6CD5" });
             return;
@@ -2736,6 +3264,7 @@ function installMemoryTool(ctx) {
 }
 
 // src/features/project-memory/host.ts
+var id5 = "project-memory";
 var inject5 = ["systemPrompt", "tools", "webServer"];
 function apply5(ctx) {
   installMemoryPrompt(ctx);
@@ -2752,12 +3281,12 @@ function apply5(ctx) {
 var host_exports6 = {};
 __export(host_exports6, {
   apply: () => apply6,
+  id: () => id6,
   inject: () => inject6
 });
 
 // src/features/auto-compact/host/settings.ts
-import { mkdirSync as mkdirSync3, readFileSync as readFileSync3, renameSync as renameSync3, statSync as statSync3, writeFileSync as writeFileSync3 } from "node:fs";
-import { dirname as dirname5, join as join14 } from "node:path";
+import { join as join14 } from "node:path";
 var DEFAULT_SETTINGS2 = {
   enabled: false,
   thresholdPercent: 70,
@@ -2765,7 +3294,6 @@ var DEFAULT_SETTINGS2 = {
 };
 var MIN_PERCENT = 1;
 var MAX_PERCENT = 100;
-var cache2;
 function autoCompactSettingsFile() {
   return join14(resolveDshHome(), "all-in-one", "auto-compact.json");
 }
@@ -2799,41 +3327,17 @@ function applyPatch(current, patch) {
     retainPercent: clampRetain(retainPercent, thresholdPercent)
   };
 }
+var store2 = createJsonSettingsStore({
+  file: autoCompactSettingsFile,
+  normalize: normalizeSettings2,
+  defaults: () => ({ ...DEFAULT_SETTINGS2 }),
+  label: "[auto-compact]"
+});
 function readAutoCompactSettings() {
-  const file = autoCompactSettingsFile();
-  try {
-    const info = statSync3(file);
-    if (cache2 !== void 0 && cache2.mtimeMs === info.mtimeMs && cache2.size === info.size) {
-      return cache2.value;
-    }
-    const value = normalizeSettings2(JSON.parse(readFileSync3(file, "utf8")));
-    cache2 = { mtimeMs: info.mtimeMs, size: info.size, value };
-    return value;
-  } catch (error) {
-    if (error.code !== "ENOENT") {
-      console.error("[auto-compact] \u8BFB\u53D6\u81EA\u52A8\u538B\u7F29\u8BBE\u7F6E\u5931\u8D25:", file, error);
-    }
-    return { ...DEFAULT_SETTINGS2 };
-  }
-}
-function writeSettings(next) {
-  const file = autoCompactSettingsFile();
-  const temp = `${file}.tmp`;
-  try {
-    mkdirSync3(dirname5(file), { recursive: true });
-    writeFileSync3(temp, `${JSON.stringify(next, null, 2)}
-`, "utf8");
-    renameSync3(temp, file);
-    cache2 = void 0;
-  } catch (error) {
-    console.error("[auto-compact] \u5199\u5165\u81EA\u52A8\u538B\u7F29\u8BBE\u7F6E\u5931\u8D25:", file, error);
-    throw error;
-  }
+  return store2.read();
 }
 function updateAutoCompactSettings(patch) {
-  const next = applyPatch(readAutoCompactSettings(), patch);
-  writeSettings(next);
-  return next;
+  return store2.update(patch, applyPatch);
 }
 
 // src/features/auto-compact/host/routes.ts
@@ -2841,7 +3345,7 @@ var ROUTE_PATH5 = "/dsh-all-in-one/auto-compact";
 var MAX_BODY_BYTES4 = 4 * 1024;
 function installAutoCompactRoutes(webServer) {
   return webServer.register({
-    kind: "prefix",
+    kind: "exact",
     path: ROUTE_PATH5,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
@@ -2859,11 +3363,11 @@ function installAutoCompactRoutes(webServer) {
           return;
         }
         const body = await readJsonBody(request, MAX_BODY_BYTES4);
-        if (body === void 0) {
-          sendJson(response, 400, { error: "\u8BF7\u6C42\u4F53\u4E0D\u662F\u5408\u6CD5 JSON" });
+        if (!body.ok) {
+          sendJsonBodyError(response, body, "\u8BF7\u6C42\u4F53\u4E0D\u662F\u5408\u6CD5 JSON");
           return;
         }
-        sendJson(response, 200, updateAutoCompactSettings(body));
+        sendJson(response, 200, updateAutoCompactSettings(body.value));
       } catch (error) {
         console.error("[auto-compact] \u5904\u7406\u8BBE\u7F6E\u8BF7\u6C42\u5931\u8D25:", error);
         sendJson(response, 500, {
@@ -2884,12 +3388,12 @@ function toolCallDelta(event) {
 }
 function balancedCuts(session, nodes) {
   const cuts = [true];
-  let open = 0;
+  let open4 = 0;
   for (const seq of nodes) {
     const event = session.eventAt(seq);
-    open += event === void 0 ? 0 : toolCallDelta(event);
-    if (open < 0) open = 0;
-    cuts.push(open === 0);
+    open4 += event === void 0 ? 0 : toolCallDelta(event);
+    if (open4 < 0) open4 = 0;
+    cuts.push(open4 === 0);
   }
   return cuts;
 }
@@ -2931,6 +3435,9 @@ async function compactOlderHistory(engine, measurement, agent, signal, contextWi
 // src/features/auto-compact/host/watcher.ts
 var RETRY_COOLDOWN_MS = 3e4;
 var SCOPE_MISS_TTL_MS = 3e4;
+var MEASURE_INTERVAL_MS = 2e3;
+var CONTEXT_WINDOW_TTL_MS = 3e4;
+var MAX_TRACKED_SESSIONS = 500;
 var serviceScopeCache = /* @__PURE__ */ new WeakMap();
 function findServiceScope(agent, name) {
   const root = agent.ctx;
@@ -2980,28 +3487,64 @@ function installAutoCompactWatcher(ctx) {
   const compacting = /* @__PURE__ */ new Set();
   const attemptedAt = /* @__PURE__ */ new Map();
   const warnedSessions = /* @__PURE__ */ new Set();
+  const measurements = /* @__PURE__ */ new Map();
+  const windows = /* @__PURE__ */ new Map();
+  const evictOldest = (map) => {
+    if (map.size <= MAX_TRACKED_SESSIONS) return;
+    const oldest = map.keys().next();
+    if (!oldest.done) map.delete(oldest.value);
+  };
+  const contextWindowFor = (agent) => {
+    const id8 = agent.session.id;
+    const cached = windows.get(id8);
+    const now = Date.now();
+    if (cached !== void 0 && now - cached.at < CONTEXT_WINDOW_TTL_MS) return cached.value;
+    const value = readContextWindow(agent);
+    windows.set(id8, { at: now, value });
+    evictOldest(windows);
+    return value;
+  };
+  const measureFor = (meter, agent, force) => {
+    const id8 = agent.session.id;
+    const cached = measurements.get(id8);
+    const now = Date.now();
+    if (!force && cached !== void 0 && now - cached.at < MEASURE_INTERVAL_MS) {
+      return { measurement: cached.value, fresh: false };
+    }
+    const value = meter.measure(agent.session);
+    measurements.set(id8, { at: now, value });
+    evictOldest(measurements);
+    return { measurement: value, fresh: true };
+  };
   const check = async (agent, signal) => {
     const settings = readAutoCompactSettings();
     if (!settings.enabled) return;
     const session = agent.session;
     if (compacting.has(session.id)) return;
-    const contextWindow = readContextWindow(agent);
+    const lastAttempt = attemptedAt.get(session.id);
+    if (lastAttempt !== void 0 && Date.now() - lastAttempt < RETRY_COOLDOWN_MS) return;
+    const contextWindow = contextWindowFor(agent);
     if (contextWindow === void 0) return;
     const engine = readService(agent, "compaction");
     const meter = readService(agent, "tokenMeter");
     if (engine?.compactRegion === void 0 || meter === void 0) {
       if (!warnedSessions.has(session.id)) {
         warnedSessions.add(session.id);
+        if (warnedSessions.size > MAX_TRACKED_SESSIONS) {
+          const oldest = warnedSessions.values().next();
+          if (!oldest.done) warnedSessions.delete(oldest.value);
+        }
         console.error("[auto-compact] \u5BBF\u4E3B\u672A\u63D0\u4F9B\u5206\u6BB5\u538B\u7F29\u80FD\u529B\uFF0C\u8DF3\u8FC7\u672C\u6B21\u68C0\u67E5");
       }
       return;
     }
-    const measurement = meter.measure(session);
+    const cached = measureFor(meter, agent, false);
+    if (cached.measurement.totalTokens / contextWindow * 100 < settings.thresholdPercent) return;
+    const { measurement } = cached.fresh ? cached : measureFor(meter, agent, true);
     if (measurement.totalTokens / contextWindow * 100 < settings.thresholdPercent) return;
-    const lastAttempt = attemptedAt.get(session.id);
-    if (lastAttempt !== void 0 && Date.now() - lastAttempt < RETRY_COOLDOWN_MS) return;
     compacting.add(session.id);
     attemptedAt.set(session.id, Date.now());
+    evictOldest(attemptedAt);
     try {
       const decision = await compactOlderHistory(
         engine,
@@ -3018,10 +3561,15 @@ function installAutoCompactWatcher(ctx) {
       console.error("[auto-compact] \u81EA\u52A8\u538B\u7F29\u5931\u8D25:", error);
     } finally {
       compacting.delete(session.id);
+      measurements.delete(session.id);
     }
   };
   const dispose = ctx.on("agent/pre-step", async ({ agent, signal }, next) => {
-    if (!signal.aborted) await check(agent, signal);
+    try {
+      if (!signal.aborted) await check(agent, signal);
+    } catch (error) {
+      console.error("[auto-compact] \u6BCF\u6B65\u68C0\u67E5\u5931\u8D25:", error);
+    }
     return next();
   });
   return () => {
@@ -3029,10 +3577,13 @@ function installAutoCompactWatcher(ctx) {
     compacting.clear();
     attemptedAt.clear();
     warnedSessions.clear();
+    measurements.clear();
+    windows.clear();
   };
 }
 
 // src/features/auto-compact/host.ts
+var id6 = "auto-compact";
 var inject6 = ["webServer"];
 function apply6(ctx) {
   const webServer = ctx.webServer;
@@ -3048,6 +3599,7 @@ function apply6(ctx) {
 var host_exports7 = {};
 __export(host_exports7, {
   apply: () => apply7,
+  id: () => id7,
   inject: () => inject7
 });
 import { basename as basename2 } from "node:path";
@@ -3059,6 +3611,7 @@ import { join as join15 } from "node:path";
 var COOKIE_FILE_NAME = "Cookies";
 var AUTH_COOKIE_PREFIX = "dsh-auth-";
 var AUTH_COOKIE_HOST = "127.0.0.1";
+var DELETE_CHUNK_SIZE = 200;
 function desktopUserDataDir() {
   if (process.platform === "darwin") return join15(homedir5(), "Library", "Application Support");
   if (process.platform === "win32") {
@@ -3069,13 +3622,41 @@ function desktopUserDataDir() {
 function desktopCookiesFile() {
   return join15(desktopUserDataDir(), "@deepseek-ai", "dsh-desktop", COOKIE_FILE_NAME);
 }
+function loadSqlite() {
+  try {
+    const processLike = process;
+    const getBuiltin = processLike.getBuiltinModule;
+    if (typeof getBuiltin !== "function") return void 0;
+    const module = getBuiltin.call(process, "node:sqlite");
+    if (typeof module !== "object" || module === null) return void 0;
+    return module;
+  } catch (error) {
+    console.error("[desktop-cookie] \u8BFB\u53D6 node:sqlite \u5931\u8D25:", error);
+    return void 0;
+  }
+}
+function deleteByNames(database, names) {
+  let statement;
+  let preparedSize = 0;
+  for (let offset = 0; offset < names.length; offset += DELETE_CHUNK_SIZE) {
+    const chunk = names.slice(offset, offset + DELETE_CHUNK_SIZE);
+    if (statement === void 0 || preparedSize !== chunk.length) {
+      const placeholders = chunk.map(() => "?").join(", ");
+      statement = database.prepare(
+        `DELETE FROM cookies WHERE host_key = ? AND name IN (${placeholders})`
+      );
+      preparedSize = chunk.length;
+    }
+    statement.run(AUTH_COOKIE_HOST, ...chunk);
+  }
+}
 function cleanupAuthCookies(settings) {
   if (!settings.enabled) return { status: "skipped", before: 0, after: 0, reason: "disabled" };
   const file = desktopCookiesFile();
   if (!existsSync(file)) {
     return { status: "skipped", before: 0, after: 0, reason: `cookie library not found: ${file}` };
   }
-  const sqlite = process.getBuiltinModule("node:sqlite");
+  const sqlite = loadSqlite();
   if (sqlite === void 0) {
     console.error("[desktop-cookie] \u5F53\u524D Node \u672A\u63D0\u4F9B node:sqlite\uFF0C\u8DF3\u8FC7\u6E05\u7406:", file);
     return { status: "failed", before: 0, after: 0, reason: "node:sqlite unavailable" };
@@ -3096,8 +3677,7 @@ function cleanupAuthCookies(settings) {
       };
     }
     const stale = names.slice(settings.retain);
-    const remove = database.prepare("DELETE FROM cookies WHERE host_key = ? AND name = ?");
-    for (const name of stale) remove.run(AUTH_COOKIE_HOST, name);
+    deleteByNames(database, stale);
     return { status: "cleaned", before: names.length, after: names.length - stale.length };
   } catch (error) {
     console.error("[desktop-cookie] \u6E05\u7406\u684C\u9762\u7248\u8BA4\u8BC1 cookie \u5931\u8D25:", file, error);
@@ -3117,8 +3697,7 @@ function cleanupAuthCookies(settings) {
 }
 
 // src/features/desktop-cookie/host/settings.ts
-import { mkdirSync as mkdirSync4, readFileSync as readFileSync4, renameSync as renameSync4, writeFileSync as writeFileSync4 } from "node:fs";
-import { dirname as dirname6, join as join16 } from "node:path";
+import { join as join16 } from "node:path";
 var DEFAULT_SETTINGS3 = {
   enabled: true,
   threshold: 3,
@@ -3159,34 +3738,17 @@ function applyPatch2(current, patch) {
     retain: clampRetain2(retain, threshold)
   };
 }
+var store3 = createJsonSettingsStore({
+  file: desktopCookieSettingsFile,
+  normalize: normalizeSettings3,
+  defaults: () => ({ ...DEFAULT_SETTINGS3 }),
+  label: "[desktop-cookie]"
+});
 function readDesktopCookieSettings() {
-  const file = desktopCookieSettingsFile();
-  try {
-    return normalizeSettings3(JSON.parse(readFileSync4(file, "utf8")));
-  } catch (error) {
-    if (error.code !== "ENOENT") {
-      console.error("[desktop-cookie] \u8BFB\u53D6\u8BBE\u7F6E\u5931\u8D25:", file, error);
-    }
-    return { ...DEFAULT_SETTINGS3 };
-  }
-}
-function writeSettings2(next) {
-  const file = desktopCookieSettingsFile();
-  const temp = `${file}.tmp`;
-  try {
-    mkdirSync4(dirname6(file), { recursive: true });
-    writeFileSync4(temp, `${JSON.stringify(next, null, 2)}
-`, "utf8");
-    renameSync4(temp, file);
-  } catch (error) {
-    console.error("[desktop-cookie] \u5199\u5165\u8BBE\u7F6E\u5931\u8D25:", file, error);
-    throw error;
-  }
+  return store3.read();
 }
 function updateDesktopCookieSettings(patch) {
-  const next = applyPatch2(readDesktopCookieSettings(), patch);
-  writeSettings2(next);
-  return next;
+  return store3.update(patch, applyPatch2);
 }
 
 // src/features/desktop-cookie/host/routes.ts
@@ -3194,7 +3756,7 @@ var ROUTE_PATH6 = "/dsh-all-in-one/desktop-cookie";
 var MAX_BODY_BYTES5 = 4 * 1024;
 function installDesktopCookieRoutes(webServer) {
   return webServer.register({
-    kind: "prefix",
+    kind: "exact",
     path: ROUTE_PATH6,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
@@ -3212,11 +3774,11 @@ function installDesktopCookieRoutes(webServer) {
           return;
         }
         const body = await readJsonBody(request, MAX_BODY_BYTES5);
-        if (body === void 0) {
-          sendJson(response, 400, { error: "\u8BF7\u6C42\u4F53\u4E0D\u662F\u5408\u6CD5 JSON" });
+        if (!body.ok) {
+          sendJsonBodyError(response, body, "\u8BF7\u6C42\u4F53\u4E0D\u662F\u5408\u6CD5 JSON");
           return;
         }
-        sendJson(response, 200, updateDesktopCookieSettings(body));
+        sendJson(response, 200, updateDesktopCookieSettings(body.value));
       } catch (error) {
         console.error("[desktop-cookie] \u5904\u7406\u8BBE\u7F6E\u8BF7\u6C42\u5931\u8D25:", error);
         sendJson(response, 500, {
@@ -3228,6 +3790,7 @@ function installDesktopCookieRoutes(webServer) {
 }
 
 // src/features/desktop-cookie/host.ts
+var id7 = "desktop-cookie";
 var inject7 = ["webServer"];
 function isDesktopProfile(ctx) {
   const name = ctx.profileContext?.name;
@@ -3239,11 +3802,15 @@ function isDesktopProfile(ctx) {
 }
 function apply7(ctx) {
   if (isDesktopProfile(ctx)) {
-    const report = cleanupAuthCookies(readDesktopCookieSettings());
-    if (report.status === "cleaned") {
-      console.log(
-        `[desktop-cookie] \u5DF2\u6E05\u7406 ${report.before - report.after} \u6761\u8FC7\u671F\u8BA4\u8BC1 cookie\uFF0C\u4FDD\u7559 ${report.after} \u6761`
-      );
+    try {
+      const report = cleanupAuthCookies(readDesktopCookieSettings());
+      if (report.status === "cleaned") {
+        console.log(
+          `[desktop-cookie] \u5DF2\u6E05\u7406 ${report.before - report.after} \u6761\u8FC7\u671F\u8BA4\u8BC1 cookie\uFF0C\u4FDD\u7559 ${report.after} \u6761`
+        );
+      }
+    } catch (error) {
+      console.error("[desktop-cookie] \u542F\u52A8\u6E05\u7406\u5931\u8D25\uFF0C\u8DF3\u8FC7\u672C\u6B21\u6E05\u7406:", error);
     }
   }
   const webServer = ctx.webServer;
@@ -3268,7 +3835,13 @@ var featureHosts = [
 // src/index.ts
 var inject8 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
 function apply8(ctx) {
-  for (const feature of featureHosts) feature.apply(ctx);
+  for (const feature of featureHosts) {
+    try {
+      feature.apply(ctx);
+    } catch (error) {
+      console.error("[all-in-one] \u5BBF\u4E3B\u6269\u5C55\u542F\u52A8\u5931\u8D25:", feature.id, error);
+    }
+  }
 }
 export {
   apply8 as apply,

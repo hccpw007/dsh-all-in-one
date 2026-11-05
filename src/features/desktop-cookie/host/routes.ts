@@ -6,10 +6,10 @@
  */
 import type { WebServerApi } from '../../../types/host'
 
-import { isLocalRequest, readJsonBody, sendJson } from '../../../common/http-route'
+import { isLocalRequest, readJsonBody, sendJson, sendJsonBodyError } from '../../../common/http-route'
 import { readDesktopCookieSettings, updateDesktopCookieSettings } from './settings'
 
-/** 路由前缀，同时作为客户端请求路径。 */
+/** 设置接口路径；注册为精确匹配，避免子路径被当成同一份设置写入。 */
 const ROUTE_PATH = '/dsh-all-in-one/desktop-cookie'
 
 /** 请求体上限；本接口只收三个字段，超出说明请求异常。 */
@@ -22,7 +22,7 @@ const MAX_BODY_BYTES = 4 * 1024
  */
 export function installDesktopCookieRoutes(webServer: WebServerApi): () => void {
   return webServer.register({
-    kind: 'prefix',
+    kind: 'exact',
     path: ROUTE_PATH,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
@@ -43,12 +43,12 @@ export function installDesktopCookieRoutes(webServer: WebServerApi): () => void 
         }
 
         const body = await readJsonBody(request, MAX_BODY_BYTES)
-        if (body === undefined) {
-          sendJson(response, 400, { error: '请求体不是合法 JSON' })
+        if (!body.ok) {
+          sendJsonBodyError(response, body, '请求体不是合法 JSON')
           return
         }
 
-        sendJson(response, 200, updateDesktopCookieSettings(body))
+        sendJson(response, 200, updateDesktopCookieSettings(body.value))
       } catch (error) {
         console.error('[desktop-cookie] 处理设置请求失败:', error)
         sendJson(response, 500, {

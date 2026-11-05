@@ -7,7 +7,7 @@
 import type { WebServerApi } from '../../../types/host'
 import type { MemorySettingsPayload, MemorySettingsRequest } from '../types'
 
-import { isLocalRequest, readJsonBody, sendJson } from '../../../common/http-route'
+import { isLocalRequest, readJsonBody, sendJson, sendJsonBodyError } from '../../../common/http-route'
 import { defaultMemoryRoot, resolveMemoryRoot } from './paths'
 import { memorySettingsFile, readMemorySettings, writeMemorySettings } from './settings'
 
@@ -86,7 +86,12 @@ export function installMemoryRoutes(webServer: WebServerApi): () => void {
 
         if (request.method === 'POST') {
           const body = await readJsonBody(request, MAX_BODY_BYTES)
-          const update = readRequest(body)
+          if (!body.ok) {
+            sendJsonBodyError(response, body, '设置内容不合法')
+            return
+          }
+
+          const update = readRequest(body.value)
           if (update === undefined) {
             sendJson(response, 400, { error: '设置内容不合法' })
             return

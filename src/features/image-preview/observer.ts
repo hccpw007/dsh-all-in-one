@@ -37,11 +37,17 @@ function scanSubtree(root: Element): void {
   if (scope === null) return
 
   const grouped = new Map<Element, string[]>()
-  const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT)
+  // 直接拒绝整棵预览子树：此前对每个文本节点各做一次 closest，长块里成本翻倍
+  const walker = document.createTreeWalker(scope, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      if (node instanceof Element && isOwnPreviewNode(node)) return NodeFilter.FILTER_REJECT
+
+      return node.nodeType === Node.TEXT_NODE ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP
+    },
+  })
 
   for (let node = walker.nextNode(); node !== null; node = walker.nextNode()) {
-    // 跳过自己插入的节点：预览容器里没有文本，但宿主可能把它包进别的块
-    if (isOwnPreviewNode(node)) continue
+    if (node.nodeType !== Node.TEXT_NODE) continue
 
     const text = node as Text
     const paths = collectImagePaths(text.data)
@@ -88,6 +94,11 @@ export function installImagePreviewObserver(): () => void {
     const nodes = Array.from(pending).slice(0, MAX_NODES_PER_FRAME)
     for (const node of nodes) pending.delete(node)
 
+    // 同一帧里 40 个节点常常落在同一个块上：先按块去重，每块只整块重扫一次。
+    // 此前逐个节点重扫，一个 2,000 文本节点的代码块会被 TreeWalker 遍历 40 遍
+    const blocks = new Set<Element>()
+    let rescanContainer = false
+
     for (const node of nodes) {
       if (node.nodeType === Node.TEXT_NODE) {
         const parent = node.parentElement
@@ -96,7 +107,7 @@ export function installImagePreviewObserver(): () => void {
         // 文本变化时重扫整个块：同一块里可能还有别的文本节点各带一个路径，
         // 只按当前文本同步会丢掉别的路径的预览
         const block = closestBlock(parent)
-        if (block !== undefined) scanSubtree(block)
+        if (block !== undefined) blocks.add(block)
         continue
       }
 
@@ -113,14 +124,24 @@ export function installImagePreviewObserver(): () => void {
             dropPreviewsForHostImage(block)
           }
 
-          scanSubtree(block)
+          blocks.add(block)
         }
         continue
       }
 
-      // 会话容器本身被重建：重新扫一遍，扫描范围由 scanSubtree 收窄到对话正文
-      if (node.contains(container)) scanSubtree(container)
+      // 会话容器本身被重建：旧节点已脱离 DOM，按块扫描没有意义，重新排队整棵正文
+      if (node.contains(container)) rescanContainer = true
     }
+
+    if (rescanContainer) {
+      const chatFlow = container.querySelector(CHAT_FLOW_SELECTOR) ?? container
+      enqueueTree(chatFlow)
+      schedule()
+
+      return
+    }
+
+    for (const block of blocks) scanSubtree(block)
   }
 
   /**

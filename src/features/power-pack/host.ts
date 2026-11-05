@@ -17,6 +17,9 @@ import { installPowerPackRoutes } from './host/routes'
  * 技能包要靠它把「排除的全局插件 / 全局 MCP」落到会话级的工具掩码上。
  * 系统提示词服务用于安装最外层包装，挡住绕过 waterfall 的提示词改写。
  */
+/** 功能标识，与 feature 目录名一致；装配失败时用于定位。 */
+export const id = 'power-pack'
+
 export const inject = ['agentPresets', 'tools', 'systemPrompt']
 
 /**

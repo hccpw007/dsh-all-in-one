@@ -7,7 +7,8 @@
 import type { AgentPresetApi, ToolsApi, WebServerApi } from '../../../types/host'
 import type { PowerPack, PowerPackComposeResponse, PowerPackWriteRequest, PowerPacksPayload } from '../types'
 
-import { isLocalRequest, readJsonBody, sendJson } from '../../../common/http-route'
+import { isLocalRequest, readJsonBody, sendJson, sendJsonBodyError } from '../../../common/http-route'
+import { logPerf } from '../../../common/perf'
 import { listPluginItems } from './catalog'
 import { forgetComposedPack, readComposeState, rememberComposed } from './compose-state'
 import { collectGlobalToolNames, listGlobalToolGroups } from './global-catalog'
@@ -20,12 +21,19 @@ import {
   syncPackSkillDir,
 } from './skill-links'
 import { powerPacksFile, isValidPackId, normalizePack, readPacks, writePacks } from './store'
+import { withTimeout } from './with-timeout'
 
 /** 路由前缀，同时作为客户端请求路径。 */
 const ROUTE_PATH = '/dsh-all-in-one/power-packs'
 
 /** 请求体上限；一份技能包配置远小于该值，超出说明请求异常。 */
 const MAX_BODY_BYTES = 1024 * 1024
+
+/** 写入队列长度上限：超过后直接拒绝，避免请求排在一条很长的事务链后面超时。 */
+const WRITE_QUEUE_LIMIT = 4
+
+/** 单次写入（含预设注册与等待宿主模式）的预算，与客户端 20 秒超时保持余量。 */
+const WRITE_TIMEOUT_MS = 15_000
 
 /**
  * 宿主侧共用的读取上下文：profile 决定插件清单范围，工具注册表用于枚举全局能力。
@@ -39,11 +47,22 @@ interface HostContext {
 
 /** 组装客户端需要的完整负载。 */
 async function buildPayload(host: HostContext): Promise<PowerPacksPayload> {
-  const document = await readPacks()
-  const skills = await listSkillEntries()
-  const plugins = await listPluginItems(host.profileDir)
-  const globalGroups = await listGlobalToolGroups(host.tools, host.profileDir)
-  const recentComposed = await readComposeState()
+  const startedAt = performance.now()
+  // 五处读取互不依赖：并行发起，把整页的首字节时间从「求和」降到「最慢一项」
+  const [document, skills, plugins, globalGroups, recentComposed] = await Promise.all([
+    readPacks(),
+    listSkillEntries(),
+    listPluginItems(host.profileDir),
+    listGlobalToolGroups(host.tools, host.profileDir),
+    readComposeState(),
+  ])
+
+  logPerf('buildPayload', startedAt, {
+    packs: document.packs.length,
+    skills: skills.length,
+    plugins: plugins.length,
+    groups: globalGroups.length,
+  })
 
   return {
     packs: document.packs,
@@ -156,6 +175,30 @@ async function buildDiagnostics(host: HostContext): Promise<unknown> {
 /** 串行化写入，避免并发保存互相覆盖同一份文档。 */
 let writeChain: Promise<unknown> = Promise.resolve()
 
+/** 已排队（含执行中）的写入数，用于拒绝过深的队列。 */
+let queuedWrites = 0
+
+/**
+ * 把一次写入排进串行链。
+ * @param task 真正执行写入的函数
+ * @returns 本次写入的结果
+ */
+function enqueueWrite(task: () => Promise<unknown>): Promise<unknown> {
+  queuedWrites += 1
+
+  const next = writeChain.then(() => withTimeout(task(), WRITE_TIMEOUT_MS, '写入技能包'))
+  // 链本身不能因为单次失败而中断；失败已经由发送方拿到的 Promise 报告
+  writeChain = next
+    .catch((error: unknown) => {
+      console.error('[power-pack] 写入技能包失败:', error)
+    })
+    .finally(() => {
+      queuedWrites -= 1
+    })
+
+  return next
+}
+
 /**
  * 处理一次写入请求：保存或删除技能包、设置默认技能包，或为「模式 + 技能包」合成组合预设。
  * @param request 写请求体
@@ -246,10 +289,18 @@ export function installPowerPackRoutes(
       }
 
       try {
+        const pathname = new URL(request.url ?? ROUTE_PATH, 'http://localhost').pathname
+        const isRoute = pathname === ROUTE_PATH || pathname === `${ROUTE_PATH}/`
+
         if (request.method === 'GET') {
           // 子路径 /diagnose 只读回隔离计划，不改任何状态
-          if ((request.url ?? '').includes('/diagnose')) {
+          if (pathname === `${ROUTE_PATH}/diagnose`) {
             sendJson(response, 200, await buildDiagnostics(host))
+            return
+          }
+
+          if (!isRoute) {
+            sendJson(response, 404, { error: '未知接口' })
             return
           }
 
@@ -258,21 +309,35 @@ export function installPowerPackRoutes(
         }
 
         if (request.method === 'POST') {
+          // 只接受本路由本身：避免任何子路径都被当成同一次写入
+          if (!isRoute) {
+            sendJson(response, 404, { error: '未知接口' })
+            return
+          }
+
+          if (queuedWrites >= WRITE_QUEUE_LIMIT) {
+            sendJson(response, 429, { error: '写入请求过多，请稍后重试' })
+            return
+          }
+
           const body = await readJsonBody(request, MAX_BODY_BYTES)
-          if (!body || typeof body !== 'object') {
-            sendJson(response, 400, { error: '请求体不是合法 JSON' })
+          if (!body.ok) {
+            sendJsonBodyError(response, body, '请求体不是合法 JSON')
+            return
+          }
+
+          if (typeof body.value !== 'object' || body.value === null) {
+            sendJson(response, 400, { error: '请求体不是对象' })
             return
           }
 
           // 写入串行执行，读取操作仍可并发
-          const task = writeChain.then(() =>
-            handleWrite(body as PowerPackWriteRequest, api, host),
+          sendJson(
+            response,
+            200,
+            await enqueueWrite(() =>
+              handleWrite(body.value as PowerPackWriteRequest, api, host)),
           )
-          writeChain = task.catch((error: unknown) => {
-            console.error('[power-pack] 写入技能包失败:', error)
-          })
-
-          sendJson(response, 200, await task)
           return
         }
 

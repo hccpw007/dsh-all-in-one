@@ -60,8 +60,11 @@ function writeDiagnostic(message: string): void {
     const file = join(dir, 'isolate.log')
     try {
       if (statSync(file).size > LOG_MAX_BYTES) writeFileSync(file, '', 'utf8')
-    } catch {
-      // 文件不存在是首次写入的正常情况
+    } catch (error) {
+      // 文件不存在是首次写入的正常情况；权限等其它错误必须留痕，否则日志轮转会静默失效
+      if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+        console.error('[power-pack] 检查隔离日志大小失败:', file, error)
+      }
     }
 
     appendFileSync(file, `${new Date().toISOString()} ${message}\n`, 'utf8')
@@ -192,6 +195,8 @@ function installToolIsolation(
     let applying = false
     // 上一轮应用的时间，与 APPLY_MIN_INTERVAL_MS 一起构成异步派发下的熔断
     let lastApplyAt = 0
+    // 上一次成功应用的名单签名：名单没变时不重算，从根上终止异步派发引起的自激
+    let lastSignature: string | undefined
     // 合并中的重算：间隔内的多次变更只保留一个待执行的宏任务
     let pending: ReturnType<typeof setTimeout> | undefined
 
@@ -214,6 +219,26 @@ function installToolIsolation(
       lastApplyAt = Date.now()
       applying = true
       try {
+        // 尚未注册的名字会让宿主直接抛错，这里先按全局视图确认存在。
+        // MCP 工具随连接变化，每次都要重新并入静态名单。
+        const names = [...new Set([...deny, ...mcpToolNames(ctx.tools, mcpServers)])]
+        const existing = names.filter((name) => {
+          try {
+            return ctx.tools.get(name) !== undefined
+          } catch (error) {
+            if (!isInactiveContextError(error)) {
+              console.error('[power-pack] 读取全局工具失败:', name, error)
+            }
+
+            return false
+          }
+        })
+        const signature = existing.join('\n')
+
+        // 名单与上一轮完全一致且掩码仍在：重复「撤销 + 重新施加」只会再派发一次
+        // tools/change，宿主若异步派发就会形成 200ms 一次的自激
+        if (lift !== undefined && signature === lastSignature) return
+
         if (lift !== undefined) {
           try {
             lift()
@@ -226,25 +251,16 @@ function installToolIsolation(
           lift = undefined
         }
 
-        // MCP 工具随连接变化，每次重算时都要并入静态名单
-        const names = [...new Set([...deny, ...mcpToolNames(ctx.tools, mcpServers)])]
+        lastSignature = undefined
+        if (existing.length === 0) {
+          lastSignature = signature
 
-        // 尚未注册的名字会让宿主直接抛错，这里先按全局视图确认存在
-        const existing = names.filter((name) => {
-          try {
-            return ctx.tools.get(name) !== undefined
-          } catch (error) {
-            if (!isInactiveContextError(error)) {
-              console.error('[power-pack] 读取全局工具失败:', name, error)
-            }
-
-            return false
-          }
-        })
-        if (existing.length === 0) return
+          return
+        }
 
         try {
           lift = ctx.tools.restrict({ deny: existing })
+          lastSignature = signature
         } catch (error) {
           // 名字校验失败不该拖垮会话，留下日志即可；
           // 上下文失效是热重载时旧 fiber 已销毁的正常收尾，跳过以免刷屏
@@ -310,16 +326,23 @@ function installPromptIsolation(
           if (!isAssembly(assembly)) return next
           if (context?.scope === undefined) return next
 
-          const snapshot = captureSnapshot(assembly)
+          // 快照只在严格隔离时用得上：非严格模式只按前缀删下游的结果，
+          // 无条件 structuredClone 整份提示词会给每次请求增加几十到几百 KB 的复制
+          const snapshot = strict ? captureSnapshot(assembly) : undefined
           if (!firstAssembly) {
             firstAssembly = true
             writeDiagnostic(`prompt isolated: strict=${strict} hide=${hidePrefixes.join(',') || '(none)'}`)
           }
 
+          // 快照的过滤结果只算一次：写入全局 WeakMap 与最终返回用的是同一份数组
+          const cleanSections = snapshot === undefined
+            ? undefined
+            : hideByPrefix(snapshot.sections, hidePrefixes)
+
           // 全局插件可能在方法层再改写一次（不经过 waterfall），把干净段落交给
           // 宿主侧的最外层包装，由它在装配返回后替换回来
-          if (strict && typeof context.scope === 'object' && context.scope !== null) {
-            isolationState().snapshots.set(context.scope, hideByPrefix(snapshot.sections, hidePrefixes))
+          if (cleanSections !== undefined && typeof context.scope === 'object' && context.scope !== null) {
+            isolationState().snapshots.set(context.scope, cleanSections)
           }
 
           let result: unknown = assembly
@@ -335,10 +358,10 @@ function installPromptIsolation(
 
           if (!isAssembly(result)) return result
 
-          if (strict) {
+          if (cleanSections !== undefined) {
             return {
               ...result,
-              sections: hideByPrefix(snapshot.sections, hidePrefixes),
+              sections: cleanSections,
               // 运行时上下文（工作目录等）由下游按当前会话补齐，不能回退成快照
               contexts: hideByPrefix(result.contexts, hidePrefixes),
             }

@@ -63,6 +63,25 @@ function buildCounts(
   return counts
 }
 
+/** 行标题查找缓存：宿主重建行后自然失效，避免每次写数量都做一次行内查询。 */
+const titleCache = new WeakMap<HTMLElement, HTMLElement | null>()
+
+/**
+ * 取行标题节点。
+ * @param row 工作区行
+ * @returns 标题节点；没有标题时返回 null
+ */
+function titleOf(row: HTMLElement): HTMLElement | null {
+  const cached = titleCache.get(row)
+  // 宿主可能只替换标题节点：缓存必须确认仍在文档里，否则写属性写到了已卸载节点上
+  if (cached !== undefined && (cached === null || cached.isConnected)) return cached
+
+  const title = row.querySelector<HTMLElement>(TITLE_SELECTOR)
+  titleCache.set(row, title)
+
+  return title
+}
+
 /**
  * 把数量写到当前渲染出来的工作区行上。
  * @param counts 工作区标识到数量的映射
@@ -74,7 +93,7 @@ function applyCounts(counts: Map<string, number>): void {
     const workspaceId = readWorkspaceId(row)
     if (workspaceId === undefined) continue
 
-    const title = row.querySelector<HTMLElement>(TITLE_SELECTOR)
+    const title = titleOf(row)
     if (title === null) continue
 
     const count = counts.get(workspaceId)
@@ -112,16 +131,29 @@ export function installWorkspaceSessionCount(
   sessions: SessionsApi,
   uiWorkspace: UiWorkspaceApi,
 ): () => void {
-  let scheduled = false
+  let frame = 0
   let disposed = false
   // 上次计算用的快照与结果：宿主快照引用不变时只补回行标记，不重复统计会话
   let lastWorkspaces: ReadonlyArray<WorkspaceSummary> | undefined
   let lastSessions: { byId: Record<string, { blank?: boolean }> } | undefined
   let lastCounts = new Map<string, number>()
+  let lastApplied = new Map<string, number>()
+  // 行节点是否需要补写：只有行被重建时才需要，纯数据变化走计数比较
+  let rowsDirty = true
+
+  /** 两个计数表是否完全一致。 */
+  const sameCounts = (left: Map<string, number>, right: Map<string, number>): boolean => {
+    if (left.size !== right.size) return false
+    for (const [key, count] of left) {
+      if (right.get(key) !== count) return false
+    }
+
+    return true
+  }
 
   /** 按当前快照重算并写入数量；一帧内多次变化只执行一次。 */
   const render = (): void => {
-    scheduled = false
+    frame = 0
     if (disposed) return
 
     const workspaces = uiWorkspace.workspaces?.list.getSnapshot().items
@@ -135,15 +167,40 @@ export function installWorkspaceSessionCount(
       lastSessions = sessionState
     }
 
+    // 快照每帧都可能换新引用，但数量往往没变：没有新行且数量一致时完全不碰 DOM
+    if (!rowsDirty && sameCounts(lastCounts, lastApplied)) return
+
     applyCounts(lastCounts)
+    lastApplied = lastCounts
+    rowsDirty = false
   }
 
   /** 合并同一帧内的多次变化，避免流式输出时反复同步查询侧边栏。 */
   const schedule = (): void => {
-    if (scheduled || disposed) return
+    if (frame !== 0 || disposed) return
 
-    scheduled = true
-    window.requestAnimationFrame(render)
+    frame = window.requestAnimationFrame(render)
+  }
+
+  /**
+   * 只对「工作区行增删」调度：会话正文的流式输出不属于本功能的观察范围。
+   * @param records 本批 DOM 变化
+   * @returns 影响工作区行时返回 true
+   */
+  const touchesRows = (records: MutationRecord[]): boolean => {
+    for (const record of records) {
+      for (const node of [...record.addedNodes, ...record.removedNodes]) {
+        if (!(node instanceof Element)) continue
+        if (
+          node.matches(WORKSPACE_ROW_SELECTOR)
+          || node.querySelector(WORKSPACE_ROW_SELECTOR) !== null
+        ) {
+          return true
+        }
+      }
+    }
+
+    return false
   }
 
   // 数据变化直接触发重算；宿主版本没有订阅能力时只靠下面的观察器兜底
@@ -151,7 +208,12 @@ export function installWorkspaceSessionCount(
   const unsubscribeSessions = sessions.list.subscribe?.(schedule)
 
   // 行节点被 React 重建（折叠、搜索过滤、侧边栏重挂载）时观察器补回标记
-  const observer = new MutationObserver(schedule)
+  const observer = new MutationObserver((records) => {
+    if (!touchesRows(records)) return
+
+    rowsDirty = true
+    schedule()
+  })
   observer.observe(document.body, { childList: true, subtree: true })
 
   // 安装时侧边栏可能已经渲染完成，先算一次，不必等下一次 DOM 变化
@@ -162,6 +224,7 @@ export function installWorkspaceSessionCount(
     unsubscribeWorkspaces?.()
     unsubscribeSessions?.()
     observer.disconnect()
+    if (frame !== 0) window.cancelAnimationFrame(frame)
     clearCounts()
   }
 }
