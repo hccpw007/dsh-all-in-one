@@ -14,7 +14,7 @@ import type {
   TokenMeterApi,
   TokenMeterMeasurement,
 } from '../../../types/host'
-import type { ContextPressureView } from '../types'
+import type { ContextBreakdownView, ContextPressureView } from '../types'
 import { compactOlderHistory } from './region'
 import { readAutoCompactSettings } from './settings'
 
@@ -154,6 +154,24 @@ function readContextWindow(agent: AgentLike): number | undefined {
 }
 
 /**
+ * 读取启发式工具定义占用：不随历史压缩变化的固定开销。
+ * @param agent 触发本步的 Agent
+ * @returns 工具定义占用；投影缺失或值非法时返回 undefined
+ */
+function readToolsTokens(agent: AgentLike): number | undefined {
+  const projections = readService<SessionProjectionsApi>(agent, 'sessionProjections')
+  if (projections === undefined) return undefined
+
+  const values = projections.snapshot(agent.session, ['contextBreakdown']).values
+  const breakdown = values.contextBreakdown as ContextBreakdownView | undefined
+  const toolsTokens = breakdown?.breakdown?.toolsTokens
+  // 缺失或非法值交给调用方回退到「整份差额当固定开销」的保守口径
+  if (toolsTokens === undefined || !Number.isFinite(toolsTokens) || toolsTokens < 0) return undefined
+
+  return toolsTokens
+}
+
+/**
  * 注册每步前的检查，返回取消订阅函数。
  * @param ctx 宿主插件上下文
  * @returns 取消订阅函数
@@ -283,9 +301,12 @@ export function installAutoCompactWatcher(ctx: HostPluginContext): () => void {
         signal,
         contextWindow,
         settings.retainPercent,
+        readToolsTokens(agent),
       )
       if (decision.kind === 'skipped') {
         console.error('[auto-compact] 自动压缩已跳过:', decision.reason)
+      } else if (decision.note !== undefined) {
+        console.error('[auto-compact] 自动压缩完成:', decision.note)
       }
     } catch (error) {
       console.error('[auto-compact] 自动压缩失败:', error)

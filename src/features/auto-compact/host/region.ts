@@ -19,12 +19,12 @@ import type {
 } from '../../../types/host'
 
 /**
- * 固定开销最多扣掉保留目标的这个份额。
+ * 目标不可达时仍为最近历史保留的窗口份额。
  *
- * 真实用量与表面计价不是同一把尺子，长会话里表面计价系统性偏低，差出来的部分
- * 会被当成「固定开销」。不封顶就会把保留预算扣到接近零，一次压缩清空历史。
+ * 工具定义这类开销不随压缩变化，保留目标低于它时再怎么压也到不了目标；此时
+ * 仍给最近历史留一小段，避免把会话压成只剩摘要的空壳。
  */
-const MAX_FIXED_SHARE = 0.25
+const UNREACHABLE_FLOOR_SHARE = 0.01
 
 /** 一个表面节点的计价结果。 */
 interface PricedNode {
@@ -32,9 +32,9 @@ interface PricedNode {
   tokens: number
 }
 
-/** 一次压缩决策：选中了哪段历史，以及不压缩时的原因。 */
+/** 一次压缩决策：选中了哪段历史，以及需要告知调用方的补充信息。 */
 export type CompactionDecision =
-  | { kind: 'compacted' }
+  | { kind: 'compacted'; note?: string }
   | { kind: 'skipped'; reason: string }
 
 /**
@@ -115,23 +115,41 @@ function selectRange(
 }
 
 /**
+ * 估算表面真实 token 相对表面计价的比例。
+ *
+ * 宿主按固定字符启发式给表面计价，中文与 JSON 会系统性低估；用「真实总量 −
+ * 工具定义」与表面计价相比得到换算比例。比例小于 1 时按 1 处理：表面估高时
+ * 没有理由多压，宁可少压。
+ * @param totalTokens 整份请求的真实占用
+ * @param surfaceTokens 表面计价总量
+ * @param toolsTokens 工具定义的启发式占用
+ * @returns 真实占用相对计价的换算比例
+ */
+function surfaceScale(totalTokens: number, surfaceTokens: number, toolsTokens: number): number {
+  if (surfaceTokens <= 0) return 1
+
+  const realSurface = Math.max(0, totalTokens - toolsTokens)
+
+  return Math.max(1, realSurface / surfaceTokens)
+}
+
+/**
  * 把较早的历史压缩成摘要，保留最近约 `retainPercent` 的上下文。
  *
- * 保留比例是「压缩后总占用的目标」，不是「近期尾部的预算」：请求里还有工具定义
- * 这类完全不可压缩的固定开销，它同样占窗口。先把固定开销从目标里扣掉，剩下的
- * 才是可以留给原文尾部的预算。
+ * 保留比例是「压缩后总占用的目标」：请求里工具定义这类固定开销不随压缩变化，
+ * 先从目标里扣掉它，剩下的才是留给原文尾部的预算。预算按真实 token 计算，再用
+ * `surfaceScale` 换算成选择范围时的表面计价：宿主的表面计价对中文系统性偏低，
+ * 不换算会把「保留 10%」执行成实际保留 18%。
  *
- * 固定开销取自同一次测量的 `totalTokens - surfaceTokens`。但这两个量并非同一把
- * 尺子：`totalTokens` 来自模型回报的真实用量，`surfaceTokens` 是宿主按字符估算
- * 的表面计价，长会话里两者会系统性偏离（文件投影、图片、消息框架都会让表面计价
- * 偏低）。偏离全部计进「固定开销」，会把预算压到接近零，一压就把历史清空。
- * 因此扣减额封顶为目标的一个份额：宁可少压、停在设定值稍上方，也不把历史压光。
+ * 工具定义本身就超过保留目标时目标不可达：压到最小尾部并把原因带回调用方，
+ * 而不是像过去那样把保留预算保底在目标的 75%，让压缩看起来没有效果。
  * @param engine 压缩服务
  * @param measurement 本次检查的表面计价（调用方已测量，压缩前后都用它判断）
  * @param agent 会话所属 Agent
  * @param signal 本轮取消信号
  * @param contextWindow 当前模型的上下文窗口容量
  * @param retainPercent 压缩后要保留的窗口百分比
+ * @param toolsTokens 工具定义的启发式占用；投影缺失时为 undefined
  * @returns 压缩结果，或跳过原因
  */
 export async function compactOlderHistory(
@@ -141,16 +159,31 @@ export async function compactOlderHistory(
   signal: AbortSignal,
   contextWindow: number,
   retainPercent: number,
+  toolsTokens: number | undefined,
 ): Promise<CompactionDecision> {
   const session = agent.session
   const targetTokens = Math.floor((contextWindow * retainPercent) / 100)
-  const fixedTokens = Math.max(0, measurement.totalTokens - measurement.surfaceTokens)
-  const deductibleTokens = Math.min(fixedTokens, Math.round(targetTokens * MAX_FIXED_SHARE))
-  const retainTokens = Math.max(0, targetTokens - deductibleTokens)
-  const range = selectRange(session, measurement.nodes, retainTokens)
+
+  // 读不到工具定义时把整份差额当作固定开销：宁可少压，也不能把估算偏差当成
+  // 可压缩预算而把历史压光
+  const fixedTokens =
+    toolsTokens ?? Math.max(0, measurement.totalTokens - measurement.surfaceTokens)
+  const scale = surfaceScale(measurement.totalTokens, measurement.surfaceTokens, fixedTokens)
+  const retainReal = targetTokens - fixedTokens
+
+  // 固定开销高于保留目标：压到最小尾部，并说明设定值不可达
+  const unreachable = retainReal <= 0
+  const retainBudget = Math.max(
+    1,
+    Math.round((unreachable ? contextWindow * UNREACHABLE_FLOOR_SHARE : retainReal) / scale),
+  )
+  const range = selectRange(session, measurement.nodes, retainBudget)
   if (range === null) return { kind: 'skipped', reason: '没有可安全压缩的历史' }
 
   await engine.compactRegion?.(range.start, range.end, agent, signal)
 
-  return { kind: 'compacted' }
+  // 不可达时把原因带回调用方：日志里能看出压缩已到底，而不是配置没生效
+  return unreachable
+    ? { kind: 'compacted', note: `保留 ${retainPercent}% 低于不可压缩的工具定义开销，已压到最小尾部` }
+    : { kind: 'compacted' }
 }

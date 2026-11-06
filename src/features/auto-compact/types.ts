@@ -24,3 +24,12 @@ export interface ContextPressureView {
   /** 按当前会话表面内容推算的下一轮请求占用；优先于 `pressureTokens`。 */
   projectedTokens?: number
 }
+
+/** token-meter 的 `contextBreakdown` 投影中本功能用到的字段。 */
+export interface ContextBreakdownView {
+  /** 上下文构成；工具定义不随历史压缩变化，是压缩前要先扣掉的固定开销。 */
+  breakdown?: {
+    /** 工具定义的启发式占用。 */
+    toolsTokens?: number
+  }
+}

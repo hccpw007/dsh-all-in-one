@@ -3379,7 +3379,7 @@ function installAutoCompactRoutes(webServer) {
 }
 
 // src/features/auto-compact/host/region.ts
-var MAX_FIXED_SHARE = 0.25;
+var UNREACHABLE_FLOOR_SHARE = 0.01;
 function toolCallDelta(event) {
   if (event.type === "tool/result") return -1;
   if (event.type !== "assistant/message") return 0;
@@ -3420,16 +3420,26 @@ function selectRange(session, priced, retainTokens) {
   if (keepFromIdx <= firstIdx) return null;
   return { start: surfaceNodes[firstIdx], end: surfaceNodes[keepFromIdx - 1] };
 }
-async function compactOlderHistory(engine, measurement, agent, signal, contextWindow, retainPercent) {
+function surfaceScale(totalTokens, surfaceTokens, toolsTokens) {
+  if (surfaceTokens <= 0) return 1;
+  const realSurface = Math.max(0, totalTokens - toolsTokens);
+  return Math.max(1, realSurface / surfaceTokens);
+}
+async function compactOlderHistory(engine, measurement, agent, signal, contextWindow, retainPercent, toolsTokens) {
   const session = agent.session;
   const targetTokens = Math.floor(contextWindow * retainPercent / 100);
-  const fixedTokens = Math.max(0, measurement.totalTokens - measurement.surfaceTokens);
-  const deductibleTokens = Math.min(fixedTokens, Math.round(targetTokens * MAX_FIXED_SHARE));
-  const retainTokens = Math.max(0, targetTokens - deductibleTokens);
-  const range = selectRange(session, measurement.nodes, retainTokens);
+  const fixedTokens = toolsTokens ?? Math.max(0, measurement.totalTokens - measurement.surfaceTokens);
+  const scale = surfaceScale(measurement.totalTokens, measurement.surfaceTokens, fixedTokens);
+  const retainReal = targetTokens - fixedTokens;
+  const unreachable = retainReal <= 0;
+  const retainBudget = Math.max(
+    1,
+    Math.round((unreachable ? contextWindow * UNREACHABLE_FLOOR_SHARE : retainReal) / scale)
+  );
+  const range = selectRange(session, measurement.nodes, retainBudget);
   if (range === null) return { kind: "skipped", reason: "\u6CA1\u6709\u53EF\u5B89\u5168\u538B\u7F29\u7684\u5386\u53F2" };
   await engine.compactRegion?.(range.start, range.end, agent, signal);
-  return { kind: "compacted" };
+  return unreachable ? { kind: "compacted", note: `\u4FDD\u7559 ${retainPercent}% \u4F4E\u4E8E\u4E0D\u53EF\u538B\u7F29\u7684\u5DE5\u5177\u5B9A\u4E49\u5F00\u9500\uFF0C\u5DF2\u538B\u5230\u6700\u5C0F\u5C3E\u90E8` } : { kind: "compacted" };
 }
 
 // src/features/auto-compact/host/watcher.ts
@@ -3482,6 +3492,15 @@ function readContextWindow(agent) {
   const contextWindow = pressure?.contextWindow;
   if (contextWindow === void 0 || contextWindow <= 0) return void 0;
   return contextWindow;
+}
+function readToolsTokens(agent) {
+  const projections = readService(agent, "sessionProjections");
+  if (projections === void 0) return void 0;
+  const values = projections.snapshot(agent.session, ["contextBreakdown"]).values;
+  const breakdown = values.contextBreakdown;
+  const toolsTokens = breakdown?.breakdown?.toolsTokens;
+  if (toolsTokens === void 0 || !Number.isFinite(toolsTokens) || toolsTokens < 0) return void 0;
+  return toolsTokens;
 }
 function installAutoCompactWatcher(ctx) {
   const compacting = /* @__PURE__ */ new Set();
@@ -3552,10 +3571,13 @@ function installAutoCompactWatcher(ctx) {
         agent,
         signal,
         contextWindow,
-        settings.retainPercent
+        settings.retainPercent,
+        readToolsTokens(agent)
       );
       if (decision.kind === "skipped") {
         console.error("[auto-compact] \u81EA\u52A8\u538B\u7F29\u5DF2\u8DF3\u8FC7:", decision.reason);
+      } else if (decision.note !== void 0) {
+        console.error("[auto-compact] \u81EA\u52A8\u538B\u7F29\u5B8C\u6210:", decision.note);
       }
     } catch (error) {
       console.error("[auto-compact] \u81EA\u52A8\u538B\u7F29\u5931\u8D25:", error);
