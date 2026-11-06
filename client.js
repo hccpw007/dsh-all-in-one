@@ -3406,19 +3406,26 @@ window.__ModuleLoader__.load({
     var MENU_ICON_SELECTOR2 = '[class*="_itemIcon"]';
     var SVG_NAMESPACE2 = "http://www.w3.org/2000/svg";
     var ICON_SIZE2 = 16;
-    var BROOM_ICON_PATH = [
-      "m826 358 97-235a85 85 0 0 0-24-101 93 93 0 0 0-147 39L609 406c-3 9-6 17-19 11l-13-1a110 ",
-      "110 0 0 0-90 41l-48 62a135 135 0 0 1-29 29 674 674 0 0 1-289 123q-24 4-28 22a28 28 0 0 0",
-      " 16 30l94 60a3130 3130 0 0 0 348 195 508 508 0 0 0 128 43 54 54 0 0 0 68-30l10-18a472 47",
-      "2 0 0 0 68-263l-2-36 10-78a102 102 0 0 0-50-106q-11-6-5-15zM698 964a10 10 0 0 1-12 6l-14",
-      "-3-22-7 39-64a25 25 0 0 0-2-29 29 29 0 0 0-49 5q-16 30-36 59-4 9-13 4l-46-22 24-28a353 3",
-      "53 0 0 0 54-81 27 27 0 0 0-13-40 29 29 0 0 0-39 18 352 352 0 0 1-73 99q-3 5-10 2-75-40-1",
-      "49-84l62-37 63-42a27 27 0 0 0 10-40 29 29 0 0 0-43-4 1564 1564 0 0 1-131 82 25 25 0 0 1-",
-      "31 0q-34-23-74-46l80-26a703 703 0 0 0 172-96 17 17 0 0 1 19-3l292 111a16 16 0 0 1 12 16 ",
-      "431 431 0 0 1-70 250m78-376-6 48q0 9-9 6l-260-99q-9-3-3-9l33-43a54 54 0 0 1 44-20 64 64 ",
-      "0 0 1 24 5q69 29 139 53a51 51 0 0 1 38 59m-51-133q-4 11-13 5l-46-17q-11-3-6-13l111-268 3",
-      "7-88a35 35 0 0 1 65 4l2 10-4 14z"
-    ].join("");
+    var DELETE_ALL_ICON_PATHS = [
+      [
+        "M448.609524 882.590476c-58.514286 0-112.152381-19.504762-156.038095-63.390476l-126.78",
+        "0953-126.780952c-19.504762-19.504762-29.257143-43.885714-29.257143-73.142858s9.752381",
+        "-53.638095 29.257143-73.142857l375.466667-375.466666c39.009524-39.009524 107.27619-39",
+        ".009524 146.285714 0l209.676191 209.67619c39.009524 39.009524 39.009524 107.27619 0 1",
+        "46.285714l-292.571429 292.571429c-43.885714 43.885714-102.4 63.390476-156.038095 63.3",
+        "90476z m-121.904762-97.523809c68.266667 68.266667 175.542857 68.266667 243.809524 0l2",
+        "92.571428-292.571429c19.504762-19.504762 19.504762-53.638095 0-78.019048l-209.67619-2",
+        "09.67619c-19.504762-19.504762-53.638095-19.504762-78.019048 0l-375.466666 375.466667c",
+        "-9.752381 9.752381-14.628571 24.380952-14.628572 39.009523s4.87619 29.257143 14.62857",
+        "2 39.009524l126.780952 126.780953z"
+      ].join(""),
+      [
+        "M244.345905 516.437333l34.474666-34.474666 317.244953 317.19619-34.523429 34.474667zM",
+        "921.6 882.590476H453.485714c-14.628571 0-24.380952-9.752381-24.380952-24.380952s9.752",
+        "381-24.380952 24.380952-24.380953h468.114286c14.628571 0 24.380952 9.752381 24.380952",
+        " 24.380953s-9.752381 24.380952-24.380952 24.380952z"
+      ].join("")
+    ];
     var DELETE_WORKSPACE_LABELS = ["\u5220\u9664\u5DE5\u4F5C\u533A", "Delete workspace"];
     var INJECTED_ATTRIBUTE2 = "data-aio-delete-all-sessions";
     function readWorkspaceRow(row) {
@@ -3439,16 +3446,18 @@ window.__ModuleLoader__.load({
     function closeMenu() {
       document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
     }
-    function createBroomIcon() {
+    function createDeleteAllIcon() {
       const svg = document.createElementNS(SVG_NAMESPACE2, "svg");
       svg.setAttribute("width", String(ICON_SIZE2));
       svg.setAttribute("height", String(ICON_SIZE2));
-      svg.setAttribute("viewBox", "0 0 1024 1024");
+      svg.setAttribute("viewBox", "0 0 1082 1024");
       svg.setAttribute("fill", "currentColor");
       svg.setAttribute("aria-hidden", "true");
-      const iconPath = document.createElementNS(SVG_NAMESPACE2, "path");
-      iconPath.setAttribute("d", BROOM_ICON_PATH);
-      svg.appendChild(iconPath);
+      for (const pathData of DELETE_ALL_ICON_PATHS) {
+        const iconPath = document.createElementNS(SVG_NAMESPACE2, "path");
+        iconPath.setAttribute("d", pathData);
+        svg.appendChild(iconPath);
+      }
       return svg;
     }
     function createMenuItem2(template, label, onSelect) {
@@ -3460,7 +3469,7 @@ window.__ModuleLoader__.load({
       if (iconNode === null) {
         console.error("[delete-session] \u5DE5\u4F5C\u533A\u83DC\u5355\u9879\u6A21\u677F\u7F3A\u5C11\u56FE\u6807\u8282\u70B9\uFF0C\u6CBF\u7528\u5BBF\u4E3B\u56FE\u6807:", label);
       } else {
-        iconNode.replaceChildren(createBroomIcon());
+        iconNode.replaceChildren(createDeleteAllIcon());
       }
       const button = wrap.querySelector("button");
       if (!(button instanceof HTMLElement)) {
