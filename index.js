@@ -1759,6 +1759,10 @@ function bootExpandProcess(keys) {
       "  border-radius: 1px;",
       "  background: var(--dsw-alias-label-tertiary, #81858c);",
       "  opacity: 0.35;",
+      "}",
+      "[data-chat-flow] [data-chat-turn] {",
+      "  content-visibility: auto;",
+      "  contain-intrinsic-size: auto 480px;",
       "}"
     ].join("\n");
     (document.head || document.documentElement).appendChild(style);
