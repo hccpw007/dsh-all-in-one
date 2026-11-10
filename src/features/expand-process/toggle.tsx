@@ -13,7 +13,7 @@ import {
 /** 展开范围的可选项，顺序即界面上的排列顺序。 */
 const MODE_OPTIONS: Array<{ value: ExpandProcessMode; labelKey: string }> = [
   { value: 'all', labelKey: 'modeAll' },
-  { value: 'active', labelKey: 'modeActive' },
+  { value: 'latest', labelKey: 'modeLatest' },
 ]
 
 /** 开关入口图标：上下双向箭头，表达展开与收起。 */

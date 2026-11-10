@@ -1282,11 +1282,11 @@ window.__ModuleLoader__.load({
         // 提示切换开关会刷新页面，避免用户丢失滚动位置与未保存的输入
         reloadHint: "\u5207\u6362\u540E\u4F1A\u5237\u65B0\u9875\u9762\u4EE5\u751F\u6548\u3002",
         // 展开范围标签
-        modeLabel: "\u8303\u56F4",
-        // 展开范围选项：所有历史轮次的过程都展开
-        modeAll: "\u5168\u90E8\u5185\u5BB9",
-        // 展开范围选项：只展开当前这一轮对话的过程
-        modeActive: "\u5F53\u524D\u6FC0\u6D3B",
+        modeLabel: "\u5C55\u5F00\u8303\u56F4",
+        // 展开范围选项：所有对话轮次的过程都展开
+        modeAll: "\u5168\u90E8\u5BF9\u8BDD",
+        // 展开范围选项：只展开最新一轮对话的过程，该轮结束后保持展开
+        modeLatest: "\u6700\u65B0\u5BF9\u8BDD",
         // 开关或范围写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002"
       },
@@ -1299,10 +1299,10 @@ window.__ModuleLoader__.load({
         reloadHint: "Reloads the page so the change takes effect.",
         // Expansion scope label
         modeLabel: "Scope",
-        // Scope option: expand process rows in every turn
-        modeAll: "All content",
-        // Scope option: expand only the process rows of the current turn
-        modeActive: "Active turn",
+        // Scope option: expand process rows in every conversation turn
+        modeAll: "All conversations",
+        // Scope option: expand only the latest turn, which stays open after the turn ends
+        modeLatest: "Latest conversation",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions."
       }
@@ -1328,7 +1328,8 @@ window.__ModuleLoader__.load({
       }
       function readMode() {
         try {
-          return window.localStorage.getItem(keys.modeKey) === "active" ? "active" : "all";
+          const stored = window.localStorage.getItem(keys.modeKey);
+          return stored === "latest" || stored === "active" ? "latest" : "all";
         } catch (error) {
           console.error("[expand-process] \u8BFB\u53D6\u5C55\u5F00\u8303\u56F4\u5931\u8D25:", error);
           return "all";
@@ -1374,7 +1375,6 @@ window.__ModuleLoader__.load({
       let observer = null;
       let scheduled = false;
       let timer = 0;
-      let lastRunning = null;
       let lastTurn = null;
       const REFRESH_DEBOUNCE_MS = 150;
       function latestTurn() {
@@ -1392,16 +1392,11 @@ window.__ModuleLoader__.load({
         }
         return best ?? nodes[nodes.length - 1].getAttribute("data-chat-turn");
       }
-      function isRunning() {
-        return document.querySelector("[data-chat-running]") !== null;
-      }
       function refresh() {
-        const running = isRunning();
         const turn = latestTurn();
-        if (running === lastRunning && turn === lastTurn) return;
-        lastRunning = running;
+        if (turn === lastTurn) return;
         lastTurn = turn;
-        for (const update of [...binders]) update(running, turn);
+        for (const update of [...binders]) update(turn);
       }
       function schedule() {
         if (scheduled) return;
@@ -1421,7 +1416,6 @@ window.__ModuleLoader__.load({
         if (observer === null) return;
         observer.disconnect();
         observer = null;
-        lastRunning = null;
         lastTurn = null;
         if (timer !== 0) {
           window.clearTimeout(timer);
@@ -1430,18 +1424,18 @@ window.__ModuleLoader__.load({
         }
       }
       function bind(element, setExpanded, manual) {
-        if (!enabled || readMode() !== "active") return void 0;
+        if (!enabled || readMode() !== "latest") return void 0;
         if (element === null || typeof element.closest !== "function") return void 0;
         const turnElement = element.closest("[data-chat-turn]");
         if (turnElement === null) return void 0;
         const turn = turnElement.getAttribute("data-chat-turn");
-        const update = (running, latest) => {
+        const update = (latest) => {
           if (manual.current) return;
-          setExpanded(running && turn !== null && turn === latest);
+          setExpanded(turn !== null && turn === latest);
         };
         binders.push(update);
         observe();
-        update(isRunning(), latestTurn());
+        update(latestTurn());
         return () => {
           const index = binders.indexOf(update);
           if (index >= 0) binders.splice(index, 1);
@@ -1570,7 +1564,8 @@ window.__ModuleLoader__.load({
     }
     function readExpandProcessMode() {
       try {
-        return window.localStorage.getItem(EXPAND_PROCESS_MODE_STORAGE_KEY) === "active" ? "active" : "all";
+        const stored = window.localStorage.getItem(EXPAND_PROCESS_MODE_STORAGE_KEY);
+        return stored === "latest" || stored === "active" ? "latest" : "all";
       } catch (error) {
         console.error("[expand-process] \u8BFB\u53D6\u5C55\u5F00\u8303\u56F4\u5931\u8D25:", error);
         return "all";
@@ -1589,7 +1584,7 @@ window.__ModuleLoader__.load({
     // src/features/expand-process/toggle.tsx
     var MODE_OPTIONS = [
       { value: "all", labelKey: "modeAll" },
-      { value: "active", labelKey: "modeActive" }
+      { value: "latest", labelKey: "modeLatest" }
     ];
     function ExpandIcon() {
       return /* @__PURE__ */ import_react10.default.createElement(

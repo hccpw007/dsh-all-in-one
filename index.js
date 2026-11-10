@@ -1728,7 +1728,8 @@ function bootExpandProcess(keys) {
   }
   function readMode() {
     try {
-      return window.localStorage.getItem(keys.modeKey) === "active" ? "active" : "all";
+      const stored = window.localStorage.getItem(keys.modeKey);
+      return stored === "latest" || stored === "active" ? "latest" : "all";
     } catch (error) {
       console.error("[expand-process] \u8BFB\u53D6\u5C55\u5F00\u8303\u56F4\u5931\u8D25:", error);
       return "all";
@@ -1774,7 +1775,6 @@ function bootExpandProcess(keys) {
   let observer = null;
   let scheduled = false;
   let timer = 0;
-  let lastRunning = null;
   let lastTurn = null;
   const REFRESH_DEBOUNCE_MS = 150;
   function latestTurn() {
@@ -1792,16 +1792,11 @@ function bootExpandProcess(keys) {
     }
     return best ?? nodes[nodes.length - 1].getAttribute("data-chat-turn");
   }
-  function isRunning() {
-    return document.querySelector("[data-chat-running]") !== null;
-  }
   function refresh() {
-    const running = isRunning();
     const turn = latestTurn();
-    if (running === lastRunning && turn === lastTurn) return;
-    lastRunning = running;
+    if (turn === lastTurn) return;
     lastTurn = turn;
-    for (const update of [...binders]) update(running, turn);
+    for (const update of [...binders]) update(turn);
   }
   function schedule() {
     if (scheduled) return;
@@ -1821,7 +1816,6 @@ function bootExpandProcess(keys) {
     if (observer === null) return;
     observer.disconnect();
     observer = null;
-    lastRunning = null;
     lastTurn = null;
     if (timer !== 0) {
       window.clearTimeout(timer);
@@ -1830,18 +1824,18 @@ function bootExpandProcess(keys) {
     }
   }
   function bind(element, setExpanded, manual) {
-    if (!enabled || readMode() !== "active") return void 0;
+    if (!enabled || readMode() !== "latest") return void 0;
     if (element === null || typeof element.closest !== "function") return void 0;
     const turnElement = element.closest("[data-chat-turn]");
     if (turnElement === null) return void 0;
     const turn = turnElement.getAttribute("data-chat-turn");
-    const update = (running, latest) => {
+    const update = (latest) => {
       if (manual.current) return;
-      setExpanded(running && turn !== null && turn === latest);
+      setExpanded(turn !== null && turn === latest);
     };
     binders.push(update);
     observe();
-    update(isRunning(), latestTurn());
+    update(latestTurn());
     return () => {
       const index = binders.indexOf(update);
       if (index >= 0) binders.splice(index, 1);

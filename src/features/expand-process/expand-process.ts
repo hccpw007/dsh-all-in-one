@@ -15,8 +15,14 @@ export const EXPAND_PROCESS_STORAGE_KEY = 'dsh-all-in-one:expand-process'
 /** 展开范围在 localStorage 中的键；只在总开关打开时参与判断。 */
 export const EXPAND_PROCESS_MODE_STORAGE_KEY = 'dsh-all-in-one:expand-process-mode'
 
-/** 展开范围：`all` 展开全部过程行，`active` 只展开当前这一轮对话的过程行。 */
-export type ExpandProcessMode = 'all' | 'active'
+/**
+ * 展开范围：`all` 展开全部对话的过程行，`latest` 只展开最新一轮对话的过程行。
+ *
+ * 旧版本把后一种取值写作 `active`（只展开正在运行的那一轮，轮次结束就收起）；
+ * 现在改为「最新对话」：最新一轮始终展开，结束后不自动收起，直到用户开启下一轮。
+ * 读取处继续接受 `active`，避免升级后用户已选的范围被悄悄退回「全部对话」。
+ */
+export type ExpandProcessMode = 'all' | 'latest'
 
 /** 模式与总开关的存储键，注入脚本时整体传给浏览器端。 */
 interface ExpandProcessKeys {
@@ -67,10 +73,12 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
     }
   }
 
-  /** 读展开范围；存储不可用或值无法识别时按「全部内容」处理。 */
+  /** 读展开范围；存储不可用或值无法识别时按「全部对话」处理，旧值 `active` 归入「最新对话」。 */
   function readMode(): string {
     try {
-      return window.localStorage.getItem(keys.modeKey) === 'active' ? 'active' : 'all'
+      const stored = window.localStorage.getItem(keys.modeKey)
+
+      return stored === 'latest' || stored === 'active' ? 'latest' : 'all'
     } catch (error) {
       console.error('[expand-process] 读取展开范围失败:', error)
       return 'all'
@@ -88,10 +96,10 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
    * 线放在缩进留白里，不参与布局，因此不会挤动正文。
    *
    * 渲染部分：展开全部过程后，长会话里每个离屏轮次仍参与每次输入的布局计算，
-   * 实测 231 轮会话（1.3 万节点）单次全量布局从 25.6ms 涨到 62.4ms，输入框跟手性
-   * 明显下降。给每轮加 content-visibility 后，离屏轮次跳过布局与绘制，同一会话
-   * 布局降到 5.7ms，键入延迟回落到折叠时的水平；代价是滚动条长度会随滚动逐步修正，
-   * 打开会话定位到底部、滚动中内容渲染均已实测正常。
+   * 实测单轮 81 步（231 个流程节点、1.3 万 DOM 节点）的会话，单次全量布局从
+   * 25.6ms 涨到 62.4ms，输入框跟手性明显下降。给每轮加 content-visibility 后，
+   * 离屏轮次跳过布局与绘制，同一会话布局降到 5.7ms，键入延迟回落到折叠时的水平；
+   * 代价是滚动条长度会随滚动逐步修正，打开会话定位到底部、滚动中内容渲染均已实测正常。
    * 480px 是未渲染轮次的占位高度（该会话实测平均轮高约 470px），auto 关键字让
    * 浏览器记住渲染后的真实高度，只在从未渲染过时使用这个估算值。
    *
@@ -134,21 +142,20 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
   /**
    * 行挂载时的初始展开值。
    *
-   * 「全部内容」模式直接展开；「当前激活」模式先折叠，由行挂载后的布局阶段
+   * 「全部对话」模式直接展开；「最新对话」模式先折叠，由行挂载后的布局阶段
    * 按轮次判定，避免历史轮次先展开再收起闪一下。开关关闭时一律折叠。
    */
   win['__DSH_EXPAND_PROCESS_INITIAL__'] = function (): boolean {
     return enabled && readMode() === 'all'
   }
 
-  /** 所有已绑定行的重算函数；轮次或运行状态变化时统一调用。 */
-  const binders: Array<(running: boolean, turn: string | null) => void> = []
+  /** 所有已绑定行的重算函数；最新轮次变化时统一调用。 */
+  const binders: Array<(turn: string | null) => void> = []
   /** 整页变动观察器与合并标记，避免流式输出期间每帧重算多次。 */
   let observer: MutationObserver | null = null
   let scheduled = false
   let timer = 0
-  /** 上次参与判定的运行状态与轮次，两者都没变时不需要重算。 */
-  let lastRunning: boolean | null = null
+  /** 上次参与判定的最新轮次；没变时不需要重算。 */
   let lastTurn: string | null = null
   /** 合并窗口：流式输出每帧都在加节点，逐帧查询 DOM 没有意义。 */
   const REFRESH_DEBOUNCE_MS = 150
@@ -175,26 +182,20 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
     return best ?? nodes[nodes.length - 1].getAttribute('data-chat-turn')
   }
 
-  /** 会话是否正在运行：宿主只在运行期间挂这个只存在于流中的标记。 */
-  function isRunning(): boolean {
-    return document.querySelector('[data-chat-running]') !== null
-  }
-
   /**
-   * 重算所有已绑定行；运行状态与最新轮次都没变时直接跳过。
+   * 重算所有已绑定行；最新轮次没变时直接跳过。
    *
-   * 每次重算只查一次 DOM，把结果传给所有行：此前每个绑定行各自调用
-   * `isRunning()` / `latestTurn()`，N 行就是 2N 次全文档查询。
+   * 不参与判定运行状态：最新一轮跑完仍然保持展开，只有用户开始下一轮
+   * （DOM 中出现更大的轮次）时，上一轮的行才收起、新一轮的行展开。
+   * 每次重算只查一次 DOM，把结果传给所有行。
    */
   function refresh(): void {
-    const running = isRunning()
     const turn = latestTurn()
-    if (running === lastRunning && turn === lastTurn) return
+    if (turn === lastTurn) return
 
-    lastRunning = running
     lastTurn = turn
 
-    for (const update of [...binders]) update(running, turn)
+    for (const update of [...binders]) update(turn)
   }
 
   /** 把多次 DOM 变动合并到一个短窗口里，避免流式输出期间反复重算。 */
@@ -209,7 +210,7 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
     }, REFRESH_DEBOUNCE_MS)
   }
 
-  /** 观察整页变动：运行标记出现或消失、新轮次挂载都会触发重算。 */
+  /** 观察整页变动：新轮次挂载、切换会话都会触发重算。 */
   function observe(): void {
     if (observer !== null || document.body === null) return
 
@@ -223,7 +224,6 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
 
     observer.disconnect()
     observer = null
-    lastRunning = null
     lastTurn = null
     if (timer !== 0) {
       window.clearTimeout(timer)
@@ -235,9 +235,10 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
   /**
    * 绑定一行过程的展开状态。
    *
-   * 「当前激活」模式下，只有属于最新一轮、且该轮仍在运行的过程行展开；
-   * 轮次结束或新轮开始后自动收起。用户手动操作过的行不再被自动接管，
-   * 避免刚折叠好又被观察器打开。
+   * 「最新对话」模式下，属于最新一轮的过程行展开，更早的轮次折叠；最新一轮跑完后
+   * 保持展开，用户提交下一条提示词、新一轮出现时才折叠。一轮的边界由用户提交的
+   * 提示词决定，轮内 agent 的提问与用户回答仍属于同一轮，因此不会打断展开状态。
+   * 用户手动操作过的行不再被自动接管，避免刚折叠好又被观察器打开。
    * @param element 行组件根节点
    * @param setExpanded React 状态写入器
    * @param manual 该行是否已被用户手动操作过的标记
@@ -248,7 +249,7 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
     setExpanded: (value: boolean) => void,
     manual: { current: boolean },
   ): (() => void) | undefined {
-    if (!enabled || readMode() !== 'active') return undefined
+    if (!enabled || readMode() !== 'latest') return undefined
     if (element === null || typeof element.closest !== 'function') return undefined
 
     // 行的外层节点由宿主标记所属轮次，找不到时说明不是会话里的过程行
@@ -257,16 +258,16 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
 
     const turn = turnElement.getAttribute('data-chat-turn')
 
-    const update = (running: boolean, latest: string | null): void => {
+    const update = (latest: string | null): void => {
       if (manual.current) return
 
-      setExpanded(running && turn !== null && turn === latest)
+      setExpanded(turn !== null && turn === latest)
     }
 
     binders.push(update)
     observe()
-    // 首次绑定立即按当前状态判定，不必等下一次 DOM 变化
-    update(isRunning(), latestTurn())
+    // 首次绑定立即按当前最新轮次判定，不必等下一次 DOM 变化
+    update(latestTurn())
 
     return () => {
       const index = binders.indexOf(update)
@@ -462,12 +463,15 @@ export function writeExpandProcessEnabled(enabled: boolean): boolean {
 }
 
 /**
- * 读取展开范围；存储不可用或值无法识别时按「全部内容」处理。
+ * 读取展开范围；存储不可用或值无法识别时按「全部对话」处理。
+ * 旧值 `active`（升级前的「当前激活」）按「最新对话」返回，保留用户已选的范围。
  * @returns 当前展开范围
  */
 export function readExpandProcessMode(): ExpandProcessMode {
   try {
-    return window.localStorage.getItem(EXPAND_PROCESS_MODE_STORAGE_KEY) === 'active' ? 'active' : 'all'
+    const stored = window.localStorage.getItem(EXPAND_PROCESS_MODE_STORAGE_KEY)
+
+    return stored === 'latest' || stored === 'active' ? 'latest' : 'all'
   } catch (error) {
     console.error('[expand-process] 读取展开范围失败:', error)
     return 'all'
