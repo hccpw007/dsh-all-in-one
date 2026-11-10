@@ -88,6 +88,17 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
   const enabled = readEnabled()
 
   /**
+   * 让宿主把完成轮的过程留到下一次输入再折叠。
+   *
+   * 宿主自己有一条「工作步骤收起时机」策略，默认在回答结束时就折叠已完成轮的
+   * 工作步骤分组：分组一折，行级展开状态还在也看不见，最新一轮照样变成摘要。
+   * 宿主同样提供「下一次输入后」这一档，正是本功能「最新对话」要的语义，
+   * 所以补丁把收起时机按这个标志取值；非「最新对话」模式不设置标志，
+   * 宿主继续按用户自己的设置走。
+   */
+  win['__DSH_EXPAND_PROCESS_DEFER__'] = enabled && readMode() === 'latest'
+
+  /**
    * 行标题与过程内容的视觉层级，以及屏外轮次的渲染跳过。
    *
    * 视觉部分：只在开关打开时注入，行标题改用主文字色，与展开后的内容区分；
@@ -287,6 +298,10 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
    * 初始化用函数形式，避免每次渲染都读一次 localStorage。
    *
    * 行根节点补 `ref`：绑定需要拿到行所在的外层节点，才能判断它属于哪一轮。
+   *
+   * 最后一类改写落在宿主的呈现策略上：行级状态展开与否，仍会被宿主的
+   * 「工作步骤收起时机」分组折叠盖住，所以「最新对话」模式把该策略的取值
+   * 换成宿主的 next-input 档，让最新一轮完成后的分组保持展开。
    */
   const RULES: Record<string, Array<[string, string]>> = {
     '@deepseek-ai/dsh-client-ui-tool': [
@@ -303,6 +318,10 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
         'const __aioRow = (0, react.useRef)(null); const __aioManual = (0, react.useRef)(false); const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_INITIAL__()); const toggle = () => { __aioManual.current = true; setExpanded((value) => !value); }; (0, react.useLayoutEffect)(() => typeof window.__DSH_EXPAND_PROCESS_BIND__ === "function" ? window.__DSH_EXPAND_PROCESS_BIND__(__aioRow.current, setExpanded, __aioManual) : undefined, []);',
       ],
       ['"data-variant": "think",', 'ref: __aioRow, "data-variant": "think",'],
+      [
+        'return TIMING_POLICIES[collapseTiming][foldedReplies][mode];',
+        'return TIMING_POLICIES[window.__DSH_EXPAND_PROCESS_DEFER__ ? "next-input" : collapseTiming][foldedReplies][mode];',
+      ],
     ],
   }
 
