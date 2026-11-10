@@ -10,8 +10,8 @@ import {
   closestBlock,
   collectImagePaths,
   disposePreviews,
-  dropPreviewsForHostImage,
   isOwnPreviewNode,
+  previewAnchor,
   syncBlockPreviews,
   syncDisclosurePreviews,
 } from './preview'
@@ -56,9 +56,12 @@ function scanSubtree(root: Element): void {
     const block = closestBlock(text.parentElement)
     if (block === undefined) continue
 
-    const known = grouped.get(block)
+    // 同一工具调用里的路径合并到一个挂载点：标题与输出各带一次路径时只出一个预览
+    const anchor = previewAnchor(block)
+
+    const known = grouped.get(anchor)
     if (known === undefined) {
-      grouped.set(block, paths)
+      grouped.set(anchor, paths)
       continue
     }
 
@@ -67,7 +70,7 @@ function scanSubtree(root: Element): void {
     }
   }
 
-  for (const [block, paths] of grouped) syncBlockPreviews(block, paths)
+  for (const [anchor, paths] of grouped) syncBlockPreviews(anchor, paths)
 }
 
 /**
@@ -104,27 +107,24 @@ export function installImagePreviewObserver(): () => void {
         const parent = node.parentElement
         if (parent === null || !container.contains(parent) || isOwnPreviewNode(node)) continue
 
-        // 文本变化时重扫整个块：同一块里可能还有别的文本节点各带一个路径，
+        // 文本变化时重扫整个挂载点：同一挂载点里可能还有别的文本节点各带一个路径，
         // 只按当前文本同步会丢掉别的路径的预览
         const block = closestBlock(parent)
-        if (block !== undefined) blocks.add(block)
+        if (block !== undefined) blocks.add(previewAnchor(block))
         continue
       }
 
       if (!(node instanceof Element) || isOwnPreviewNode(node)) continue
 
-      // 新增节点在会话区内：按其所在块整块重扫。
+      // 新增节点在会话区内：按其所在挂载点整块重扫。
       // 只扫新增子树会得到块内路径的子集，与整块扫描出的全量 key 交替，
       // 同一块的预览就会被反复删除重建（每帧新建 img 并重新请求图片）
       if (container.contains(node)) {
         const block = closestBlock(node)
         if (block !== undefined) {
-          // 宿主把原图渲染出来后，同一行里本功能的预览就成了重复内容，先撤掉再重扫
-          if (node instanceof HTMLImageElement || node.querySelector('img') !== null) {
-            dropPreviewsForHostImage(block)
-          }
-
-          blocks.add(block)
+          // 宿主补渲染图片时重扫整个工具调用：宿主已渲染的路径会被登记，
+          // 相邻工具调用里同一文件的预览随之让位
+          blocks.add(previewAnchor(block))
         }
         continue
       }

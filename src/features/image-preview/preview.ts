@@ -9,6 +9,7 @@
  * 采用原生 DOM 而非 React：预览要插进宿主渲染的任意消息块之间，宿主不提供
  * 消息级插槽，用 React 会与宿主的渲染树互相覆盖。
  */
+import { hostRenderedAnchor, isContinuous, registerHostRenderedImage } from './continuity'
 import { closeImagePreview } from './lightbox'
 
 /** 预览容器的标记属性，扫描时据此跳过自己插入的节点，避免回调自激。 */
@@ -140,24 +141,24 @@ function canonicalPathKey(path: string): string {
 }
 
 /**
- * 预览的判断范围：工具调用容器 → 消息行 → 块本身，逐级回退。
- * @param block 消息中的块级容器
+ * 预览的判断范围：工具调用容器 → 消息行 → 挂载点本身，逐级回退。
+ * @param anchor 预览挂载点
  * @returns 判断「是否已有宿主图片」的范围元素
  */
-function previewScope(block: Element): Element {
-  return block.closest(TOOL_CALL_SELECTOR) ?? block.closest(HOST_MESSAGE_ROW_SELECTOR) ?? block
+function previewScope(anchor: Element): Element {
+  return anchor.closest(TOOL_CALL_SELECTOR) ?? anchor.closest(HOST_MESSAGE_ROW_SELECTOR) ?? anchor
 }
 
 /**
  * 判断范围内是否已有宿主渲染的图片。
  *
  * 宿主已经显示原图时再插一张预览就是同一张图出现两次，预览应当让位。
- * 本功能自己的预览图不算：它们挂在块之后，落在同一个消息行里。
- * @param block 消息中的块级容器
+ * 本功能自己的预览图不算：它们挂在挂载点之后，不在判断范围内。
+ * @param anchor 预览挂载点
  * @returns 已有宿主图片时返回 true
  */
-function hasHostImage(block: Element): boolean {
-  for (const image of previewScope(block).querySelectorAll('img')) {
+function hasHostImage(anchor: Element): boolean {
+  for (const image of previewScope(anchor).querySelectorAll('img')) {
     if (!isOwnPreviewNode(image)) return true
   }
 
@@ -263,6 +264,18 @@ export function closestBlock(element: Element | null): Element | undefined {
 }
 
 /**
+ * 求一条路径的预览挂载点。
+ *
+ * 工具调用内部是宿主的横向标题行，预览插进标题区就会与标题并排；统一挂到
+ * 调用容器之后，预览才和正文段落一样独占一行。
+ * @param block 路径所在的块级容器
+ * @returns 预览应插入其后的元素
+ */
+export function previewAnchor(block: Element): Element {
+  return block.closest(TOOL_CALL_SELECTOR) ?? block
+}
+
+/**
  * 已插入预览的归一化路径 → 拥有它的预览容器。
  *
  * 同一张图常在一段工具调用里出现两次：调用标题写着 `/tmp/x.png`，结果里写着
@@ -282,29 +295,69 @@ function releasePreviewOwnership(wrapper: Element): void {
 }
 
 /**
- * 把一个块内识别到的路径同步成预览节点。
- *
- * 同一个块只保留一个预览容器：路径集合变化时整体重建，未变化时不做任何 DOM 写入。
- * @param block 消息中的块级容器
- * @param paths 该块内的本地图片路径
+ * 撤掉与宿主渲染位置连续重复的预览。
+ * @param key 归一化后的路径
+ * @param hostAnchor 宿主渲染图片的位置
  */
-export function syncBlockPreviews(block: Element, paths: string[]): void {
+function dropContinuousPreview(key: string, hostAnchor: Element): void {
+  const wrapper = previewOwners.get(key)
+  if (wrapper === undefined) return
+
+  // 容器已随虚拟滚动卸载：顺手释放映射，避免历史图片一直持有旧节点
+  if (!wrapper.isConnected) {
+    previewOwners.delete(key)
+
+    return
+  }
+
+  if (!isContinuous(wrapper, hostAnchor)) return
+
+  releasePreviewOwnership(wrapper)
+  wrapper.remove()
+}
+
+/**
+ * 把一个挂载点内识别到的路径同步成预览节点。
+ *
+ * 同一个挂载点只保留一个预览容器：路径集合变化时整体重建，未变化时不做任何 DOM 写入。
+ * @param anchor 预览挂载点（正文块或工具调用容器）
+ * @param paths 该挂载点内的本地图片路径
+ */
+export function syncBlockPreviews(anchor: Element, paths: string[]): void {
   // 宿主重渲染可能已经移除了预览容器，这里先以 DOM 实际状态为准
-  const existing = block.nextElementSibling
+  const existing = anchor.nextElementSibling
   const wrapper = existing instanceof HTMLElement && existing.hasAttribute(PREVIEW_ATTRIBUTE)
     ? existing
     : undefined
 
+  const hostImage = hasHostImage(anchor)
+
+  // 宿主已经把原图渲染出来时登记这些路径：相邻工具调用里的同一文件不再重复插预览。
+  // 只登记工具调用内的宿主图片——正文消息行里的图不一定对应这段文字里的路径
+  const hostImageAnchor = anchor.closest(TOOL_CALL_SELECTOR)
+  if (hostImage && hostImageAnchor !== null) {
+    for (const path of paths) {
+      const key = canonicalPathKey(path)
+      registerHostRenderedImage(key, hostImageAnchor)
+      dropContinuousPreview(key, hostImageAnchor)
+    }
+  }
+
   // 宿主已经把原图渲染出来时不插预览，否则同一张图会显示两次；
   // 同一文件还可能以 `/tmp/...` 与 `/private/tmp/...` 两种写法出现，先去重
-  const candidates = hasHostImage(block)
+  const candidates = hostImage
     ? []
     : dedupeByCanonicalPath(paths.filter((path) => !failedPaths.has(canonicalPathKey(path))))
 
-  // 已被别的块占用的同一张图也不再重复插入（容器断开即视为释放，跟随虚拟滚动）。
+  // 已被别的挂载点占用的同一张图也不再重复插入（容器断开即视为释放，跟随虚拟滚动）。
   // 容器断开时顺手删掉映射：否则虚拟滚动过的历史图片会一直持有已卸载的节点
   const usablePaths = candidates.filter((path) => {
     const key = canonicalPathKey(path)
+
+    // 宿主在同一次连续引用里已经渲染过这张图：预览让位，避免连续两次展示同一文件
+    const hostAnchor = hostRenderedAnchor(key)
+    if (hostAnchor !== undefined && isContinuous(anchor, hostAnchor)) return false
+
     const owner = previewOwners.get(key)
     if (owner === undefined || owner === wrapper) return true
     if (owner.isConnected) return false
@@ -320,15 +373,15 @@ export function syncBlockPreviews(block: Element, paths: string[]): void {
     if (wrapper.dataset.previewKey === key) return
     releasePreviewOwnership(wrapper)
     wrapper.remove()
-  } else if (usablePaths.length === 0 && renderedBlockKeys.get(block) === key) {
-    // 该块此前已判定为无需预览（路径全部读取失败或被别处占用），不必每次扫描都重试；
-    // 反之有可用路径却没有容器，只可能是被宿主重渲染移除了，必须重建
+  } else if (usablePaths.length === 0 && renderedBlockKeys.get(anchor) === key) {
+    // 该挂载点此前已判定为无需预览（路径全部读取失败、被别处占用或宿主已渲染），
+    // 不必每次扫描都重试；反之有可用路径却没有容器，只可能是被宿主重渲染移除了，必须重建
     return
   }
 
-  const parent = block.parentElement
+  const parent = anchor.parentElement
   if (usablePaths.length === 0 || parent === null) {
-    renderedBlockKeys.set(block, key)
+    renderedBlockKeys.set(anchor, key)
     return
   }
 
@@ -342,62 +395,61 @@ export function syncBlockPreviews(block: Element, paths: string[]): void {
     previewOwners.set(canonicalPathKey(path), container)
   }
 
-  applyDisclosureState(block, container)
-  block.insertAdjacentElement('afterend', container)
+  applyDisclosureState(anchor, container)
+  anchor.insertAdjacentElement('afterend', container)
 }
 
 /**
- * 求一个块所属的折叠行根节点。
- *
- * 预览插在标题块之后，也就落在折叠行的标题区里；标题区在收起时仍然可见，
- * 宿主不会替我们隐藏它。因此要拿到折叠行的根，按它的展开状态决定预览的可见性。
- * @param block 消息中的块级容器
- * @returns 折叠行根节点；不在折叠行标题区里时返回 undefined
+ * 求预览挂载点所属的折叠行根节点。
+ * @param anchor 预览挂载点
+ * @returns 折叠行根节点；不在折叠行里时返回 undefined
  */
-function disclosureRoot(block: Element): Element | undefined {
-  return block.closest('[data-disclosure-header]')?.parentElement ?? undefined
+function disclosureRoot(anchor: Element): Element | undefined {
+  // 工具调用作为挂载点时，折叠标记在它内部的标题行上，先往上找再往里找
+  const header =
+    anchor.closest('[data-disclosure-header]') ?? anchor.querySelector('[data-disclosure-header]')
+
+  return header?.parentElement ?? undefined
 }
 
 /**
  * 按折叠状态设置预览容器是否可见。
- * @param block 预览所属的块
+ * @param anchor 预览挂载点
  * @param container 预览容器
  */
-function applyDisclosureState(block: Element, container: HTMLElement): void {
-  const root = disclosureRoot(block)
+function applyDisclosureState(anchor: Element, container: HTMLElement): void {
+  const root = disclosureRoot(anchor)
   // 收起时用内联 display：预览容器自身带 flex 类名，[hidden] 会被它覆盖
   container.style.display = root !== undefined && !root.hasAttribute('data-open') ? 'none' : ''
 }
 
 /**
- * 同步一条折叠行里预览的可见性。
+ * 同步一条折叠行对应的预览可见性。
  *
- * 用户展开或收起折叠行时，行内已有的预览要跟着一起显示或隐藏。
+ * 用户展开或收起折叠行时，行内的预览要跟着一起显示或隐藏。预览可能挂在工具调用
+ * 之外，因此除了折叠行内部，还要检查工具调用的下一个兄弟节点。
  * @param root 折叠行根节点
  */
 export function syncDisclosurePreviews(root: Element): void {
   const collapsed = !root.hasAttribute('data-open')
+  const toolCall =
+    root.parentElement?.closest(TOOL_CALL_SELECTOR) ?? root.querySelector(TOOL_CALL_SELECTOR)
 
+  const wrappers = new Set<HTMLElement>()
+  const anchored = toolCall?.nextElementSibling
+  if (anchored instanceof HTMLElement && anchored.hasAttribute(PREVIEW_ATTRIBUTE)) {
+    wrappers.add(anchored)
+  }
+
+  // 正文折叠区里的预览仍可能落在折叠行内部
   for (const wrapper of root.querySelectorAll<HTMLElement>(`[${PREVIEW_ATTRIBUTE}]`)) {
+    wrappers.add(wrapper)
+  }
+
+  for (const wrapper of wrappers) {
     if (collapsed) wrapper.style.display = 'none'
     // 图片加载失败后容器可能已经空了，展开时不要露出一个空壳
     else wrapper.style.display = wrapper.childElementCount === 0 ? 'none' : ''
-  }
-}
-
-/**
- * 撤掉一条消息行里本功能的预览。
- *
- * 宿主往往晚于文本把原图渲染出来，同一行里的预览此时就成了重复内容；
- * 这里就地清理，不必等该行再出现文本变化。
- * @param block 消息中的块级容器
- */
-export function dropPreviewsForHostImage(block: Element): void {
-  if (!hasHostImage(block)) return
-
-  for (const wrapper of previewScope(block).querySelectorAll(`[${PREVIEW_ATTRIBUTE}]`)) {
-    releasePreviewOwnership(wrapper)
-    wrapper.remove()
   }
 }
 

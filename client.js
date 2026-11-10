@@ -2049,6 +2049,43 @@ window.__ModuleLoader__.load({
       };
     }
 
+    // src/features/image-preview/continuity.ts
+    var FLOW_ITEM_SELECTOR = "[data-chat-flow-kind]";
+    var FLOW_KIND_ATTRIBUTE = "data-chat-flow-kind";
+    var FLOW_TURN_ATTRIBUTE = "data-chat-turn";
+    var FLOW_KIND_TOOL_CALL = "tool-call";
+    var hostRenderedPaths = /* @__PURE__ */ new Map();
+    function registerHostRenderedImage(key, anchor) {
+      hostRenderedPaths.set(key, anchor);
+    }
+    function hostRenderedAnchor(key) {
+      const anchor = hostRenderedPaths.get(key);
+      if (anchor === void 0) return void 0;
+      if (anchor.isConnected) return anchor;
+      hostRenderedPaths.delete(key);
+      return void 0;
+    }
+    function isContinuous(a, b) {
+      const flowA = a.closest(FLOW_ITEM_SELECTOR);
+      const flowB = b.closest(FLOW_ITEM_SELECTOR);
+      if (flowA === null || flowB === null) return false;
+      if (flowA === flowB) return true;
+      if (flowA.parentElement === null || flowA.parentElement !== flowB.parentElement) return false;
+      if (flowA.getAttribute(FLOW_TURN_ATTRIBUTE) !== flowB.getAttribute(FLOW_TURN_ATTRIBUTE)) {
+        return false;
+      }
+      const siblings = Array.from(flowA.parentElement.children);
+      const indexA = siblings.indexOf(flowA);
+      const indexB = siblings.indexOf(flowB);
+      if (indexA < 0 || indexB < 0) return false;
+      const start = Math.min(indexA, indexB);
+      const end = Math.max(indexA, indexB);
+      for (let index = start; index <= end; index += 1) {
+        if (siblings[index].getAttribute(FLOW_KIND_ATTRIBUTE) !== FLOW_KIND_TOOL_CALL) return false;
+      }
+      return true;
+    }
+
     // src/features/image-preview/preview.ts
     var PREVIEW_ATTRIBUTE = "data-dsh-image-preview";
     var WRAPPER_CLASS = "mt-2 flex flex-col items-start gap-2";
@@ -2106,11 +2143,11 @@ window.__ModuleLoader__.load({
       }
       return path;
     }
-    function previewScope(block) {
-      return block.closest(TOOL_CALL_SELECTOR) ?? block.closest(HOST_MESSAGE_ROW_SELECTOR) ?? block;
+    function previewScope(anchor) {
+      return anchor.closest(TOOL_CALL_SELECTOR) ?? anchor.closest(HOST_MESSAGE_ROW_SELECTOR) ?? anchor;
     }
-    function hasHostImage(block) {
-      for (const image of previewScope(block).querySelectorAll("img")) {
+    function hasHostImage(anchor) {
+      for (const image of previewScope(anchor).querySelectorAll("img")) {
         if (!isOwnPreviewNode(image)) return true;
       }
       return false;
@@ -2168,18 +2205,43 @@ window.__ModuleLoader__.load({
       }
       return void 0;
     }
+    function previewAnchor(block) {
+      return block.closest(TOOL_CALL_SELECTOR) ?? block;
+    }
     var previewOwners = /* @__PURE__ */ new Map();
     function releasePreviewOwnership(wrapper) {
       for (const [key, owner] of previewOwners) {
         if (owner === wrapper) previewOwners.delete(key);
       }
     }
-    function syncBlockPreviews(block, paths) {
-      const existing = block.nextElementSibling;
+    function dropContinuousPreview(key, hostAnchor) {
+      const wrapper = previewOwners.get(key);
+      if (wrapper === void 0) return;
+      if (!wrapper.isConnected) {
+        previewOwners.delete(key);
+        return;
+      }
+      if (!isContinuous(wrapper, hostAnchor)) return;
+      releasePreviewOwnership(wrapper);
+      wrapper.remove();
+    }
+    function syncBlockPreviews(anchor, paths) {
+      const existing = anchor.nextElementSibling;
       const wrapper = existing instanceof HTMLElement && existing.hasAttribute(PREVIEW_ATTRIBUTE) ? existing : void 0;
-      const candidates = hasHostImage(block) ? [] : dedupeByCanonicalPath(paths.filter((path) => !failedPaths.has(canonicalPathKey(path))));
+      const hostImage = hasHostImage(anchor);
+      const hostImageAnchor = anchor.closest(TOOL_CALL_SELECTOR);
+      if (hostImage && hostImageAnchor !== null) {
+        for (const path of paths) {
+          const key2 = canonicalPathKey(path);
+          registerHostRenderedImage(key2, hostImageAnchor);
+          dropContinuousPreview(key2, hostImageAnchor);
+        }
+      }
+      const candidates = hostImage ? [] : dedupeByCanonicalPath(paths.filter((path) => !failedPaths.has(canonicalPathKey(path))));
       const usablePaths = candidates.filter((path) => {
         const key2 = canonicalPathKey(path);
+        const hostAnchor = hostRenderedAnchor(key2);
+        if (hostAnchor !== void 0 && isContinuous(anchor, hostAnchor)) return false;
         const owner = previewOwners.get(key2);
         if (owner === void 0 || owner === wrapper) return true;
         if (owner.isConnected) return false;
@@ -2191,12 +2253,12 @@ window.__ModuleLoader__.load({
         if (wrapper.dataset.previewKey === key) return;
         releasePreviewOwnership(wrapper);
         wrapper.remove();
-      } else if (usablePaths.length === 0 && renderedBlockKeys.get(block) === key) {
+      } else if (usablePaths.length === 0 && renderedBlockKeys.get(anchor) === key) {
         return;
       }
-      const parent = block.parentElement;
+      const parent = anchor.parentElement;
       if (usablePaths.length === 0 || parent === null) {
-        renderedBlockKeys.set(block, key);
+        renderedBlockKeys.set(anchor, key);
         return;
       }
       const container = document.createElement("div");
@@ -2207,28 +2269,31 @@ window.__ModuleLoader__.load({
         container.appendChild(createPreviewImage(path, container));
         previewOwners.set(canonicalPathKey(path), container);
       }
-      applyDisclosureState(block, container);
-      block.insertAdjacentElement("afterend", container);
+      applyDisclosureState(anchor, container);
+      anchor.insertAdjacentElement("afterend", container);
     }
-    function disclosureRoot(block) {
-      return block.closest("[data-disclosure-header]")?.parentElement ?? void 0;
+    function disclosureRoot(anchor) {
+      const header = anchor.closest("[data-disclosure-header]") ?? anchor.querySelector("[data-disclosure-header]");
+      return header?.parentElement ?? void 0;
     }
-    function applyDisclosureState(block, container) {
-      const root = disclosureRoot(block);
+    function applyDisclosureState(anchor, container) {
+      const root = disclosureRoot(anchor);
       container.style.display = root !== void 0 && !root.hasAttribute("data-open") ? "none" : "";
     }
     function syncDisclosurePreviews(root) {
       const collapsed = !root.hasAttribute("data-open");
+      const toolCall = root.parentElement?.closest(TOOL_CALL_SELECTOR) ?? root.querySelector(TOOL_CALL_SELECTOR);
+      const wrappers = /* @__PURE__ */ new Set();
+      const anchored = toolCall?.nextElementSibling;
+      if (anchored instanceof HTMLElement && anchored.hasAttribute(PREVIEW_ATTRIBUTE)) {
+        wrappers.add(anchored);
+      }
       for (const wrapper of root.querySelectorAll(`[${PREVIEW_ATTRIBUTE}]`)) {
+        wrappers.add(wrapper);
+      }
+      for (const wrapper of wrappers) {
         if (collapsed) wrapper.style.display = "none";
         else wrapper.style.display = wrapper.childElementCount === 0 ? "none" : "";
-      }
-    }
-    function dropPreviewsForHostImage(block) {
-      if (!hasHostImage(block)) return;
-      for (const wrapper of previewScope(block).querySelectorAll(`[${PREVIEW_ATTRIBUTE}]`)) {
-        releasePreviewOwnership(wrapper);
-        wrapper.remove();
       }
     }
     function toImageUrl(source) {
@@ -2289,16 +2354,17 @@ window.__ModuleLoader__.load({
         if (paths.length === 0) continue;
         const block = closestBlock(text.parentElement);
         if (block === void 0) continue;
-        const known = grouped.get(block);
+        const anchor = previewAnchor(block);
+        const known = grouped.get(anchor);
         if (known === void 0) {
-          grouped.set(block, paths);
+          grouped.set(anchor, paths);
           continue;
         }
         for (const path of paths) {
           if (!known.includes(path)) known.push(path);
         }
       }
-      for (const [block, paths] of grouped) syncBlockPreviews(block, paths);
+      for (const [anchor, paths] of grouped) syncBlockPreviews(anchor, paths);
     }
     function installImagePreviewObserver() {
       let container = findConversationContainer();
@@ -2319,17 +2385,14 @@ window.__ModuleLoader__.load({
             const parent = node.parentElement;
             if (parent === null || !container.contains(parent) || isOwnPreviewNode(node)) continue;
             const block = closestBlock(parent);
-            if (block !== void 0) blocks.add(block);
+            if (block !== void 0) blocks.add(previewAnchor(block));
             continue;
           }
           if (!(node instanceof Element) || isOwnPreviewNode(node)) continue;
           if (container.contains(node)) {
             const block = closestBlock(node);
             if (block !== void 0) {
-              if (node instanceof HTMLImageElement || node.querySelector("img") !== null) {
-                dropPreviewsForHostImage(block);
-              }
-              blocks.add(block);
+              blocks.add(previewAnchor(block));
             }
             continue;
           }
