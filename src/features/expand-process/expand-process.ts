@@ -292,6 +292,12 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
   /**
    * 包 id → [旧源码片段, 新源码片段] 列表。
    *
+   * 锚点必须与宿主 bundle 的压缩写法逐字一致：打包器去掉语句间的空格与分号、
+   * 字面量统一用模板字符串，旧版本里 `const { expanded, toggle } = useDisclosure();`
+   * 这类可读写法在 0.2.2-rc.2 起变成 `const{expanded,toggle}=useDisclosure();`。
+   * 宿主每次升级都可能改变打包结果，命中失败会在控制台留下「规则未命中」警告；
+   * 看到该警告时按新 bundle 的实际文本更新本表，不要猜测。
+   *
    * 展开状态必须留在行自己的 state 里：若把 `expanded` 直接换成开关值，
    * 点击折叠按钮只改 hook 内部 state、渲染仍按开关值走，单行就永远收不起来。
    * 这里的 useState 只把开关值当作初始值，之后完全由折叠按钮接管；
@@ -306,21 +312,21 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
   const RULES: Record<string, Array<[string, string]>> = {
     '@deepseek-ai/dsh-client-ui-tool': [
       [
-        'const { expanded, toggle: toggleExpand } = useDisclosure();',
+        'const{expanded,toggle:toggleExpand}=useDisclosure();',
         'const __aioRow = (0, react.useRef)(null); const __aioManual = (0, react.useRef)(false); const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_INITIAL__()); const toggleExpand = () => { __aioManual.current = true; setExpanded((value) => !value); }; (0, react.useLayoutEffect)(() => typeof window.__DSH_EXPAND_PROCESS_BIND__ === "function" ? window.__DSH_EXPAND_PROCESS_BIND__(__aioRow.current, setExpanded, __aioManual) : undefined, []);',
       ],
-      ['"data-tool": toolName,', 'ref: __aioRow, "data-tool": toolName,'],
-      ['"data-sample": "bash",', 'ref: __aioRow, "data-sample": "bash",'],
+      ['"data-tool":toolName,', 'ref:__aioRow,"data-tool":toolName,'],
+      ['"data-sample":`bash`,', 'ref:__aioRow,"data-sample":`bash`,'],
     ],
     '@deepseek-ai/dsh-client-ui-chat': [
       [
-        'const { expanded, toggle } = useDisclosure();',
+        'const{expanded,toggle}=useDisclosure();',
         'const __aioRow = (0, react.useRef)(null); const __aioManual = (0, react.useRef)(false); const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_INITIAL__()); const toggle = () => { __aioManual.current = true; setExpanded((value) => !value); }; (0, react.useLayoutEffect)(() => typeof window.__DSH_EXPAND_PROCESS_BIND__ === "function" ? window.__DSH_EXPAND_PROCESS_BIND__(__aioRow.current, setExpanded, __aioManual) : undefined, []);',
       ],
-      ['"data-variant": "think",', 'ref: __aioRow, "data-variant": "think",'],
+      ['"data-variant":`think`,', 'ref:__aioRow,"data-variant":`think`,'],
       [
-        'return TIMING_POLICIES[collapseTiming][foldedReplies][mode];',
-        'return TIMING_POLICIES[window.__DSH_EXPAND_PROCESS_DEFER__ ? "next-input" : collapseTiming][foldedReplies][mode];',
+        'return TIMING_POLICIES[collapseTiming][foldedReplies][mode]}',
+        'return TIMING_POLICIES[window.__DSH_EXPAND_PROCESS_DEFER__ ? "next-input" : collapseTiming][foldedReplies][mode]}',
       ],
     ],
   }

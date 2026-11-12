@@ -1847,21 +1847,21 @@ function bootExpandProcess(keys) {
   const RULES = {
     "@deepseek-ai/dsh-client-ui-tool": [
       [
-        "const { expanded, toggle: toggleExpand } = useDisclosure();",
+        "const{expanded,toggle:toggleExpand}=useDisclosure();",
         'const __aioRow = (0, react.useRef)(null); const __aioManual = (0, react.useRef)(false); const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_INITIAL__()); const toggleExpand = () => { __aioManual.current = true; setExpanded((value) => !value); }; (0, react.useLayoutEffect)(() => typeof window.__DSH_EXPAND_PROCESS_BIND__ === "function" ? window.__DSH_EXPAND_PROCESS_BIND__(__aioRow.current, setExpanded, __aioManual) : undefined, []);'
       ],
-      ['"data-tool": toolName,', 'ref: __aioRow, "data-tool": toolName,'],
-      ['"data-sample": "bash",', 'ref: __aioRow, "data-sample": "bash",']
+      ['"data-tool":toolName,', 'ref:__aioRow,"data-tool":toolName,'],
+      ['"data-sample":`bash`,', 'ref:__aioRow,"data-sample":`bash`,']
     ],
     "@deepseek-ai/dsh-client-ui-chat": [
       [
-        "const { expanded, toggle } = useDisclosure();",
+        "const{expanded,toggle}=useDisclosure();",
         'const __aioRow = (0, react.useRef)(null); const __aioManual = (0, react.useRef)(false); const [expanded, setExpanded] = (0, react.useState)(() => window.__DSH_EXPAND_PROCESS_INITIAL__()); const toggle = () => { __aioManual.current = true; setExpanded((value) => !value); }; (0, react.useLayoutEffect)(() => typeof window.__DSH_EXPAND_PROCESS_BIND__ === "function" ? window.__DSH_EXPAND_PROCESS_BIND__(__aioRow.current, setExpanded, __aioManual) : undefined, []);'
       ],
-      ['"data-variant": "think",', 'ref: __aioRow, "data-variant": "think",'],
+      ['"data-variant":`think`,', 'ref:__aioRow,"data-variant":`think`,'],
       [
-        "return TIMING_POLICIES[collapseTiming][foldedReplies][mode];",
-        'return TIMING_POLICIES[window.__DSH_EXPAND_PROCESS_DEFER__ ? "next-input" : collapseTiming][foldedReplies][mode];'
+        "return TIMING_POLICIES[collapseTiming][foldedReplies][mode]}",
+        'return TIMING_POLICIES[window.__DSH_EXPAND_PROCESS_DEFER__ ? "next-input" : collapseTiming][foldedReplies][mode]}'
       ]
     ]
   };
