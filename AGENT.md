@@ -154,6 +154,15 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 │           ├── host/        # 本地图片读取
 │           │   └── routes.ts # GET /dsh-all-in-one/image
 │           └── locales.ts   # 本功能的中英文文案
+│       ├── queue-edit/      # 开关型功能：排队条上的编辑按钮改为撤回排队并回填输入框
+│           ├── index.tsx    # 注册定义：switch 入口 + client 扩展
+│           ├── toggle.tsx   # 网格中的开关入口
+│           ├── storage.ts   # 开关状态读写（localStorage），本功能专属
+│           ├── client.tsx   # 客户端扩展：注入会话列表与对话服务，安装排队条按钮
+│           ├── queue-edit.ts # 排队条 DOM 注入：隐藏宿主编辑按钮、插入自己的按钮
+│           ├── recall.ts    # 撤回一条排队消息：读图片、写回草稿、删除队列项
+│           ├── types.ts     # 客户端与 DOM 层共用的按钮契约
+│           └── locales.ts   # 本功能的中英文文案
 │       ├── session-history/ # 开关型功能：轮次导航条移到对话左侧
 │           ├── index.tsx    # 注册定义：switch 入口 + client 扩展
 │           ├── toggle.tsx   # 网格中的开关入口
@@ -248,12 +257,11 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 修改这几条规则前先确认真实目录里已有文件仍被正确解析（`parseMemoryFile` 只认上述字段，
 其余内容原样留在正文）；本插件不得写出 Claude Code 读不懂的文件。
 
-功能按改动生效的位置分三组，每组四项，正好铺满网格的两列两行；分组只影响设置页网格的
-分块，目录保持平铺：
+功能按改动生效的位置分三组；分组只影响设置页网格的分块，目录保持平铺：
 
 | 分组 | group id | 包含功能 | 切换开关是否刷新页面 |
 |---|---|---|---|
-| 对话体验 | `conversation` | 展开过程、会话图片预览、清空会话、全自动执行 | 是 |
+| 对话体验 | `conversation` | 展开过程、会话图片预览、清空会话、编辑排队消息、全自动执行 | 是 |
 | 界面布局 | `layout` | 会话历史左侧、菜单收进更多、项目会话数、删除会话 | 是 |
 | 配置与维护 | `config` | 技能包、项目记忆、自动压缩会话、Cookie 清理 | 否 |
 

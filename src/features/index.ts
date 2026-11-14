@@ -3,6 +3,7 @@ import type { FeatureDefinition } from '../shell/registry'
 import expandProcess from './expand-process'
 import imagePreview from './image-preview'
 import clearSession from './clear-session'
+import queueEdit from './queue-edit'
 import autoRun from './auto-run'
 import sessionHistory from './session-history'
 import sidebarMore from './sidebar-more'
@@ -33,6 +34,7 @@ export const featureList: FeatureDefinition[] = [
   expandProcess,
   imagePreview,
   clearSession,
+  queueEdit,
   autoRun,
   // 界面布局：侧边栏、会话列表与导航结构
   sessionHistory,

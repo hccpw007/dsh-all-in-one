@@ -115,6 +115,115 @@ export interface UiWorkspaceApi {
   }
 }
 
+/**
+ * 待发送消息里的一个内容块。
+ *
+ * 队列投影是宿主事件折叠出来的 wire 数据，块字段随类型出现：文本块带 `text`，
+ * 图片与文件块带 `attachment`；这里按读取到的最小形状声明，不复制宿主联合类型。
+ */
+export interface QueueContentBlock {
+  readonly type: string
+  readonly text?: string
+  readonly attachment?: AttachmentRef
+}
+
+/** 宿主持久化附件（图片与文件共用外层标识）。 */
+export interface AttachmentRef {
+  readonly attachmentId: string
+  readonly mediaType?: string
+  readonly name?: string
+  /** 编码后的字节数；图片块带该字段。 */
+  readonly bytes?: number
+  /** 图片固有宽度；图片块带该字段。 */
+  readonly width?: number
+  /** 图片固有高度；图片块带该字段。 */
+  readonly height?: number
+}
+
+/** 宿主持久化图片的可选尺寸与字节信息；readAttachment 需要完整引用，这里只作说明。 */
+export interface ImageAttachmentRef extends AttachmentRef {
+  readonly mediaType: string
+  readonly bytes: number
+  readonly width: number
+  readonly height: number
+}
+
+/** 队列投影里的一条待发送消息。 */
+export interface QueuedMessage {
+  readonly id: string
+  readonly content: readonly QueueContentBlock[]
+  /** 下发来源；本地下发回显靠 `rpcId` 与请求标识对应。 */
+  readonly source?: { readonly kind?: string; readonly rpcId?: string }
+}
+
+/** 会话快照里本插件用到的字段。 */
+export interface SessionSnapshotApi {
+  /** 非空表示这是子代理会话，图片不再走宿主上传通道。 */
+  readonly subagent: unknown
+  /** 已提交但尚未进入队列或正文的本地回显。 */
+  readonly pendingSubmissions: readonly {
+    readonly requestId: string
+    readonly placement: 'queued' | 'transcript'
+  }[]
+}
+
+/** 会话投影读取面（宿主 `useProjection` 的底层入口）。 */
+export interface SessionProjectionsApi {
+  faceOf(key: string): { getSnapshot(): unknown }
+}
+
+/** 客户端会话对象中本插件用到的能力。 */
+export interface SessionApi {
+  getSnapshot(): SessionSnapshotApi
+  readonly projections: SessionProjectionsApi
+  /** 读取宿主持久化图片的字节，用于把排队消息里的图片放回输入框。 */
+  readAttachment(
+    attachment: ImageAttachmentRef,
+  ): Promise<RemoteResult<{ attachment: ImageAttachmentRef; data: Uint8Array }>>
+}
+
+/** 一条被持有的会话绑定：会话对象与它的作用域上下文。 */
+export interface SessionBindingApi {
+  readonly session: SessionApi
+  readonly ctx: unknown
+}
+
+/**
+ * 会话作用域上下文。
+ *
+ * 宿主按调用方上下文解析服务：同一个服务对象从会话作用域里取出来，方法内部的
+ * `ctx` 就是那个会话，队列与取消这类按会话寻址的操作才能落到正确的会话上。
+ */
+export interface SessionScopeApi {
+  get(name: string): unknown
+}
+
+/** 浏览器侧草稿附件标识。 */
+export type DraftAttachmentId = string
+
+/** 会话输入框的公开状态。 */
+export interface InputStateApi {
+  /** 已放进草稿的附件标识，按发送顺序排列。 */
+  readonly attachmentIds: readonly DraftAttachmentId[]
+  /** 提交阶段；非 `plain` 时输入框只读，不能改写草稿。 */
+  readonly phase: 'plain' | 'adjudicating' | 'claimed' | 'submitting' | 'sending'
+}
+
+/** 单条会话的输入框操作面。 */
+export interface SessionInputApi {
+  /** 用一段纯文本替换整个草稿，同时清掉草稿里的引用芯片。 */
+  setDraft(text: string): void
+  /** 按顺序追加草稿附件；输入框处于提交阶段时返回 false。 */
+  addAttachments(ids: readonly DraftAttachmentId[]): boolean
+  /** 从草稿里移除一个附件。 */
+  removeAttachment(id: DraftAttachmentId): boolean
+  /** 在输入框上方给出一条提示。 */
+  notify(level: 'info' | 'error', text: string): void
+  /** 把输入框交还给键盘。 */
+  focus(): void
+  readonly state: { getSnapshot(): InputStateApi }
+}
+
 /** 会话服务：读取列表快照，并在删除后让快照丢掉对应行。 */
 export interface SessionsApi {
   list: {
@@ -132,6 +241,29 @@ export interface SessionsApi {
    * 宿主不提供时调用方跳过即可，其它功能不受影响。
    */
   handleSessionRemoved?(sessionId: string): void
+  /**
+   * 取一条会话的作用域上下文，输入框注册表按它定位。
+   * 会话未被持有或宿主版本不带该能力时返回 undefined。
+   */
+  scope?(sessionId: string): SessionScopeApi | undefined
+  /** 取一条会话的绑定（会话对象与其作用域）；会话未被持有时返回 undefined。 */
+  binding?(sessionId: string): SessionBindingApi | undefined
+}
+
+/** 宿主会话对话服务：输入框注册表与排队消息操作。 */
+export interface ConversationApi {
+  /** 按会话作用域解析该会话的输入框操作面。 */
+  readonly input: { for(actx: unknown): SessionInputApi }
+  /** 撤回一条排队消息；宿主拒绝或网络失败时抛出。 */
+  updateQueue(itemId: string, action: { kind: 'remove' }): Promise<void>
+  /** 把浏览器文件登记为草稿附件，返回按入参顺序排列的附件标识。 */
+  createDrafts(
+    sessionId: string,
+    files: readonly File[],
+    uploadImages: boolean,
+  ): readonly { readonly id: DraftAttachmentId }[]
+  /** 释放一个草稿附件占用的预览地址。 */
+  releaseDraftAttachment(id: DraftAttachmentId): void
 }
 
 /** 插件上下文：只声明本插件实际依赖的宿主能力。 */
@@ -144,6 +276,8 @@ export interface PluginContext {
   slots: SlotsApi
   /** 会话列表服务；声明依赖后可用。 */
   sessions?: SessionsApi
+  /** 会话对话服务；声明 `conversation` 依赖后可用。 */
+  conversation?: ConversationApi
   /** 工作区服务；声明依赖后可用。 */
   uiWorkspace?: UiWorkspaceApi
   /** 远程服务；声明 `remote.agentPresets` 依赖后可用。 */

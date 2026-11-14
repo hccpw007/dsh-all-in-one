@@ -2304,6 +2304,11 @@ window.__ModuleLoader__.load({
     async function recallQueuedMessage(deps, sessionId, index) {
       const binding = deps.sessions.binding?.(sessionId);
       if (binding === void 0) return "failed";
+      const conversation = resolveScopedConversation(deps, sessionId);
+      if (conversation === void 0) {
+        console.error("[queue-edit] \u53D6\u4E0D\u5230\u4F1A\u8BDD\u4F5C\u7528\u57DF\u91CC\u7684\u5BF9\u8BDD\u670D\u52A1\uFF0C\u65E0\u6CD5\u64A4\u56DE\u6392\u961F\u6D88\u606F:", sessionId);
+        return "failed";
+      }
       const item = readVisibleQueue(binding)[index];
       if (item === void 0) return "failed";
       const plan = readQueuePlan(item);
@@ -2315,15 +2320,21 @@ window.__ModuleLoader__.load({
         console.error("[queue-edit] \u8BFB\u53D6\u6392\u961F\u6D88\u606F\u91CC\u7684\u56FE\u7247\u5931\u8D25:", error);
         return "failed";
       }
-      const restored = restoreDraft(deps.conversation, binding, sessionId, plan.text, files);
+      const restored = restoreDraft(conversation, binding, sessionId, plan.text, files);
       if (restored !== "ready") return restored;
       try {
-        await deps.conversation.updateQueue(item.id, { kind: "remove" });
+        await conversation.updateQueue(item.id, { kind: "remove" });
       } catch (error) {
         console.error("[queue-edit] \u64A4\u56DE\u6392\u961F\u6D88\u606F\u5931\u8D25:", error);
         return "failed";
       }
       return "applied";
+    }
+    function resolveScopedConversation(deps, sessionId) {
+      const scope = deps.sessions.scope?.(sessionId);
+      if (scope === void 0) return void 0;
+      const conversation = scope.get("conversation");
+      return typeof conversation === "object" && conversation !== null ? conversation : void 0;
     }
     function readVisibleQueue(binding) {
       const inbox = binding.session.projections.faceOf("inbox").getSnapshot();
