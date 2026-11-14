@@ -5,8 +5,8 @@
  * 这里每 7 天核对一次：以 DSH 的会话目录与工作空间注册表为准，丢掉没有对应实体的
  * 条目。扫描失败时跳过本次清理——宁可留残留，也不能凭不完整的数据删掉用户设置。
  *
- * 首次检查延迟到宿主启动 30 秒之后，避开启动期；之后每小时看一次是否到期，
- * 宿主连续运行数周也能按时清理。
+ * 只在宿主启动 30 秒后检查一次（避开启动期）：距上次清理不足 7 天就什么都不做。
+ * 不保留常驻定时器——清理对实时性没有要求，宿主下次启动时再核对即可。
  */
 import { readdir, readFile } from 'node:fs/promises'
 import { join } from 'node:path'
@@ -16,9 +16,6 @@ import { pruneAutoRunSettings, readAutoRunSettings } from './settings'
 
 /** 两次清理之间的间隔。 */
 const PRUNE_INTERVAL_MS = 7 * 24 * 60 * 60 * 1000
-
-/** 到期检查周期。 */
-const CHECK_INTERVAL_MS = 60 * 60 * 1000
 
 /** 启动后的首次检查延迟。 */
 const START_DELAY_MS = 30_000
@@ -139,17 +136,15 @@ export function installAutoRunPrune(): () => void {
     if (disposed) return
 
     void pruneIfDue(() => disposed).catch((error: unknown) => {
-      // 单个周期失败只记日志：下次检查仍会按到期时间重试
+      // 失败只记日志：下次宿主启动时仍会按到期时间重试
       console.error('[auto-run] 定期清理失败:', error)
     })
   }
 
-  const first = setTimeout(run, START_DELAY_MS)
-  const timer = setInterval(run, CHECK_INTERVAL_MS)
+  const timer = setTimeout(run, START_DELAY_MS)
 
   return () => {
     disposed = true
-    clearTimeout(first)
-    clearInterval(timer)
+    clearTimeout(timer)
   }
 }

@@ -4148,7 +4148,6 @@ function installAutoRunPrompt(ctx) {
 import { readdir as readdir5, readFile as readFile7 } from "node:fs/promises";
 import { join as join18 } from "node:path";
 var PRUNE_INTERVAL_MS = 7 * 24 * 60 * 60 * 1e3;
-var CHECK_INTERVAL_MS2 = 60 * 60 * 1e3;
 var START_DELAY_MS = 3e4;
 var SESSION_UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 function isSessionId(name) {
@@ -4216,12 +4215,10 @@ function installAutoRunPrune() {
       console.error("[auto-run] \u5B9A\u671F\u6E05\u7406\u5931\u8D25:", error);
     });
   };
-  const first = setTimeout(run, START_DELAY_MS);
-  const timer = setInterval(run, CHECK_INTERVAL_MS2);
+  const timer = setTimeout(run, START_DELAY_MS);
   return () => {
     disposed = true;
-    clearTimeout(first);
-    clearInterval(timer);
+    clearTimeout(timer);
   };
 }
 
