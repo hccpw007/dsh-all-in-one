@@ -239,7 +239,7 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 │       │   ├── types.ts     # 客户端与宿主共用的数据模型
 │       │   ├── host.ts      # 宿主侧扩展：注册内存读数路由
 │       │   ├── host/        # 读数实现
-│       │   │   ├── process-memory.ts # 从 ps 定位兄弟渲染进程，用 footprint 取物理内存（带缓存）
+│       │   │   ├── process-memory.ts # 从 ps 定位进程树，用 footprint 取各进程物理内存（带缓存）
 │       │   │   └── routes.ts         # GET /dsh-all-in-one/memory-guard
 │       │   └── locales.ts   # 本功能的中英文文案
 │       ├── desktop-cookie/  # 开关型功能：桌面版启动时清理过期的认证 Cookie

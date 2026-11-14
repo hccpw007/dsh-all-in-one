@@ -30,6 +30,9 @@ export async function readMemory(): Promise<MemoryReading> {
   const page = readPageMemory()
   const host = await fetchHostMemory()
   const rendererMB = host?.rendererMB ?? null
+  const otherMB = host?.otherMB ?? null
+  // 合计与活动监视器各行之和同口径；拿不到进程读数时留空，页面退回单行展示
+  const totalMB = rendererMB === null ? null : rendererMB + (otherMB ?? 0)
   const source: MemorySource = rendererMB !== null
     ? 'process'
     : page.heapMB !== null
@@ -41,6 +44,8 @@ export async function readMemory(): Promise<MemoryReading> {
     source,
     heapMB: page.heapMB,
     rendererMB,
+    otherMB,
+    totalMB,
     domNodes: page.domNodes,
   }
 }

@@ -23,12 +23,16 @@ export const memoryGuardLocales: FeatureLocales = {
     thresholdLabel: '重建阈值',
     // 重建阈值输入框的单位
     thresholdUnit: 'MB',
-    // 重建阈值的作用：超过它才真正重建页面
-    thresholdHint: '轻量回收后占用仍超过该值才重建页面；低于它每次只做轻量回收。',
+    // 重建阈值的作用：按渲染进程判定，超过它才真正重建页面
+    thresholdHint: '轻量回收后渲染进程占用仍超过该值才重建页面；低于它每次只做轻量回收。',
     // 输入框即时保存的说明
     autoSaveHint: '输入框失焦或回车即保存，改动立即生效。',
-    // 当前内存占用
+    // 当前内存占用（全部 DSH 进程合计）
     memoryUsage: '当前占用',
+    // 渲染进程单独一行展示时的标签
+    rendererUsage: '渲染进程',
+    // 合计读数的来源标签
+    sourceAll: '全部进程',
     // 页面 DOM 节点数量
     domNodeCount: 'DOM 节点',
     // 读数来自渲染进程物理内存
@@ -39,8 +43,8 @@ export const memoryGuardLocales: FeatureLocales = {
     sourceNone: '不可用',
     // 读数尚未返回时的占位
     readingPending: '读取中…',
-    // 读数的口径说明：和活动监视器对比时避免误以为读错进程
-    readingHint: '与活动监视器的「内存」列同口径（物理内存）。',
+    // 读数的口径说明：合计覆盖哪些进程、重建能回收哪部分
+    readingHint: '合计为全部 DSH 进程的物理内存，与活动监视器各行之和同口径；重建只回收渲染进程那部分。',
     // 上次轻量回收的时间
     lastReclaim: '上次回收',
     // 上次重建的时间
@@ -99,12 +103,16 @@ export const memoryGuardLocales: FeatureLocales = {
     thresholdLabel: 'Rebuild above',
     // Unit shown after the threshold input
     thresholdUnit: 'MB',
-    // What the threshold controls
-    thresholdHint: 'The page is rebuilt only if usage stays above this after the light reclaim; below it every check is light only.',
+    // What the threshold controls: the renderer, not the whole tree
+    thresholdHint: 'The page is rebuilt only if the renderer stays above this after the light reclaim; below it every check is light only.',
     // Inputs save on blur or Enter
     autoSaveHint: 'Inputs save on blur or Enter and take effect immediately.',
-    // Current memory usage
+    // Current memory usage (all DSH processes combined)
     memoryUsage: 'In use',
+    // Label when the renderer is listed on its own row
+    rendererUsage: 'Renderer',
+    // Source label for the combined reading
+    sourceAll: 'all processes',
     // Number of DOM nodes on the page
     domNodeCount: 'DOM nodes',
     // Reading comes from the renderer phys footprint
@@ -115,8 +123,8 @@ export const memoryGuardLocales: FeatureLocales = {
     sourceNone: 'unavailable',
     // Placeholder before the first reading arrives
     readingPending: 'Reading…',
-    // Explains the metric so it can be compared with Activity Monitor
-    readingHint: "Same metric as Activity Monitor's Memory column (phys footprint).",
+    // Explains what the total covers and what a rebuild reclaims
+    readingHint: "The total covers every DSH process, matching the sum of Activity Monitor rows; a rebuild only reclaims the renderer part.",
     // Time of the last light reclaim
     lastReclaim: 'Reclaimed',
     // Time of the last rebuild

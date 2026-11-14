@@ -34,6 +34,10 @@ export interface MemoryReading {
   heapMB: number | null
   /** 宿主侧渲染进程物理内存（MB，活动监视器同口径）；浏览器打开的实例为 null。 */
   rendererMB: number | null
+  /** 宿主侧其余进程的物理内存之和（MB，重建不会让它们下降）；浏览器打开的实例为 null。 */
+  otherMB: number | null
+  /** 宿主侧全部进程的物理内存之和（MB）；拿不到进程读数时为 null。 */
+  totalMB: number | null
   /** 页面 DOM 节点数，作为界面规模与长会话累积的旁证。 */
   domNodes: number
 }
@@ -42,7 +46,9 @@ export interface MemoryReading {
 export interface HostMemoryPayload {
   /** 渲染进程物理内存（MB，活动监视器「内存」列同口径）；无法定位时为 null。 */
   rendererMB: number | null
-  /** 宿主 Node 进程常驻内存（MB）；读取失败时为 null。 */
+  /** 其余 DSH 进程的物理内存之和（MB）；读取失败时为 null。 */
+  otherMB: number | null
+  /** 宿主 Node 进程常驻内存（MB），仅作诊断，已经包含在 otherMB 里。 */
   hostRssMB: number | null
 }
 

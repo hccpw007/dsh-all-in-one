@@ -6836,12 +6836,16 @@ window.__ModuleLoader__.load({
       const page = readPageMemory();
       const host = await fetchHostMemory();
       const rendererMB = host?.rendererMB ?? null;
+      const otherMB = host?.otherMB ?? null;
+      const totalMB = rendererMB === null ? null : rendererMB + (otherMB ?? 0);
       const source = rendererMB !== null ? "process" : page.heapMB !== null ? "heap" : "none";
       return {
         megabytes: rendererMB ?? page.heapMB ?? 0,
         source,
         heapMB: page.heapMB,
         rendererMB,
+        otherMB,
+        totalMB,
         domNodes: page.domNodes
       };
     }
@@ -7197,12 +7201,16 @@ window.__ModuleLoader__.load({
         thresholdLabel: "\u91CD\u5EFA\u9608\u503C",
         // 重建阈值输入框的单位
         thresholdUnit: "MB",
-        // 重建阈值的作用：超过它才真正重建页面
-        thresholdHint: "\u8F7B\u91CF\u56DE\u6536\u540E\u5360\u7528\u4ECD\u8D85\u8FC7\u8BE5\u503C\u624D\u91CD\u5EFA\u9875\u9762\uFF1B\u4F4E\u4E8E\u5B83\u6BCF\u6B21\u53EA\u505A\u8F7B\u91CF\u56DE\u6536\u3002",
+        // 重建阈值的作用：按渲染进程判定，超过它才真正重建页面
+        thresholdHint: "\u8F7B\u91CF\u56DE\u6536\u540E\u6E32\u67D3\u8FDB\u7A0B\u5360\u7528\u4ECD\u8D85\u8FC7\u8BE5\u503C\u624D\u91CD\u5EFA\u9875\u9762\uFF1B\u4F4E\u4E8E\u5B83\u6BCF\u6B21\u53EA\u505A\u8F7B\u91CF\u56DE\u6536\u3002",
         // 输入框即时保存的说明
         autoSaveHint: "\u8F93\u5165\u6846\u5931\u7126\u6216\u56DE\u8F66\u5373\u4FDD\u5B58\uFF0C\u6539\u52A8\u7ACB\u5373\u751F\u6548\u3002",
-        // 当前内存占用
+        // 当前内存占用（全部 DSH 进程合计）
         memoryUsage: "\u5F53\u524D\u5360\u7528",
+        // 渲染进程单独一行展示时的标签
+        rendererUsage: "\u6E32\u67D3\u8FDB\u7A0B",
+        // 合计读数的来源标签
+        sourceAll: "\u5168\u90E8\u8FDB\u7A0B",
         // 页面 DOM 节点数量
         domNodeCount: "DOM \u8282\u70B9",
         // 读数来自渲染进程物理内存
@@ -7213,8 +7221,8 @@ window.__ModuleLoader__.load({
         sourceNone: "\u4E0D\u53EF\u7528",
         // 读数尚未返回时的占位
         readingPending: "\u8BFB\u53D6\u4E2D\u2026",
-        // 读数的口径说明：和活动监视器对比时避免误以为读错进程
-        readingHint: "\u4E0E\u6D3B\u52A8\u76D1\u89C6\u5668\u7684\u300C\u5185\u5B58\u300D\u5217\u540C\u53E3\u5F84\uFF08\u7269\u7406\u5185\u5B58\uFF09\u3002",
+        // 读数的口径说明：合计覆盖哪些进程、重建能回收哪部分
+        readingHint: "\u5408\u8BA1\u4E3A\u5168\u90E8 DSH \u8FDB\u7A0B\u7684\u7269\u7406\u5185\u5B58\uFF0C\u4E0E\u6D3B\u52A8\u76D1\u89C6\u5668\u5404\u884C\u4E4B\u548C\u540C\u53E3\u5F84\uFF1B\u91CD\u5EFA\u53EA\u56DE\u6536\u6E32\u67D3\u8FDB\u7A0B\u90A3\u90E8\u5206\u3002",
         // 上次轻量回收的时间
         lastReclaim: "\u4E0A\u6B21\u56DE\u6536",
         // 上次重建的时间
@@ -7273,12 +7281,16 @@ window.__ModuleLoader__.load({
         thresholdLabel: "Rebuild above",
         // Unit shown after the threshold input
         thresholdUnit: "MB",
-        // What the threshold controls
-        thresholdHint: "The page is rebuilt only if usage stays above this after the light reclaim; below it every check is light only.",
+        // What the threshold controls: the renderer, not the whole tree
+        thresholdHint: "The page is rebuilt only if the renderer stays above this after the light reclaim; below it every check is light only.",
         // Inputs save on blur or Enter
         autoSaveHint: "Inputs save on blur or Enter and take effect immediately.",
-        // Current memory usage
+        // Current memory usage (all DSH processes combined)
         memoryUsage: "In use",
+        // Label when the renderer is listed on its own row
+        rendererUsage: "Renderer",
+        // Source label for the combined reading
+        sourceAll: "all processes",
         // Number of DOM nodes on the page
         domNodeCount: "DOM nodes",
         // Reading comes from the renderer phys footprint
@@ -7289,8 +7301,8 @@ window.__ModuleLoader__.load({
         sourceNone: "unavailable",
         // Placeholder before the first reading arrives
         readingPending: "Reading\u2026",
-        // Explains the metric so it can be compared with Activity Monitor
-        readingHint: "Same metric as Activity Monitor's Memory column (phys footprint).",
+        // Explains what the total covers and what a rebuild reclaims
+        readingHint: "The total covers every DSH process, matching the sum of Activity Monitor rows; a rebuild only reclaims the renderer part.",
         // Time of the last light reclaim
         lastReclaim: "Reclaimed",
         // Time of the last rebuild
@@ -7481,7 +7493,7 @@ window.__ModuleLoader__.load({
           onChange: setThresholdDraft,
           onCommit: commitThreshold
         }
-      )), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-1 text-[11px] leading-4 text-secondary" }, t("thresholdHint")), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-3 text-[11px] leading-4 text-secondary" }, t("autoSaveHint"))), /* @__PURE__ */ import_react31.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react31.default.createElement("dl", { className: "space-y-1.5 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("memoryUsage")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, reading === null ? t("readingPending") : `${reading.megabytes} MB \xB7 ${sourceLabel(reading.source, t)}`)), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("domNodeCount")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 text-primary" }, reading === null ? t("readingPending") : reading.domNodes)), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("lastReclaim")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastReclaimAt, t("never")), runtime.lastReclaimFreedMB > 0 ? `\uFF08${t("freedAmount").replace("{amount}", String(runtime.lastReclaimFreedMB))}\uFF09` : "")), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("lastRebuild")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastRebuildAt, t("never"))))), reading?.source === "process" ? /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-2 text-[11px] leading-4 text-secondary" }, t("readingHint")) : null, /* @__PURE__ */ import_react31.default.createElement("div", { className: "mt-3 flex flex-wrap items-center gap-2" }, /* @__PURE__ */ import_react31.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleReclaim() }, working === "reclaim" ? t("reclaiming") : t("reclaimNow")), /* @__PURE__ */ import_react31.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleRebuild() }, t("rebuildNow")))), message !== "" ? /* @__PURE__ */ import_react31.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, message) : null);
+      )), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-1 text-[11px] leading-4 text-secondary" }, t("thresholdHint")), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-3 text-[11px] leading-4 text-secondary" }, t("autoSaveHint"))), /* @__PURE__ */ import_react31.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react31.default.createElement("dl", { className: "space-y-1.5 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("memoryUsage")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, reading === null ? t("readingPending") : reading.totalMB !== null ? `${reading.totalMB} MB \xB7 ${t("sourceAll")}` : `${reading.megabytes} MB \xB7 ${sourceLabel(reading.source, t)}`)), reading !== null && reading.rendererMB !== null ? /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("rendererUsage")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 text-primary" }, `${reading.rendererMB} MB`)) : null, /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("domNodeCount")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 text-primary" }, reading === null ? t("readingPending") : reading.domNodes)), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("lastReclaim")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastReclaimAt, t("never")), runtime.lastReclaimFreedMB > 0 ? `\uFF08${t("freedAmount").replace("{amount}", String(runtime.lastReclaimFreedMB))}\uFF09` : "")), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("lastRebuild")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastRebuildAt, t("never"))))), reading?.source === "process" ? /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-2 text-[11px] leading-4 text-secondary" }, t("readingHint")) : null, /* @__PURE__ */ import_react31.default.createElement("div", { className: "mt-3 flex flex-wrap items-center gap-2" }, /* @__PURE__ */ import_react31.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleReclaim() }, working === "reclaim" ? t("reclaiming") : t("reclaimNow")), /* @__PURE__ */ import_react31.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleRebuild() }, t("rebuildNow")))), message !== "" ? /* @__PURE__ */ import_react31.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, message) : null);
     }
 
     // src/features/memory-guard/index.tsx

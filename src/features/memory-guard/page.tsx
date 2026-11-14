@@ -296,16 +296,26 @@ export function MemoryGuardPage({ t }: FeaturePageProps) {
       {/* 运行状态区：实时占用、DOM 规模与最近两次执行时间 */}
       <section className="rounded-xl border border-line4 bg-layer1 p-4">
         <dl className="space-y-1.5 text-[12px] leading-[18px]">
-          {/* 当前内存占用与读数来源 */}
+          {/* 全部进程合计：与活动监视器各行之和同口径 */}
           <div className="flex gap-2">
             {/* 当前内存占用 */}
             <dt className={LABEL_CLASS}>{t('memoryUsage')}</dt>
             <dd className="min-w-0 break-all text-primary">
               {reading === null
                 ? t('readingPending')
-                : `${reading.megabytes} MB · ${sourceLabel(reading.source, t)}`}
+                : reading.totalMB !== null
+                  ? `${reading.totalMB} MB · ${t('sourceAll')}`
+                  : `${reading.megabytes} MB · ${sourceLabel(reading.source, t)}`}
             </dd>
           </div>
+          {/* 渲染进程单独列出：阈值判定与页面重建只针对这一部分 */}
+          {reading !== null && reading.rendererMB !== null ? (
+            <div className="flex gap-2">
+              {/* 渲染进程内存 */}
+              <dt className={LABEL_CLASS}>{t('rendererUsage')}</dt>
+              <dd className="min-w-0 text-primary">{`${reading.rendererMB} MB`}</dd>
+            </div>
+          ) : null}
           {/* 页面 DOM 节点数，作为界面规模与长会话累积的旁证 */}
           <div className="flex gap-2">
             {/* DOM 节点数量 */}
