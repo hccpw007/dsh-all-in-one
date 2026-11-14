@@ -22,6 +22,19 @@ const BUTTON_CLASS = 'aio-clear-session'
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 
 /**
+ * 图标几何：直接取用宿主原生新会话图标 `IconNewChatOutlineMedium` 的路径，
+ * 与用户已认识的「新会话」符号保持一致；原数据的五位小数精简到两位，
+ * 16 网格下差值远小于 1px，视觉无差别。
+ */
+const ICON_PATH =
+  'M2.37 11.25C1.59 9.89 1.32 8.3 1.62 6.76 1.92 5.22 2.76 3.84 4 2.88 ' +
+  '5.23 1.91 6.77 1.43 8.34 1.51 9.9 1.59 11.39 2.24 12.51 3.32 ' +
+  '13.64 4.41 14.34 5.87 14.48 7.43 14.61 8.99 14.18 10.55 13.26 11.82 ' +
+  '12.34 13.09 10.99 13.98 9.46 14.33 8.19 14.63 6.86 14.53 5.65 14.06 ' +
+  '5.17 13.87 4.77 13.49 4.27 13.4 3.67 13.28 2.95 13.56 2.04 14.33' +
+  'M8 5V11M5 8H11'
+
+/**
  * 按钮样式。
  *
  * 完全对齐宿主加号按钮（同 `.add` 规则）：28px 圆形、selector 底色、primary 图标色，
@@ -67,9 +80,9 @@ export interface ClearButtonOptions {
 }
 
 /**
- * 创建清空图标：一道开口圆环内嵌一条横线，表达「把对话内容清掉」；
- * 圆环开口留出缺口，比闭合圆更像一次操作而不是状态标记。
- * @returns 16×16 的 svg 元素
+ * 创建按钮图标：气泡内一个加号，语义是「在这里开始一条新对话」。
+ * 描边宽度取宿主的 medium 档（1.3px / 16 网格），与左侧加号按钮同一粗细。
+ * @returns 14×14 的 svg 元素，16 网格上与图标本身等比例
  */
 function createClearIcon(): Element {
   const svg = document.createElementNS(SVG_NAMESPACE, 'svg')
@@ -78,20 +91,13 @@ function createClearIcon(): Element {
   svg.setAttribute('viewBox', '0 0 16 16')
   svg.setAttribute('fill', 'none')
   svg.setAttribute('stroke', 'currentColor')
-  svg.setAttribute('stroke-width', '1.5')
-  svg.setAttribute('stroke-linecap', 'round')
-  svg.setAttribute('stroke-linejoin', 'round')
+  svg.setAttribute('stroke-width', '1.3')
   svg.setAttribute('aria-hidden', 'true')
 
-  // 圆环：从顶部顺时针绕到左侧，左上留缺口
-  const ring = document.createElementNS(SVG_NAMESPACE, 'path')
-  ring.setAttribute('d', 'M8 3.2a4.8 4.8 0 1 1-4.8 4.8')
-  svg.appendChild(ring)
-
-  // 中心横线：被清掉的那段内容
-  const bar = document.createElementNS(SVG_NAMESPACE, 'path')
-  bar.setAttribute('d', 'M5.9 8h4.2')
-  svg.appendChild(bar)
+  // 气泡轮廓与中心加号合并在同一条路径里，减少一个节点
+  const path = document.createElementNS(SVG_NAMESPACE, 'path')
+  path.setAttribute('d', ICON_PATH)
+  svg.appendChild(path)
 
   return svg
 }

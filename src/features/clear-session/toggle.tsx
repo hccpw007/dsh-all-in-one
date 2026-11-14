@@ -1,30 +1,9 @@
+import { IconNewChatOutlineMedium } from '@deepseek-ai/dsh-client-ui-primitives'
 import React, { useState } from 'react'
 
 import { cn } from '../../common/cn'
 import type { FeatureSwitchProps } from '../../shell/registry'
 import { readClearSessionEnabled, writeClearSessionEnabled } from './storage'
-
-/** 开关入口图标：开口圆环内嵌横线，与输入框按钮保持同一图形。 */
-function ClearIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="14"
-      height="14"
-      aria-hidden="true"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      {/* 圆环：从顶部顺时针绕到左侧，左上留缺口 */}
-      <path d="M12 4.8a7.2 7.2 0 1 1-7.2 7.2" />
-      {/* 中心横线：被清掉的那段内容 */}
-      <path d="M8.9 12h6.2" />
-    </svg>
-  )
-}
 
 /**
  * 「清空会话」开关入口。
@@ -56,9 +35,9 @@ export function ClearSessionToggle({ t }: FeatureSwitchProps) {
     <div className="flex h-full flex-col">
       {/* 卡片容器：只有右侧开关参与交互，点标题与说明不切换，避免浏览设置时误触 */}
       <div className="flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1">
-        {/* 入口图标 */}
+        {/* 入口图标：宿主原生新会话图标，与输入框按钮同一图形 */}
         <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand">
-          <ClearIcon />
+          <IconNewChatOutlineMedium size={14} />
         </span>
         {/* 入口标题与说明 */}
         <span className="min-w-0 flex-1">

@@ -57,4 +57,10 @@ declare module '@deepseek-ai/dsh-client-ui-primitives' {
     className?: string
     size?: number
   }>
+
+  /** 宿主新会话图标：气泡中一个加号（medium 1.3px 描边，与输入框工具按钮同档）。 */
+  export const IconNewChatOutlineMedium: ComponentType<{
+    className?: string
+    size?: number
+  }>
 }
