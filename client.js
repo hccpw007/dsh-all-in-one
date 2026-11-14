@@ -39,10 +39,10 @@ window.__ModuleLoader__.load({
       default: () => entry_default
     });
     module.exports = __toCommonJS(entry_exports);
-    var import_react32 = __toESM(require("react"), 1);
+    var import_react33 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = '*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.inline{display:inline}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-7{height:1.75rem}.h-8{height:2rem}.h-\\[18px\\]{height:18px}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.translate-x-\\[18px\\],.translate-x-\\[20px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[20px\\]{--tw-translate-x:20px}.translate-x-\\[2px\\]{--tw-translate-x:2px}.transform,.translate-x-\\[2px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-x-2{-moz-column-gap:.5rem;column-gap:.5rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.whitespace-nowrap{white-space:nowrap}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-0\\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-60{opacity:.6}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{--tw-shadow:0 1px 2px rgba(0,0,0,.2);--tw-shadow-colored:0 1px 2px var(--tw-shadow-color)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.ring-1{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.ring-black\\/5{--tw-ring-color:rgba(0,0,0,.05)}.blur{--tw-blur:blur(8px)}.blur,.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.duration-200{transition-duration:.2s}.ease-out{transition-timing-function:cubic-bezier(0,0,.2,1)}.\\[all-in-one\\:perf\\]{all-in-one:perf}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.aio-workspace-count:after{content:"\uFF08" attr(data-aio-workspace-count) "\uFF09";color:var(--dsw-alias-label-tertiary);font-size:12px;font-weight:400;margin-inline-start:1px}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:border-brand:hover{border-color:var(--dsw-alias-brand-primary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-brand:hover{color:var(--dsw-alias-brand-primary)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}';
+    var styles_default = '*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.inline{display:inline}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-7{height:1.75rem}.h-8{height:2rem}.h-\\[18px\\]{height:18px}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-16{width:4rem}.w-20{width:5rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.translate-x-\\[18px\\],.translate-x-\\[20px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[20px\\]{--tw-translate-x:20px}.translate-x-\\[2px\\]{--tw-translate-x:2px}.transform,.translate-x-\\[2px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-1\\.5>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.375rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.375rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.whitespace-nowrap{white-space:nowrap}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-60{opacity:.6}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{--tw-shadow:0 1px 2px rgba(0,0,0,.2);--tw-shadow-colored:0 1px 2px var(--tw-shadow-color)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.ring-1{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.ring-black\\/5{--tw-ring-color:rgba(0,0,0,.05)}.blur{--tw-blur:blur(8px)}.blur,.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.duration-200{transition-duration:.2s}.ease-out{transition-timing-function:cubic-bezier(0,0,.2,1)}.\\[all-in-one\\:perf\\]{all-in-one:perf}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.aio-workspace-count:after{content:"\uFF08" attr(data-aio-workspace-count) "\uFF09";color:var(--dsw-alias-label-tertiary);font-size:12px;font-weight:400;margin-inline-start:1px}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}';
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -7097,23 +7097,128 @@ window.__ModuleLoader__.load({
       }, "memory-guard: timer");
     }
 
+    // src/features/memory-guard/entry.tsx
+    var import_react30 = __toESM(require("react"), 1);
+    function MemoryIcon2() {
+      return /* @__PURE__ */ import_react30.default.createElement(
+        "svg",
+        {
+          viewBox: "0 0 24 24",
+          width: "14",
+          height: "14",
+          "aria-hidden": "true",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: "1.8",
+          strokeLinecap: "round",
+          strokeLinejoin: "round"
+        },
+        /* @__PURE__ */ import_react30.default.createElement("rect", { x: "3", y: "7", width: "18", height: "10", rx: "2" }),
+        /* @__PURE__ */ import_react30.default.createElement("path", { d: "M7 11v2M11 11v2M15 11v2" })
+      );
+    }
+    function MemoryGuardEntry({ t, open }) {
+      const [enabled, setEnabled] = (0, import_react30.useState)(() => readMemoryGuardSettings().enabled);
+      const handleToggle = () => {
+        const next = updateMemoryGuardSettings({ enabled: !enabled });
+        setEnabled(next.enabled);
+        activeMemoryGuard()?.reschedule();
+      };
+      return (
+        // 卡片容器：主体按钮、开关与设置按钮是并列的交互区，不能互相嵌套
+        /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full items-start gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 transition hover:bg-layer2" }, /* @__PURE__ */ import_react30.default.createElement(
+          "button",
+          {
+            type: "button",
+            onClick: open,
+            className: "flex min-w-0 flex-1 items-start gap-2 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          },
+          /* @__PURE__ */ import_react30.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react30.default.createElement(MemoryIcon2, null)),
+          /* @__PURE__ */ import_react30.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")))
+        ), /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex shrink-0 flex-col items-center justify-between gap-1 self-stretch" }, /* @__PURE__ */ import_react30.default.createElement(
+          "button",
+          {
+            type: "button",
+            role: "switch",
+            "aria-checked": enabled,
+            "aria-label": t("title"),
+            onClick: handleToggle,
+            className: cn(
+              "flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition",
+              enabled ? "bg-brand" : "bg-line2",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+            )
+          },
+          /* @__PURE__ */ import_react30.default.createElement(
+            "span",
+            {
+              "aria-hidden": "true",
+              className: cn(
+                "h-4 w-4 aio-switch bg-base shadow transition-transform",
+                enabled ? "translate-x-[18px]" : "translate-x-0.5"
+              )
+            }
+          )
+        ), /* @__PURE__ */ import_react30.default.createElement(
+          "button",
+          {
+            type: "button",
+            onClick: open,
+            "aria-label": t("settingsAction"),
+            title: t("settingsAction"),
+            className: "flex shrink-0 items-center justify-center gap-0.5 self-end rounded-md border-0 bg-transparent p-0 text-[12px] leading-[16px] text-secondary transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          },
+          t("settingsAction"),
+          /* @__PURE__ */ import_react30.default.createElement(CardChevron, null)
+        )))
+      );
+    }
+
     // src/features/memory-guard/locales.ts
     var memoryGuardLocales = {
       zh: {
-        // 开关标题
+        // 入口与设置页标题
         title: "\u5185\u5B58\u5B88\u62A4",
+        // 入口描述：说明定时回收与自动重建的作用
+        description: "\u5B9A\u65F6\u56DE\u6536\u754C\u9762\u5185\u5B58\uFF0C\u5360\u7528\u8D85\u8FC7\u9608\u503C\u4E14\u65E0\u4EBA\u64CD\u4F5C\u65F6\u81EA\u52A8\u91CD\u5EFA\u9875\u9762\u3002",
+        // 卡片右下角的设置入口
+        settingsAction: "\u8BBE\u7F6E",
+        // 设置页标题
+        pageTitle: "\u5185\u5B58\u8BBE\u7F6E",
+        // 设置页说明：检查节奏与自动重建的触发条件
+        pageHint: "\u5B9A\u65F6\u68C0\u67E5\u754C\u9762\u5185\u5B58\uFF1A\u5148\u505A\u8F7B\u91CF\u56DE\u6536\uFF0C\u5360\u7528\u4ECD\u8D85\u8FC7\u9608\u503C\u4E14\u65E0\u4EBA\u64CD\u4F5C\u65F6\u91CD\u5EFA\u9875\u9762\u3002",
         // 检查间隔输入框的标签
-        intervalLabel: "\u95F4\u9694",
+        intervalLabel: "\u68C0\u67E5\u95F4\u9694",
         // 检查间隔输入框的单位
         intervalUnit: "\u5206\u949F",
+        // 检查间隔的作用：同时决定检查周期与空闲判定时长
+        intervalHint: "\u65E2\u662F\u68C0\u67E5\u5468\u671F\uFF0C\u4E5F\u662F\u300C\u65E0\u4EBA\u64CD\u4F5C\u300D\u7684\u5224\u5B9A\u65F6\u957F\uFF1A\u7A97\u53E3\u5931\u7126\u6216\u7A7A\u95F2\u6EE1\u8BE5\u65F6\u957F\u624D\u4F1A\u91CD\u5EFA\u3002",
         // 重建阈值输入框的标签
-        thresholdLabel: "\u9608\u503C",
+        thresholdLabel: "\u91CD\u5EFA\u9608\u503C",
         // 重建阈值输入框的单位
         thresholdUnit: "MB",
-        // 上次轻量回收的时间与释放量
-        lastReclaim: "\u4E0A\u6B21\u56DE\u6536 {time}",
+        // 重建阈值的作用：超过它才真正重建页面
+        thresholdHint: "\u8F7B\u91CF\u56DE\u6536\u540E\u5360\u7528\u4ECD\u8D85\u8FC7\u8BE5\u503C\u624D\u91CD\u5EFA\u9875\u9762\uFF1B\u4F4E\u4E8E\u5B83\u6BCF\u6B21\u53EA\u505A\u8F7B\u91CF\u56DE\u6536\u3002",
+        // 输入框即时保存的说明
+        autoSaveHint: "\u8F93\u5165\u6846\u5931\u7126\u6216\u56DE\u8F66\u5373\u4FDD\u5B58\uFF0C\u6539\u52A8\u7ACB\u5373\u751F\u6548\u3002",
+        // 当前内存占用
+        memoryUsage: "\u5F53\u524D\u5360\u7528",
+        // 页面 DOM 节点数量
+        domNodeCount: "DOM \u8282\u70B9",
+        // 读数来自渲染进程常驻内存
+        sourceProcess: "\u6E32\u67D3\u8FDB\u7A0B",
+        // 读数来自页面 JS 堆
+        sourceHeap: "\u9875\u9762\u5806",
+        // 拿不到任何读数
+        sourceNone: "\u4E0D\u53EF\u7528",
+        // 读数尚未返回时的占位
+        readingPending: "\u8BFB\u53D6\u4E2D\u2026",
+        // 上次轻量回收的时间
+        lastReclaim: "\u4E0A\u6B21\u56DE\u6536",
         // 上次重建的时间
-        lastRebuild: "\u4E0A\u6B21\u91CD\u5EFA {time}",
+        lastRebuild: "\u4E0A\u6B21\u91CD\u5EFA",
+        // 回收释放量，占位符是兆字节数
+        freedAmount: "\u91CA\u653E {amount} MB",
         // 从未执行过时的占位
         never: "\u4ECE\u672A",
         // 手动触发轻量回收的按钮
@@ -7146,20 +7251,48 @@ window.__ModuleLoader__.load({
         thresholdInvalid: "\u91CD\u5EFA\u9608\u503C\u9700\u8981\u662F 200 \u5230 8192 \u4E4B\u95F4\u7684\u6574\u6570"
       },
       en: {
-        // Switch title
+        // Entry and page title
         title: "Memory guard",
+        // Entry description: scheduled reclaim plus idle rebuild
+        description: "Reclaims renderer memory on a schedule and rebuilds the page when idle and over the limit.",
+        // Settings entry at the card's bottom right
+        settingsAction: "Settings",
+        // Settings page title
+        pageTitle: "Memory settings",
+        // Settings page intro: cadence and rebuild conditions
+        pageHint: "Checks renderer memory on a schedule: a light reclaim first, then a page rebuild when usage stays above the limit and nobody is interacting.",
         // Label of the interval input
         intervalLabel: "Interval",
         // Unit shown after the interval input
         intervalUnit: "min",
+        // What the interval controls: cadence and the idle window
+        intervalHint: "Both the check cadence and the idle window: a rebuild only happens when the window is unfocused or idle for this long.",
         // Label of the rebuild threshold input
-        thresholdLabel: "Threshold",
+        thresholdLabel: "Rebuild above",
         // Unit shown after the threshold input
         thresholdUnit: "MB",
-        // Time and freed amount of the last light reclaim
-        lastReclaim: "Reclaimed {time}",
+        // What the threshold controls
+        thresholdHint: "The page is rebuilt only if usage stays above this after the light reclaim; below it every check is light only.",
+        // Inputs save on blur or Enter
+        autoSaveHint: "Inputs save on blur or Enter and take effect immediately.",
+        // Current memory usage
+        memoryUsage: "In use",
+        // Number of DOM nodes on the page
+        domNodeCount: "DOM nodes",
+        // Reading comes from the renderer RSS
+        sourceProcess: "renderer",
+        // Reading comes from the page JS heap
+        sourceHeap: "JS heap",
+        // No reading available
+        sourceNone: "unavailable",
+        // Placeholder before the first reading arrives
+        readingPending: "Reading\u2026",
+        // Time of the last light reclaim
+        lastReclaim: "Reclaimed",
         // Time of the last rebuild
-        lastRebuild: "Rebuilt {time}",
+        lastRebuild: "Rebuilt",
+        // Freed amount; the placeholder is megabytes
+        freedAmount: "{amount} MB freed",
         // Placeholder for an action that never ran
         never: "never",
         // Button that triggers a light reclaim
@@ -7193,22 +7326,13 @@ window.__ModuleLoader__.load({
       }
     };
 
-    // src/features/memory-guard/toggle.tsx
-    var import_react30 = __toESM(require("react"), 1);
-    var STATE_REFRESH_MS = 1e4;
-    var INPUT_CLASS5 = "w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] text-primary outline-none focus:border-brand";
-    var BUTTON_CLASS2 = "rounded-md border border-line4 px-2 py-0.5 text-[11px] text-primary transition hover:border-brand hover:text-brand disabled:cursor-default disabled:opacity-50";
-    function NumberField({
-      label,
-      unit,
-      value,
-      min,
-      max,
-      disabled = false,
-      onChange,
-      onCommit
-    }) {
-      return /* @__PURE__ */ import_react30.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, label), /* @__PURE__ */ import_react30.default.createElement(
+    // src/features/memory-guard/page.tsx
+    var import_react31 = __toESM(require("react"), 1);
+    var READING_REFRESH_MS = 5e3;
+    var INPUT_CLASS5 = "w-16 rounded-lg border border-line4 bg-base px-2 py-1 text-[12px] text-primary outline-none focus:border-brand";
+    var LABEL_CLASS = "w-20 shrink-0 text-secondary";
+    function NumberField({ label, unit, value, min, max, onChange, onCommit }) {
+      return /* @__PURE__ */ import_react31.default.createElement("label", { className: "flex items-center gap-2" }, /* @__PURE__ */ import_react31.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, label), /* @__PURE__ */ import_react31.default.createElement(
         "input",
         {
           type: "number",
@@ -7217,7 +7341,6 @@ window.__ModuleLoader__.load({
           max,
           step: 1,
           value,
-          disabled,
           "aria-label": label,
           onChange: (event) => onChange(event.target.value),
           onBlur: onCommit,
@@ -7226,62 +7349,55 @@ window.__ModuleLoader__.load({
           },
           className: INPUT_CLASS5
         }
-      ), /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, unit));
+      ), /* @__PURE__ */ import_react31.default.createElement("span", { className: "text-[12px] leading-[18px] text-secondary" }, unit));
     }
     function formatTime(timestamp, neverLabel) {
       if (timestamp <= 0) return neverLabel;
-      return new Date(timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      return new Date(timestamp).toLocaleString();
     }
-    function MemoryIcon2() {
-      return /* @__PURE__ */ import_react30.default.createElement(
-        "svg",
-        {
-          viewBox: "0 0 24 24",
-          width: "14",
-          height: "14",
-          "aria-hidden": "true",
-          fill: "none",
-          stroke: "currentColor",
-          strokeWidth: "1.8",
-          strokeLinecap: "round",
-          strokeLinejoin: "round"
-        },
-        /* @__PURE__ */ import_react30.default.createElement("rect", { x: "3", y: "7", width: "18", height: "10", rx: "2" }),
-        /* @__PURE__ */ import_react30.default.createElement("path", { d: "M7 11v2M11 11v2M15 11v2" })
-      );
+    function sourceLabel(source, t) {
+      if (source === "process") return t("sourceProcess");
+      if (source === "heap") return t("sourceHeap");
+      return t("sourceNone");
     }
-    function MemoryGuardToggle({ t }) {
-      const [settings, setSettings] = (0, import_react30.useState)(() => readMemoryGuardSettings());
-      const [runtime, setRuntime] = (0, import_react30.useState)(() => readMemoryGuardState());
-      const [intervalDraft, setIntervalDraft] = (0, import_react30.useState)(
+    function MemoryGuardPage({ t }) {
+      const [settings, setSettings] = (0, import_react31.useState)(() => readMemoryGuardSettings());
+      const [runtime, setRuntime] = (0, import_react31.useState)(() => readMemoryGuardState());
+      const [reading, setReading] = (0, import_react31.useState)(null);
+      const [intervalDraft, setIntervalDraft] = (0, import_react31.useState)(
         () => String(readMemoryGuardSettings().intervalMinutes)
       );
-      const [thresholdDraft, setThresholdDraft] = (0, import_react30.useState)(
+      const [thresholdDraft, setThresholdDraft] = (0, import_react31.useState)(
         () => String(readMemoryGuardSettings().thresholdMB)
       );
-      const [working, setWorking] = (0, import_react30.useState)(null);
-      const [message, setMessage] = (0, import_react30.useState)("");
-      (0, import_react30.useEffect)(() => {
+      const [working, setWorking] = (0, import_react31.useState)(null);
+      const [message, setMessage] = (0, import_react31.useState)("");
+      (0, import_react31.useEffect)(() => {
         let active2 = true;
         const refresh = () => {
-          if (active2) setRuntime(readMemoryGuardState());
+          void readMemory().then((next) => {
+            if (!active2) return;
+            setReading(next);
+            setRuntime(readMemoryGuardState());
+          }).catch((error) => {
+            if (!active2) return;
+            console.error("[memory-guard] \u8BFB\u53D6\u5185\u5B58\u5360\u7528\u5931\u8D25:", error);
+            setMessage(t("measureFailed"));
+          });
         };
         refresh();
-        const timer = window.setInterval(refresh, STATE_REFRESH_MS);
+        const timer = window.setInterval(refresh, READING_REFRESH_MS);
         return () => {
           active2 = false;
           window.clearInterval(timer);
         };
-      }, []);
+      }, [t]);
       const persist = (patch) => {
         const next = updateMemoryGuardSettings(patch);
         setSettings(next);
         setIntervalDraft(String(next.intervalMinutes));
         setThresholdDraft(String(next.thresholdMB));
         activeMemoryGuard()?.reschedule();
-      };
-      const handleToggle = () => {
-        persist({ enabled: !settings.enabled });
       };
       const commitInterval = () => {
         const parsed = Number(intervalDraft.trim());
@@ -7312,7 +7428,7 @@ window.__ModuleLoader__.load({
         setWorking("reclaim");
         setMessage("");
         try {
-          await guard.reclaimNow();
+          setReading(await guard.reclaimNow());
           setRuntime(readMemoryGuardState());
         } catch (error) {
           console.error("[memory-guard] \u624B\u52A8\u8F7B\u91CF\u56DE\u6536\u5931\u8D25:", error);
@@ -7339,74 +7455,29 @@ window.__ModuleLoader__.load({
           setWorking(null);
         }
       };
-      return (
-        // 卡片容器：文字区不参与交互，开关与参数各自独立，不能互相嵌套
-        /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react30.default.createElement(MemoryIcon2, null)), /* @__PURE__ */ import_react30.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")))), /* @__PURE__ */ import_react30.default.createElement(
-          "button",
-          {
-            type: "button",
-            role: "switch",
-            "aria-checked": settings.enabled,
-            "aria-label": t("title"),
-            onClick: handleToggle,
-            className: cn(
-              "flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition",
-              settings.enabled ? "bg-brand" : "bg-line2",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-default"
-            )
-          },
-          /* @__PURE__ */ import_react30.default.createElement(
-            "span",
-            {
-              "aria-hidden": "true",
-              className: cn(
-                "h-4 w-4 aio-switch bg-base shadow transition-transform",
-                settings.enabled ? "translate-x-[18px]" : "translate-x-0.5"
-              )
-            }
-          )
-        )), settings.enabled ? /* @__PURE__ */ import_react30.default.createElement(import_react30.default.Fragment, null, /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex items-center gap-3 pl-7" }, /* @__PURE__ */ import_react30.default.createElement(
-          NumberField,
-          {
-            label: t("intervalLabel"),
-            unit: t("intervalUnit"),
-            value: intervalDraft,
-            min: INTERVAL_RANGE.min,
-            max: INTERVAL_RANGE.max,
-            onChange: setIntervalDraft,
-            onCommit: commitInterval
-          }
-        ), /* @__PURE__ */ import_react30.default.createElement(
-          NumberField,
-          {
-            label: t("thresholdLabel"),
-            unit: t("thresholdUnit"),
-            value: thresholdDraft,
-            min: THRESHOLD_RANGE.min,
-            max: THRESHOLD_RANGE.max,
-            onChange: setThresholdDraft,
-            onCommit: commitThreshold
-          }
-        )), /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex flex-wrap items-center gap-x-2 pl-7 text-[11px] leading-[16px] text-secondary" }, /* @__PURE__ */ import_react30.default.createElement("span", null, t("lastReclaim").replace("{time}", formatTime(runtime.lastReclaimAt, t("never"))), runtime.lastReclaimFreedMB > 0 ? ` \xB7 ${runtime.lastReclaimFreedMB} MB` : ""), /* @__PURE__ */ import_react30.default.createElement("span", null, t("lastRebuild").replace("{time}", formatTime(runtime.lastRebuildAt, t("never"))))), /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex flex-wrap items-center gap-2 pl-7" }, /* @__PURE__ */ import_react30.default.createElement(
-          "button",
-          {
-            type: "button",
-            onClick: () => void handleReclaim(),
-            disabled: working !== null,
-            className: BUTTON_CLASS2
-          },
-          working === "reclaim" ? t("reclaiming") : t("reclaimNow")
-        ), /* @__PURE__ */ import_react30.default.createElement(
-          "button",
-          {
-            type: "button",
-            onClick: () => void handleRebuild(),
-            disabled: working !== null,
-            className: BUTTON_CLASS2
-          },
-          t("rebuildNow")
-        )), message !== "" ? /* @__PURE__ */ import_react30.default.createElement("span", { className: "pl-7 text-[11px] leading-[16px] text-danger", role: "alert" }, message) : null) : null)
-      );
+      return /* @__PURE__ */ import_react31.default.createElement("div", { className: "space-y-4" }, /* @__PURE__ */ import_react31.default.createElement("div", null, /* @__PURE__ */ import_react31.default.createElement("h2", { className: "text-[15px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-secondary" }, t("pageHint"))), /* @__PURE__ */ import_react31.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react31.default.createElement(
+        NumberField,
+        {
+          label: t("intervalLabel"),
+          unit: t("intervalUnit"),
+          value: intervalDraft,
+          min: INTERVAL_RANGE.min,
+          max: INTERVAL_RANGE.max,
+          onChange: setIntervalDraft,
+          onCommit: commitInterval
+        }
+      ), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-1 text-[11px] leading-4 text-secondary" }, t("intervalHint")), /* @__PURE__ */ import_react31.default.createElement("div", { className: "mt-3" }, /* @__PURE__ */ import_react31.default.createElement(
+        NumberField,
+        {
+          label: t("thresholdLabel"),
+          unit: t("thresholdUnit"),
+          value: thresholdDraft,
+          min: THRESHOLD_RANGE.min,
+          max: THRESHOLD_RANGE.max,
+          onChange: setThresholdDraft,
+          onCommit: commitThreshold
+        }
+      )), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-1 text-[11px] leading-4 text-secondary" }, t("thresholdHint")), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-3 text-[11px] leading-4 text-secondary" }, t("autoSaveHint"))), /* @__PURE__ */ import_react31.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react31.default.createElement("dl", { className: "space-y-1.5 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("memoryUsage")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, reading === null ? t("readingPending") : `${reading.megabytes} MB \xB7 ${sourceLabel(reading.source, t)}`)), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("domNodeCount")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 text-primary" }, reading === null ? t("readingPending") : reading.domNodes)), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("lastReclaim")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastReclaimAt, t("never")), runtime.lastReclaimFreedMB > 0 ? `\uFF08${t("freedAmount").replace("{amount}", String(runtime.lastReclaimFreedMB))}\uFF09` : "")), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("lastRebuild")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastRebuildAt, t("never"))))), /* @__PURE__ */ import_react31.default.createElement("div", { className: "mt-3 flex flex-wrap items-center gap-2" }, /* @__PURE__ */ import_react31.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleReclaim() }, working === "reclaim" ? t("reclaiming") : t("reclaimNow")), /* @__PURE__ */ import_react31.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleRebuild() }, t("rebuildNow")))), message !== "" ? /* @__PURE__ */ import_react31.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, message) : null);
     }
 
     // src/features/memory-guard/index.tsx
@@ -7414,7 +7485,8 @@ window.__ModuleLoader__.load({
       id: "memory-guard",
       group: "config",
       order: 40,
-      switch: MemoryGuardToggle,
+      entry: MemoryGuardEntry,
+      page: MemoryGuardPage,
       client: { apply: apply10 },
       locales: memoryGuardLocales
     };
@@ -7479,9 +7551,9 @@ window.__ModuleLoader__.load({
     var registry = createFeatureRegistry(featureList);
 
     // src/shell/AllInOnePage.tsx
-    var import_react31 = __toESM(require("react"), 1);
+    var import_react32 = __toESM(require("react"), 1);
     function BackGlyph() {
-      return /* @__PURE__ */ import_react31.default.createElement(
+      return /* @__PURE__ */ import_react32.default.createElement(
         "svg",
         {
           viewBox: "0 0 16 16",
@@ -7494,7 +7566,7 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react31.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
+        /* @__PURE__ */ import_react32.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
       );
     }
     var FALLBACK_GROUP = "other";
@@ -7517,34 +7589,34 @@ window.__ModuleLoader__.load({
       return features.length > 0 && features.every((feature) => "switch" in feature && feature.reloadsPage === true);
     }
     function FeatureCard({ feature, t, open }) {
-      const featureT = (0, import_react31.useMemo)(() => (key) => t(`${feature.id}.${key}`), [feature.id, t]);
+      const featureT = (0, import_react32.useMemo)(() => (key) => t(`${feature.id}.${key}`), [feature.id, t]);
       if ("switch" in feature) {
         const SwitchEntry = feature.switch;
-        return /* @__PURE__ */ import_react31.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react31.default.createElement(SwitchEntry, { t: featureT }));
+        return /* @__PURE__ */ import_react32.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react32.default.createElement(SwitchEntry, { t: featureT }));
       }
       const Entry = feature.entry;
-      return /* @__PURE__ */ import_react31.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react31.default.createElement(Entry, { t: featureT, open: () => open(feature.id) }));
+      return /* @__PURE__ */ import_react32.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react32.default.createElement(Entry, { t: featureT, open: () => open(feature.id) }));
     }
     function AllInOnePage({ t }) {
-      const [activeId, setActiveId] = (0, import_react31.useState)(null);
-      const [pageActions, setPageActions] = (0, import_react31.useState)(null);
+      const [activeId, setActiveId] = (0, import_react32.useState)(null);
+      const [pageActions, setPageActions] = (0, import_react32.useState)(null);
       const active2 = activeId ? registry.find(activeId) : void 0;
       const activePage = active2 && "page" in active2 ? active2 : void 0;
-      const featureTranslate = (0, import_react31.useCallback)(
+      const featureTranslate = (0, import_react32.useCallback)(
         // 网格视图不会调用此函数，activePage 为空时直接返回 key 兜底
         (key) => activePage ? t(`${activePage.id}.${key}`) : key,
         [activePage, t]
       );
       if (activePage) {
         const ActivePage = activePage.page;
-        return /* @__PURE__ */ import_react31.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react31.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react31.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react31.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react31.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react31.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react31.default.createElement(ActivePage, { t: featureTranslate }))));
+        return /* @__PURE__ */ import_react32.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react32.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react32.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react32.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react32.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react32.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react32.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react32.default.createElement(ActivePage, { t: featureTranslate }))));
       }
-      return /* @__PURE__ */ import_react31.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react31.default.createElement("header", null, /* @__PURE__ */ import_react31.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
+      return /* @__PURE__ */ import_react32.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react32.default.createElement("header", null, /* @__PURE__ */ import_react32.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react32.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
         // 尚未注册功能时的空态提示
-        /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
+        /* @__PURE__ */ import_react32.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
       ) : (
         // 按分组逐块渲染：组标题说明这一块功能解决什么问题，组内仍是一张网格
-        /* @__PURE__ */ import_react31.default.createElement("div", { className: "mt-4 space-y-4" }, groupFeatures(registry.list).map((section) => /* @__PURE__ */ import_react31.default.createElement("section", { key: section.group }, /* @__PURE__ */ import_react31.default.createElement("div", { className: "mb-2 flex items-baseline gap-1" }, /* @__PURE__ */ import_react31.default.createElement("h2", { className: "text-[12px] font-medium text-secondary" }, t(`shell.group.${section.group}`)), needsReloadHint(section.features) ? /* @__PURE__ */ import_react31.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, "\xB7 ", t("shell.groupReloadHint")) : null), /* @__PURE__ */ import_react31.default.createElement("div", { className: "aio-card-grid grid auto-rows-fr gap-2.5" }, section.features.map((feature) => /* @__PURE__ */ import_react31.default.createElement(
+        /* @__PURE__ */ import_react32.default.createElement("div", { className: "mt-4 space-y-4" }, groupFeatures(registry.list).map((section) => /* @__PURE__ */ import_react32.default.createElement("section", { key: section.group }, /* @__PURE__ */ import_react32.default.createElement("div", { className: "mb-2 flex items-baseline gap-1" }, /* @__PURE__ */ import_react32.default.createElement("h2", { className: "text-[12px] font-medium text-secondary" }, t(`shell.group.${section.group}`)), needsReloadHint(section.features) ? /* @__PURE__ */ import_react32.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, "\xB7 ", t("shell.groupReloadHint")) : null), /* @__PURE__ */ import_react32.default.createElement("div", { className: "aio-card-grid grid auto-rows-fr gap-2.5" }, section.features.map((feature) => /* @__PURE__ */ import_react32.default.createElement(
           FeatureCard,
           {
             key: feature.id,
@@ -7732,7 +7804,7 @@ window.__ModuleLoader__.load({
         });
         const t = ctx.locale.bind(LOCALE_NAMESPACE);
         installSettingsNavIcon(ctx, t, icon_default);
-        const SettingsSection = () => /* @__PURE__ */ import_react32.default.createElement(AllInOnePage, { t });
+        const SettingsSection = () => /* @__PURE__ */ import_react33.default.createElement(AllInOnePage, { t });
         ctx.slots.inject(
           "settings.section",
           () => ctx.slots.register(

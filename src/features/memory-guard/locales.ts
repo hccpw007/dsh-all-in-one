@@ -3,20 +3,48 @@ import type { FeatureLocales } from '../../shell/registry'
 /** 「内存守护」的中英文文案；key 由外壳统一加 `memory-guard.` 前缀。 */
 export const memoryGuardLocales: FeatureLocales = {
   zh: {
-    // 开关标题
+    // 入口与设置页标题
     title: '内存守护',
+    // 入口描述：说明定时回收与自动重建的作用
+    description: '定时回收界面内存，占用超过阈值且无人操作时自动重建页面。',
+    // 卡片右下角的设置入口
+    settingsAction: '设置',
+    // 设置页标题
+    pageTitle: '内存设置',
+    // 设置页说明：检查节奏与自动重建的触发条件
+    pageHint: '定时检查界面内存：先做轻量回收，占用仍超过阈值且无人操作时重建页面。',
     // 检查间隔输入框的标签
-    intervalLabel: '间隔',
+    intervalLabel: '检查间隔',
     // 检查间隔输入框的单位
     intervalUnit: '分钟',
+    // 检查间隔的作用：同时决定检查周期与空闲判定时长
+    intervalHint: '既是检查周期，也是「无人操作」的判定时长：窗口失焦或空闲满该时长才会重建。',
     // 重建阈值输入框的标签
-    thresholdLabel: '阈值',
+    thresholdLabel: '重建阈值',
     // 重建阈值输入框的单位
     thresholdUnit: 'MB',
-    // 上次轻量回收的时间与释放量
-    lastReclaim: '上次回收 {time}',
+    // 重建阈值的作用：超过它才真正重建页面
+    thresholdHint: '轻量回收后占用仍超过该值才重建页面；低于它每次只做轻量回收。',
+    // 输入框即时保存的说明
+    autoSaveHint: '输入框失焦或回车即保存，改动立即生效。',
+    // 当前内存占用
+    memoryUsage: '当前占用',
+    // 页面 DOM 节点数量
+    domNodeCount: 'DOM 节点',
+    // 读数来自渲染进程常驻内存
+    sourceProcess: '渲染进程',
+    // 读数来自页面 JS 堆
+    sourceHeap: '页面堆',
+    // 拿不到任何读数
+    sourceNone: '不可用',
+    // 读数尚未返回时的占位
+    readingPending: '读取中…',
+    // 上次轻量回收的时间
+    lastReclaim: '上次回收',
     // 上次重建的时间
-    lastRebuild: '上次重建 {time}',
+    lastRebuild: '上次重建',
+    // 回收释放量，占位符是兆字节数
+    freedAmount: '释放 {amount} MB',
     // 从未执行过时的占位
     never: '从未',
     // 手动触发轻量回收的按钮
@@ -49,20 +77,48 @@ export const memoryGuardLocales: FeatureLocales = {
     thresholdInvalid: '重建阈值需要是 200 到 8192 之间的整数',
   },
   en: {
-    // Switch title
+    // Entry and page title
     title: 'Memory guard',
+    // Entry description: scheduled reclaim plus idle rebuild
+    description: 'Reclaims renderer memory on a schedule and rebuilds the page when idle and over the limit.',
+    // Settings entry at the card's bottom right
+    settingsAction: 'Settings',
+    // Settings page title
+    pageTitle: 'Memory settings',
+    // Settings page intro: cadence and rebuild conditions
+    pageHint: 'Checks renderer memory on a schedule: a light reclaim first, then a page rebuild when usage stays above the limit and nobody is interacting.',
     // Label of the interval input
     intervalLabel: 'Interval',
     // Unit shown after the interval input
     intervalUnit: 'min',
+    // What the interval controls: cadence and the idle window
+    intervalHint: 'Both the check cadence and the idle window: a rebuild only happens when the window is unfocused or idle for this long.',
     // Label of the rebuild threshold input
-    thresholdLabel: 'Threshold',
+    thresholdLabel: 'Rebuild above',
     // Unit shown after the threshold input
     thresholdUnit: 'MB',
-    // Time and freed amount of the last light reclaim
-    lastReclaim: 'Reclaimed {time}',
+    // What the threshold controls
+    thresholdHint: 'The page is rebuilt only if usage stays above this after the light reclaim; below it every check is light only.',
+    // Inputs save on blur or Enter
+    autoSaveHint: 'Inputs save on blur or Enter and take effect immediately.',
+    // Current memory usage
+    memoryUsage: 'In use',
+    // Number of DOM nodes on the page
+    domNodeCount: 'DOM nodes',
+    // Reading comes from the renderer RSS
+    sourceProcess: 'renderer',
+    // Reading comes from the page JS heap
+    sourceHeap: 'JS heap',
+    // No reading available
+    sourceNone: 'unavailable',
+    // Placeholder before the first reading arrives
+    readingPending: 'Reading…',
+    // Time of the last light reclaim
+    lastReclaim: 'Reclaimed',
     // Time of the last rebuild
-    lastRebuild: 'Rebuilt {time}',
+    lastRebuild: 'Rebuilt',
+    // Freed amount; the placeholder is megabytes
+    freedAmount: '{amount} MB freed',
     // Placeholder for an action that never ran
     never: 'never',
     // Button that triggers a light reclaim
