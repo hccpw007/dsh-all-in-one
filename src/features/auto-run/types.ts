@@ -23,6 +23,8 @@ export interface AutoRunSettings {
   defaultMode: AutoRunDefaultMode
   /** 最近一次显式写入的状态，「上一次」模式的取值来源。 */
   lastEnabled: boolean
+  /** 最近一次清理失效记录的时间（毫秒时间戳）；0 表示还没清理过。 */
+  lastPrunedAt: number
 }
 
 /** 输入框开关的读取结果。 */

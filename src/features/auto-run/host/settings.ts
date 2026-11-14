@@ -34,7 +34,7 @@ const MAX_WORKSPACES = 100
 
 /** 默认设置：没有任何显式记录，新会话按「默认关」处理。 */
 function createDefaultSettings(): AutoRunSettings {
-  return { sessions: {}, workspaces: {}, defaultMode: 'off', lastEnabled: false }
+  return { sessions: {}, workspaces: {}, defaultMode: 'off', lastEnabled: false, lastPrunedAt: 0 }
 }
 
 /**
@@ -107,6 +107,7 @@ function normalizeSettings(value: unknown): AutoRunSettings {
     workspaces?: unknown
     defaultMode?: unknown
     lastEnabled?: unknown
+    lastPrunedAt?: unknown
   }
 
   // 没有 sessions 字段说明是旧版文件：把开启列表迁移成显式记录
@@ -119,6 +120,9 @@ function normalizeSettings(value: unknown): AutoRunSettings {
     workspaces: readBooleanMap(candidate.workspaces, MAX_WORKSPACES),
     defaultMode: readDefaultMode(candidate.defaultMode),
     lastEnabled: candidate.lastEnabled === true,
+    lastPrunedAt: typeof candidate.lastPrunedAt === 'number' && candidate.lastPrunedAt > 0
+      ? candidate.lastPrunedAt
+      : 0,
   }
 }
 
@@ -238,6 +242,7 @@ export function setAutoRunEnabled(
     workspaces: Object.fromEntries(Object.entries(workspaces).slice(-MAX_WORKSPACES)),
     defaultMode: current.defaultMode,
     lastEnabled: enabled,
+    lastPrunedAt: current.lastPrunedAt,
   })
 
   return enabled
@@ -254,4 +259,42 @@ export function setAutoRunDefaultMode(mode: AutoRunDefaultMode): AutoRunDefaultM
   store.write({ ...current, defaultMode: mode })
 
   return mode
+}
+
+/**
+ * 清理已经不存在实体的会话与工作空间记录。
+ *
+ * 传 undefined 表示该类实体无法确认（目录或注册表读不到），本次跳过该类清理；
+ * 两类都无法确认时不写文件、也不推进清理时间，下个周期再试。
+ * @param existingSessionIds 现存会话标识；undefined 表示无法确认
+ * @param existingWorkspaceIds 现存工作空间标识；undefined 表示无法确认
+ * @returns 各类删掉的条数
+ */
+export function pruneAutoRunSettings(
+  existingSessionIds: ReadonlySet<string> | undefined,
+  existingWorkspaceIds: ReadonlySet<string> | undefined,
+): { sessions: number; workspaces: number } {
+  const current = store.read()
+
+  if (existingSessionIds === undefined && existingWorkspaceIds === undefined) {
+    return { sessions: 0, workspaces: 0 }
+  }
+
+  const sessions = existingSessionIds === undefined
+    ? current.sessions
+    : Object.fromEntries(Object.entries(current.sessions).filter(([id]) => existingSessionIds.has(id)))
+
+  const workspaces = existingWorkspaceIds === undefined
+    ? current.workspaces
+    : Object.fromEntries(
+      Object.entries(current.workspaces).filter(([id]) => existingWorkspaceIds.has(id)),
+    )
+
+  const removedSessions = Object.keys(current.sessions).length - Object.keys(sessions).length
+  const removedWorkspaces = Object.keys(current.workspaces).length - Object.keys(workspaces).length
+
+  // 即使没有删掉任何条目也要写下本次清理时间，否则每次检查都会重新扫描全部会话目录
+  store.write({ ...current, sessions, workspaces, lastPrunedAt: Date.now() })
+
+  return { sessions: removedSessions, workspaces: removedWorkspaces }
 }

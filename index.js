@@ -3931,7 +3931,7 @@ import { join as join17 } from "node:path";
 var MAX_SESSIONS = 200;
 var MAX_WORKSPACES = 100;
 function createDefaultSettings() {
-  return { sessions: {}, workspaces: {}, defaultMode: "off", lastEnabled: false };
+  return { sessions: {}, workspaces: {}, defaultMode: "off", lastEnabled: false, lastPrunedAt: 0 };
 }
 function autoRunSettingsFile() {
   return join17(resolveDshHome(), "all-in-one", "auto-run.json");
@@ -3962,7 +3962,8 @@ function normalizeSettings4(value) {
     sessions,
     workspaces: readBooleanMap(candidate.workspaces, MAX_WORKSPACES),
     defaultMode: readDefaultMode(candidate.defaultMode),
-    lastEnabled: candidate.lastEnabled === true
+    lastEnabled: candidate.lastEnabled === true,
+    lastPrunedAt: typeof candidate.lastPrunedAt === "number" && candidate.lastPrunedAt > 0 ? candidate.lastPrunedAt : 0
   };
 }
 var store4 = createJsonSettingsStore({
@@ -4019,7 +4020,8 @@ function setAutoRunEnabled(sessionId, enabled, workspaceId) {
     sessions: Object.fromEntries(Object.entries(sessions).slice(-MAX_SESSIONS)),
     workspaces: Object.fromEntries(Object.entries(workspaces).slice(-MAX_WORKSPACES)),
     defaultMode: current.defaultMode,
-    lastEnabled: enabled
+    lastEnabled: enabled,
+    lastPrunedAt: current.lastPrunedAt
   });
   return enabled;
 }
@@ -4027,6 +4029,20 @@ function setAutoRunDefaultMode(mode) {
   const current = store4.read();
   store4.write({ ...current, defaultMode: mode });
   return mode;
+}
+function pruneAutoRunSettings(existingSessionIds, existingWorkspaceIds) {
+  const current = store4.read();
+  if (existingSessionIds === void 0 && existingWorkspaceIds === void 0) {
+    return { sessions: 0, workspaces: 0 };
+  }
+  const sessions = existingSessionIds === void 0 ? current.sessions : Object.fromEntries(Object.entries(current.sessions).filter(([id10]) => existingSessionIds.has(id10)));
+  const workspaces = existingWorkspaceIds === void 0 ? current.workspaces : Object.fromEntries(
+    Object.entries(current.workspaces).filter(([id10]) => existingWorkspaceIds.has(id10))
+  );
+  const removedSessions = Object.keys(current.sessions).length - Object.keys(sessions).length;
+  const removedWorkspaces = Object.keys(current.workspaces).length - Object.keys(workspaces).length;
+  store4.write({ ...current, sessions, workspaces, lastPrunedAt: Date.now() });
+  return { sessions: removedSessions, workspaces: removedWorkspaces };
 }
 
 // src/features/auto-run/host/answer.ts
@@ -4126,6 +4142,87 @@ function installAutoRunPrompt(ctx) {
     }),
     "auto-run: prompt"
   );
+}
+
+// src/features/auto-run/host/prune.ts
+import { readdir as readdir5, readFile as readFile7 } from "node:fs/promises";
+import { join as join18 } from "node:path";
+var PRUNE_INTERVAL_MS = 7 * 24 * 60 * 60 * 1e3;
+var CHECK_INTERVAL_MS2 = 60 * 60 * 1e3;
+var START_DELAY_MS = 3e4;
+var SESSION_UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+function isSessionId(name) {
+  return name.startsWith("session-") || SESSION_UUID_PATTERN.test(name);
+}
+async function listExistingSessionIds() {
+  const root = join18(resolveDshHome(), "sessions");
+  try {
+    const groups = await readdir5(root, { withFileTypes: true });
+    const ids = /* @__PURE__ */ new Set();
+    const nested = await Promise.all(groups.filter((group) => group.isDirectory()).map(
+      (group) => readdir5(join18(root, group.name), { withFileTypes: true }).catch((error) => {
+        console.error("[auto-run] \u8BFB\u53D6\u4F1A\u8BDD\u76EE\u5F55\u5931\u8D25:", group.name, error);
+        return [];
+      })
+    ));
+    for (const group of groups) {
+      if (group.isDirectory() && isSessionId(group.name)) ids.add(group.name);
+    }
+    for (const entries of nested) {
+      for (const entry of entries) {
+        if (entry.isDirectory()) ids.add(entry.name);
+      }
+    }
+    return ids;
+  } catch (error) {
+    console.error("[auto-run] \u626B\u63CF\u4F1A\u8BDD\u76EE\u5F55\u5931\u8D25\uFF0C\u8DF3\u8FC7\u672C\u6B21\u4F1A\u8BDD\u6E05\u7406:", error);
+    return void 0;
+  }
+}
+async function listExistingWorkspaceIds() {
+  const file = join18(resolveDshHome(), "storages", "workspace.json");
+  try {
+    const parsed = JSON.parse(await readFile7(file, "utf8"));
+    const global = parsed.global;
+    const ids = global?.workspaceIds;
+    if (!Array.isArray(ids)) return void 0;
+    return new Set(ids.filter((id10) => typeof id10 === "string" && id10 !== ""));
+  } catch (error) {
+    if (error.code === "ENOENT") return void 0;
+    console.error("[auto-run] \u8BFB\u53D6\u5DE5\u4F5C\u7A7A\u95F4\u6CE8\u518C\u8868\u5931\u8D25\uFF0C\u8DF3\u8FC7\u672C\u6B21\u5DE5\u4F5C\u7A7A\u95F4\u6E05\u7406:", error);
+    return void 0;
+  }
+}
+async function pruneIfDue(isDisposed) {
+  const settings = readAutoRunSettings();
+  if (Date.now() - settings.lastPrunedAt < PRUNE_INTERVAL_MS) return;
+  const [sessionIds, workspaceIds] = await Promise.all([
+    listExistingSessionIds(),
+    listExistingWorkspaceIds()
+  ]);
+  if (isDisposed()) return;
+  const removed = pruneAutoRunSettings(sessionIds, workspaceIds);
+  if (removed.sessions > 0 || removed.workspaces > 0) {
+    console.log(
+      `[auto-run] \u5DF2\u6E05\u7406\u5931\u6548\u8BB0\u5F55\uFF1A\u4F1A\u8BDD ${removed.sessions} \u6761\uFF0C\u5DE5\u4F5C\u7A7A\u95F4 ${removed.workspaces} \u6761`
+    );
+  }
+}
+function installAutoRunPrune() {
+  let disposed = false;
+  const run = () => {
+    if (disposed) return;
+    void pruneIfDue(() => disposed).catch((error) => {
+      console.error("[auto-run] \u5B9A\u671F\u6E05\u7406\u5931\u8D25:", error);
+    });
+  };
+  const first = setTimeout(run, START_DELAY_MS);
+  const timer = setInterval(run, CHECK_INTERVAL_MS2);
+  return () => {
+    disposed = true;
+    clearTimeout(first);
+    clearInterval(timer);
+  };
 }
 
 // src/features/auto-run/host/routes.ts
@@ -4239,6 +4336,7 @@ function apply9(ctx) {
   installAutoRunPrompt(ctx);
   installAutoRunToolGuard(ctx);
   installAutoRunAnswerer(ctx);
+  ctx.effect(() => installAutoRunPrune(), "auto-run: prune");
   const webServer = ctx.webServer;
   if (webServer === void 0) {
     console.error("[auto-run] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u5F00\u5173\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
