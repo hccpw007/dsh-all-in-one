@@ -27,6 +27,12 @@ export const memoryGuardLocales: FeatureLocales = {
     thresholdHint: '轻量回收后渲染进程占用仍超过该值才重建页面；低于它每次只做轻量回收。',
     // 输入框即时保存的说明
     autoSaveHint: '输入框失焦或回车即保存，改动立即生效。',
+    // 输入框下方状态栏的读数标签
+    dockLabel: '内存',
+    // 状态栏读数的悬停说明：覆盖范围
+    dockTitle: '全部 DSH 进程的物理内存（主进程、GPU、渲染进程等），与活动监视器各行之和同口径',
+    // 会话头部「回收并重建」按钮的无障碍标签与悬停说明
+    rebuildAction: '先回收再重建页面',
     // 当前内存占用（全部 DSH 进程合计）
     memoryUsage: '当前占用',
     // 渲染进程单独一行展示时的标签
@@ -107,6 +113,12 @@ export const memoryGuardLocales: FeatureLocales = {
     thresholdHint: 'The page is rebuilt only if the renderer stays above this after the light reclaim; below it every check is light only.',
     // Inputs save on blur or Enter
     autoSaveHint: 'Inputs save on blur or Enter and take effect immediately.',
+    // Label of the composer-dock reading
+    dockLabel: 'Memory',
+    // Tooltip of the dock reading: what it covers
+    dockTitle: 'Physical memory of all DSH processes (main, GPU, renderer), matching the sum of Activity Monitor rows',
+    // Accessible label and tooltip of the header rebuild button
+    rebuildAction: 'Reclaim, then rebuild the page',
     // Current memory usage (all DSH processes combined)
     memoryUsage: 'In use',
     // Label when the renderer is listed on its own row

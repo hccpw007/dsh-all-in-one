@@ -229,7 +229,9 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 │       │   ├── entry.tsx    # 网格入口：两行说明与设置入口，右侧开关控制是否执行回收
 │       │   ├── page.tsx     # 设置页：间隔、阈值、实时占用与 DOM 节点、上次时间与手动按钮
 │       │   ├── storage.ts   # 配置与运行状态的 localStorage 读写，本功能专属
-│       │   ├── client.tsx   # 客户端扩展：常驻安装定时检查
+│       │   ├── client.tsx   # 客户端扩展：常驻定时检查 + 状态栏读数 + 头部按钮
+│       │   ├── dock.tsx     # 输入框下方状态栏的内存读数胶囊
+│       │   ├── header-action.tsx # 会话头部右上角的「回收并重建」按钮
 │       │   ├── guard.ts     # 定时编排：轻量回收 → 阈值 → 空闲判定 → 倒计时 → 重建
 │       │   ├── reclaim.ts   # 轻量回收：CacheStorage、performance 与可选强制回收
 │       │   ├── occupancy.ts # 空闲与焦点判定、交互监听

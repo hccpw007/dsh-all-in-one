@@ -39,10 +39,10 @@ window.__ModuleLoader__.load({
       default: () => entry_default
     });
     module.exports = __toCommonJS(entry_exports);
-    var import_react33 = __toESM(require("react"), 1);
+    var import_react36 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = '*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.inline{display:inline}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-7{height:1.75rem}.h-8{height:2rem}.h-\\[18px\\]{height:18px}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-16{width:4rem}.w-20{width:5rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.translate-x-\\[18px\\],.translate-x-\\[20px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[20px\\]{--tw-translate-x:20px}.translate-x-\\[2px\\]{--tw-translate-x:2px}.transform,.translate-x-\\[2px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-1\\.5>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.375rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.375rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.whitespace-nowrap{white-space:nowrap}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-60{opacity:.6}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{--tw-shadow:0 1px 2px rgba(0,0,0,.2);--tw-shadow-colored:0 1px 2px var(--tw-shadow-color)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.ring-1{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.ring-black\\/5{--tw-ring-color:rgba(0,0,0,.05)}.blur{--tw-blur:blur(8px)}.blur,.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.duration-200{transition-duration:.2s}.ease-out{transition-timing-function:cubic-bezier(0,0,.2,1)}.\\[all-in-one\\:perf\\]{all-in-one:perf}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.aio-workspace-count:after{content:"\uFF08" attr(data-aio-workspace-count) "\uFF09";color:var(--dsw-alias-label-tertiary);font-size:12px;font-weight:400;margin-inline-start:1px}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}';
+    var styles_default = '*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.inline{display:inline}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-6{height:1.5rem}.h-7{height:1.75rem}.h-8{height:2rem}.h-\\[18px\\]{height:18px}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-16{width:4rem}.w-20{width:5rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-6{width:1.5rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.translate-x-\\[18px\\],.translate-x-\\[20px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[20px\\]{--tw-translate-x:20px}.translate-x-\\[2px\\]{--tw-translate-x:2px}.transform,.translate-x-\\[2px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes spin{to{transform:rotate(1turn)}}.animate-spin{animation:spin 1s linear infinite}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-1\\.5>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.375rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.375rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.whitespace-nowrap{white-space:nowrap}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-60{opacity:.6}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{--tw-shadow:0 1px 2px rgba(0,0,0,.2);--tw-shadow-colored:0 1px 2px var(--tw-shadow-color)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.ring-1{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.ring-black\\/5{--tw-ring-color:rgba(0,0,0,.05)}.blur{--tw-blur:blur(8px)}.blur,.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.duration-200{transition-duration:.2s}.ease-out{transition-timing-function:cubic-bezier(0,0,.2,1)}.\\[all-in-one\\:perf\\]{all-in-one:perf}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.aio-workspace-count:after{content:"\uFF08" attr(data-aio-workspace-count) "\uFF09";color:var(--dsw-alias-label-tertiary);font-size:12px;font-weight:400;margin-inline-start:1px}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}';
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -6705,6 +6705,100 @@ window.__ModuleLoader__.load({
     };
     var desktop_cookie_default = desktopCookieFeature;
 
+    // src/features/memory-guard/client.tsx
+    var import_react32 = __toESM(require("react"), 1);
+
+    // src/features/memory-guard/dock.tsx
+    var import_react30 = __toESM(require("react"), 1);
+
+    // src/features/memory-guard/api.ts
+    var ENDPOINT8 = "/dsh-all-in-one/memory-guard";
+    var REQUEST_TIMEOUT_MS8 = 2500;
+    var failureReported = false;
+    async function fetchHostMemory() {
+      const controller = new AbortController();
+      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS8);
+      try {
+        const response = await fetch(new URL(ENDPOINT8, window.location.origin).toString(), {
+          credentials: "same-origin",
+          cache: "no-store",
+          signal: controller.signal
+        });
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(text || `HTTP ${response.status}`);
+        }
+        const payload = await response.json();
+        failureReported = false;
+        return payload;
+      } catch (error) {
+        if (!failureReported) {
+          failureReported = true;
+          console.warn("[memory-guard] \u8BFB\u53D6\u5BBF\u4E3B\u8FDB\u7A0B\u5185\u5B58\u5931\u8D25\uFF0C\u6539\u7528\u9875\u9762\u8BFB\u6570:", error);
+        }
+        return null;
+      } finally {
+        window.clearTimeout(timer);
+      }
+    }
+
+    // src/features/memory-guard/measure.ts
+    function readPageMemory() {
+      const memory = performance.memory;
+      const heapMB = memory === void 0 ? null : Math.round(memory.usedJSHeapSize / 1048576);
+      return { heapMB, domNodes: document.getElementsByTagName("*").length };
+    }
+    async function readMemory() {
+      const page = readPageMemory();
+      const host = await fetchHostMemory();
+      const rendererMB = host?.rendererMB ?? null;
+      const otherMB = host?.otherMB ?? null;
+      const totalMB = rendererMB === null ? null : rendererMB + (otherMB ?? 0);
+      const source = rendererMB !== null ? "process" : page.heapMB !== null ? "heap" : "none";
+      return {
+        megabytes: rendererMB ?? page.heapMB ?? 0,
+        source,
+        heapMB: page.heapMB,
+        rendererMB,
+        otherMB,
+        totalMB,
+        domNodes: page.domNodes
+      };
+    }
+
+    // src/features/memory-guard/dock.tsx
+    var REFRESH_MS = 3e4;
+    function MemoryUsagePill({ t }) {
+      const [reading, setReading] = (0, import_react30.useState)(null);
+      (0, import_react30.useEffect)(() => {
+        let active2 = true;
+        const refresh = () => {
+          void readMemory().then((next) => {
+            if (active2) setReading(next);
+          }).catch((error) => {
+            console.error("[memory-guard] \u8BFB\u53D6\u5185\u5B58\u5360\u7528\u5931\u8D25:", error);
+          });
+        };
+        refresh();
+        const timer = window.setInterval(refresh, REFRESH_MS);
+        return () => {
+          active2 = false;
+          window.clearInterval(timer);
+        };
+      }, []);
+      if (reading === null) return null;
+      const megabytes = reading.totalMB ?? reading.megabytes;
+      return /* @__PURE__ */ import_react30.default.createElement(
+        "span",
+        {
+          className: "flex items-center gap-1 text-[11px] leading-[16px] text-secondary",
+          title: t("dockTitle")
+        },
+        /* @__PURE__ */ import_react30.default.createElement("span", null, t("dockLabel")),
+        /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-primary" }, `${megabytes} MB`)
+      );
+    }
+
     // src/features/memory-guard/notice.ts
     var COUNTDOWN_SECONDS = 5;
     var OVERLAY_Z_INDEX = "2147483000";
@@ -6793,61 +6887,6 @@ window.__ModuleLoader__.load({
     }
     function resetIdleClock() {
       markInteraction();
-    }
-
-    // src/features/memory-guard/api.ts
-    var ENDPOINT8 = "/dsh-all-in-one/memory-guard";
-    var REQUEST_TIMEOUT_MS8 = 2500;
-    var failureReported = false;
-    async function fetchHostMemory() {
-      const controller = new AbortController();
-      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS8);
-      try {
-        const response = await fetch(new URL(ENDPOINT8, window.location.origin).toString(), {
-          credentials: "same-origin",
-          cache: "no-store",
-          signal: controller.signal
-        });
-        if (!response.ok) {
-          const text = await response.text();
-          throw new Error(text || `HTTP ${response.status}`);
-        }
-        const payload = await response.json();
-        failureReported = false;
-        return payload;
-      } catch (error) {
-        if (!failureReported) {
-          failureReported = true;
-          console.warn("[memory-guard] \u8BFB\u53D6\u5BBF\u4E3B\u8FDB\u7A0B\u5185\u5B58\u5931\u8D25\uFF0C\u6539\u7528\u9875\u9762\u8BFB\u6570:", error);
-        }
-        return null;
-      } finally {
-        window.clearTimeout(timer);
-      }
-    }
-
-    // src/features/memory-guard/measure.ts
-    function readPageMemory() {
-      const memory = performance.memory;
-      const heapMB = memory === void 0 ? null : Math.round(memory.usedJSHeapSize / 1048576);
-      return { heapMB, domNodes: document.getElementsByTagName("*").length };
-    }
-    async function readMemory() {
-      const page = readPageMemory();
-      const host = await fetchHostMemory();
-      const rendererMB = host?.rendererMB ?? null;
-      const otherMB = host?.otherMB ?? null;
-      const totalMB = rendererMB === null ? null : rendererMB + (otherMB ?? 0);
-      const source = rendererMB !== null ? "process" : page.heapMB !== null ? "heap" : "none";
-      return {
-        megabytes: rendererMB ?? page.heapMB ?? 0,
-        source,
-        heapMB: page.heapMB,
-        rendererMB,
-        otherMB,
-        totalMB,
-        domNodes: page.domNodes
-      };
     }
 
     // src/features/memory-guard/reclaim.ts
@@ -7093,18 +7132,90 @@ window.__ModuleLoader__.load({
       return handle;
     }
 
+    // src/features/memory-guard/header-action.tsx
+    var import_react31 = __toESM(require("react"), 1);
+    function RefreshIcon({ spinning }) {
+      return /* @__PURE__ */ import_react31.default.createElement(
+        "svg",
+        {
+          viewBox: "0 0 16 16",
+          width: "14",
+          height: "14",
+          "aria-hidden": "true",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: "1.6",
+          strokeLinecap: "round",
+          strokeLinejoin: "round",
+          className: spinning ? "animate-spin" : void 0
+        },
+        /* @__PURE__ */ import_react31.default.createElement("path", { d: "M13 8a5 5 0 1 1-1.6-3.7" }),
+        /* @__PURE__ */ import_react31.default.createElement("path", { d: "M13 2.5V5h-2.5" })
+      );
+    }
+    function MemoryGuardAction({ t }) {
+      const [working, setWorking] = (0, import_react31.useState)(false);
+      const handleClick = async () => {
+        const guard = activeMemoryGuard();
+        if (guard === void 0) {
+          console.warn("[memory-guard] \u5185\u5B58\u5B88\u62A4\u5C1A\u672A\u5C31\u7EEA\uFF0C\u5FFD\u7565\u672C\u6B21\u56DE\u6536");
+          return;
+        }
+        setWorking(true);
+        try {
+          await guard.reclaimNow();
+          const outcome = await guard.rebuildNow();
+          if (!outcome.rebuilt) {
+            console.warn("[memory-guard] \u624B\u52A8\u91CD\u5EFA\u672A\u6267\u884C:", outcome.reason, outcome.detail);
+          }
+        } catch (error) {
+          console.error("[memory-guard] \u56DE\u6536\u5E76\u91CD\u5EFA\u5931\u8D25:", error);
+        } finally {
+          setWorking(false);
+        }
+      };
+      return /* @__PURE__ */ import_react31.default.createElement(
+        "button",
+        {
+          type: "button",
+          "aria-label": t("rebuildAction"),
+          title: t("rebuildAction"),
+          disabled: working,
+          onClick: () => void handleClick(),
+          className: "flex h-6 w-6 items-center justify-center rounded-md border-0 bg-transparent p-0 text-secondary transition hover:bg-layer2 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-default disabled:opacity-50"
+        },
+        /* @__PURE__ */ import_react31.default.createElement(RefreshIcon, { spinning: working })
+      );
+    }
+
     // src/features/memory-guard/client.tsx
+    var DOCK_SLOT = "conversation.composer.dock";
+    var HEADER_UTILITIES_SLOT = "conversation.session.header.utilities";
     function apply10(ctx, t) {
       ctx.effect(() => {
         const handle = installMemoryGuard(t);
         return () => handle.dispose();
       }, "memory-guard: timer");
+      ctx.slots.inject(
+        DOCK_SLOT,
+        () => ctx.slots.register(
+          { name: DOCK_SLOT, id: "memory-guard", order: 1e3 },
+          () => /* @__PURE__ */ import_react32.default.createElement(MemoryUsagePill, { t })
+        )
+      );
+      ctx.slots.inject(
+        HEADER_UTILITIES_SLOT,
+        () => ctx.slots.register(
+          { name: HEADER_UTILITIES_SLOT, id: "memory-guard-rebuild", order: 100 },
+          () => /* @__PURE__ */ import_react32.default.createElement(MemoryGuardAction, { t })
+        )
+      );
     }
 
     // src/features/memory-guard/entry.tsx
-    var import_react30 = __toESM(require("react"), 1);
+    var import_react33 = __toESM(require("react"), 1);
     function MemoryIcon2() {
-      return /* @__PURE__ */ import_react30.default.createElement(
+      return /* @__PURE__ */ import_react33.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -7117,12 +7228,12 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react30.default.createElement("rect", { x: "3", y: "7", width: "18", height: "10", rx: "2" }),
-        /* @__PURE__ */ import_react30.default.createElement("path", { d: "M7 11v2M11 11v2M15 11v2" })
+        /* @__PURE__ */ import_react33.default.createElement("rect", { x: "3", y: "7", width: "18", height: "10", rx: "2" }),
+        /* @__PURE__ */ import_react33.default.createElement("path", { d: "M7 11v2M11 11v2M15 11v2" })
       );
     }
     function MemoryGuardEntry({ t, open }) {
-      const [enabled, setEnabled] = (0, import_react30.useState)(() => readMemoryGuardSettings().enabled);
+      const [enabled, setEnabled] = (0, import_react33.useState)(() => readMemoryGuardSettings().enabled);
       const handleToggle = () => {
         const next = updateMemoryGuardSettings({ enabled: !enabled });
         setEnabled(next.enabled);
@@ -7130,16 +7241,16 @@ window.__ModuleLoader__.load({
       };
       return (
         // 卡片容器：主体按钮、开关与设置按钮是并列的交互区，不能互相嵌套
-        /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full items-start gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 transition hover:bg-layer2" }, /* @__PURE__ */ import_react30.default.createElement(
+        /* @__PURE__ */ import_react33.default.createElement("div", { className: "flex w-full items-start gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 transition hover:bg-layer2" }, /* @__PURE__ */ import_react33.default.createElement(
           "button",
           {
             type: "button",
             onClick: open,
             className: "flex min-w-0 flex-1 items-start gap-2 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           },
-          /* @__PURE__ */ import_react30.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react30.default.createElement(MemoryIcon2, null)),
-          /* @__PURE__ */ import_react30.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")))
-        ), /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex shrink-0 flex-col items-center justify-between gap-1 self-stretch" }, /* @__PURE__ */ import_react30.default.createElement(
+          /* @__PURE__ */ import_react33.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react33.default.createElement(MemoryIcon2, null)),
+          /* @__PURE__ */ import_react33.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react33.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react33.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")))
+        ), /* @__PURE__ */ import_react33.default.createElement("div", { className: "flex shrink-0 flex-col items-center justify-between gap-1 self-stretch" }, /* @__PURE__ */ import_react33.default.createElement(
           "button",
           {
             type: "button",
@@ -7153,7 +7264,7 @@ window.__ModuleLoader__.load({
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
             )
           },
-          /* @__PURE__ */ import_react30.default.createElement(
+          /* @__PURE__ */ import_react33.default.createElement(
             "span",
             {
               "aria-hidden": "true",
@@ -7163,7 +7274,7 @@ window.__ModuleLoader__.load({
               )
             }
           )
-        ), /* @__PURE__ */ import_react30.default.createElement(
+        ), /* @__PURE__ */ import_react33.default.createElement(
           "button",
           {
             type: "button",
@@ -7173,7 +7284,7 @@ window.__ModuleLoader__.load({
             className: "flex shrink-0 items-center justify-center gap-0.5 self-end rounded-md border-0 bg-transparent p-0 text-[12px] leading-[16px] text-secondary transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           },
           t("settingsAction"),
-          /* @__PURE__ */ import_react30.default.createElement(CardChevron, null)
+          /* @__PURE__ */ import_react33.default.createElement(CardChevron, null)
         )))
       );
     }
@@ -7205,6 +7316,12 @@ window.__ModuleLoader__.load({
         thresholdHint: "\u8F7B\u91CF\u56DE\u6536\u540E\u6E32\u67D3\u8FDB\u7A0B\u5360\u7528\u4ECD\u8D85\u8FC7\u8BE5\u503C\u624D\u91CD\u5EFA\u9875\u9762\uFF1B\u4F4E\u4E8E\u5B83\u6BCF\u6B21\u53EA\u505A\u8F7B\u91CF\u56DE\u6536\u3002",
         // 输入框即时保存的说明
         autoSaveHint: "\u8F93\u5165\u6846\u5931\u7126\u6216\u56DE\u8F66\u5373\u4FDD\u5B58\uFF0C\u6539\u52A8\u7ACB\u5373\u751F\u6548\u3002",
+        // 输入框下方状态栏的读数标签
+        dockLabel: "\u5185\u5B58",
+        // 状态栏读数的悬停说明：覆盖范围
+        dockTitle: "\u5168\u90E8 DSH \u8FDB\u7A0B\u7684\u7269\u7406\u5185\u5B58\uFF08\u4E3B\u8FDB\u7A0B\u3001GPU\u3001\u6E32\u67D3\u8FDB\u7A0B\u7B49\uFF09\uFF0C\u4E0E\u6D3B\u52A8\u76D1\u89C6\u5668\u5404\u884C\u4E4B\u548C\u540C\u53E3\u5F84",
+        // 会话头部「回收并重建」按钮的无障碍标签与悬停说明
+        rebuildAction: "\u5148\u56DE\u6536\u518D\u91CD\u5EFA\u9875\u9762",
         // 当前内存占用（全部 DSH 进程合计）
         memoryUsage: "\u5F53\u524D\u5360\u7528",
         // 渲染进程单独一行展示时的标签
@@ -7285,6 +7402,12 @@ window.__ModuleLoader__.load({
         thresholdHint: "The page is rebuilt only if the renderer stays above this after the light reclaim; below it every check is light only.",
         // Inputs save on blur or Enter
         autoSaveHint: "Inputs save on blur or Enter and take effect immediately.",
+        // Label of the composer-dock reading
+        dockLabel: "Memory",
+        // Tooltip of the dock reading: what it covers
+        dockTitle: "Physical memory of all DSH processes (main, GPU, renderer), matching the sum of Activity Monitor rows",
+        // Accessible label and tooltip of the header rebuild button
+        rebuildAction: "Reclaim, then rebuild the page",
         // Current memory usage (all DSH processes combined)
         memoryUsage: "In use",
         // Label when the renderer is listed on its own row
@@ -7343,12 +7466,12 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/memory-guard/page.tsx
-    var import_react31 = __toESM(require("react"), 1);
+    var import_react34 = __toESM(require("react"), 1);
     var READING_REFRESH_MS = 5e3;
     var INPUT_CLASS5 = "w-16 rounded-lg border border-line4 bg-base px-2 py-1 text-[12px] text-primary outline-none focus:border-brand";
     var LABEL_CLASS = "w-20 shrink-0 text-secondary";
     function NumberField({ label, unit, value, min, max, onChange, onCommit }) {
-      return /* @__PURE__ */ import_react31.default.createElement("label", { className: "flex items-center gap-2" }, /* @__PURE__ */ import_react31.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, label), /* @__PURE__ */ import_react31.default.createElement(
+      return /* @__PURE__ */ import_react34.default.createElement("label", { className: "flex items-center gap-2" }, /* @__PURE__ */ import_react34.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, label), /* @__PURE__ */ import_react34.default.createElement(
         "input",
         {
           type: "number",
@@ -7365,7 +7488,7 @@ window.__ModuleLoader__.load({
           },
           className: INPUT_CLASS5
         }
-      ), /* @__PURE__ */ import_react31.default.createElement("span", { className: "text-[12px] leading-[18px] text-secondary" }, unit));
+      ), /* @__PURE__ */ import_react34.default.createElement("span", { className: "text-[12px] leading-[18px] text-secondary" }, unit));
     }
     function formatTime(timestamp, neverLabel) {
       if (timestamp <= 0) return neverLabel;
@@ -7377,18 +7500,18 @@ window.__ModuleLoader__.load({
       return t("sourceNone");
     }
     function MemoryGuardPage({ t }) {
-      const [settings, setSettings] = (0, import_react31.useState)(() => readMemoryGuardSettings());
-      const [runtime, setRuntime] = (0, import_react31.useState)(() => readMemoryGuardState());
-      const [reading, setReading] = (0, import_react31.useState)(null);
-      const [intervalDraft, setIntervalDraft] = (0, import_react31.useState)(
+      const [settings, setSettings] = (0, import_react34.useState)(() => readMemoryGuardSettings());
+      const [runtime, setRuntime] = (0, import_react34.useState)(() => readMemoryGuardState());
+      const [reading, setReading] = (0, import_react34.useState)(null);
+      const [intervalDraft, setIntervalDraft] = (0, import_react34.useState)(
         () => String(readMemoryGuardSettings().intervalMinutes)
       );
-      const [thresholdDraft, setThresholdDraft] = (0, import_react31.useState)(
+      const [thresholdDraft, setThresholdDraft] = (0, import_react34.useState)(
         () => String(readMemoryGuardSettings().thresholdMB)
       );
-      const [working, setWorking] = (0, import_react31.useState)(null);
-      const [message, setMessage] = (0, import_react31.useState)("");
-      (0, import_react31.useEffect)(() => {
+      const [working, setWorking] = (0, import_react34.useState)(null);
+      const [message, setMessage] = (0, import_react34.useState)("");
+      (0, import_react34.useEffect)(() => {
         let active2 = true;
         const refresh = () => {
           void readMemory().then((next) => {
@@ -7471,7 +7594,7 @@ window.__ModuleLoader__.load({
           setWorking(null);
         }
       };
-      return /* @__PURE__ */ import_react31.default.createElement("div", { className: "space-y-4" }, /* @__PURE__ */ import_react31.default.createElement("div", null, /* @__PURE__ */ import_react31.default.createElement("h2", { className: "text-[15px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-secondary" }, t("pageHint"))), /* @__PURE__ */ import_react31.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react31.default.createElement(
+      return /* @__PURE__ */ import_react34.default.createElement("div", { className: "space-y-4" }, /* @__PURE__ */ import_react34.default.createElement("div", null, /* @__PURE__ */ import_react34.default.createElement("h2", { className: "text-[15px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react34.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-secondary" }, t("pageHint"))), /* @__PURE__ */ import_react34.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react34.default.createElement(
         NumberField,
         {
           label: t("intervalLabel"),
@@ -7482,7 +7605,7 @@ window.__ModuleLoader__.load({
           onChange: setIntervalDraft,
           onCommit: commitInterval
         }
-      ), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-1 text-[11px] leading-4 text-secondary" }, t("intervalHint")), /* @__PURE__ */ import_react31.default.createElement("div", { className: "mt-3" }, /* @__PURE__ */ import_react31.default.createElement(
+      ), /* @__PURE__ */ import_react34.default.createElement("p", { className: "mt-1 text-[11px] leading-4 text-secondary" }, t("intervalHint")), /* @__PURE__ */ import_react34.default.createElement("div", { className: "mt-3" }, /* @__PURE__ */ import_react34.default.createElement(
         NumberField,
         {
           label: t("thresholdLabel"),
@@ -7493,7 +7616,7 @@ window.__ModuleLoader__.load({
           onChange: setThresholdDraft,
           onCommit: commitThreshold
         }
-      )), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-1 text-[11px] leading-4 text-secondary" }, t("thresholdHint")), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-3 text-[11px] leading-4 text-secondary" }, t("autoSaveHint"))), /* @__PURE__ */ import_react31.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react31.default.createElement("dl", { className: "space-y-1.5 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("memoryUsage")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, reading === null ? t("readingPending") : reading.totalMB !== null ? `${reading.totalMB} MB \xB7 ${t("sourceAll")}` : `${reading.megabytes} MB \xB7 ${sourceLabel(reading.source, t)}`)), reading !== null && reading.rendererMB !== null ? /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("rendererUsage")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 text-primary" }, `${reading.rendererMB} MB`)) : null, /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("domNodeCount")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 text-primary" }, reading === null ? t("readingPending") : reading.domNodes)), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("lastReclaim")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastReclaimAt, t("never")), runtime.lastReclaimFreedMB > 0 ? `\uFF08${t("freedAmount").replace("{amount}", String(runtime.lastReclaimFreedMB))}\uFF09` : "")), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("lastRebuild")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastRebuildAt, t("never"))))), reading?.source === "process" ? /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-2 text-[11px] leading-4 text-secondary" }, t("readingHint")) : null, /* @__PURE__ */ import_react31.default.createElement("div", { className: "mt-3 flex flex-wrap items-center gap-2" }, /* @__PURE__ */ import_react31.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleReclaim() }, working === "reclaim" ? t("reclaiming") : t("reclaimNow")), /* @__PURE__ */ import_react31.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleRebuild() }, t("rebuildNow")))), message !== "" ? /* @__PURE__ */ import_react31.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, message) : null);
+      )), /* @__PURE__ */ import_react34.default.createElement("p", { className: "mt-1 text-[11px] leading-4 text-secondary" }, t("thresholdHint")), /* @__PURE__ */ import_react34.default.createElement("p", { className: "mt-3 text-[11px] leading-4 text-secondary" }, t("autoSaveHint"))), /* @__PURE__ */ import_react34.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react34.default.createElement("dl", { className: "space-y-1.5 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react34.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react34.default.createElement("dt", { className: LABEL_CLASS }, t("memoryUsage")), /* @__PURE__ */ import_react34.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, reading === null ? t("readingPending") : reading.totalMB !== null ? `${reading.totalMB} MB \xB7 ${t("sourceAll")}` : `${reading.megabytes} MB \xB7 ${sourceLabel(reading.source, t)}`)), reading !== null && reading.rendererMB !== null ? /* @__PURE__ */ import_react34.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react34.default.createElement("dt", { className: LABEL_CLASS }, t("rendererUsage")), /* @__PURE__ */ import_react34.default.createElement("dd", { className: "min-w-0 text-primary" }, `${reading.rendererMB} MB`)) : null, /* @__PURE__ */ import_react34.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react34.default.createElement("dt", { className: LABEL_CLASS }, t("domNodeCount")), /* @__PURE__ */ import_react34.default.createElement("dd", { className: "min-w-0 text-primary" }, reading === null ? t("readingPending") : reading.domNodes)), /* @__PURE__ */ import_react34.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react34.default.createElement("dt", { className: LABEL_CLASS }, t("lastReclaim")), /* @__PURE__ */ import_react34.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastReclaimAt, t("never")), runtime.lastReclaimFreedMB > 0 ? `\uFF08${t("freedAmount").replace("{amount}", String(runtime.lastReclaimFreedMB))}\uFF09` : "")), /* @__PURE__ */ import_react34.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react34.default.createElement("dt", { className: LABEL_CLASS }, t("lastRebuild")), /* @__PURE__ */ import_react34.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastRebuildAt, t("never"))))), reading?.source === "process" ? /* @__PURE__ */ import_react34.default.createElement("p", { className: "mt-2 text-[11px] leading-4 text-secondary" }, t("readingHint")) : null, /* @__PURE__ */ import_react34.default.createElement("div", { className: "mt-3 flex flex-wrap items-center gap-2" }, /* @__PURE__ */ import_react34.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleReclaim() }, working === "reclaim" ? t("reclaiming") : t("reclaimNow")), /* @__PURE__ */ import_react34.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleRebuild() }, t("rebuildNow")))), message !== "" ? /* @__PURE__ */ import_react34.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, message) : null);
     }
 
     // src/features/memory-guard/index.tsx
@@ -7567,9 +7690,9 @@ window.__ModuleLoader__.load({
     var registry = createFeatureRegistry(featureList);
 
     // src/shell/AllInOnePage.tsx
-    var import_react32 = __toESM(require("react"), 1);
+    var import_react35 = __toESM(require("react"), 1);
     function BackGlyph() {
-      return /* @__PURE__ */ import_react32.default.createElement(
+      return /* @__PURE__ */ import_react35.default.createElement(
         "svg",
         {
           viewBox: "0 0 16 16",
@@ -7582,7 +7705,7 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react32.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
+        /* @__PURE__ */ import_react35.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
       );
     }
     var FALLBACK_GROUP = "other";
@@ -7605,34 +7728,34 @@ window.__ModuleLoader__.load({
       return features.length > 0 && features.every((feature) => "switch" in feature && feature.reloadsPage === true);
     }
     function FeatureCard({ feature, t, open }) {
-      const featureT = (0, import_react32.useMemo)(() => (key) => t(`${feature.id}.${key}`), [feature.id, t]);
+      const featureT = (0, import_react35.useMemo)(() => (key) => t(`${feature.id}.${key}`), [feature.id, t]);
       if ("switch" in feature) {
         const SwitchEntry = feature.switch;
-        return /* @__PURE__ */ import_react32.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react32.default.createElement(SwitchEntry, { t: featureT }));
+        return /* @__PURE__ */ import_react35.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react35.default.createElement(SwitchEntry, { t: featureT }));
       }
       const Entry = feature.entry;
-      return /* @__PURE__ */ import_react32.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react32.default.createElement(Entry, { t: featureT, open: () => open(feature.id) }));
+      return /* @__PURE__ */ import_react35.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react35.default.createElement(Entry, { t: featureT, open: () => open(feature.id) }));
     }
     function AllInOnePage({ t }) {
-      const [activeId, setActiveId] = (0, import_react32.useState)(null);
-      const [pageActions, setPageActions] = (0, import_react32.useState)(null);
+      const [activeId, setActiveId] = (0, import_react35.useState)(null);
+      const [pageActions, setPageActions] = (0, import_react35.useState)(null);
       const active2 = activeId ? registry.find(activeId) : void 0;
       const activePage = active2 && "page" in active2 ? active2 : void 0;
-      const featureTranslate = (0, import_react32.useCallback)(
+      const featureTranslate = (0, import_react35.useCallback)(
         // 网格视图不会调用此函数，activePage 为空时直接返回 key 兜底
         (key) => activePage ? t(`${activePage.id}.${key}`) : key,
         [activePage, t]
       );
       if (activePage) {
         const ActivePage = activePage.page;
-        return /* @__PURE__ */ import_react32.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react32.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react32.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react32.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react32.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react32.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react32.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react32.default.createElement(ActivePage, { t: featureTranslate }))));
+        return /* @__PURE__ */ import_react35.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react35.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react35.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react35.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react35.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react35.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react35.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react35.default.createElement(ActivePage, { t: featureTranslate }))));
       }
-      return /* @__PURE__ */ import_react32.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react32.default.createElement("header", null, /* @__PURE__ */ import_react32.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react32.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
+      return /* @__PURE__ */ import_react35.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react35.default.createElement("header", null, /* @__PURE__ */ import_react35.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react35.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
         // 尚未注册功能时的空态提示
-        /* @__PURE__ */ import_react32.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
+        /* @__PURE__ */ import_react35.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
       ) : (
         // 按分组逐块渲染：组标题说明这一块功能解决什么问题，组内仍是一张网格
-        /* @__PURE__ */ import_react32.default.createElement("div", { className: "mt-4 space-y-4" }, groupFeatures(registry.list).map((section) => /* @__PURE__ */ import_react32.default.createElement("section", { key: section.group }, /* @__PURE__ */ import_react32.default.createElement("div", { className: "mb-2 flex items-baseline gap-1" }, /* @__PURE__ */ import_react32.default.createElement("h2", { className: "text-[12px] font-medium text-secondary" }, t(`shell.group.${section.group}`)), needsReloadHint(section.features) ? /* @__PURE__ */ import_react32.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, "\xB7 ", t("shell.groupReloadHint")) : null), /* @__PURE__ */ import_react32.default.createElement("div", { className: "aio-card-grid grid auto-rows-fr gap-2.5" }, section.features.map((feature) => /* @__PURE__ */ import_react32.default.createElement(
+        /* @__PURE__ */ import_react35.default.createElement("div", { className: "mt-4 space-y-4" }, groupFeatures(registry.list).map((section) => /* @__PURE__ */ import_react35.default.createElement("section", { key: section.group }, /* @__PURE__ */ import_react35.default.createElement("div", { className: "mb-2 flex items-baseline gap-1" }, /* @__PURE__ */ import_react35.default.createElement("h2", { className: "text-[12px] font-medium text-secondary" }, t(`shell.group.${section.group}`)), needsReloadHint(section.features) ? /* @__PURE__ */ import_react35.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, "\xB7 ", t("shell.groupReloadHint")) : null), /* @__PURE__ */ import_react35.default.createElement("div", { className: "aio-card-grid grid auto-rows-fr gap-2.5" }, section.features.map((feature) => /* @__PURE__ */ import_react35.default.createElement(
           FeatureCard,
           {
             key: feature.id,
@@ -7820,7 +7943,7 @@ window.__ModuleLoader__.load({
         });
         const t = ctx.locale.bind(LOCALE_NAMESPACE);
         installSettingsNavIcon(ctx, t, icon_default);
-        const SettingsSection = () => /* @__PURE__ */ import_react33.default.createElement(AllInOnePage, { t });
+        const SettingsSection = () => /* @__PURE__ */ import_react36.default.createElement(AllInOnePage, { t });
         ctx.slots.inject(
           "settings.section",
           () => ctx.slots.register(
