@@ -3,8 +3,8 @@
  *
  * 宿主的上下文气泡点开后是一个挂在 `body` 上的弹层：条形图下面用 `dl` 列出
  * 「系统提示词 / 工具定义 / 对话消息」三行。宿主没有给这三行留扩展点，这里按
- * 结构认领前两行（固定顺序、数值以 `~` 开头的三行列表），给它们加上点击与键盘
- * 操作，点击后打开本功能的详情窗口。
+ * 结构认领这三行（固定顺序、数值以 `~` 开头的三行列表），给它们加上点击与键盘
+ * 操作，点击后打开本功能的详情窗口并停到对应页签。
  *
  * 依赖宿主弹层的 DOM 结构；结构变化时只是不再接管，气泡本身照常工作。
  */
@@ -22,6 +22,8 @@ export interface MeterRowLabels {
   systemHint: string
   /** 工具定义行的可点击提示 */
   toolsHint: string
+  /** 对话消息行的可点击提示 */
+  messagesHint: string
 }
 
 /** 安装参数。 */
@@ -87,6 +89,23 @@ function findBreakdownRows(panel: Element): Element[] | null {
 }
 
 /**
+ * 取一行对应的悬停提示。
+ * @param section 该行对应的区块
+ * @param labels 界面文案
+ * @returns 该行的提示文字
+ */
+function hintOf(section: InspectSection, labels: MeterRowLabels): string {
+  switch (section) {
+    case 'system':
+      return labels.systemHint
+    case 'tools':
+      return labels.toolsHint
+    case 'messages':
+      return labels.messagesHint
+  }
+}
+
+/**
  * 给一行绑定点击与键盘操作。
  * @param row 行元素
  * @param section 该行对应的区块
@@ -98,7 +117,7 @@ function claimRow(row: Element, section: InspectSection, options: MeterRowOption
   row.setAttribute(ROW_ATTRIBUTE, section)
   row.setAttribute('role', 'button')
   row.setAttribute('tabindex', '0')
-  row.setAttribute('title', section === 'system' ? options.labels.systemHint : options.labels.toolsHint)
+  row.setAttribute('title', hintOf(section, options.labels))
 
   /**
    * 打开详情窗口。
@@ -130,6 +149,7 @@ function claimPanels(options: MeterRowOptions): void {
 
     claimRow(rows[0], 'system', options)
     claimRow(rows[1], 'tools', options)
+    claimRow(rows[2], 'messages', options)
   }
 }
 

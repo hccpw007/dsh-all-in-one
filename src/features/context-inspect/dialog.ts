@@ -9,7 +9,7 @@
  * 直接复用上次结果，因此轮询几乎不产生磁盘与 CPU 开销；内容真的变了才重建正文，
  * 并保留原来的滚动位置。
  */
-import type { ContextInspectPayload, InspectSection } from './types'
+import type { ContextInspectPayload, InspectMessage, InspectSection } from './types'
 
 /** 窗口需要的界面文案，由客户端扩展按当前语言传入。 */
 export interface ContextDialogLabels {
@@ -21,6 +21,8 @@ export interface ContextDialogLabels {
   tabSystem: string
   /** 「工具定义」页签文案 */
   tabTools: string
+  /** 「对话消息」页签文案 */
+  tabMessages: string
   /** 读取中的占位提示 */
   loading: string
   /** 读取失败的提示前缀 */
@@ -39,6 +41,8 @@ export interface ContextDialogLabels {
   emptySystem: string
   /** 会话还没有工具定义时的说明 */
   emptyTools: string
+  /** 会话还没有对话消息时的说明 */
+  emptyMessages: string
   /** 定位不到当前会话时的说明 */
   noSession: string
   /** 更新时间前缀，如「更新于」 */
@@ -51,6 +55,18 @@ export interface ContextDialogLabels {
   paramCount: string
   /** 工具没有说明文字时的占位 */
   noDescription: string
+  /** 对话消息数量模板，含 `{count}` */
+  messageCount: string
+  /** 消息被截断时的说明模板，含 `{count}` */
+  messagesTruncated: string
+  /** 「用户」角色标签 */
+  roleUser: string
+  /** 「助手」角色标签 */
+  roleAssistant: string
+  /** 「工具」角色标签 */
+  roleTool: string
+  /** 「声明」角色标签：模型看到的工具声明等内部消息 */
+  roleDeveloper: string
 }
 
 /** 窗口打开参数。 */
@@ -122,6 +138,13 @@ const TOOL_SUMMARY_CLASS =
 /** 工具参数区。 */
 const TOOL_PARAM_CLASS =
   'm-0 max-h-[320px] overflow-auto whitespace-pre-wrap break-words rounded-md bg-layer2 p-2 font-mono text-[11.5px] leading-[16px] text-secondary'
+
+/** 一条对话消息的卡片：角色标签在上，正文在下。 */
+const MESSAGE_CARD_CLASS = 'box-border rounded-lg border border-solid border-line1 bg-base px-3 py-2'
+
+/** 对话消息正文：保持换行，长行自动折行。 */
+const MESSAGE_TEXT_CLASS =
+  'm-0 whitespace-pre-wrap break-words font-mono text-[12px] leading-[18px] text-primary'
 
 /** 当前打开的窗口；同一时刻只允许一个。 */
 let activeDispose: (() => void) | undefined
@@ -214,7 +237,7 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
   closeButton.type = 'button'
   header.appendChild(closeButton)
 
-  // 页签栏：系统提示词与工具定义两个区块
+  // 页签栏：系统提示词、工具定义与对话消息三个区块
   const tabs = create('div', TABS_CLASS)
   tabs.setAttribute('role', 'tablist')
 
@@ -226,8 +249,13 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
   const toolsTab = create('button', TAB_CLASS, labels.tabTools)
   toolsTab.type = 'button'
   toolsTab.setAttribute('role', 'tab')
+  // 「对话消息」页签按钮
+  const messagesTab = create('button', TAB_CLASS, labels.tabMessages)
+  messagesTab.type = 'button'
+  messagesTab.setAttribute('role', 'tab')
   tabs.appendChild(systemTab)
   tabs.appendChild(toolsTab)
+  tabs.appendChild(messagesTab)
 
   const body = create('div', BODY_CLASS)
   const footer = create('div', FOOTER_CLASS)
@@ -255,13 +283,53 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
 
   /**
    * 取当前页签要展示与复制的文本。
-   * @returns 系统提示词原文，或工具定义的 JSON 文本
+   * @returns 系统提示词原文、工具定义的 JSON，或逐条列出的对话消息
    */
   function sectionText(): string {
     if (payload === null) return ''
     if (section === 'system') return payload.system
+    if (section === 'tools') return JSON.stringify(payload.tools, null, 2)
 
-    return JSON.stringify(payload.tools, null, 2)
+    // 复制出来的消息带上角色标签，粘到别处仍能看出谁说的
+    return payload.messages
+      .map((message) => `[${roleLabel(message.role)}] ${message.text}`)
+      .join('\n\n')
+  }
+
+  /**
+   * 取角色标签的颜色类：用户与助手用状态色区分，工具与声明用次要色。
+   * @param role 消息角色
+   * @returns Tailwind 文本颜色类
+   */
+  function roleClass(role: InspectMessage['role']): string {
+    switch (role) {
+      case 'user':
+        return 'text-brand'
+      case 'assistant':
+        return 'text-success'
+      case 'tool':
+        return 'text-tertiary'
+      case 'developer':
+        return 'text-warn'
+    }
+  }
+
+  /**
+   * 取角色标签。
+   * @param role 消息角色
+   * @returns 当前语言下的角色名
+   */
+  function roleLabel(role: InspectMessage['role']): string {
+    switch (role) {
+      case 'user':
+        return labels.roleUser
+      case 'assistant':
+        return labels.roleAssistant
+      case 'tool':
+        return labels.roleTool
+      case 'developer':
+        return labels.roleDeveloper
+    }
   }
 
   /**
@@ -269,6 +337,11 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
    */
   function renderBody(): void {
     const scrollTop = body.scrollTop
+    // 刷新前若停在底部，重画后继续贴底：流式输出时用户看到的是最新一条。
+    // 只有内容确实超过视口才谈得上「停在底部」；加载占位或首次渲染的高度与视口
+    // 相同，若按同一公式判断会误判成贴底，一打开就跳到最末一条。
+    const scrollable = body.scrollHeight > body.clientHeight + 40
+    const atBottom = scrollable && body.scrollHeight - body.scrollTop - body.clientHeight < 40
     body.replaceChildren()
 
     // 读取中：显示占位提示，不显示空态
@@ -303,7 +376,34 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
       }
 
       body.appendChild(create('pre', CODE_CLASS, payload.system))
-      body.scrollTop = scrollTop
+      body.scrollTop = atBottom ? body.scrollHeight : scrollTop
+      return
+    }
+
+    // 对话消息页签
+    if (section === 'messages') {
+      // 还没有发起过请求时表面里没有任何对话消息
+      if (payload.messages.length === 0) {
+        body.appendChild(create('p', STATUS_CLASS, labels.emptyMessages))
+        return
+      }
+
+      const messages = create('div', 'box-border flex flex-col gap-1.5')
+      // 每条消息一张卡片：角色标签与日志序号在上，正文在下
+      for (const message of payload.messages) {
+        const card = create('div', MESSAGE_CARD_CLASS)
+        const head = create('div', 'box-border mb-1 flex items-center gap-2')
+        head.appendChild(
+          create('span', `text-[11px] font-medium leading-[16px] ${roleClass(message.role)}`, roleLabel(message.role)),
+        )
+        head.appendChild(create('span', 'font-mono text-[10px] leading-[16px] text-tertiary', `#${message.seq}`))
+        card.appendChild(head)
+        card.appendChild(create('pre', MESSAGE_TEXT_CLASS, message.text))
+        messages.appendChild(card)
+      }
+
+      body.appendChild(messages)
+      body.scrollTop = atBottom ? body.scrollHeight : scrollTop
       return
     }
 
@@ -340,27 +440,34 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
     }
 
     body.appendChild(list)
-    body.scrollTop = scrollTop
+    body.scrollTop = atBottom ? body.scrollHeight : scrollTop
   }
 
   /**
    * 重画页签选中状态与页脚统计。
    */
   function renderChrome(): void {
-    const active = section === 'system' ? systemTab : toolsTab
-    const inactive = section === 'system' ? toolsTab : systemTab
+    // 三个页签统一设置选中状态：选中的用品牌底色，其余保持次要色
+    for (const [key, tab] of [['system', systemTab], ['tools', toolsTab], ['messages', messagesTab]] as const) {
+      const selected = section === key
+      tab.className = selected ? `${TAB_CLASS} ${TAB_ACTIVE_CLASS}` : TAB_CLASS
+      tab.setAttribute('aria-selected', selected ? 'true' : 'false')
+    }
 
-    active.className = `${TAB_CLASS} ${TAB_ACTIVE_CLASS}`
-    inactive.className = TAB_CLASS
-    active.setAttribute('aria-selected', 'true')
-    inactive.setAttribute('aria-selected', 'false')
-
-    // 工具页签显示工具数量，系统页签显示字符数；两者都给更新时间
+    // 每个页签给出自己的规模：字符数、工具数量或消息条数；三者都带更新时间
     const counts = payload === null
       ? ''
       : section === 'system'
         ? labels.charCount.replace('{count}', String(payload.system.length))
-        : labels.toolCount.replace('{count}', String(payload.tools.length))
+        : section === 'tools'
+          ? labels.toolCount.replace('{count}', String(payload.tools.length))
+          : [
+            labels.messageCount.replace('{count}', String(payload.messagesTotal)),
+            // 超过预算时只保留最近一段，必须说明，否则用户会以为消息丢了
+            payload.messages.length < payload.messagesTotal
+              ? labels.messagesTruncated.replace('{count}', String(payload.messages.length))
+              : '',
+          ].filter((part) => part !== '').join(' · ')
     const updated = payload === null
       ? ''
       : `${labels.updatedAt} ${new Date(payload.readAt).toLocaleTimeString()}`
@@ -394,7 +501,14 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
 
       const nextSignature = next === null
         ? 'null'
-        : `${next.system.length}:${next.tools.map((tool) => tool.name).join(',')}:${JSON.stringify(next.tools).length}`
+        : [
+          next.system.length,
+          next.tools.map((tool) => tool.name).join(','),
+          JSON.stringify(next.tools).length,
+          next.messagesTotal,
+          next.messages.at(-1)?.seq ?? 0,
+          next.messages.at(-1)?.text.length ?? 0,
+        ].join(':')
       // 正文此时可能正显示加载占位（手动刷新刚把它换掉），内容即使未变也必须重画，
       // 否则会一直停在占位上；只有纯后台刷新才按变化与否决定，避免抖动滚动位置
       if (!silent || wasLoading || nextSignature !== signature) {
@@ -440,6 +554,14 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
     if (section === 'system') return
 
     section = 'system'
+    renderBody()
+    renderChrome()
+  })
+
+  messagesTab.addEventListener('click', () => {
+    if (section === 'messages') return
+
+    section = 'messages'
     renderBody()
     renderChrome()
   })

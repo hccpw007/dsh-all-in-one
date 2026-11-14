@@ -44,6 +44,7 @@ export function apply(ctx: PluginContext, t: Translate): void {
       dialogHint: t('dialogHint'),
       tabSystem: t('tabSystem'),
       tabTools: t('tabTools'),
+      tabMessages: t('tabMessages'),
       loading: t('loading'),
       loadFailed: t('loadFailed'),
       retry: t('retry'),
@@ -53,17 +54,28 @@ export function apply(ctx: PluginContext, t: Translate): void {
       close: t('close'),
       emptySystem: t('emptySystem'),
       emptyTools: t('emptyTools'),
+      emptyMessages: t('emptyMessages'),
       noSession: t('noSession'),
       updatedAt: t('updatedAt'),
       toolCount: t('toolCount'),
       charCount: t('charCount'),
       paramCount: t('paramCount'),
       noDescription: t('noDescription'),
+      messageCount: t('messageCount'),
+      messagesTruncated: t('messagesTruncated'),
+      roleUser: t('roleUser'),
+      roleAssistant: t('roleAssistant'),
+      roleTool: t('roleTool'),
+      roleDeveloper: t('roleDeveloper'),
     }
 
     ctx.effect(
       () => installMeterRows({
-        labels: { systemHint: t('systemHint'), toolsHint: t('toolsHint') },
+        labels: {
+          systemHint: t('systemHint'),
+          toolsHint: t('toolsHint'),
+          messagesHint: t('messagesHint'),
+        },
         open: (section) => {
           openContextInspectDialog({
             section,

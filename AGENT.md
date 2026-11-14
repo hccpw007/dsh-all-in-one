@@ -159,13 +159,13 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 │           ├── toggle.tsx   # 网格中的开关入口
 │           ├── storage.ts   # 开关状态读写（localStorage，默认开启），本功能专属
 │           ├── client.tsx   # 客户端扩展：定位当前会话并安装弹层行接管
-│           ├── meter-rows.ts # 认领上下文弹层三行里的前两行，点击打开详情窗口
-│           ├── dialog.ts    # 详情窗口：系统提示词与工具定义两个页签（原生 DOM，挂在 body 上）
+│           ├── meter-rows.ts # 认领上下文弹层的三行，点击打开详情窗口并停到对应页签
+│           ├── dialog.ts    # 详情窗口：系统提示词、工具定义与对话消息三个页签（原生 DOM，挂在 body 上）
 │           ├── api.ts       # 与宿主侧详情路由通信
 │           ├── types.ts     # 客户端与宿主共用的数据模型
 │           ├── host.ts      # 宿主侧扩展：注册详情读取路由
 │           ├── host/        # 从会话事件日志提取内容
-│           │   ├── inspect.ts # 取最后一条非空系统消息与最后一条请求头的工具定义（带 revision 缓存）
+│           │   ├── inspect.ts # 取系统提示词、请求头工具定义与表面折叠后的对话消息（带 revision 缓存）
 │           │   └── routes.ts  # GET /dsh-all-in-one/context-inspect
 │           └── locales.ts   # 本功能的中英文文案
 │       ├── queue-edit/      # 开关型功能：排队条上的编辑按钮改为撤回排队并回填输入框

@@ -1493,6 +1493,8 @@ window.__ModuleLoader__.load({
     var TOOL_CARD_CLASS = "box-border rounded-lg border border-solid border-line1 bg-base";
     var TOOL_SUMMARY_CLASS = "box-border flex cursor-pointer list-none items-center gap-2 px-3 py-2 text-[12.5px] leading-[18px] text-primary";
     var TOOL_PARAM_CLASS = "m-0 max-h-[320px] overflow-auto whitespace-pre-wrap break-words rounded-md bg-layer2 p-2 font-mono text-[11.5px] leading-[16px] text-secondary";
+    var MESSAGE_CARD_CLASS = "box-border rounded-lg border border-solid border-line1 bg-base px-3 py-2";
+    var MESSAGE_TEXT_CLASS = "m-0 whitespace-pre-wrap break-words font-mono text-[12px] leading-[18px] text-primary";
     var activeDispose2;
     var DIALOG_STYLE = [
       ".aio-context-dialog { --dsw-corner-shape: initial; corner-shape: round; }",
@@ -1553,8 +1555,12 @@ window.__ModuleLoader__.load({
       const toolsTab = create("button", TAB_CLASS, labels.tabTools);
       toolsTab.type = "button";
       toolsTab.setAttribute("role", "tab");
+      const messagesTab = create("button", TAB_CLASS, labels.tabMessages);
+      messagesTab.type = "button";
+      messagesTab.setAttribute("role", "tab");
       tabs.appendChild(systemTab);
       tabs.appendChild(toolsTab);
+      tabs.appendChild(messagesTab);
       const body = create("div", BODY_CLASS);
       const footer = create("div", FOOTER_CLASS);
       const stats = create("span", "text-[11.5px] leading-[16px] text-tertiary");
@@ -1576,10 +1582,37 @@ window.__ModuleLoader__.load({
       function sectionText() {
         if (payload === null) return "";
         if (section === "system") return payload.system;
-        return JSON.stringify(payload.tools, null, 2);
+        if (section === "tools") return JSON.stringify(payload.tools, null, 2);
+        return payload.messages.map((message) => `[${roleLabel(message.role)}] ${message.text}`).join("\n\n");
+      }
+      function roleClass(role) {
+        switch (role) {
+          case "user":
+            return "text-brand";
+          case "assistant":
+            return "text-success";
+          case "tool":
+            return "text-tertiary";
+          case "developer":
+            return "text-warn";
+        }
+      }
+      function roleLabel(role) {
+        switch (role) {
+          case "user":
+            return labels.roleUser;
+          case "assistant":
+            return labels.roleAssistant;
+          case "tool":
+            return labels.roleTool;
+          case "developer":
+            return labels.roleDeveloper;
+        }
       }
       function renderBody() {
         const scrollTop = body.scrollTop;
+        const scrollable = body.scrollHeight > body.clientHeight + 40;
+        const atBottom = scrollable && body.scrollHeight - body.scrollTop - body.clientHeight < 40;
         body.replaceChildren();
         if (loading) {
           body.appendChild(create("p", STATUS_CLASS2, labels.loading));
@@ -1605,7 +1638,28 @@ window.__ModuleLoader__.load({
             return;
           }
           body.appendChild(create("pre", CODE_CLASS, payload.system));
-          body.scrollTop = scrollTop;
+          body.scrollTop = atBottom ? body.scrollHeight : scrollTop;
+          return;
+        }
+        if (section === "messages") {
+          if (payload.messages.length === 0) {
+            body.appendChild(create("p", STATUS_CLASS2, labels.emptyMessages));
+            return;
+          }
+          const messages = create("div", "box-border flex flex-col gap-1.5");
+          for (const message of payload.messages) {
+            const card = create("div", MESSAGE_CARD_CLASS);
+            const head = create("div", "box-border mb-1 flex items-center gap-2");
+            head.appendChild(
+              create("span", `text-[11px] font-medium leading-[16px] ${roleClass(message.role)}`, roleLabel(message.role))
+            );
+            head.appendChild(create("span", "font-mono text-[10px] leading-[16px] text-tertiary", `#${message.seq}`));
+            card.appendChild(head);
+            card.appendChild(create("pre", MESSAGE_TEXT_CLASS, message.text));
+            messages.appendChild(card);
+          }
+          body.appendChild(messages);
+          body.scrollTop = atBottom ? body.scrollHeight : scrollTop;
           return;
         }
         if (payload.tools.length === 0) {
@@ -1633,16 +1687,19 @@ window.__ModuleLoader__.load({
           list.appendChild(card);
         }
         body.appendChild(list);
-        body.scrollTop = scrollTop;
+        body.scrollTop = atBottom ? body.scrollHeight : scrollTop;
       }
       function renderChrome() {
-        const active2 = section === "system" ? systemTab : toolsTab;
-        const inactive = section === "system" ? toolsTab : systemTab;
-        active2.className = `${TAB_CLASS} ${TAB_ACTIVE_CLASS}`;
-        inactive.className = TAB_CLASS;
-        active2.setAttribute("aria-selected", "true");
-        inactive.setAttribute("aria-selected", "false");
-        const counts = payload === null ? "" : section === "system" ? labels.charCount.replace("{count}", String(payload.system.length)) : labels.toolCount.replace("{count}", String(payload.tools.length));
+        for (const [key, tab] of [["system", systemTab], ["tools", toolsTab], ["messages", messagesTab]]) {
+          const selected = section === key;
+          tab.className = selected ? `${TAB_CLASS} ${TAB_ACTIVE_CLASS}` : TAB_CLASS;
+          tab.setAttribute("aria-selected", selected ? "true" : "false");
+        }
+        const counts = payload === null ? "" : section === "system" ? labels.charCount.replace("{count}", String(payload.system.length)) : section === "tools" ? labels.toolCount.replace("{count}", String(payload.tools.length)) : [
+          labels.messageCount.replace("{count}", String(payload.messagesTotal)),
+          // 超过预算时只保留最近一段，必须说明，否则用户会以为消息丢了
+          payload.messages.length < payload.messagesTotal ? labels.messagesTruncated.replace("{count}", String(payload.messages.length)) : ""
+        ].filter((part) => part !== "").join(" \xB7 ");
         const updated = payload === null ? "" : `${labels.updatedAt} ${new Date(payload.readAt).toLocaleTimeString()}`;
         stats.textContent = [counts, updated].filter((part) => part !== "").join(" \xB7 ");
         copyButton.disabled = payload === null;
@@ -1661,7 +1718,14 @@ window.__ModuleLoader__.load({
           payload = next;
           failed = void 0;
           loading = false;
-          const nextSignature = next === null ? "null" : `${next.system.length}:${next.tools.map((tool) => tool.name).join(",")}:${JSON.stringify(next.tools).length}`;
+          const nextSignature = next === null ? "null" : [
+            next.system.length,
+            next.tools.map((tool) => tool.name).join(","),
+            JSON.stringify(next.tools).length,
+            next.messagesTotal,
+            next.messages.at(-1)?.seq ?? 0,
+            next.messages.at(-1)?.text.length ?? 0
+          ].join(":");
           if (!silent || wasLoading || nextSignature !== signature) {
             signature = nextSignature;
             renderBody();
@@ -1693,6 +1757,12 @@ window.__ModuleLoader__.load({
       systemTab.addEventListener("click", () => {
         if (section === "system") return;
         section = "system";
+        renderBody();
+        renderChrome();
+      });
+      messagesTab.addEventListener("click", () => {
+        if (section === "messages") return;
+        section = "messages";
         renderBody();
         renderChrome();
       });
@@ -1772,12 +1842,22 @@ window.__ModuleLoader__.load({
       }
       return null;
     }
+    function hintOf(section, labels) {
+      switch (section) {
+        case "system":
+          return labels.systemHint;
+        case "tools":
+          return labels.toolsHint;
+        case "messages":
+          return labels.messagesHint;
+      }
+    }
     function claimRow(row, section, options) {
       if (row.hasAttribute(ROW_ATTRIBUTE)) return;
       row.setAttribute(ROW_ATTRIBUTE, section);
       row.setAttribute("role", "button");
       row.setAttribute("tabindex", "0");
-      row.setAttribute("title", section === "system" ? options.labels.systemHint : options.labels.toolsHint);
+      row.setAttribute("title", hintOf(section, options.labels));
       const activate = (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -1796,6 +1876,7 @@ window.__ModuleLoader__.load({
         if (rows === null) continue;
         claimRow(rows[0], "system", options);
         claimRow(rows[1], "tools", options);
+        claimRow(rows[2], "messages", options);
       }
     }
     function installMeterRows(options) {
@@ -1871,6 +1952,7 @@ window.__ModuleLoader__.load({
           dialogHint: t("dialogHint"),
           tabSystem: t("tabSystem"),
           tabTools: t("tabTools"),
+          tabMessages: t("tabMessages"),
           loading: t("loading"),
           loadFailed: t("loadFailed"),
           retry: t("retry"),
@@ -1880,16 +1962,27 @@ window.__ModuleLoader__.load({
           close: t("close"),
           emptySystem: t("emptySystem"),
           emptyTools: t("emptyTools"),
+          emptyMessages: t("emptyMessages"),
           noSession: t("noSession"),
           updatedAt: t("updatedAt"),
           toolCount: t("toolCount"),
           charCount: t("charCount"),
           paramCount: t("paramCount"),
-          noDescription: t("noDescription")
+          noDescription: t("noDescription"),
+          messageCount: t("messageCount"),
+          messagesTruncated: t("messagesTruncated"),
+          roleUser: t("roleUser"),
+          roleAssistant: t("roleAssistant"),
+          roleTool: t("roleTool"),
+          roleDeveloper: t("roleDeveloper")
         };
         ctx.effect(
           () => installMeterRows({
-            labels: { systemHint: t("systemHint"), toolsHint: t("toolsHint") },
+            labels: {
+              systemHint: t("systemHint"),
+              toolsHint: t("toolsHint"),
+              messagesHint: t("messagesHint")
+            },
             open: (section) => {
               openContextInspectDialog({
                 section,
