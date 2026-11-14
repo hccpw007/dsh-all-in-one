@@ -2026,8 +2026,8 @@ window.__ModuleLoader__.load({
     // src/features/clear-session/locales.ts
     var clearSessionLocales = {
       zh: {
-        // 开关标题
-        title: "\u6E05\u7A7A\u4F1A\u8BDD",
+        // 开关标题：与输入框按钮的悬停提示同名，指向同一个动作
+        title: "\u5F00\u542F\u65B0\u4F1A\u8BDD",
         // 开关用途说明：点明入口位置与两个可选结果
         description: "\u8F93\u5165\u6846\u5DE6\u4FA7\u65B0\u589E\u6309\u94AE\uFF0C\u786E\u8BA4\u540E\u5728\u540C\u4E00\u5DE5\u4F5C\u533A\u6253\u5F00\u4E00\u6761\u7A7A\u767D\u5BF9\u8BDD\uFF0C\u53EF\u9009\u62E9\u4FDD\u7559\u8FD8\u662F\u5220\u9664\u5F53\u524D\u4F1A\u8BDD\u3002",
         // 开关状态写入失败时的提示
@@ -2058,8 +2058,8 @@ window.__ModuleLoader__.load({
         failed: "\u64CD\u4F5C\u5931\u8D25"
       },
       en: {
-        // Switch title
-        title: "Clear session",
+        // Switch title: matches the composer button tooltip, both name the same action
+        title: "Start a new session",
         // Switch description: entry position and the two possible outcomes
         description: "Adds a button left of the composer. Confirming opens a blank conversation in the same workspace, keeping or deleting the current one.",
         // Shown when the switch state cannot be persisted

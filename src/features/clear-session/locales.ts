@@ -1,10 +1,10 @@
 import type { FeatureLocales } from '../../shell/registry'
 
-/** 「清空会话」的中英文文案；key 由外壳统一加 `clear-session.` 前缀。 */
+/** 「开启新会话」的中英文文案；key 由外壳统一加 `clear-session.` 前缀。 */
 export const clearSessionLocales: FeatureLocales = {
   zh: {
-    // 开关标题
-    title: '清空会话',
+    // 开关标题：与输入框按钮的悬停提示同名，指向同一个动作
+    title: '开启新会话',
     // 开关用途说明：点明入口位置与两个可选结果
     description: '输入框左侧新增按钮，确认后在同一工作区打开一条空白对话，可选择保留还是删除当前会话。',
     // 开关状态写入失败时的提示
@@ -35,8 +35,8 @@ export const clearSessionLocales: FeatureLocales = {
     failed: '操作失败',
   },
   en: {
-    // Switch title
-    title: 'Clear session',
+    // Switch title: matches the composer button tooltip, both name the same action
+    title: 'Start a new session',
     // Switch description: entry position and the two possible outcomes
     description:
       'Adds a button left of the composer. Confirming opens a blank conversation in the same workspace, keeping or deleting the current one.',
