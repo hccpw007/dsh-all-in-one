@@ -151,6 +151,26 @@ function writeJson(key: string, value: unknown): boolean {
   }
 }
 
+/** 配置变化的订阅者：开关改动后让常驻界面立即跟随显隐。 */
+const settingsListeners = new Set<() => void>()
+
+/**
+ * 订阅配置变化。
+ *
+ * 只在当前页面内生效：开关在 All In One 的卡片上切换，读数胶囊与头部按钮却挂在
+ * 宿主的插槽里，三者不在同一棵组件树上；同一页面写 localStorage 不会触发
+ * `storage` 事件，只能靠这里在写入后同步。其他标签页各自维护自己的界面，不在此列。
+ * @param listener 变化回调
+ * @returns 取消订阅
+ */
+export function subscribeMemoryGuardSettings(listener: () => void): () => void {
+  settingsListeners.add(listener)
+
+  return () => {
+    settingsListeners.delete(listener)
+  }
+}
+
 /**
  * 读取配置；未写过或存储不可用时返回默认值。
  * @returns 当前配置
@@ -167,7 +187,11 @@ export function readMemoryGuardSettings(): MemoryGuardSettings {
 export function updateMemoryGuardSettings(patch: Partial<MemoryGuardSettings>): MemoryGuardSettings {
   const current = readMemoryGuardSettings()
   const next = normalizeSettings({ ...current, ...patch })
-  writeJson(SETTINGS_KEY, next)
+
+  // 写失败时读到的仍是旧值，通知订阅方重算没有意义，因此只在落盘成功后广播
+  if (writeJson(SETTINGS_KEY, next)) {
+    for (const listener of settingsListeners) listener()
+  }
 
   return next
 }

@@ -25,6 +25,10 @@ const config: Config = {
         brand: 'var(--dsw-alias-brand-primary)',
         primary: 'var(--dsw-alias-label-primary)',
         secondary: 'var(--dsw-alias-label-secondary)',
+        // 宿主状态栏读数的常驻色，比 secondary 更淡；插件读数要与它们同色
+        tertiary: 'var(--dsw-alias-label-tertiary)',
+        // 交互元素的悬停底色，宿主统计控件与菜单项共用
+        interactive: 'var(--dsw-alias-interactive-bg-hover)',
         danger: 'var(--dsw-alias-state-error-primary)',
         success: 'var(--dsw-alias-state-success-primary)',
         warn: 'var(--dsw-alias-state-warn-primary)',

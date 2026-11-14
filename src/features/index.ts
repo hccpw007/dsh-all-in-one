@@ -2,6 +2,7 @@ import type { FeatureDefinition } from '../shell/registry'
 
 import expandProcess from './expand-process'
 import imagePreview from './image-preview'
+import contextInspect from './context-inspect'
 import clearSession from './clear-session'
 import queueEdit from './queue-edit'
 import autoRun from './auto-run'
@@ -19,7 +20,7 @@ import memoryGuard from './memory-guard'
  * 所有已注册的 feature。
  *
  * 数组顺序与设置页网格顺序一致，按「对话体验 → 界面布局 → 配置与维护」三组排列；
- * 每组四项，正好铺满两列两行。注册表按 order 升序、权重相同时保持本数组顺序，
+ * 每组内按 order 升序，权重相同时保持本数组顺序。注册表同样按 order 排序，
  * 因此调整顺序时两处要一起改，读代码时这里是唯一的全景。
  *
  * 新增页面型功能：
@@ -34,6 +35,7 @@ export const featureList: FeatureDefinition[] = [
   // 对话体验：一条对话内的阅读与操作
   expandProcess,
   imagePreview,
+  contextInspect,
   clearSession,
   queueEdit,
   autoRun,

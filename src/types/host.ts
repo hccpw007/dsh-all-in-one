@@ -126,6 +126,44 @@ export interface HostPluginContext {
   sessionController?: SessionControllerApi
   /** 启动本进程的 profile；缺失时相关功能回退为扫描全部 profile。 */
   profileContext?: ProfileContext
+  /** 会话持久化服务；插件声明依赖后可用，用于按会话 id 只读事件日志。 */
+  sessionPersistence?: SessionPersistenceApi
+}
+
+/**
+ * 会话持久化服务：只声明本功能用到的只读能力。
+ *
+ * 宿主把每条会话保存成 append-only 事件日志，系统提示词与请求头（含完整工具
+ * 定义）都在日志里；按会话 id 打开只读句柄即可读到当前内容，不必自己解析
+ * 磁盘上的压缩格式，也不会与宿主争抢写所有权。
+ */
+export interface SessionPersistenceApi {
+  /**
+   * 打开一条已存会话。
+   * @param id 会话标识，与前端会话列表里的 id 一致
+   * @param access 访问模式；只读模式不取得写所有权
+   */
+  open(id: string, access: 'read' | 'write'): Promise<SessionPersistenceHandleLike>
+  /**
+   * 只观察会话元数据，不读事件日志；用它的 `revision` 判断日志是否变化。
+   * @param id 会话标识
+   * @returns 会话不存在时返回 undefined
+   */
+  stat(id: string): Promise<SessionPersistenceSnapshotLike | undefined>
+}
+
+/** 会话持久化句柄：只声明读取与释放。 */
+export interface SessionPersistenceHandleLike {
+  /** 读取一段连续事件；省略参数时读取整个日志。 */
+  read(offset?: number, length?: number): Promise<{ events: readonly unknown[] }>
+  /** 释放句柄；只读句柄不写盘，也不影响宿主继续追加。 */
+  close(): Promise<void>
+}
+
+/** 会话元数据快照：本功能只用变化令牌。 */
+export interface SessionPersistenceSnapshotLike {
+  /** 不透明变化令牌：同一服务实例内相等即可视为日志未变。 */
+  revision: unknown
 }
 
 /** `agent/pre-step` 事件负载：一轮里每次派发模型请求前发出。 */

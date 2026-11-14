@@ -154,6 +154,20 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 │           ├── host/        # 本地图片读取
 │           │   └── routes.ts # GET /dsh-all-in-one/image
 │           └── locales.ts   # 本功能的中英文文案
+│       ├── context-inspect/ # 开关型功能：点上下文气泡里的系统提示词与工具定义查看实时内容
+│           ├── index.tsx    # 注册定义：switch 入口 + client 扩展
+│           ├── toggle.tsx   # 网格中的开关入口
+│           ├── storage.ts   # 开关状态读写（localStorage，默认开启），本功能专属
+│           ├── client.tsx   # 客户端扩展：定位当前会话并安装弹层行接管
+│           ├── meter-rows.ts # 认领上下文弹层三行里的前两行，点击打开详情窗口
+│           ├── dialog.ts    # 详情窗口：系统提示词与工具定义两个页签（原生 DOM，挂在 body 上）
+│           ├── api.ts       # 与宿主侧详情路由通信
+│           ├── types.ts     # 客户端与宿主共用的数据模型
+│           ├── host.ts      # 宿主侧扩展：注册详情读取路由
+│           ├── host/        # 从会话事件日志提取内容
+│           │   ├── inspect.ts # 取最后一条非空系统消息与最后一条请求头的工具定义（带 revision 缓存）
+│           │   └── routes.ts  # GET /dsh-all-in-one/context-inspect
+│           └── locales.ts   # 本功能的中英文文案
 │       ├── queue-edit/      # 开关型功能：排队条上的编辑按钮改为撤回排队并回填输入框
 │           ├── index.tsx    # 注册定义：switch 入口 + client 扩展
 │           ├── toggle.tsx   # 网格中的开关入口
@@ -230,7 +244,9 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 │       │   ├── page.tsx     # 设置页：间隔、阈值、实时占用与 DOM 节点、上次时间与手动按钮
 │       │   ├── storage.ts   # 配置与运行状态的 localStorage 读写，本功能专属
 │       │   ├── client.tsx   # 客户端扩展：常驻定时检查 + 状态栏读数 + 头部按钮
-│       │   ├── dock.tsx     # 输入框下方状态栏的内存读数胶囊
+│       │   ├── dock.tsx     # 输入框下方状态栏的内存读数：图标 + 数值，排在上下文圆环之后，点击打开设置浮层
+│       │   ├── memory-icon.tsx # 内存条图标，网格入口与状态栏读数共用
+│       │   ├── settings-dialog.tsx # 状态栏读数点开的设置浮层，复用 page.tsx
 │       │   ├── header-action.tsx # 会话头部右上角的「回收并重建」按钮
 │       │   ├── guard.ts     # 定时编排：轻量回收 → 阈值 → 空闲判定 → 倒计时 → 重建
 │       │   ├── reclaim.ts   # 轻量回收：CacheStorage、performance 与可选强制回收
@@ -281,7 +297,7 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 
 | 分组 | group id | 包含功能 | 切换开关是否刷新页面 |
 |---|---|---|---|
-| 对话体验 | `conversation` | 执行过程展开、图片直接预览、新会话入口、编辑排队消息、全自动执行 | 是 |
+| 对话体验 | `conversation` | 执行过程展开、图片直接预览、上下文详情、新会话入口、编辑排队消息、全自动执行 | 是 |
 | 界面布局 | `layout` | 轮次导航左置、顶部菜单收纳、项目显示会话数、开启新会话 | 是 |
 | 配置与维护 | `config` | 技能包、项目记忆、自动压缩会话、过期登录清理、内存守护 | 否 |
 

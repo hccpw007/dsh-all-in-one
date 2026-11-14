@@ -42,6 +42,13 @@ declare module '@deepseek-ai/dsh-client-ui-primitives' {
     /** 底部操作区，通常是取消与确认按钮。 */
     footer?: ReactNode
     children?: ReactNode
+    /**
+     * 只在卡片里渲染 children，不画宿主默认的标题、关闭按钮与内边距；
+     * 遮罩、Esc、焦点陷阱与 aria-label 仍然由弹窗负责。
+     */
+    headless?: boolean
+    /** 追加到卡片上的类名，用来覆盖默认的确认框宽度。 */
+    className?: string
   }
 
   export const Modal: ComponentType<ModalProps>

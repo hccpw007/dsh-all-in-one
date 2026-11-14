@@ -10,7 +10,7 @@ export const memoryGuardLocales: FeatureLocales = {
     // 卡片右下角的设置入口
     settingsAction: '设置',
     // 设置页标题
-    pageTitle: '内存设置',
+    pageTitle: '内存守护设置',
     // 设置页说明：检查节奏与自动重建的触发条件
     pageHint: '定时检查界面内存：先做轻量回收，占用仍超过阈值且无人操作时重建页面。',
     // 检查间隔输入框的标签
@@ -27,10 +27,12 @@ export const memoryGuardLocales: FeatureLocales = {
     thresholdHint: '轻量回收后渲染进程占用仍超过该值才重建页面；低于它每次只做轻量回收。',
     // 输入框即时保存的说明
     autoSaveHint: '输入框失焦或回车即保存，改动立即生效。',
-    // 输入框下方状态栏的读数标签
+    // 输入框下方读数按钮的无障碍名称前缀，界面上只显示图标
     dockLabel: '内存',
-    // 状态栏读数的悬停说明：覆盖范围
-    dockTitle: '全部 DSH 进程的物理内存（主进程、GPU、渲染进程等），与活动监视器各行之和同口径',
+    // 状态栏读数的悬停说明：覆盖范围与点击后的去处
+    dockTitle: '全部 DSH 进程的物理内存（主进程、GPU、渲染进程等），与活动监视器各行之和同口径；点击打开内存守护设置',
+    // 设置浮层的关闭按钮
+    dialogClose: '关闭',
     // 会话头部「回收并重建」按钮的无障碍标签与悬停说明
     rebuildAction: '先回收再重建页面',
     // 当前内存占用（全部 DSH 进程合计）
@@ -96,7 +98,7 @@ export const memoryGuardLocales: FeatureLocales = {
     // Settings entry at the card's bottom right
     settingsAction: 'Settings',
     // Settings page title
-    pageTitle: 'Memory settings',
+    pageTitle: 'Memory guard settings',
     // Settings page intro: cadence and rebuild conditions
     pageHint: 'Checks renderer memory on a schedule: a light reclaim first, then a page rebuild when usage stays above the limit and nobody is interacting.',
     // Label of the interval input
@@ -113,10 +115,12 @@ export const memoryGuardLocales: FeatureLocales = {
     thresholdHint: 'The page is rebuilt only if the renderer stays above this after the light reclaim; below it every check is light only.',
     // Inputs save on blur or Enter
     autoSaveHint: 'Inputs save on blur or Enter and take effect immediately.',
-    // Label of the composer-dock reading
+    // Accessible name prefix of the dock reading button; only the icon is painted
     dockLabel: 'Memory',
-    // Tooltip of the dock reading: what it covers
-    dockTitle: 'Physical memory of all DSH processes (main, GPU, renderer), matching the sum of Activity Monitor rows',
+    // Tooltip of the dock reading: what it covers and where a click leads
+    dockTitle: 'Physical memory of all DSH processes (main, GPU, renderer), matching the sum of Activity Monitor rows; click to open the memory guard settings',
+    // Close button of the settings dialog
+    dialogClose: 'Close',
     // Accessible label and tooltip of the header rebuild button
     rebuildAction: 'Reclaim, then rebuild the page',
     // Current memory usage (all DSH processes combined)

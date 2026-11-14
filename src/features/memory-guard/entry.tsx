@@ -4,27 +4,8 @@ import { cn } from '../../common/cn'
 import { CardChevron } from '../../components/CardChevron'
 import type { FeatureEntryProps } from '../../shell/registry'
 import { activeMemoryGuard } from './guard'
+import { MemoryIcon } from './memory-icon'
 import { readMemoryGuardSettings, updateMemoryGuardSettings } from './storage'
-
-/** 入口图标：内存条，表达「占用与回收」。 */
-function MemoryIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="14"
-      height="14"
-      aria-hidden="true"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect x="3" y="7" width="18" height="10" rx="2" />
-      <path d="M7 11v2M11 11v2M15 11v2" />
-    </svg>
-  )
-}
 
 /**
  * 「内存守护」在 All In One 网格中的入口。

@@ -95,8 +95,8 @@ function buildPackRows(pack, isolate) {
 }
 
 // src/features/power-pack/host/isolation.ts
-function isDenied(rule, id11) {
-  const selected = rule.items.includes(id11);
+function isDenied(rule, id12) {
+  const selected = rule.items.includes(id12);
   switch (rule.mode) {
     case "include":
       return !selected;
@@ -119,7 +119,7 @@ function sectionPrefixes(packageName) {
 }
 function deniedMcpServers(rule) {
   if (rule.mode !== "exclude") return [];
-  const servers = rule.items.filter((id11) => id11.startsWith("mcp:") && id11.length > 4).map((id11) => id11.slice(4));
+  const servers = rule.items.filter((id12) => id12.startsWith("mcp:") && id12.length > 4).map((id12) => id12.slice(4));
   return [...new Set(servers)];
 }
 function planIsolation(pack, groups) {
@@ -426,8 +426,8 @@ var legacyProbed = false;
 function powerPacksFile() {
   return join3(resolveDshHome(), "all-in-one", "power-packs.json");
 }
-function isValidPackId(id11) {
-  return PACK_ID_PATTERN.test(id11);
+function isValidPackId(id12) {
+  return PACK_ID_PATTERN.test(id12);
 }
 function stringList(value) {
   return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
@@ -441,11 +441,11 @@ function normalizeRule(value) {
 function normalizePack(value) {
   if (typeof value !== "object" || value === null) return void 0;
   const candidate = value;
-  const id11 = typeof candidate.id === "string" ? candidate.id.trim() : "";
+  const id12 = typeof candidate.id === "string" ? candidate.id.trim() : "";
   const name = typeof candidate.name === "string" ? candidate.name.trim() : "";
-  if (!PACK_ID_PATTERN.test(id11) || name === "") return void 0;
+  if (!PACK_ID_PATTERN.test(id12) || name === "") return void 0;
   return {
-    id: id11,
+    id: id12,
     name,
     description: typeof candidate.description === "string" ? candidate.description : "",
     systemPrompt: typeof candidate.systemPrompt === "string" ? candidate.systemPrompt : "",
@@ -687,9 +687,9 @@ async function pendingComposedMeta() {
   for (const selection of selections) {
     const pack = byId.get(selection.pack);
     if (pack === void 0) continue;
-    const id11 = composedPresetId(selection.pack, selection.mode);
-    if (hasComposedPreset(id11)) continue;
-    result.set(id11, { name: pack.name, description: pack.description });
+    const id12 = composedPresetId(selection.pack, selection.mode);
+    if (hasComposedPreset(id12)) continue;
+    result.set(id12, { name: pack.name, description: pack.description });
   }
   return result;
 }
@@ -699,31 +699,31 @@ async function ensureComposedPreset(api, modeId, pack, groups) {
   if (modeRows === void 0) {
     throw new Error(`\u65E0\u6CD5\u8BFB\u53D6\u6A21\u5F0F ${modeId} \u7684\u7EC4\u5408\u884C`);
   }
-  const id11 = composedPresetId(pack.id, modeId);
+  const id12 = composedPresetId(pack.id, modeId);
   const rows = composePackRows(modeRows, pack, groups);
-  const registered = readPresetRows(api, id11);
+  const registered = readPresetRows(api, id12);
   if (registered !== void 0) {
-    if (packRowSignature(registered) === packRowSignature(rows)) return id11;
-    await dropHostPreset(api, id11);
+    if (packRowSignature(registered) === packRowSignature(rows)) return id12;
+    await dropHostPreset(api, id12);
     composed.delete(key);
   }
   try {
     const dispose = await api.register({
-      id: id11,
+      id: id12,
       name: pack.name,
       description: pack.description,
       order: PRESET_ORDER,
       plugins: rows
     });
-    composed.set(key, { key, id: id11, dispose });
+    composed.set(key, { key, id: id12, dispose });
     while (composed.size > MAX_COMPOSED_PRESETS) {
       const oldest = composed.values().next();
       if (oldest.done || oldest.value.key === key) break;
       await disposeOne(oldest.value);
     }
-    return id11;
+    return id12;
   } catch (error) {
-    if (readPresetRows(api, id11) !== void 0) return id11;
+    if (readPresetRows(api, id12) !== void 0) return id12;
     throw error;
   }
 }
@@ -772,7 +772,7 @@ import { join as join5 } from "node:path";
 var MAX_ENTRIES = 64;
 function createReadCache(ttlMs) {
   const entries = /* @__PURE__ */ new Map();
-  const inflight = /* @__PURE__ */ new Map();
+  const inflight2 = /* @__PURE__ */ new Map();
   const evict = () => {
     while (entries.size > MAX_ENTRIES) {
       const oldest = entries.keys().next();
@@ -785,7 +785,7 @@ function createReadCache(ttlMs) {
     if (!force) {
       const cached = entries.get(key);
       if (cached !== void 0 && cached.expiresAt > now) return Promise.resolve(cached.value);
-      const running = inflight.get(key);
+      const running = inflight2.get(key);
       if (running !== void 0) return running;
     }
     const task = load().then((value) => {
@@ -793,9 +793,9 @@ function createReadCache(ttlMs) {
       evict();
       return value;
     }).finally(() => {
-      if (inflight.get(key) === task) inflight.delete(key);
+      if (inflight2.get(key) === task) inflight2.delete(key);
     });
-    inflight.set(key, task);
+    inflight2.set(key, task);
     return task;
   };
   return {
@@ -862,8 +862,8 @@ async function listPluginCatalog(currentProfileDir2) {
 async function listPluginItems(currentProfileDir2) {
   const { standard, installed } = await listPluginCatalog(currentProfileDir2);
   return [
-    ...standard.map(({ id: id11, label, description, kind }) => ({ id: id11, label, description, kind })),
-    ...installed.map(({ id: id11, label, description, kind }) => ({ id: id11, label, description, kind }))
+    ...standard.map(({ id: id12, label, description, kind }) => ({ id: id12, label, description, kind })),
+    ...installed.map(({ id: id12, label, description, kind }) => ({ id: id12, label, description, kind }))
   ];
 }
 
@@ -1143,11 +1143,11 @@ function mergeRoster(result, meta) {
   const holder = result;
   if (!Array.isArray(holder.presets)) return result;
   const rows = holder.presets;
-  const present = new Set(rows.map((row) => row?.id).filter((id11) => typeof id11 === "string"));
+  const present = new Set(rows.map((row) => row?.id).filter((id12) => typeof id12 === "string"));
   const missing = [];
-  for (const [id11, entry] of meta) {
-    if (present.has(id11)) continue;
-    missing.push({ id: id11, name: entry.name, description: entry.description, isDefault: false });
+  for (const [id12, entry] of meta) {
+    if (present.has(id12)) continue;
+    missing.push({ id: id12, name: entry.name, description: entry.description, isDefault: false });
   }
   if (missing.length === 0) return result;
   return { ...holder, presets: [...rows, ...missing] };
@@ -2225,12 +2225,164 @@ function apply3(ctx) {
   ctx.effect(() => installImagePreviewRoutes(webServer), "image-preview: routes");
 }
 
-// src/features/delete-session/host.ts
+// src/features/context-inspect/host.ts
 var host_exports4 = {};
 __export(host_exports4, {
   apply: () => apply4,
   id: () => id4,
   inject: () => inject4
+});
+
+// src/features/context-inspect/host/inspect.ts
+var CACHE_LIMIT = 16;
+var cache = /* @__PURE__ */ new Map();
+var inflight = /* @__PURE__ */ new Map();
+function systemTextOf(event) {
+  const blocks = event.data?.message?.content;
+  if (!Array.isArray(blocks)) return "";
+  return blocks.filter((block) => block.type === "text" && typeof block.text === "string").map((block) => block.text).join("");
+}
+function isToolSchema(value) {
+  if (typeof value !== "object" || value === null) return false;
+  const candidate = value;
+  return typeof candidate.name === "string" && typeof candidate.parameters === "object" && candidate.parameters !== null;
+}
+function extractInspect(events) {
+  let system;
+  let tools;
+  for (let index = events.length - 1; index >= 0; index -= 1) {
+    const event = events[index];
+    if (typeof event !== "object" || event === null) continue;
+    if (system === void 0 && event.type === "system/message") {
+      const text = systemTextOf(event);
+      if (text.trim() !== "") system = text;
+    }
+    if (tools === void 0 && event.type === "request/header") {
+      const declared = event.data?.header?.tools;
+      if (Array.isArray(declared)) tools = declared.filter(isToolSchema);
+    }
+    if (system !== void 0 && tools !== void 0) break;
+  }
+  return { system: system ?? "", tools: tools ?? [] };
+}
+function remember(sessionId, entry) {
+  cache.delete(sessionId);
+  cache.set(sessionId, entry);
+  while (cache.size > CACHE_LIMIT) {
+    const oldest = cache.keys().next().value;
+    if (oldest === void 0) break;
+    cache.delete(oldest);
+  }
+}
+async function readEvents(persistence, sessionId) {
+  let handle;
+  try {
+    handle = await persistence.open(sessionId, "read");
+    const result = await handle.read();
+    return result.events;
+  } finally {
+    if (handle !== void 0) {
+      try {
+        await handle.close();
+      } catch (error) {
+        console.error("[context-inspect] \u5173\u95ED\u4F1A\u8BDD\u8BFB\u53D6\u53E5\u67C4\u5931\u8D25:", sessionId, error);
+      }
+    }
+  }
+}
+async function readContextInspect(persistence, sessionId) {
+  const pending = inflight.get(sessionId);
+  if (pending !== void 0) return pending;
+  const task = (async () => {
+    const snapshot = await persistence.stat(sessionId);
+    if (snapshot === void 0) return null;
+    const revision = String(snapshot.revision);
+    const cached = cache.get(sessionId);
+    if (cached !== void 0 && cached.revision === revision) {
+      return { ...cached.payload, readAt: Date.now() };
+    }
+    const events = await readEvents(persistence, sessionId);
+    const extracted = extractInspect(events);
+    const payload = {
+      session: sessionId,
+      readAt: Date.now(),
+      system: extracted.system,
+      tools: extracted.tools
+    };
+    remember(sessionId, { revision, payload });
+    return payload;
+  })();
+  inflight.set(sessionId, task);
+  try {
+    return await task;
+  } finally {
+    inflight.delete(sessionId);
+  }
+}
+
+// src/features/context-inspect/host/routes.ts
+var ROUTE_PATH3 = "/dsh-all-in-one/context-inspect";
+var SESSION_ID_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]{0,199}$/;
+function sessionIdOf(request) {
+  const url = new URL(request.url ?? "", "http://localhost");
+  const session = url.searchParams.get("session");
+  return session !== null && SESSION_ID_PATTERN.test(session) ? session : void 0;
+}
+function installContextInspectRoutes(webServer, persistence) {
+  return webServer.register({
+    kind: "exact",
+    path: ROUTE_PATH3,
+    handler: async (request, response) => {
+      if (!isLocalRequest(request)) {
+        sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
+        return;
+      }
+      if (request.method !== "GET") {
+        response.writeHead(405, { allow: "GET" });
+        response.end();
+        return;
+      }
+      const sessionId = sessionIdOf(request);
+      if (sessionId === void 0) {
+        sendJson(response, 400, { error: "\u7F3A\u5C11\u5408\u6CD5\u7684\u4F1A\u8BDD\u6807\u8BC6" });
+        return;
+      }
+      try {
+        const payload = await readContextInspect(persistence, sessionId);
+        if (payload === null) {
+          sendJson(response, 404, { error: "\u4F1A\u8BDD\u4E0D\u5B58\u5728" });
+          return;
+        }
+        sendJson(response, 200, payload);
+      } catch (error) {
+        console.error("[context-inspect] \u8BFB\u53D6\u4E0A\u4E0B\u6587\u8BE6\u60C5\u5931\u8D25:", sessionId, error);
+        sendJson(response, 500, {
+          error: error instanceof Error ? error.message : String(error)
+        });
+      }
+    }
+  });
+}
+
+// src/features/context-inspect/host.ts
+var id4 = "context-inspect";
+var inject4 = ["webServer", "sessionPersistence"];
+function apply4(ctx) {
+  const webServer = ctx.webServer;
+  const persistence = ctx.sessionPersistence;
+  if (webServer === void 0 || persistence === void 0) {
+    console.error("[context-inspect] \u672A\u53D6\u5F97 webServer \u6216 sessionPersistence \u670D\u52A1\uFF0C\u8BE6\u60C5\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
+    return;
+  }
+  ctx.effect(() => installContextInspectRoutes(webServer, persistence), "context-inspect: routes");
+}
+
+// src/features/delete-session/host.ts
+var host_exports5 = {};
+__export(host_exports5, {
+  apply: () => apply5,
+  id: () => id5,
+  inject: () => inject5
 });
 
 // src/features/delete-session/host/delete-session.ts
@@ -2368,10 +2520,10 @@ async function forgetSessionRecords(dshHome, sessionId) {
 }
 
 // src/features/delete-session/host/delete-session.ts
-var SESSION_ID_PATTERN = /^session-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+var SESSION_ID_PATTERN2 = /^session-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 var REMOVE_CONCURRENCY = 6;
 function isValidSessionId(value) {
-  return typeof value === "string" && SESSION_ID_PATTERN.test(value);
+  return typeof value === "string" && SESSION_ID_PATTERN2.test(value);
 }
 async function mapWithConcurrency(items, limit, worker) {
   const results = new Array(items.length);
@@ -2483,7 +2635,7 @@ async function deleteStoredSessions(sessionIds) {
 }
 
 // src/features/delete-session/host/routes.ts
-var ROUTE_PATH3 = "/dsh-all-in-one/sessions";
+var ROUTE_PATH4 = "/dsh-all-in-one/sessions";
 var BATCH_PATH = "/dsh-all-in-one/sessions/batch";
 var MAX_BODY_BYTES2 = 8 * 1024;
 var MAX_BATCH_BODY_BYTES = 256 * 1024;
@@ -2503,7 +2655,7 @@ function readSessionIds(body) {
 function installDeleteSessionRoutes(webServer) {
   return webServer.register({
     kind: "prefix",
-    path: ROUTE_PATH3,
+    path: ROUTE_PATH4,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
         sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
@@ -2557,9 +2709,9 @@ function installDeleteSessionRoutes(webServer) {
 }
 
 // src/features/delete-session/host.ts
-var id4 = "delete-session";
-var inject4 = ["webServer"];
-function apply4(ctx) {
+var id5 = "delete-session";
+var inject5 = ["webServer"];
+function apply5(ctx) {
   const webServer = ctx.webServer;
   if (webServer === void 0) {
     console.error("[delete-session] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u5220\u9664\u4F1A\u8BDD\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
@@ -2569,21 +2721,21 @@ function apply4(ctx) {
 }
 
 // src/features/clear-session/host.ts
-var host_exports5 = {};
-__export(host_exports5, {
-  apply: () => apply5,
-  id: () => id5,
-  inject: () => inject5
+var host_exports6 = {};
+__export(host_exports6, {
+  apply: () => apply6,
+  id: () => id6,
+  inject: () => inject6
 });
 
 // src/features/clear-session/host/routes.ts
-var ROUTE_PATH4 = "/dsh-all-in-one/session/cancel";
+var ROUTE_PATH5 = "/dsh-all-in-one/session/cancel";
 var MAX_BODY_BYTES3 = 8 * 1024;
-var SESSION_ID_PATTERN2 = /^[A-Za-z0-9._:-]{1,200}$/;
+var SESSION_ID_PATTERN3 = /^[A-Za-z0-9._:-]{1,200}$/;
 function readSessionId2(body) {
   if (typeof body !== "object" || body === null) return void 0;
   const candidate = body.sessionId;
-  return typeof candidate === "string" && SESSION_ID_PATTERN2.test(candidate) ? candidate : void 0;
+  return typeof candidate === "string" && SESSION_ID_PATTERN3.test(candidate) ? candidate : void 0;
 }
 function writeCancelResult(response, sessionId, controller) {
   try {
@@ -2602,7 +2754,7 @@ function writeCancelResult(response, sessionId, controller) {
 function installClearSessionRoutes(webServer, controller) {
   return webServer.register({
     kind: "exact",
-    path: ROUTE_PATH4,
+    path: ROUTE_PATH5,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
         sendJson(response, 403, { error: "\u53EA\u63A5\u53D7\u672C\u673A\u8BF7\u6C42" });
@@ -2628,9 +2780,9 @@ function installClearSessionRoutes(webServer, controller) {
 }
 
 // src/features/clear-session/host.ts
-var id5 = "clear-session";
-var inject5 = ["webServer", "sessionController"];
-function apply5(ctx) {
+var id6 = "clear-session";
+var inject6 = ["webServer", "sessionController"];
+function apply6(ctx) {
   const webServer = ctx.webServer;
   const controller = ctx.sessionController;
   if (webServer === void 0 || controller === void 0) {
@@ -2641,11 +2793,11 @@ function apply5(ctx) {
 }
 
 // src/features/project-memory/host.ts
-var host_exports6 = {};
-__export(host_exports6, {
-  apply: () => apply6,
-  id: () => id6,
-  inject: () => inject6
+var host_exports7 = {};
+__export(host_exports7, {
+  apply: () => apply7,
+  id: () => id7,
+  inject: () => inject7
 });
 
 // src/features/project-memory/host/settings.ts
@@ -2660,7 +2812,7 @@ function isEnoent2(error) {
   return error.code === "ENOENT";
 }
 function createJsonSettingsStore(options) {
-  let cache2;
+  let cache3;
   const load = () => {
     const file = options.file();
     try {
@@ -2676,24 +2828,24 @@ function createJsonSettingsStore(options) {
   };
   const read = () => {
     const now = Date.now();
-    if (cache2 !== void 0 && now - cache2.checkedAt < EXTERNAL_RECHECK_MS) return cache2.value;
+    if (cache3 !== void 0 && now - cache3.checkedAt < EXTERNAL_RECHECK_MS) return cache3.value;
     const file = options.file();
     try {
       const info = statSync(file);
-      if (cache2 !== void 0 && cache2.mtimeMs === info.mtimeMs && cache2.size === info.size) {
-        cache2.checkedAt = now;
-        return cache2.value;
+      if (cache3 !== void 0 && cache3.mtimeMs === info.mtimeMs && cache3.size === info.size) {
+        cache3.checkedAt = now;
+        return cache3.value;
       }
     } catch (error) {
       if (isEnoent2(error)) {
-        cache2 = { mtimeMs: 0, size: 0, value: options.defaults(), checkedAt: now };
-        return cache2.value;
+        cache3 = { mtimeMs: 0, size: 0, value: options.defaults(), checkedAt: now };
+        return cache3.value;
       }
       console.error(`${options.label} \u68C0\u67E5\u8BBE\u7F6E\u6587\u4EF6\u5931\u8D25:`, file, error);
-      return cache2?.value ?? options.defaults();
+      return cache3?.value ?? options.defaults();
     }
-    cache2 = load();
-    return cache2.value;
+    cache3 = load();
+    return cache3.value;
   };
   const write = (next) => {
     const file = options.file();
@@ -2704,7 +2856,7 @@ function createJsonSettingsStore(options) {
 `, "utf8");
       renameSync(temp, file);
       const info = statSync(file);
-      cache2 = { mtimeMs: info.mtimeMs, size: info.size, value: next, checkedAt: Date.now() };
+      cache3 = { mtimeMs: info.mtimeMs, size: info.size, value: next, checkedAt: Date.now() };
     } catch (error) {
       console.error(`${options.label} \u5199\u5165\u8BBE\u7F6E\u5931\u8D25:`, file, error);
       throw error;
@@ -3073,7 +3225,7 @@ function installMemoryPrompt(ctx) {
 }
 
 // src/features/project-memory/host/routes.ts
-var ROUTE_PATH5 = "/dsh-all-in-one/memory";
+var ROUTE_PATH6 = "/dsh-all-in-one/memory";
 var MAX_BODY_BYTES4 = 8 * 1024;
 function buildPayload2() {
   const settings = readMemorySettings();
@@ -3107,7 +3259,7 @@ function readRequest(body) {
 function installMemoryRoutes(webServer) {
   return webServer.register({
     kind: "exact",
-    path: ROUTE_PATH5,
+    path: ROUTE_PATH6,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
         sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
@@ -3339,9 +3491,9 @@ function installMemoryTool(ctx) {
 }
 
 // src/features/project-memory/host.ts
-var id6 = "project-memory";
-var inject6 = ["systemPrompt", "tools", "webServer"];
-function apply6(ctx) {
+var id7 = "project-memory";
+var inject7 = ["systemPrompt", "tools", "webServer"];
+function apply7(ctx) {
   installMemoryPrompt(ctx);
   installMemoryTool(ctx);
   const webServer = ctx.webServer;
@@ -3353,11 +3505,11 @@ function apply6(ctx) {
 }
 
 // src/features/auto-compact/host.ts
-var host_exports7 = {};
-__export(host_exports7, {
-  apply: () => apply7,
-  id: () => id7,
-  inject: () => inject7
+var host_exports8 = {};
+__export(host_exports8, {
+  apply: () => apply8,
+  id: () => id8,
+  inject: () => inject8
 });
 
 // src/features/auto-compact/host/settings.ts
@@ -3416,12 +3568,12 @@ function updateAutoCompactSettings(patch) {
 }
 
 // src/features/auto-compact/host/routes.ts
-var ROUTE_PATH6 = "/dsh-all-in-one/auto-compact";
+var ROUTE_PATH7 = "/dsh-all-in-one/auto-compact";
 var MAX_BODY_BYTES5 = 4 * 1024;
 function installAutoCompactRoutes(webServer) {
   return webServer.register({
     kind: "exact",
-    path: ROUTE_PATH6,
+    path: ROUTE_PATH7,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
         sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
@@ -3589,24 +3741,24 @@ function installAutoCompactWatcher(ctx) {
     if (!oldest.done) map.delete(oldest.value);
   };
   const contextWindowFor = (agent) => {
-    const id11 = agent.session.id;
-    const cached = windows.get(id11);
+    const id12 = agent.session.id;
+    const cached = windows.get(id12);
     const now = Date.now();
     if (cached !== void 0 && now - cached.at < CONTEXT_WINDOW_TTL_MS) return cached.value;
     const value = readContextWindow(agent);
-    windows.set(id11, { at: now, value });
+    windows.set(id12, { at: now, value });
     evictOldest(windows);
     return value;
   };
   const measureFor = (meter, agent, force) => {
-    const id11 = agent.session.id;
-    const cached = measurements.get(id11);
+    const id12 = agent.session.id;
+    const cached = measurements.get(id12);
     const now = Date.now();
     if (!force && cached !== void 0 && now - cached.at < MEASURE_INTERVAL_MS) {
       return { measurement: cached.value, fresh: false };
     }
     const value = meter.measure(agent.session);
-    measurements.set(id11, { at: now, value });
+    measurements.set(id12, { at: now, value });
     evictOldest(measurements);
     return { measurement: value, fresh: true };
   };
@@ -3680,9 +3832,9 @@ function installAutoCompactWatcher(ctx) {
 }
 
 // src/features/auto-compact/host.ts
-var id7 = "auto-compact";
-var inject7 = ["webServer"];
-function apply7(ctx) {
+var id8 = "auto-compact";
+var inject8 = ["webServer"];
+function apply8(ctx) {
   const webServer = ctx.webServer;
   if (webServer === void 0) {
     console.error("[auto-compact] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u8BBE\u7F6E\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
@@ -3693,11 +3845,11 @@ function apply7(ctx) {
 }
 
 // src/features/desktop-cookie/host.ts
-var host_exports8 = {};
-__export(host_exports8, {
-  apply: () => apply8,
-  id: () => id8,
-  inject: () => inject8
+var host_exports9 = {};
+__export(host_exports9, {
+  apply: () => apply9,
+  id: () => id9,
+  inject: () => inject9
 });
 import { basename as basename2 } from "node:path";
 
@@ -3849,12 +4001,12 @@ function updateDesktopCookieSettings(patch) {
 }
 
 // src/features/desktop-cookie/host/routes.ts
-var ROUTE_PATH7 = "/dsh-all-in-one/desktop-cookie";
+var ROUTE_PATH8 = "/dsh-all-in-one/desktop-cookie";
 var MAX_BODY_BYTES6 = 4 * 1024;
 function installDesktopCookieRoutes(webServer) {
   return webServer.register({
     kind: "exact",
-    path: ROUTE_PATH7,
+    path: ROUTE_PATH8,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
         sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
@@ -3887,8 +4039,8 @@ function installDesktopCookieRoutes(webServer) {
 }
 
 // src/features/desktop-cookie/host.ts
-var id8 = "desktop-cookie";
-var inject8 = ["webServer"];
+var id9 = "desktop-cookie";
+var inject9 = ["webServer"];
 function isDesktopProfile(ctx) {
   const name = ctx.profileContext?.name;
   if (typeof name === "string" && name !== "") return name === "desktop";
@@ -3897,7 +4049,7 @@ function isDesktopProfile(ctx) {
   const entry = process.argv[1] ?? "";
   return entry.includes("dsh-desktop-host");
 }
-function apply8(ctx) {
+function apply9(ctx) {
   if (isDesktopProfile(ctx)) {
     try {
       const report = cleanupAuthCookies(readDesktopCookieSettings());
@@ -3919,11 +4071,11 @@ function apply8(ctx) {
 }
 
 // src/features/auto-run/host.ts
-var host_exports9 = {};
-__export(host_exports9, {
-  apply: () => apply9,
-  id: () => id9,
-  inject: () => inject9
+var host_exports10 = {};
+__export(host_exports10, {
+  apply: () => apply10,
+  id: () => id10,
+  inject: () => inject10
 });
 
 // src/features/auto-run/host/settings.ts
@@ -4035,9 +4187,9 @@ function pruneAutoRunSettings(existingSessionIds, existingWorkspaceIds) {
   if (existingSessionIds === void 0 && existingWorkspaceIds === void 0) {
     return { sessions: 0, workspaces: 0 };
   }
-  const sessions = existingSessionIds === void 0 ? current.sessions : Object.fromEntries(Object.entries(current.sessions).filter(([id11]) => existingSessionIds.has(id11)));
+  const sessions = existingSessionIds === void 0 ? current.sessions : Object.fromEntries(Object.entries(current.sessions).filter(([id12]) => existingSessionIds.has(id12)));
   const workspaces = existingWorkspaceIds === void 0 ? current.workspaces : Object.fromEntries(
-    Object.entries(current.workspaces).filter(([id11]) => existingWorkspaceIds.has(id11))
+    Object.entries(current.workspaces).filter(([id12]) => existingWorkspaceIds.has(id12))
   );
   const removedSessions = Object.keys(current.sessions).length - Object.keys(sessions).length;
   const removedWorkspaces = Object.keys(current.workspaces).length - Object.keys(workspaces).length;
@@ -4104,8 +4256,8 @@ function readAgentSessionId(agent) {
   if (typeof agent !== "object" || agent === null) return void 0;
   const session = agent.session;
   if (typeof session !== "object" || session === null) return void 0;
-  const id11 = session.id;
-  return typeof id11 === "string" && id11 !== "" ? id11 : void 0;
+  const id12 = session.id;
+  return typeof id12 === "string" && id12 !== "" ? id12 : void 0;
 }
 
 // src/features/auto-run/host/prompt.ts
@@ -4185,7 +4337,7 @@ async function listExistingWorkspaceIds() {
     const global = parsed.global;
     const ids = global?.workspaceIds;
     if (!Array.isArray(ids)) return void 0;
-    return new Set(ids.filter((id11) => typeof id11 === "string" && id11 !== ""));
+    return new Set(ids.filter((id12) => typeof id12 === "string" && id12 !== ""));
   } catch (error) {
     if (error.code === "ENOENT") return void 0;
     console.error("[auto-run] \u8BFB\u53D6\u5DE5\u4F5C\u7A7A\u95F4\u6CE8\u518C\u8868\u5931\u8D25\uFF0C\u8DF3\u8FC7\u672C\u6B21\u5DE5\u4F5C\u7A7A\u95F4\u6E05\u7406:", error);
@@ -4223,13 +4375,13 @@ function installAutoRunPrune() {
 }
 
 // src/features/auto-run/host/routes.ts
-var ROUTE_PATH8 = "/dsh-all-in-one/auto-run";
+var ROUTE_PATH9 = "/dsh-all-in-one/auto-run";
 var MAX_BODY_BYTES7 = 4 * 1024;
 var MAX_ID_LENGTH = 200;
 function readId(value) {
   if (typeof value !== "string") return void 0;
-  const id11 = value.trim();
-  return id11 === "" || id11.length > MAX_ID_LENGTH ? void 0 : id11;
+  const id12 = value.trim();
+  return id12 === "" || id12.length > MAX_ID_LENGTH ? void 0 : id12;
 }
 function parseSessionPatch(value) {
   if (typeof value !== "object" || value === null) return void 0;
@@ -4250,14 +4402,14 @@ function parseDefaultModePatch(value) {
 function installAutoRunRoutes(webServer) {
   return webServer.register({
     kind: "exact",
-    path: ROUTE_PATH8,
+    path: ROUTE_PATH9,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
         sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
         return;
       }
       try {
-        const url = new URL(request.url ?? ROUTE_PATH8, "http://127.0.0.1");
+        const url = new URL(request.url ?? ROUTE_PATH9, "http://127.0.0.1");
         if (request.method === "GET") {
           const sessionId = readId(url.searchParams.get("sessionId"));
           if (sessionId === void 0) {
@@ -4327,9 +4479,9 @@ function installAutoRunToolGuard(ctx) {
 }
 
 // src/features/auto-run/host.ts
-var id9 = "auto-run";
-var inject9 = ["systemPrompt", "webServer"];
-function apply9(ctx) {
+var id10 = "auto-run";
+var inject10 = ["systemPrompt", "webServer"];
+function apply10(ctx) {
   installAutoRunPrompt(ctx);
   installAutoRunToolGuard(ctx);
   installAutoRunAnswerer(ctx);
@@ -4343,11 +4495,11 @@ function apply9(ctx) {
 }
 
 // src/features/memory-guard/host.ts
-var host_exports10 = {};
-__export(host_exports10, {
-  apply: () => apply10,
-  id: () => id10,
-  inject: () => inject10
+var host_exports11 = {};
+__export(host_exports11, {
+  apply: () => apply11,
+  id: () => id11,
+  inject: () => inject11
 });
 
 // src/features/memory-guard/host/process-memory.ts
@@ -4359,7 +4511,7 @@ var PS_MAX_BUFFER = 8 * 1024 * 1024;
 var MAX_PROCESS_PROBES = 10;
 var SIZE_TO_MB = { B: 1 / 1048576, KB: 1 / 1024, MB: 1, GB: 1024 };
 var runFile = promisify(execFile);
-var cache;
+var cache2;
 var inFlight;
 function parseProcessTree(output) {
   const mainPid = process.ppid;
@@ -4436,13 +4588,13 @@ async function sample() {
 }
 async function readProcessTreeMemory() {
   const now = Date.now();
-  if (cache !== void 0 && now - cache.at < CACHE_TTL_MS) return cache.value;
+  if (cache2 !== void 0 && now - cache2.at < CACHE_TTL_MS) return cache2.value;
   if (inFlight !== void 0) return inFlight;
   const attempt = sample();
   inFlight = attempt;
   try {
     const value = await attempt;
-    cache = { value, at: Date.now() };
+    cache2 = { value, at: Date.now() };
     return value;
   } finally {
     inFlight = void 0;
@@ -4450,11 +4602,11 @@ async function readProcessTreeMemory() {
 }
 
 // src/features/memory-guard/host/routes.ts
-var ROUTE_PATH9 = "/dsh-all-in-one/memory-guard";
+var ROUTE_PATH10 = "/dsh-all-in-one/memory-guard";
 function installMemoryGuardRoutes(webServer) {
   return webServer.register({
     kind: "exact",
-    path: ROUTE_PATH9,
+    path: ROUTE_PATH10,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
         sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
@@ -4483,9 +4635,9 @@ function installMemoryGuardRoutes(webServer) {
 }
 
 // src/features/memory-guard/host.ts
-var id10 = "memory-guard";
-var inject10 = ["webServer"];
-function apply10(ctx) {
+var id11 = "memory-guard";
+var inject11 = ["webServer"];
+function apply11(ctx) {
   const webServer = ctx.webServer;
   if (webServer === void 0) {
     console.error("[memory-guard] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u5185\u5B58\u8BFB\u6570\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
@@ -4501,16 +4653,17 @@ var featureHosts = [
   host_exports4,
   host_exports5,
   host_exports6,
-  host_exports,
   host_exports7,
+  host_exports,
   host_exports8,
   host_exports9,
-  host_exports10
+  host_exports10,
+  host_exports11
 ];
 
 // src/index.ts
-var inject11 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
-function apply11(ctx) {
+var inject12 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
+function apply12(ctx) {
   for (const feature of featureHosts) {
     try {
       feature.apply(ctx);
@@ -4520,6 +4673,6 @@ function apply11(ctx) {
   }
 }
 export {
-  apply11 as apply,
-  inject11 as inject
+  apply12 as apply,
+  inject12 as inject
 };
