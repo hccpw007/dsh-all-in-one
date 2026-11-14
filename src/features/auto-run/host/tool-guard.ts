@@ -10,8 +10,7 @@
  */
 import type { HostPluginContext } from '../../../types/host'
 
-import { readAgentSessionId } from './agent-session'
-import { isAutoRunEnabled } from './settings'
+import { isAutoRunActiveFor } from './agent-session'
 
 /** 模型用于向用户提问的工具名。 */
 const ASK_USER_QUESTION_TOOL = 'ask_user_question'
@@ -21,10 +20,12 @@ const ASK_USER_QUESTION_TOOL = 'ask_user_question'
  *
  * 它会被物化成模型看到的工具结果，因此写清「为什么」与「接下来做什么」：
  * 只说被拒绝，模型容易换个问法重试；给出行动要求才能真正把一轮跑完。
+ * 兜底标准不能写成「最可逆的做法」——提交、交付都比不提交更不可逆，
+ * 用可逆性兜底会稳定地把模型推向「什么都不做」，正是自动模式要消除的行为。
  */
 const DENY_REASON =
   '自动模式已开启：本会话不允许向用户提问，该工具已被禁用。'
-  + '请根据现有信息自行判断并继续执行；需要取舍时按「用户指令优先、其次项目约定、最后最小可逆做法」定夺，不要重试 ask_user_question。'
+  + '请根据现有信息自行判断并继续执行；需要取舍时按「用户指令优先、其次全局规则与项目约定、最后最符合任务完成标准的做法」定夺，不要重试 ask_user_question。'
 
 /** 询问请求里本闸门需要读取的最小形状。 */
 interface AskArgumentsLike {
@@ -56,9 +57,8 @@ export function installAutoRunToolGuard(ctx: HostPluginContext): void {
         // 只处理询问工具：其余工具的调度、超时与权限完全交回宿主
         if (exec.name !== ASK_USER_QUESTION_TOOL) return next()
 
-        const sessionId = readAgentSessionId(exec.agent)
-        // 自动模式未开启、或读不到会话（子 Agent、系统调用）时一律放行
-        if (sessionId === undefined || !isAutoRunEnabled(sessionId)) return next()
+        // 子 Agent 继承父会话的开关：否则委派出去的 Agent 能弹提问，把整条链卡住
+        if (!isAutoRunActiveFor(exec.agent)) return next()
 
         // 权限审批留给用户本人点选
         if (asksForApproval(exec.arguments)) return next()

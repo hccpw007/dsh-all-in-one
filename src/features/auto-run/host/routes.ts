@@ -21,9 +21,28 @@ import {
   setAutoRunEnabled,
   summarizeAutoRunSettings,
 } from './settings'
+import { resetAutoRunInheritance } from './agent-session'
 
 /** 开关接口路径；注册为精确匹配，避免子路径被当成同一份设置写入。 */
 const ROUTE_PATH = '/dsh-all-in-one/auto-run'
+
+/**
+ * 写入会话级开关，并清空继承缓存。
+ *
+ * 缓存记的是「某个子会话继承自哪个父会话」。继承判定每次都会校验父会话当前是否
+ * 生效，所以不清缓存也能收敛；这里仍然立即作废，是为了让用户点下开关当轮就按新
+ * 状态走，不必等下一次判定的自愈。
+ * @param sessionId 会话标识
+ * @param enabled 目标状态
+ * @param workspaceId 会话所属工作空间，未知时省略
+ * @returns 写入后的状态
+ */
+function writeSessionSwitch(sessionId: string, enabled: boolean, workspaceId?: string): boolean {
+  const next = setAutoRunEnabled(sessionId, enabled, workspaceId)
+  resetAutoRunInheritance()
+
+  return next
+}
 
 /** 请求体上限；本接口只收几个短字段，超出说明请求异常。 */
 const MAX_BODY_BYTES = 4 * 1024
@@ -149,6 +168,8 @@ export function installAutoRunRoutes(webServer: WebServerApi): () => void {
         // 设置页写默认值：与会话级开关共用一条路由，按字段区分两种动作
         if (defaultMode !== undefined) {
           setAutoRunDefaultMode(defaultMode)
+          // 默认值变化会影响继承判定，缓存必须清空
+          resetAutoRunInheritance()
           sendJson(response, 200, summarizeAutoRunSettings(readAutoRunSettings()))
 
           return
@@ -163,7 +184,7 @@ export function installAutoRunRoutes(webServer: WebServerApi): () => void {
 
         sendJson(response, 200, {
           sessionId: patch.sessionId,
-          enabled: setAutoRunEnabled(patch.sessionId, patch.enabled, patch.workspaceId),
+          enabled: writeSessionSwitch(patch.sessionId, patch.enabled, patch.workspaceId),
           explicit: true,
         })
       } catch (error) {

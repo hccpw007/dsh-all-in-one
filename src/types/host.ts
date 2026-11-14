@@ -253,6 +253,21 @@ export interface AgentLike {
 export interface SessionLike {
   /** 会话标识，与 Agent 标识相同。 */
   id: string
+  /**
+   * 父会话标识：子 Agent 的会话由此指回委派它的会话。
+   *
+   * 可选——只有宿主版本提供时才存在。自动模式据此让子 Agent 继承父会话的开关，
+   * 否则子 Agent 会以「未开启自动模式」的身份弹出提问，把整条委派链卡住。
+   * 与 `header.origin` 配合使用：只有委派子会话才算继承关系，普通 fork 不算。
+   */
+  parentSession?: string
+  /**
+   * 会话头部：父会话标识在部分宿主版本里只出现在头部，上面字段读不到时回退到这里。
+   *
+   * `origin` 为 `'subagent'` 时才是委派出来的子会话；历史 fork 也可能保留
+   * `parentSession`，缺了 `origin` 就不该继承开关。
+   */
+  header?: { parentSession?: unknown, origin?: unknown }
   /** 当前日志序号。 */
   seq: number
   /** 当前会话表面：参与模型请求的日志序号序列，索引即位置。 */

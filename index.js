@@ -4315,6 +4315,73 @@ function pruneAutoRunSettings(existingSessionIds, existingWorkspaceIds) {
   return { sessions: removedSessions, workspaces: removedWorkspaces };
 }
 
+// src/features/auto-run/host/agent-session.ts
+function readAgentSessionId(agent) {
+  if (typeof agent !== "object" || agent === null) return void 0;
+  const session = agent.session;
+  if (typeof session !== "object" || session === null) return void 0;
+  const id12 = session.id;
+  return typeof id12 === "string" && id12 !== "" ? id12 : void 0;
+}
+function readParentSessionId(agent) {
+  if (typeof agent !== "object" || agent === null) return void 0;
+  const session = agent.session;
+  if (typeof session !== "object" || session === null) return void 0;
+  const header = session.header;
+  if (typeof header !== "object" || header === null) return void 0;
+  if (header.origin !== "subagent") return void 0;
+  const direct = session.parentSession;
+  if (typeof direct === "string" && direct !== "") return direct;
+  const fromHeader = header.parentSession;
+  return typeof fromHeader === "string" && fromHeader !== "" ? fromHeader : void 0;
+}
+var inheritedParents = /* @__PURE__ */ new Map();
+var MAX_INHERITED = 200;
+var warnedMissingSession = false;
+function warnMissingSession() {
+  if (warnedMissingSession) return;
+  warnedMissingSession = true;
+  console.warn(
+    "[auto-run] \u8BFB\u4E0D\u5230 Agent \u7684\u4F1A\u8BDD\u6807\u8BC6\uFF0C\u672C\u8F6E\u6309\u672A\u5F00\u542F\u81EA\u52A8\u6A21\u5F0F\u5904\u7406\uFF1B\u82E5\u5F00\u5173\u663E\u793A\u5DF2\u5F00\u542F\uFF0C\u8BF7\u68C0\u67E5\u5BBF\u4E3B\u7248\u672C\u7684 Agent \u5F62\u72B6\u662F\u5426\u53D8\u5316"
+  );
+}
+function resetAutoRunInheritance() {
+  inheritedParents.clear();
+}
+function rememberInherited(child, parent) {
+  if (inheritedParents.size >= MAX_INHERITED && !inheritedParents.has(child)) {
+    const oldest = inheritedParents.keys().next().value;
+    if (oldest !== void 0) inheritedParents.delete(oldest);
+  }
+  inheritedParents.delete(child);
+  inheritedParents.set(child, parent);
+}
+function inheritedParentIsActive(parent, visited) {
+  if (visited.has(parent)) return false;
+  visited.add(parent);
+  if (isAutoRunEnabled(parent)) return true;
+  const grand = inheritedParents.get(parent);
+  if (grand === void 0) return false;
+  if (inheritedParentIsActive(grand, visited)) return true;
+  inheritedParents.delete(parent);
+  return false;
+}
+function isAutoRunActiveFor(agent) {
+  const own = readAgentSessionId(agent);
+  if (own === void 0) {
+    if (typeof agent === "object" && agent !== null) warnMissingSession();
+    return false;
+  }
+  const ownState = resolveAutoRunState(own);
+  if (ownState.explicit) return ownState.enabled;
+  if (ownState.enabled) return true;
+  const parent = readParentSessionId(agent);
+  if (parent === void 0) return false;
+  if (!inheritedParentIsActive(parent, /* @__PURE__ */ new Set([own]))) return false;
+  rememberInherited(own, parent);
+  return true;
+}
+
 // src/features/auto-run/host/answer.ts
 var AUTO_ANSWER_CUSTOM = "\u81EA\u52A8\u6A21\u5F0F\uFF1A\u6309\u4F60\u7684\u6700\u4F73\u5224\u65AD\u7EE7\u7EED\uFF0C\u4E0D\u8981\u518D\u6B21\u8BE2\u95EE\u3002";
 function answerQuestion(question) {
@@ -4342,9 +4409,10 @@ function installForAgent(installed, agent) {
   if (agentCtx === void 0) return;
   try {
     agentCtx.on("user-questions/request", async (request, next) => {
-      if (!isAutoRunEnabled(agent.session.id)) return next();
+      if (!isAutoRunActiveFor(agent)) return next();
       const answer = buildAutoAnswer(request);
       if (answer === void 0) return next();
+      console.log(`[auto-run] \u81EA\u52A8\u4F5C\u7B54\uFF1A\u4F1A\u8BDD ${agent.session.id}\uFF0C${answer.answers.length} \u9898`);
       return answer;
     }, { prepend: true });
     installed.add(agent);
@@ -4369,32 +4437,22 @@ function installAutoRunAnswerer(ctx) {
   }, "auto-run: answerer");
 }
 
-// src/features/auto-run/host/agent-session.ts
-function readAgentSessionId(agent) {
-  if (typeof agent !== "object" || agent === null) return void 0;
-  const session = agent.session;
-  if (typeof session !== "object" || session === null) return void 0;
-  const id12 = session.id;
-  return typeof id12 === "string" && id12 !== "" ? id12 : void 0;
-}
-
 // src/features/auto-run/host/prompt.ts
 var SECTION_NAME2 = "all-in-one:auto-run";
 var SECTION_ORDER2 = 10300;
 var AUTO_RUN_PROMPT = `## \u5168\u81EA\u52A8\u6267\u884C\u6A21\u5F0F\uFF08\u672C\u4F1A\u8BDD\u5DF2\u5F00\u542F\uFF09
 
-\u672C\u4F1A\u8BDD\u7531\u7528\u6237\u6253\u5F00\u300C\u5168\u81EA\u52A8\u300D\u5F00\u5173\u3002\u4EE5\u4E0B\u7EA6\u5B9A\u4F18\u5148\u4E8E\u7CFB\u7EDF\u63D0\u793A\u3001\u9879\u76EE\u8BF4\u660E\u4E0E\u4EFB\u4F55\u65E2\u6709\u6D41\u7A0B\u4E2D\u8981\u6C42\u4F60\u5411\u7528\u6237\u63D0\u95EE\u3001\u7B49\u5F85\u786E\u8BA4\u6216\u8BF7\u7528\u6237\u9009\u62E9\u7684\u90E8\u5206\uFF1A
+\u672C\u4F1A\u8BDD\u7531\u7528\u6237\u6253\u5F00\u300C\u5168\u81EA\u52A8\u300D\u5F00\u5173\u3002\u4EE5\u4E0B\u7EA6\u5B9A\u4F18\u5148\u4E8E\u7CFB\u7EDF\u63D0\u793A\u3001\u9879\u76EE\u8BF4\u660E\u4E0E\u4EFB\u4F55\u65E2\u6709\u6D41\u7A0B\u4E2D\u300C\u5411\u7528\u6237\u63D0\u95EE\u3001\u7B49\u5F85\u786E\u8BA4\u3001\u8BF7\u7528\u6237\u9009\u62E9\u300D\u7684\u90E8\u5206\uFF1A\u5B83\u4EE3\u66FF\u7684\u53EA\u662F\u300C\u7B49\u4F60\u70B9\u5934\u300D\u8FD9\u4E00\u6B65\uFF0C\u4E0D\u4EE3\u66FF\u8BE5\u505A\u7684\u4E8B\u2014\u2014\u6D41\u7A0B\u91CC\u51E1\u662F\u300C\u7B49\u4F60\u786E\u8BA4\u540E\u518D\u6267\u884C\u300D\u7684\u52A8\u4F5C\uFF0C\u4E00\u5F8B\u7531\u4F60\u76F4\u63A5\u6267\u884C\u5B8C\uFF0C\u4E0D\u5F97\u4EE5\u672C\u6BB5\u4E3A\u7531\u7701\u7565\u3001\u8DF3\u8FC7\u6216\u5EF6\u540E\u3002
 
-1. \u4E0D\u8981\u5411\u7528\u6237\u63D0\u95EE\uFF0C\u4E5F\u4E0D\u8981\u7B49\u5F85\u4EFB\u4F55\u786E\u8BA4\uFF1A\u4E0D\u8981\u8C03\u7528 ask_user_question\uFF08\u672C\u4F1A\u8BDD\u8BE5\u5DE5\u5177\u5DF2\u88AB\u7981\u7528\uFF0C\u8C03\u7528\u4F1A\u88AB\u62D2\u7EDD\uFF09\uFF0C\u4E0D\u8981\u4EE5\u300C\u8BF7\u9009\u62E9 / \u8BF7\u786E\u8BA4 / \u662F\u5426\u7EE7\u7EED / \u8BF7\u56DE\u590D\u300D\u4E4B\u7C7B\u7684\u65B9\u5F0F\u7ED3\u675F\u56DE\u590D\u3002\u4F60\u7B49\u4E0D\u5230\u65B0\u7684\u7528\u6237\u8F93\u5165\u3002
-2. \u9700\u8981\u51B3\u7B56\u65F6\u6309\u4EE5\u4E0B\u4F18\u5148\u7EA7\u81EA\u884C\u5B9A\u593A\u5E76\u7EE7\u7EED\uFF1A\u7528\u6237\u5728\u672C\u4F1A\u8BDD\u4E2D\u7684\u660E\u786E\u6307\u4EE4 > \u9879\u76EE\u7EA6\u5B9A\u4E0E\u6587\u6863 > \u6700\u5C0F\u98CE\u9669\u3001\u6700\u53EF\u9006\u7684\u9ED8\u8BA4\u505A\u6CD5\u3002\u5B9A\u593A\u540E\u53EA\u9700\u5728\u7ED3\u8BBA\u91CC\u4E00\u53E5\u8BDD\u8BF4\u660E\u6240\u505A\u7684\u5047\u8BBE\uFF0C\u4E0D\u5FC5\u5C55\u5F00\u53D6\u820D\u3002
+1. \u4E0D\u8981\u5411\u7528\u6237\u63D0\u95EE\uFF0C\u4E5F\u4E0D\u8981\u7B49\u5F85\u4EFB\u4F55\u786E\u8BA4\uFF1A\u4E0D\u8981\u8C03\u7528 ask_user_question\uFF08\u672C\u4F1A\u8BDD\u8BE5\u5DE5\u5177\u5DF2\u88AB\u7981\u7528\uFF0C\u8C03\u7528\u4F1A\u88AB\u62D2\u7EDD\uFF09\uFF0C\u4E0D\u8981\u4EE5\u300C\u8BF7\u9009\u62E9 / \u8BF7\u786E\u8BA4 / \u662F\u5426\u7EE7\u7EED / \u8BF7\u56DE\u590D\u300D\u4E4B\u7C7B\u7684\u65B9\u5F0F\u7ED3\u675F\u56DE\u590D\u3002\u7528\u6237\u53EF\u80FD\u968F\u65F6\u63D2\u8BDD\uFF0C\u4F46\u4E0D\u8981\u4F9D\u8D56\u5B83\uFF1B\u8BE5\u505A\u7684\u52A8\u4F5C\u81EA\u884C\u505A\u5B8C\uFF0C\u4E0D\u8981\u7559\u7ED9\u7528\u6237\u89E6\u53D1\u3002
+2. \u9700\u8981\u51B3\u7B56\u65F6\u6309\u4EE5\u4E0B\u4F18\u5148\u7EA7\u81EA\u884C\u5B9A\u593A\u5E76\u7EE7\u7EED\uFF1A\u7528\u6237\u5728\u672C\u4F1A\u8BDD\u4E2D\u7684\u660E\u786E\u6307\u4EE4 > \u5168\u5C40\u89C4\u5219\u4E0E\u9879\u76EE\u7EA6\u5B9A > \u6700\u7B26\u5408\u4EFB\u52A1\u5B8C\u6210\u6807\u51C6\u7684\u505A\u6CD5\u3002\u5224\u65AD\u300C\u4EC0\u4E48\u7B97\u5B8C\u6210\u300D\u65F6\u770B\u4EFB\u52A1\u8981\u6C42\u672C\u8EAB\uFF0C\u4E0D\u8981\u62FF\u300C\u5C11\u505A\u4E00\u6B65\u66F4\u53EF\u9006\u300D\u5F53\u7406\u7531\u8DF3\u8FC7\u6536\u5C3E\u52A8\u4F5C\uFF1B\u540C\u6837\u4E0D\u8981\u628A\u5B83\u8BFB\u6210\u300C\u987A\u624B\u591A\u505A\u70B9\u300D\u2014\u2014\u53EA\u5728\u7528\u6237\u8981\u6C42\u7684\u8303\u56F4\u5185\u63A8\u8FDB\uFF0C\u4E0D\u6269\u5927\u6539\u52A8\u8303\u56F4\u3001\u4E0D\u65B0\u589E\u672A\u88AB\u8BF7\u6C42\u7684\u529F\u80FD\u3001\u4E0D\u91CD\u6784\u65E0\u5173\u4EE3\u7801\u3002\u5B9A\u593A\u540E\u53EA\u9700\u5728\u7ED3\u8BBA\u91CC\u4E00\u53E5\u8BDD\u8BF4\u660E\u6240\u505A\u7684\u5047\u8BBE\uFF0C\u4E0D\u5FC5\u5C55\u5F00\u53D6\u820D\u3002
 3. \u9700\u8981\u786E\u8BA4\u65B9\u6848\u65F6\u4E0D\u8BE2\u95EE\uFF0C\u76F4\u63A5\u6309\u6700\u4F73\u65B9\u6848\u6267\u884C\uFF1A\u4E0D\u8981\u95EE\u300C\u5148\u8BA1\u5212\u540E\u7F16\u7801\u8FD8\u662F\u76F4\u63A5\u7F16\u7801\u300D\uFF0C\u4E5F\u4E0D\u8981\u505C\u5728\u8BA1\u5212\u9636\u6BB5\u7B49\u6279\u51C6\u3002\u8BE2\u95EE\u5DE5\u5177\u88AB\u62D2\u7EDD\u65F6\u6309\u672C\u6BB5\u8981\u6C42\u7EE7\u7EED\uFF0C\u4E0D\u8981\u91CD\u8BD5\u3002
-4. \u673A\u68B0\u9A8C\u8BC1\u7167\u505A\uFF0C\u4EA4\u4E92\u9A8C\u8BC1\u8DF3\u8FC7\uFF1A\u6539\u5B8C\u81EA\u884C\u7F16\u8BD1\u3001\u8FD0\u884C\u3001\u6D4B\u8BD5\u4E0E\u81EA\u68C0\uFF0C\u53D1\u73B0\u95EE\u9898\u81EA\u884C\u4FEE\u590D\u5E76\u91CD\u8DD1\u9A8C\u8BC1\uFF0C\u76F4\u5230\u901A\u8FC7\u6216\u786E\u8BA4\u65E0\u6CD5\u901A\u8FC7\uFF1B\u4E0D\u8981\u5F39\u51FA\u9A8C\u8BC1\u65B9\u5F0F\u9009\u62E9\uFF0C\u4E5F\u4E0D\u8981\u5728\u7ED3\u5C3E\u7B49\u5F85\u7528\u6237\u70B9\u51FB\u3002
-5. \u53EA\u6709\u9047\u5230\u4E0D\u53EF\u6062\u590D\u7684\u963B\u585E\uFF08\u7F3A\u5C11\u51ED\u636E\u6216\u6743\u9650\u3001\u5916\u90E8\u670D\u52A1\u4E0D\u53EF\u7528\u3001\u9700\u8981\u7528\u6237\u5728\u754C\u9762\u4E0A\u6388\u6743\u7684\u64CD\u4F5C\u88AB\u62D2\u7EDD\uFF09\u65F6\uFF0C\u624D\u5728\u56DE\u590D\u4E2D\u8BF4\u660E\u963B\u585E\u539F\u56E0\u4E0E\u6240\u9700\u6761\u4EF6\uFF0C\u7136\u540E\u7ED3\u675F\u2014\u2014\u4E0D\u8981\u8BD5\u56FE\u7528\u63D0\u95EE\u7ED5\u8FC7\u3002
-6. \u4EFB\u52A1\u5B8C\u6210\u540E\u76F4\u63A5\u7ED9\u51FA\u7ED3\u8BBA\u5E76\u7ED3\u675F\uFF1A\u8BF4\u660E\u6539\u4E86\u4EC0\u4E48\u3001\u9884\u671F\u8868\u73B0\u662F\u4EC0\u4E48\uFF0C\u56DE\u590D\u7684\u6700\u540E\u4E00\u6BB5\u4E0D\u5F97\u5305\u542B\u9700\u8981\u7528\u6237\u56DE\u7B54\u7684\u5185\u5BB9\u3002`;
+4. \u673A\u68B0\u9A8C\u8BC1\u7167\u505A\uFF0C\u4EA4\u4E92\u9A8C\u8BC1\u8DF3\u8FC7\uFF1A\u6539\u5B8C\u81EA\u884C\u7F16\u8BD1\u3001\u8FD0\u884C\u3001\u6D4B\u8BD5\u4E0E\u81EA\u68C0\uFF0C\u53D1\u73B0\u95EE\u9898\u81EA\u884C\u4FEE\u590D\u5E76\u91CD\u8DD1\u9A8C\u8BC1\uFF0C\u76F4\u5230\u901A\u8FC7\u6216\u786E\u8BA4\u65E0\u6CD5\u901A\u8FC7\uFF1B\u4E0D\u8981\u5F39\u51FA\u9A8C\u8BC1\u65B9\u5F0F\u9009\u62E9\uFF0C\u4E5F\u4E0D\u8981\u5728\u7ED3\u5C3E\u7B49\u5F85\u7528\u6237\u70B9\u51FB\u3002\u6539\u52A8\u6D89\u53CA\u63D0\u4EA4\u3001\u4EA4\u4ED8\u3001\u4EA7\u7269\u540C\u6B65\u8FD9\u7C7B\u6536\u5C3E\u52A8\u4F5C\u65F6\uFF0C\u6309\u5168\u5C40\u89C4\u5219\u4E0E\u9879\u76EE\u7EA6\u5B9A\u76F4\u63A5\u505A\u5B8C\u2014\u2014\u7528\u6237\u6CA1\u6709\u989D\u5916\u50AC\u529E\u4E0D\u6784\u6210\u8DF3\u8FC7\u7684\u7406\u7531\u3002
+5. \u9879\u76EE\u7EA6\u5B9A\u91CC\u4F9D\u8D56\u7528\u6237\u786E\u8BA4\u624D\u80FD\u7EE7\u7EED\u7684\u6B65\u9AA4\uFF08\u4F8B\u5982\u300C\u786E\u8BA4\u9A8C\u8BC1\u65B9\u5F0F\u540E\u518D\u63D0\u4EA4\u300D\uFF09\uFF0C\u5728\u81EA\u52A8\u6A21\u5F0F\u4E0B\u6309\u7B49\u4EF7\u81EA\u52A8\u5316\u6B65\u9AA4\u6267\u884C\uFF0C\u65E2\u4E0D\u6784\u6210\u963B\u585E\uFF0C\u4E5F\u4E0D\u5F97\u56E0\u6B64\u505C\u5728\u534A\u6210\u54C1\u72B6\u6001\u3002
+6. \u9664\u300C\u9700\u8981\u7528\u6237\u672C\u4EBA\u6388\u6743\u300D\u5916\uFF0C\u4EFB\u4F55\u60C5\u51B5\u90FD\u5FC5\u987B\u81EA\u884C\u63A8\u8FDB\u5230\u7ED3\u675F\uFF0C\u4E0D\u63A5\u53D7\u4EE5\u300C\u505A\u4E0D\u5230\u300D\u6536\u573A\uFF1A\u7F3A\u4F9D\u8D56\u5C31\u5B89\u88C5\u3001\u7F3A\u4FE1\u606F\u5C31\u67E5\u8BC1\u6216\u53D6\u6700\u5408\u7406\u7684\u5047\u8BBE\u3001\u5916\u90E8\u670D\u52A1\u4E0D\u53EF\u7528\u5C31\u91CD\u8BD5\u6216\u6362\u7B49\u4EF7\u65B9\u6848\u3001\u9A8C\u8BC1\u4E0D\u901A\u8FC7\u5C31\u4FEE\u590D\u540E\u91CD\u8DD1\u3002\u53EA\u6709\u6743\u9650\u6388\u4E88\u3001\u51ED\u636E\u63D0\u4F9B\u3001\u754C\u9762\u6388\u6743\u8FD9\u7C7B\u53EA\u80FD\u7531\u7528\u6237\u672C\u4EBA\u5B8C\u6210\u7684\u52A8\u4F5C\uFF0C\u624D\u505C\u4E0B\u6765\u5728\u56DE\u590D\u4E2D\u8BF4\u660E\u6240\u9700\u6761\u4EF6\uFF0C\u4E14\u4E0D\u5F97\u501F\u673A\u6539\u7528\u63D0\u95EE\u7ED5\u8FC7\u3002
+7. \u4EFB\u52A1\u5B8C\u6210\u540E\u76F4\u63A5\u7ED9\u51FA\u7ED3\u8BBA\u5E76\u7ED3\u675F\uFF1A\u8BF4\u660E\u6539\u4E86\u4EC0\u4E48\u3001\u9884\u671F\u8868\u73B0\u662F\u4EC0\u4E48\uFF0C\u56DE\u590D\u7684\u6700\u540E\u4E00\u6BB5\u4E0D\u5F97\u5305\u542B\u9700\u8981\u7528\u6237\u56DE\u7B54\u7684\u5185\u5BB9\u3002\u6CA1\u6709\u6267\u884C\u6216\u6CA1\u6709\u901A\u8FC7\u7684\u6536\u5C3E\u52A8\u4F5C\uFF08\u4F8B\u5982\u63D0\u4EA4\u5931\u8D25\u3001\u6784\u5EFA\u672A\u901A\u8FC7\u3001\u4EA7\u7269\u672A\u540C\u6B65\uFF09\u5FC5\u987B\u5217\u4E3A\u672A\u5B8C\u6210\u9879\u5E76\u5199\u6E05\u539F\u56E0\uFF0C\u4E0D\u5F97\u8868\u8FF0\u4E3A\u300C\u6309\u89C4\u5219\u672A\u505A\u300D\uFF1B\u81EA\u68C0\u6CA1\u8DD1\u901A\u3001\u73AF\u5883\u4E0D\u5177\u5907\u800C\u6CA1\u9A8C\u8BC1\u7684\u90E8\u5206\u5FC5\u987B\u6807\u6CE8\u300C\u672A\u9A8C\u8BC1\u300D\uFF0C\u4E0D\u5F97\u5199\u6210\u5DF2\u901A\u8FC7\u3002`;
 function textForAssembly2(context) {
-  const sessionId = readAgentSessionId(context.agent);
-  if (sessionId === void 0) return "";
-  return isAutoRunEnabled(sessionId) ? AUTO_RUN_PROMPT : "";
+  return isAutoRunActiveFor(context.agent) ? AUTO_RUN_PROMPT : "";
 }
 function installAutoRunPrompt(ctx) {
   const prompt = ctx.systemPrompt;
@@ -4471,6 +4529,7 @@ async function pruneIfDue(isDisposed) {
   ]);
   if (isDisposed()) return;
   const removed = pruneAutoRunSettings(sessionIds, workspaceIds);
+  resetAutoRunInheritance();
   if (removed.sessions > 0 || removed.workspaces > 0) {
     console.log(
       `[auto-run] \u5DF2\u6E05\u7406\u5931\u6548\u8BB0\u5F55\uFF1A\u4F1A\u8BDD ${removed.sessions} \u6761\uFF0C\u5DE5\u4F5C\u7A7A\u95F4 ${removed.workspaces} \u6761`
@@ -4494,6 +4553,11 @@ function installAutoRunPrune() {
 
 // src/features/auto-run/host/routes.ts
 var ROUTE_PATH9 = "/dsh-all-in-one/auto-run";
+function writeSessionSwitch(sessionId, enabled, workspaceId) {
+  const next = setAutoRunEnabled(sessionId, enabled, workspaceId);
+  resetAutoRunInheritance();
+  return next;
+}
 var MAX_BODY_BYTES7 = 4 * 1024;
 var MAX_ID_LENGTH = 200;
 function readId(value) {
@@ -4551,6 +4615,7 @@ function installAutoRunRoutes(webServer) {
         const defaultMode = parseDefaultModePatch(body.value);
         if (defaultMode !== void 0) {
           setAutoRunDefaultMode(defaultMode);
+          resetAutoRunInheritance();
           sendJson(response, 200, summarizeAutoRunSettings(readAutoRunSettings()));
           return;
         }
@@ -4561,7 +4626,7 @@ function installAutoRunRoutes(webServer) {
         }
         sendJson(response, 200, {
           sessionId: patch.sessionId,
-          enabled: setAutoRunEnabled(patch.sessionId, patch.enabled, patch.workspaceId),
+          enabled: writeSessionSwitch(patch.sessionId, patch.enabled, patch.workspaceId),
           explicit: true
         });
       } catch (error) {
@@ -4576,7 +4641,7 @@ function installAutoRunRoutes(webServer) {
 
 // src/features/auto-run/host/tool-guard.ts
 var ASK_USER_QUESTION_TOOL = "ask_user_question";
-var DENY_REASON = "\u81EA\u52A8\u6A21\u5F0F\u5DF2\u5F00\u542F\uFF1A\u672C\u4F1A\u8BDD\u4E0D\u5141\u8BB8\u5411\u7528\u6237\u63D0\u95EE\uFF0C\u8BE5\u5DE5\u5177\u5DF2\u88AB\u7981\u7528\u3002\u8BF7\u6839\u636E\u73B0\u6709\u4FE1\u606F\u81EA\u884C\u5224\u65AD\u5E76\u7EE7\u7EED\u6267\u884C\uFF1B\u9700\u8981\u53D6\u820D\u65F6\u6309\u300C\u7528\u6237\u6307\u4EE4\u4F18\u5148\u3001\u5176\u6B21\u9879\u76EE\u7EA6\u5B9A\u3001\u6700\u540E\u6700\u5C0F\u53EF\u9006\u505A\u6CD5\u300D\u5B9A\u593A\uFF0C\u4E0D\u8981\u91CD\u8BD5 ask_user_question\u3002";
+var DENY_REASON = "\u81EA\u52A8\u6A21\u5F0F\u5DF2\u5F00\u542F\uFF1A\u672C\u4F1A\u8BDD\u4E0D\u5141\u8BB8\u5411\u7528\u6237\u63D0\u95EE\uFF0C\u8BE5\u5DE5\u5177\u5DF2\u88AB\u7981\u7528\u3002\u8BF7\u6839\u636E\u73B0\u6709\u4FE1\u606F\u81EA\u884C\u5224\u65AD\u5E76\u7EE7\u7EED\u6267\u884C\uFF1B\u9700\u8981\u53D6\u820D\u65F6\u6309\u300C\u7528\u6237\u6307\u4EE4\u4F18\u5148\u3001\u5176\u6B21\u5168\u5C40\u89C4\u5219\u4E0E\u9879\u76EE\u7EA6\u5B9A\u3001\u6700\u540E\u6700\u7B26\u5408\u4EFB\u52A1\u5B8C\u6210\u6807\u51C6\u7684\u505A\u6CD5\u300D\u5B9A\u593A\uFF0C\u4E0D\u8981\u91CD\u8BD5 ask_user_question\u3002";
 function asksForApproval(args) {
   if (typeof args !== "object" || args === null) return false;
   const questions = args.questions;
@@ -4587,8 +4652,7 @@ function installAutoRunToolGuard(ctx) {
   ctx.effect(
     () => ctx.on("tools/pre-execute", async (exec, next) => {
       if (exec.name !== ASK_USER_QUESTION_TOOL) return next();
-      const sessionId = readAgentSessionId(exec.agent);
-      if (sessionId === void 0 || !isAutoRunEnabled(sessionId)) return next();
+      if (!isAutoRunActiveFor(exec.agent)) return next();
       if (asksForApproval(exec.arguments)) return next();
       return { kind: "deny", reason: DENY_REASON };
     }),

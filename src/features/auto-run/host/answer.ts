@@ -11,7 +11,7 @@
  */
 import type { HostPluginContext, UserQuestionAnswerLike, UserQuestionRequestLike } from '../../../types/host'
 
-import { isAutoRunEnabled } from './settings'
+import { isAutoRunActiveFor } from './agent-session'
 
 /**
  * 没有选项时的自定答复。
@@ -89,10 +89,13 @@ function installForAgent(
   try {
     agentCtx.on('user-questions/request', async (request, next) => {
       // 开关按每次请求重新读取：用户在对话中途关掉自动模式后，下一次提问就应恢复阻塞
-      if (!isAutoRunEnabled(agent.session.id)) return next()
+      if (!isAutoRunActiveFor(agent)) return next()
 
       const answer = buildAutoAnswer(request)
       if (answer === undefined) return next()
+
+      // 记录代答：子 Agent 的提问被自动选掉时用户看不到过程，没有这条日志就无从审计
+      console.log(`[auto-run] 自动作答：会话 ${agent.session.id}，${answer.answers.length} 题`)
 
       return answer
     }, { prepend: true })

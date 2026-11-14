@@ -12,6 +12,7 @@ import { readdir, readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
 import { resolveDshHome } from '../../../common/dsh-home'
+import { resetAutoRunInheritance } from './agent-session'
 import { pruneAutoRunSettings, readAutoRunSettings } from './settings'
 
 /** 两次清理之间的间隔。 */
@@ -118,6 +119,8 @@ async function pruneIfDue(isDisposed: () => boolean): Promise<void> {
   if (isDisposed()) return
 
   const removed = pruneAutoRunSettings(sessionIds, workspaceIds)
+  // 记录被删掉后旧的继承判定立即作废：父会话可能刚被清掉，缓存里的子会话不应继续生效
+  resetAutoRunInheritance()
   if (removed.sessions > 0 || removed.workspaces > 0) {
     console.log(
       `[auto-run] 已清理失效记录：会话 ${removed.sessions} 条，工作空间 ${removed.workspaces} 条`,
