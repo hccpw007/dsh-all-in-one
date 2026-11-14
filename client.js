@@ -4328,7 +4328,7 @@ window.__ModuleLoader__.load({
           closeLabel: t("cancel"),
           title: t("dialogTitle"),
           description: t("dialogMessage"),
-          footer: /* @__PURE__ */ import_react18.default.createElement(import_react18.default.Fragment, null, /* @__PURE__ */ import_react18.default.createElement(Button, { variant: "outline", disabled: busy, onClick: close }, t("cancel")), /* @__PURE__ */ import_react18.default.createElement(
+          footer: /* @__PURE__ */ import_react18.default.createElement(import_react18.default.Fragment, null, /* @__PURE__ */ import_react18.default.createElement("div", { className: "flex w-full items-center justify-between" }, /* @__PURE__ */ import_react18.default.createElement(Button, { variant: "outline", disabled: busy, onClick: close }, t("cancel")), /* @__PURE__ */ import_react18.default.createElement("div", { className: "flex items-center gap-2" }, /* @__PURE__ */ import_react18.default.createElement(
             Button,
             {
               variant: "outline",
@@ -4345,7 +4345,7 @@ window.__ModuleLoader__.load({
               onClick: () => void run("delete")
             },
             pending3 === "delete" ? t("processing") : t("deleteAction")
-          ))
+          ))))
         },
         /* @__PURE__ */ import_react18.default.createElement("p", { className: "mt-3 text-[12px] leading-[18px] text-secondary" }, t("keepHint")),
         /* @__PURE__ */ import_react18.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("deleteHint")),
@@ -4458,27 +4458,27 @@ window.__ModuleLoader__.load({
         // 开关标题
         title: "\u6E05\u7A7A\u4F1A\u8BDD",
         // 开关用途说明：点明入口位置与两个可选结果
-        description: "\u8F93\u5165\u6846\u5DE6\u4FA7\u65B0\u589E\u6309\u94AE\uFF0C\u786E\u8BA4\u540E\u5728\u540C\u4E00\u5DE5\u4F5C\u533A\u6253\u5F00\u4E00\u6761\u7A7A\u767D\u5BF9\u8BDD\uFF0C\u53EF\u9009\u62E9\u662F\u5426\u5220\u6389\u539F\u5BF9\u8BDD\u3002",
+        description: "\u8F93\u5165\u6846\u5DE6\u4FA7\u65B0\u589E\u6309\u94AE\uFF0C\u786E\u8BA4\u540E\u5728\u540C\u4E00\u5DE5\u4F5C\u533A\u6253\u5F00\u4E00\u6761\u7A7A\u767D\u5BF9\u8BDD\uFF0C\u53EF\u9009\u62E9\u4FDD\u7559\u8FD8\u662F\u5220\u9664\u5F53\u524D\u4F1A\u8BDD\u3002",
         // 提示切换开关会刷新页面，避免用户丢失滚动位置与未保存的输入
         reloadHint: "\u5207\u6362\u540E\u4F1A\u5237\u65B0\u9875\u9762\u4EE5\u751F\u6548\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 输入框按钮的名称与悬停提示
-        action: "\u6E05\u7A7A\u4F1A\u8BDD",
+        action: "\u5F00\u542F\u65B0\u4F1A\u8BDD",
         // 当前对话正在执行任务时的提示：按钮悬停与弹窗内都会显示，点明保留不停、删除先停
-        runningHint: "\u5F53\u524D\u5BF9\u8BDD\u6B63\u5728\u6267\u884C\u4EFB\u52A1\uFF1A\u300C\u4FDD\u7559\u4F1A\u8BDD\u300D\u8BA9\u5B83\u7EE7\u7EED\u5728\u540E\u53F0\u8FD0\u884C\uFF0C\u300C\u5220\u9664\u4F1A\u8BDD\u300D\u4F1A\u5148\u505C\u6B62\u5B83\u3002",
+        runningHint: "\u5F53\u524D\u4F1A\u8BDD\u6B63\u5728\u6267\u884C\u4EFB\u52A1\uFF1A\u300C\u76F4\u63A5\u5F00\u542F\u300D\u8BA9\u5B83\u7EE7\u7EED\u5728\u540E\u53F0\u8FD0\u884C\uFF0C\u300C\u5220\u9664\u672C\u6B21\u4F1A\u8BDD\u300D\u4F1A\u5148\u505C\u6B62\u5B83\u3002",
         // 确认弹窗标题
-        dialogTitle: "\u65B0\u4F1A\u8BDD",
+        dialogTitle: "\u5F00\u542F\u65B0\u4F1A\u8BDD",
         // 确认弹窗说明：点明动作结果是换一条新对话
         dialogMessage: "\u5C06\u5728\u540C\u4E00\u5DE5\u4F5C\u533A\u6253\u5F00\u4E00\u6761\u65B0\u7684\u7A7A\u767D\u5BF9\u8BDD\u3002",
-        // 「保留会话」按钮：开新对话，原对话原样不动
-        keepAction: "\u4FDD\u7559\u4F1A\u8BDD",
-        // 「保留会话」的含义说明
-        keepHint: "\u539F\u5BF9\u8BDD\u4FDD\u6301\u4E0D\u53D8\uFF0C\u4ECD\u7559\u5728\u4F1A\u8BDD\u5217\u8868\u91CC\u3002",
-        // 「删除会话」按钮：开新对话，并删掉原对话
-        deleteAction: "\u5220\u9664\u4F1A\u8BDD",
-        // 「删除会话」的含义说明
-        deleteHint: "\u539F\u5BF9\u8BDD\u7684\u672C\u5730\u8BB0\u5F55\u4F1A\u88AB\u6C38\u4E45\u5220\u9664\uFF0C\u65E0\u6CD5\u6062\u590D\u3002",
+        // 「直接开启」按钮：开新对话，当前会话原样不动
+        keepAction: "\u76F4\u63A5\u5F00\u542F",
+        // 「直接开启」的含义说明
+        keepHint: "\u5F53\u524D\u4F1A\u8BDD\u4FDD\u6301\u4E0D\u53D8\uFF0C\u4ECD\u7559\u5728\u4F1A\u8BDD\u5217\u8868\u91CC\u3002",
+        // 「删除本次会话」按钮：开新对话，并删掉当前会话
+        deleteAction: "\u5220\u9664\u672C\u6B21\u4F1A\u8BDD",
+        // 「删除本次会话」的含义说明
+        deleteHint: "\u5F53\u524D\u4F1A\u8BDD\u53CA\u5176\u672C\u5730\u8BB0\u5F55\u4F1A\u88AB\u6C38\u4E45\u5220\u9664\uFF0C\u65E0\u6CD5\u6062\u590D\u3002",
         // 弹窗取消按钮
         cancel: "\u53D6\u6D88",
         // 任一动作执行中，按钮显示的进行态文字
@@ -4492,28 +4492,28 @@ window.__ModuleLoader__.load({
         // Switch title
         title: "Clear session",
         // Switch description: entry position and the two possible outcomes
-        description: "Adds a button left of the composer. Confirming opens a blank conversation in the same workspace, with the option to delete the previous one.",
+        description: "Adds a button left of the composer. Confirming opens a blank conversation in the same workspace, keeping or deleting the current one.",
         // Switching reloads the page so the composer button appears or disappears
         reloadHint: "Switching reloads the page to take effect.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check the browser storage permission.",
         // Composer button label and hover tooltip
-        action: "Clear session",
+        action: "Start a new session",
         // Shown both as the button tooltip and inside the dialog while the conversation works:
-        // keep-session leaves the turn running, delete-session stops it first
-        runningHint: "This conversation is still working: keep-session leaves it running in the background, delete-session stops it first.",
+        // start-now leaves the turn running, delete-this-session stops it first
+        runningHint: 'This session is still working: "Start now" leaves it running in the background, "Delete this session" stops it first.',
         // Dialog title
-        dialogTitle: "New session",
+        dialogTitle: "Start a new session",
         // Dialog message: the action opens another conversation
         dialogMessage: "A new blank conversation opens in the same workspace.",
-        // Keep button: open a new conversation without touching the current one
-        keepAction: "Keep session",
-        // What keeping means
-        keepHint: "The current conversation stays as it is and remains in the session list.",
-        // Delete button: open a new conversation and remove the current one
-        deleteAction: "Delete session",
-        // What deleting means
-        deleteHint: "The local records of the current conversation are deleted permanently.",
+        // Start button: open a new conversation without touching the current one
+        keepAction: "Start now",
+        // What starting without deleting means
+        keepHint: "The current session stays unchanged and remains in the session list.",
+        // Delete button: open a new conversation and remove the current session
+        deleteAction: "Delete this session",
+        // What deleting the current session means
+        deleteHint: "The current session and its local records are deleted permanently.",
         // Dialog cancel button
         cancel: "Cancel",
         // Text shown on the pressed button while the action runs

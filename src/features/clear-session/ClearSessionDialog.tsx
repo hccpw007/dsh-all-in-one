@@ -3,9 +3,9 @@
  *
  * 输入框旁的按钮只发起请求，弹窗挂在宿主的 `shell.overlay` 插槽里渲染。
  * 宿主没有「清空同一条会话历史」的能力，所以两个动作都是先开一条新对话，
- * 区别只在于对原对话的处理：保留（原对话原样留在列表里）或删除（连同本地记录一起删掉）。
- * 原对话还在执行任务时不必让用户先手动停止：保留动作完全不碰它，让它继续跑完；
- * 删除动作会自动先中断那一轮，再清理记录。
+ * 区别只在于对当前会话的处理：直接开启（当前会话原样留在列表里）或删除（连同本地记录一起删掉）。
+ * 当前会话还在执行任务时不必让用户先手动停止：直接开启完全不碰它，让它继续跑完；
+ * 删除本次会话会自动先中断那一轮，再清理记录。
  */
 import { Modal } from '@deepseek-ai/dsh-client-ui-primitives'
 import React, { useEffect, useState } from 'react'
@@ -96,35 +96,44 @@ export function ClearSessionDialog({ t, useTarget, clear, settle }: ClearSession
       description={t('dialogMessage')}
       footer={
         <>
-          {/* 取消：关闭弹窗，不做任何改动 */}
-          <Button variant="outline" disabled={busy} onClick={close}>
-            {t('cancel')}
-          </Button>
-          {/* 保留会话：开新对话，原对话原样不动；作为默认焦点，回车不会误删 */}
-          <Button
-            variant="outline"
-            data-modal-autofocus=""
-            disabled={busy}
-            onClick={() => void run('keep')}
-          >
-            {pending === 'keep' ? t('processing') : t('keepAction')}
-          </Button>
-          {/* 删除会话：开新对话，并删除原对话的本地记录 */}
-          <Button
-            variant="danger"
-            disabled={busy}
-            onClick={() => void run('delete')}
-          >
-            {pending === 'delete' ? t('processing') : t('deleteAction')}
-          </Button>
+          {/*
+            footer 内部是宿主的一行按钮容器（右对齐），这里撑满整行再分两端：
+            取消留在左下角，两个真正执行的动作收在右下角，避免误点
+          */}
+          <div className="flex w-full items-center justify-between">
+            {/* 取消：关闭弹窗，不做任何改动 */}
+            <Button variant="outline" disabled={busy} onClick={close}>
+              {t('cancel')}
+            </Button>
+            {/* 右下角：开启新会话的两个动作 */}
+            <div className="flex items-center gap-2">
+              {/* 直接开启：开新对话，当前会话原样不动；作为默认焦点，回车不会误删 */}
+              <Button
+                variant="outline"
+                data-modal-autofocus=""
+                disabled={busy}
+                onClick={() => void run('keep')}
+              >
+                {pending === 'keep' ? t('processing') : t('keepAction')}
+              </Button>
+              {/* 删除本次会话：开新对话，并删除当前会话的本地记录 */}
+              <Button
+                variant="danger"
+                disabled={busy}
+                onClick={() => void run('delete')}
+              >
+                {pending === 'delete' ? t('processing') : t('deleteAction')}
+              </Button>
+            </div>
+          </div>
         </>
       }
     >
-      {/* 两个动作的结果差异：保留不动原对话，删除则不可恢复 */}
+      {/* 两个动作的结果差异：直接开启不动当前会话，删除则不可恢复 */}
       <p className="mt-3 text-[12px] leading-[18px] text-secondary">{t('keepHint')}</p>
       <p className="mt-1 text-[12px] leading-[18px] text-secondary">{t('deleteHint')}</p>
 
-      {/* 当前对话仍在执行任务：说明保留不影响它，只有删除会先中断那一轮 */}
+      {/* 当前会话仍在执行任务：说明直接开启不影响它，只有删除会先中断那一轮 */}
       {target.running ? (
         <p className="mt-2 text-[12px] leading-[18px] text-warn" role="alert">
           {t('runningHint')}
