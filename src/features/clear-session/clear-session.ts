@@ -4,17 +4,26 @@
  * 宿主没有「把一条会话的历史清零后继续用」的能力，会话日志是只追加的，
  * 因此清空等于换一条新对话：先准备一条空白会话并切过去，
  * 再按用户所选动作决定原对话的去向（保留不动，或删除本地记录）。
+ *
+ * 若原对话还在执行任务，先中断这一轮再继续：换对话不会终止旧轮次，
+ * 留着它会让旧对话在后台继续跑，删除时还会撞上仍被写句柄持有的记录。
  */
 import type { SessionsApi, UiWorkspaceApi } from '../../types/plugin'
-import { requestDeleteSession } from './api'
+import { requestCancelSession, requestDeleteSession } from './api'
 import type { ClearSessionAction, ClearSessionTarget } from './types'
 
-/** 清空执行所需的宿主客户端服务。 */
-export interface ClearSessionDeps {
+/** 读取当前对话所需的最小依赖。 */
+export interface ClearSessionLookup {
   /** 会话列表服务：读取当前对话、摘掉已删除的行。 */
   sessions: SessionsApi
   /** 工作区服务：读取归属、准备空白会话并切换主视图；不可用时退化为按目录新建。 */
   uiWorkspace: UiWorkspaceApi | undefined
+}
+
+/** 清空执行所需的宿主客户端服务。 */
+export interface ClearSessionDeps extends ClearSessionLookup {
+  /** 任务没能在超时内停下时的提示，由调用方按当前语言提供。 */
+  stopTimeoutMessage: string
 }
 
 /** 等待主视图释放旧对话的上限；宿主的会话释放是一次本地快照更新，通常几十毫秒内完成。 */
@@ -23,12 +32,18 @@ const DETACH_TIMEOUT_MS = 1500
 /** 轮询间隔；用短间隔换取切换后立即继续，不必固定等待一整段超时时间。 */
 const DETACH_POLL_MS = 50
 
+/** 等待任务真正停下的上限；中断通常在一两个事件循环内生效，8 秒已覆盖收尾。 */
+const STOP_TIMEOUT_MS = 8000
+
+/** 等待任务停下的轮询间隔；停止是异步生效的，需要短间隔反复确认状态。 */
+const STOP_POLL_MS = 100
+
 /**
  * 找到用户正在浏览的那条对话。
  * @param deps 宿主客户端服务
  * @returns 清空目标；没有正在浏览的对话时返回 undefined
  */
-export function findCurrentSession(deps: ClearSessionDeps): ClearSessionTarget | undefined {
+export function findCurrentSession(deps: ClearSessionLookup): ClearSessionTarget | undefined {
   const state = deps.sessions.list.getSnapshot()
   // 主视图持有的会话就是当前对话；同一个 id 只可能在主视图里出现一次
   const sessionId = state.ids.find((id) => (state.byId[id]?.retainedBy?.mainView ?? 0) > 0)
@@ -112,6 +127,53 @@ async function waitDetached(sessions: SessionsApi, sessionId: string): Promise<v
 }
 
 /**
+ * 等待原对话的轮次真正结束。
+ *
+ * 取消只是把中断交给 Agent，收尾还要走完当前步骤；此时就删除记录或无视状态切走，
+ * 会撞上仍在写的会话文件，因此必须等到运行标记落下。
+ * @param sessions 会话列表服务
+ * @param sessionId 原对话标识
+ * @param timeoutMessage 超时提示
+ */
+async function waitStopped(
+  sessions: SessionsApi,
+  sessionId: string,
+  timeoutMessage: string,
+): Promise<void> {
+  const deadline = Date.now() + STOP_TIMEOUT_MS
+
+  while (Date.now() < deadline) {
+    const summary = sessions.list.getSnapshot().byId[sessionId]
+    // 快照里已经没有这一行，或运行标记已经落下，都算停止完成
+    if (summary === undefined || summary.running !== true) return
+
+    await new Promise<void>((resolve) => {
+      window.setTimeout(resolve, STOP_POLL_MS)
+    })
+  }
+
+  throw new Error(timeoutMessage)
+}
+
+/**
+ * 中断原对话正在执行的轮次。
+ *
+ * 停止请求失败不代表任务还在跑（例如宿主侧已没有这条会话的 Agent），
+ * 因此无论请求结果如何都以运行标记为准，只有确实没停下才报错。
+ * @param deps 宿主客户端服务
+ * @param target 要清空的会话
+ */
+async function stopRunningTurn(deps: ClearSessionDeps, target: ClearSessionTarget): Promise<void> {
+  try {
+    await requestCancelSession(target.sessionId)
+  } catch (error) {
+    console.warn('[clear-session] 请求停止任务失败，改为等待实际停止:', target.sessionId, error)
+  }
+
+  await waitStopped(deps.sessions, target.sessionId, deps.stopTimeoutMessage)
+}
+
+/**
  * 开一条新对话；删除动作还要清掉原对话的本地记录。
  * @param deps 宿主客户端服务
  * @param target 当前对话
@@ -123,7 +185,8 @@ export async function clearSession(
   target: ClearSessionTarget,
   action: ClearSessionAction,
 ): Promise<string | undefined> {
-  if (target.running) throw new Error('当前对话正在运行，请先停止')
+  // 运行中不能直接换走：旧轮次会在后台继续跑，删除还会撞上仍在写的记录
+  if (target.running) await stopRunningTurn(deps, target)
 
   const nextId = await prepareBlank(deps, target)
 

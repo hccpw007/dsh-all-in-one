@@ -13,8 +13,8 @@ export const clearSessionLocales: FeatureLocales = {
     saveFailed: '保存开关状态失败，请检查浏览器存储权限。',
     // 输入框按钮的名称与悬停提示
     action: '清空会话',
-    // 当前对话正在运行、按钮不可用时的悬停提示
-    runningHint: '当前对话正在运行，请先停止',
+    // 当前对话正在执行任务时的提示：按钮悬停与弹窗内都会显示
+    runningHint: '当前对话正在执行任务，操作会先停止它再继续。',
     // 确认弹窗标题
     dialogTitle: '新会话',
     // 确认弹窗说明：点明动作结果是换一条新对话
@@ -31,6 +31,8 @@ export const clearSessionLocales: FeatureLocales = {
     cancel: '取消',
     // 任一动作执行中，按钮显示的进行态文字
     processing: '处理中…',
+    // 停止任务超时（等不到运行标记落下）时的提示
+    stopTimeout: '任务未能及时停止，请稍后重试。',
     // 操作失败的提示前缀，后面拼接宿主返回的原因
     failed: '操作失败',
   },
@@ -46,8 +48,8 @@ export const clearSessionLocales: FeatureLocales = {
     saveFailed: 'Could not save the switch state. Check the browser storage permission.',
     // Composer button label and hover tooltip
     action: 'Clear session',
-    // Tooltip while the current conversation is running
-    runningHint: 'This conversation is running. Stop it first.',
+    // Shown both as the button tooltip and inside the dialog while the conversation works
+    runningHint: 'This conversation is still working. It is stopped first, then the action continues.',
     // Dialog title
     dialogTitle: 'New session',
     // Dialog message: the action opens another conversation
@@ -64,6 +66,8 @@ export const clearSessionLocales: FeatureLocales = {
     cancel: 'Cancel',
     // Text shown on the pressed button while the action runs
     processing: 'Working…',
+    // Shown when the running turn does not settle within the stop timeout
+    stopTimeout: 'The task did not stop in time. Please try again.',
     // Failure prefix followed by the reason returned by the host
     failed: 'Failed',
   },

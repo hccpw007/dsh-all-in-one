@@ -122,6 +122,8 @@ export interface HostPluginContext {
   tokenMeter?: TokenMeterApi
   /** 会话投影服务；声明依赖后可用，用于读取上下文占用。 */
   sessionProjections?: SessionProjectionsApi
+  /** 会话控制器；声明依赖后可用，用于停止正在执行的轮次。 */
+  sessionController?: SessionControllerApi
   /** 启动本进程的 profile；缺失时相关功能回退为扫描全部 profile。 */
   profileContext?: ProfileContext
 }
@@ -331,6 +333,16 @@ export interface WebServerRoute {
 /** Web 服务器服务：注册具名路由，返回注销函数。 */
 export interface WebServerApi {
   register(route: WebServerRoute): () => void
+}
+
+/** 会话控制器；本插件只用到「停止当前轮次」这一个入口。 */
+export interface SessionControllerApi {
+  /**
+   * 停止一条会话正在执行的轮次，宿主保留待发队列，不丢消息。
+   * @param request 要停止的会话
+   * @returns `accepted` 表示取消已交给存活的 Agent，不保证轮次已立即结束
+   */
+  cancel(request: { sessionId: string }): { accepted: true }
 }
 
 /** 提示词文本：常量，或按本次装配的上下文计算（用于按会话注入不同内容）。 */

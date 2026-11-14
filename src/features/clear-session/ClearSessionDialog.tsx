@@ -4,6 +4,7 @@
  * 输入框旁的按钮只发起请求，弹窗挂在宿主的 `shell.overlay` 插槽里渲染。
  * 宿主没有「清空同一条会话历史」的能力，所以两个动作都是先开一条新对话，
  * 区别只在于对原对话的处理：保留（原对话原样留在列表里）或删除（连同本地记录一起删掉）。
+ * 原对话还在执行任务时不必让用户先手动停止：动作会先中断那一轮再继续。
  */
 import { Modal } from '@deepseek-ai/dsh-client-ui-primitives'
 import React, { useEffect, useState } from 'react'
@@ -67,7 +68,7 @@ export function ClearSessionDialog({ t, useTarget, clear, settle }: ClearSession
   }
 
   const run = async (action: ClearSessionAction) => {
-    if (busy || target.running) return
+    if (busy) return
 
     setPending(action)
     setError(null)
@@ -102,7 +103,7 @@ export function ClearSessionDialog({ t, useTarget, clear, settle }: ClearSession
           <Button
             variant="outline"
             data-modal-autofocus=""
-            disabled={busy || target.running}
+            disabled={busy}
             onClick={() => void run('keep')}
           >
             {pending === 'keep' ? t('processing') : t('keepAction')}
@@ -110,7 +111,7 @@ export function ClearSessionDialog({ t, useTarget, clear, settle }: ClearSession
           {/* 删除会话：开新对话，并删除原对话的本地记录 */}
           <Button
             variant="danger"
-            disabled={busy || target.running}
+            disabled={busy}
             onClick={() => void run('delete')}
           >
             {pending === 'delete' ? t('processing') : t('deleteAction')}
@@ -122,7 +123,7 @@ export function ClearSessionDialog({ t, useTarget, clear, settle }: ClearSession
       <p className="mt-3 text-[12px] leading-[18px] text-secondary">{t('keepHint')}</p>
       <p className="mt-1 text-[12px] leading-[18px] text-secondary">{t('deleteHint')}</p>
 
-      {/* 当前对话仍在执行任务时两个动作都不允许，提示用户先停止 */}
+      {/* 当前对话仍在执行任务：提示两个动作都会先中断那一轮，不必手动停止 */}
       {target.running ? (
         <p className="mt-2 text-[12px] leading-[18px] text-warn" role="alert">
           {t('runningHint')}

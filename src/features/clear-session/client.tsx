@@ -45,7 +45,7 @@ export function apply(ctx: PluginContext, t: Translate): void {
 
     /** 执行清空；每次调用都重新读 uiWorkspace，避免把安装期的空值缓存下来。 */
     const runClear = async (target: ClearSessionTarget, action: ClearSessionAction): Promise<unknown> => (
-      clearSession({ sessions, uiWorkspace }, target, action)
+      clearSession({ sessions, uiWorkspace, stopTimeoutMessage: t('stopTimeout') }, target, action)
     )
 
     ctx.slots.inject(OVERLAY_SLOT, () =>
