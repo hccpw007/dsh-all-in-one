@@ -5,8 +5,8 @@
  * 因此清空等于换一条新对话：先准备一条空白会话并切过去，
  * 再按用户所选动作决定原对话的去向（保留不动，或删除本地记录）。
  *
- * 若原对话还在执行任务，先中断这一轮再继续：换对话不会终止旧轮次，
- * 留着它会让旧对话在后台继续跑，删除时还会撞上仍被写句柄持有的记录。
+ * 两个动作对「原对话正在执行任务」的处理不同：保留不动原对话，它可以在后台
+ * 继续跑完；删除则必须先中断那一轮，否则会撞上仍被写句柄持有的记录。
  */
 import type { SessionsApi, UiWorkspaceApi } from '../../types/plugin'
 import { requestCancelSession, requestDeleteSession } from './api'
@@ -185,8 +185,8 @@ export async function clearSession(
   target: ClearSessionTarget,
   action: ClearSessionAction,
 ): Promise<string | undefined> {
-  // 运行中不能直接换走：旧轮次会在后台继续跑，删除还会撞上仍在写的记录
-  if (target.running) await stopRunningTurn(deps, target)
+  // 只有删除需要先中断：保留动作不碰原对话，让它在后台继续跑完即可
+  if (action === 'delete' && target.running) await stopRunningTurn(deps, target)
 
   const nextId = await prepareBlank(deps, target)
 

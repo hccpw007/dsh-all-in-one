@@ -13,8 +13,8 @@ export const clearSessionLocales: FeatureLocales = {
     saveFailed: '保存开关状态失败，请检查浏览器存储权限。',
     // 输入框按钮的名称与悬停提示
     action: '清空会话',
-    // 当前对话正在执行任务时的提示：按钮悬停与弹窗内都会显示
-    runningHint: '当前对话正在执行任务，操作会先停止它再继续。',
+    // 当前对话正在执行任务时的提示：按钮悬停与弹窗内都会显示，点明保留不停、删除先停
+    runningHint: '当前对话正在执行任务：「保留会话」让它继续在后台运行，「删除会话」会先停止它。',
     // 确认弹窗标题
     dialogTitle: '新会话',
     // 确认弹窗说明：点明动作结果是换一条新对话
@@ -48,8 +48,9 @@ export const clearSessionLocales: FeatureLocales = {
     saveFailed: 'Could not save the switch state. Check the browser storage permission.',
     // Composer button label and hover tooltip
     action: 'Clear session',
-    // Shown both as the button tooltip and inside the dialog while the conversation works
-    runningHint: 'This conversation is still working. It is stopped first, then the action continues.',
+    // Shown both as the button tooltip and inside the dialog while the conversation works:
+    // keep-session leaves the turn running, delete-session stops it first
+    runningHint: 'This conversation is still working: keep-session leaves it running in the background, delete-session stops it first.',
     // Dialog title
     dialogTitle: 'New session',
     // Dialog message: the action opens another conversation

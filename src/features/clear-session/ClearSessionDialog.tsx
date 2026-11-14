@@ -4,7 +4,8 @@
  * 输入框旁的按钮只发起请求，弹窗挂在宿主的 `shell.overlay` 插槽里渲染。
  * 宿主没有「清空同一条会话历史」的能力，所以两个动作都是先开一条新对话，
  * 区别只在于对原对话的处理：保留（原对话原样留在列表里）或删除（连同本地记录一起删掉）。
- * 原对话还在执行任务时不必让用户先手动停止：动作会先中断那一轮再继续。
+ * 原对话还在执行任务时不必让用户先手动停止：保留动作完全不碰它，让它继续跑完；
+ * 删除动作会自动先中断那一轮，再清理记录。
  */
 import { Modal } from '@deepseek-ai/dsh-client-ui-primitives'
 import React, { useEffect, useState } from 'react'
@@ -123,7 +124,7 @@ export function ClearSessionDialog({ t, useTarget, clear, settle }: ClearSession
       <p className="mt-3 text-[12px] leading-[18px] text-secondary">{t('keepHint')}</p>
       <p className="mt-1 text-[12px] leading-[18px] text-secondary">{t('deleteHint')}</p>
 
-      {/* 当前对话仍在执行任务：提示两个动作都会先中断那一轮，不必手动停止 */}
+      {/* 当前对话仍在执行任务：说明保留不影响它，只有删除会先中断那一轮 */}
       {target.running ? (
         <p className="mt-2 text-[12px] leading-[18px] text-warn" role="alert">
           {t('runningHint')}
