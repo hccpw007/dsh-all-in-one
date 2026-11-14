@@ -6,20 +6,18 @@
  *
  * 集合的来源仍是宿主配置文件：开关切换后就地更新，页面刷新后重新拉取。
  */
-import { useSyncExternalStore } from 'react'
-
 import { loadEnabledSessions } from './api'
 
 /** 已开启全自动的会话标识。 */
 const enabledSessions = new Set<string>()
 
-/** 订阅者：每个会话行组件通过 `useAutoRunEnabled` 订阅同一份集合。 */
+/** 订阅者：标识装饰器在集合变化后重新扫描列表。 */
 const listeners = new Set<() => void>()
 
 /**
  * 首次拉取是否已经发出。
  *
- * 只需要一次；失败后清回 false，让下一次挂载能重试，否则一次网络抖动会让整页
+ * 只需要一次；失败后清回 false，让下一次调用能重试，否则一次网络抖动会让整页
  * 直到刷新前都不显示标识。
  */
 let loadStarted = false
@@ -56,7 +54,7 @@ export function ensureEnabledSessionsLoaded(): void {
       notify()
     })
     .catch((error: unknown) => {
-      // 读取失败只记日志：标识缺失不影响对话本身，下次挂载再试
+      // 读取失败只记日志：标识缺失不影响对话本身，下次调用再试
       console.error('[auto-run] 读取全自动会话列表失败:', error)
       loadStarted = false
     })
@@ -75,13 +73,10 @@ export function setSessionEnabled(sessionId: string, enabled: boolean): void {
 }
 
 /**
- * 订阅某个会话是否处于全自动。
- * @param sessionId 会话标识；会话尚未创建时为 undefined
- * @returns 该会话是否应展示标识
+ * 读取某个会话是否处于全自动。
+ * @param sessionId 会话标识；缺省时返回 false
+ * @returns 是否应展示标识
  */
-export function useAutoRunEnabled(sessionId: string | undefined): boolean {
-  return useSyncExternalStore(
-    subscribe,
-    () => sessionId !== undefined && enabledSessions.has(sessionId),
-  )
+export function isEnabled(sessionId: string): boolean {
+  return enabledSessions.has(sessionId)
 }

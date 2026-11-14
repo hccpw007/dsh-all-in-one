@@ -1,9 +1,9 @@
 /**
  * 「全自动执行」的客户端扩展。
  *
- * 两个挂载点：输入框右侧的开关（`conversation.input.right`），以及侧边栏会话行
- * 标题前的闪电标识（`sidebar.session.row.leading`）。开关按会话读写宿主路由，
- * 标识只读共享集合，未开启的会话不渲染任何内容。
+ * 两个挂载点：输入框右侧的开关（`conversation.input.right` 插槽），以及侧边栏
+ * 会话标题前的闪电标识（宿主没有对应插槽，由 DOM 装饰器插在标题前，避免顶掉
+ * 状态点）。开关按会话读写宿主路由，标识只读共享集合，未开启的会话不渲染。
  *
  * 设置页的开关决定是否安装这两处入口：关闭时都不注册，页面保持宿主原样。
  */
@@ -11,14 +11,11 @@ import React from 'react'
 
 import type { PluginContext, Translate } from '../../types/plugin'
 import { AutoRunToggle, type AutoRunToggleProps } from './AutoRunToggle'
-import { SessionAutoRunMark } from './SessionAutoRunMark'
+import { startSessionMarkDecorator } from './session-mark'
 import { readAutoRunButtonEnabled } from './storage'
 
 /** 输入框右侧控件行的插槽名。 */
 const INPUT_RIGHT_SLOT = 'conversation.input.right'
-
-/** 侧边栏会话行的前置插槽名。 */
-const SIDEBAR_ROW_SLOT = 'sidebar.session.row.leading'
 
 /**
  * 安装输入框右侧的全自动开关与侧边栏标识。
@@ -45,18 +42,6 @@ export function apply(ctx: PluginContext, t: Translate): void {
     ),
   )
 
-  // 会话行标识与会话同生命周期：宿主按行渲染该插槽，未开启全自动的行自行返回 null
-  ctx.slots.inject(SIDEBAR_ROW_SLOT, () =>
-    ctx.slots.register(
-      {
-        name: SIDEBAR_ROW_SLOT,
-        id: 'auto-run-mark',
-        // 排在行内最前，紧挨会话标题
-        order: -100,
-      },
-      (props: Record<string, unknown>) => (
-        <SessionAutoRunMark {...(props as unknown as { sessionId?: string })} />
-      ),
-    ),
-  )
+  // 侧边栏标识：宿主没有「标题前」插槽，用装饰器插入，因此与状态点并存
+  ctx.effect(() => startSessionMarkDecorator(), 'auto-run: session mark')
 }
