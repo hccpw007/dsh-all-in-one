@@ -3,7 +3,8 @@
  *
  * 宿主把该按钮渲染在 `conversation.input.right` 插槽里，位置在模型选择器与
  * 「回退」之前的一排控件中。开关按会话生效：读取时带上 sessionId，点击后写宿主，
- * 因此每个对话各自记住自己的状态，新会话默认关闭。
+ * 因此每个对话各自记住自己的状态。会话还没有显式记录时，宿主按设置页选择的默认值
+ * 求值；求值为开启时这里会立即固化写入，让提示词与询问闸门同步生效。
  *
  * 这个按钮不在插件的 `.dsh-aio-root` 容器内，样式只依赖宿主主题令牌与
  * Tailwind 工具类，不套用设置页那套带根节点前缀的规则。
@@ -21,13 +22,15 @@ export interface AutoRunToggleProps {
   sessionId?: string
   /** 已绑定本 feature 前缀的翻译函数。 */
   t: Translate
+  /** 查询会话所属工作空间；服务不可用时缺省，默认值按未分组处理。 */
+  workspaceIdOf?: (sessionId: string) => string | undefined
 }
 
 /**
  * 渲染「全自动」开关。
- * @param props 当前会话标识与翻译函数
+ * @param props 当前会话标识、翻译函数与工作空间查询
  */
-export function AutoRunToggle({ sessionId, t }: AutoRunToggleProps) {
+export function AutoRunToggle({ sessionId, t, workspaceIdOf }: AutoRunToggleProps) {
   // null 表示还没从宿主读回状态：此时既不能显示开启也不能允许切换
   const [enabled, setEnabled] = useState<boolean | null>(null)
   // 请求进行中，避免连点写出交叉的状态
@@ -48,11 +51,29 @@ export function AutoRunToggle({ sessionId, t }: AutoRunToggleProps) {
     setEnabled(null)
     setFailure(null)
 
-    void loadAutoRunState(sessionId)
+    // 工作空间模式的默认值取决于会话归属；查不到归属时由宿主按未分组处理
+    const workspaceId = workspaceIdOf?.(sessionId)
+
+    void loadAutoRunState(sessionId, workspaceId)
       .then((state) => {
         if (!active) return
 
         setEnabled(state.enabled)
+
+        // 默认值求值为开启、但宿主没有显式记录：立即固化写入。
+        // 否则提示词段落与询问闸门查不到该会话，按钮看似打开、实际并未生效。
+        if (state.explicit || !state.enabled) return
+
+        void saveAutoRunState(sessionId, true, workspaceId)
+          .then((saved) => {
+            if (!active) return
+
+            setSessionEnabled(sessionId, saved.enabled)
+          })
+          .catch((error: unknown) => {
+            // 固化失败只记日志：界面仍按求值结果显示，用户再点一下开关即可写入
+            console.error('[auto-run] 固化默认开启状态失败:', error)
+          })
       })
       .catch((error: unknown) => {
         if (!active) return
@@ -64,7 +85,7 @@ export function AutoRunToggle({ sessionId, t }: AutoRunToggleProps) {
     return () => {
       active = false
     }
-  }, [sessionId])
+  }, [sessionId, workspaceIdOf])
 
   /** 悬停提示：优先说明失败原因，其次说明当前状态。 */
   const hint = (() => {
@@ -81,12 +102,13 @@ export function AutoRunToggle({ sessionId, t }: AutoRunToggleProps) {
 
     // 收窄后的会话标识：写入成功要同时更新侧边栏标识所在的共享集合
     const target = sessionId
+    const workspaceId = workspaceIdOf?.(target)
     const next = !enabled
     setEnabled(next)
     setPending(true)
     setFailure(null)
 
-    void saveAutoRunState(target, next)
+    void saveAutoRunState(target, next, workspaceId)
       .then((state) => {
         setEnabled(state.enabled)
         // 侧边栏会话行与本按钮共享同一份集合，切换后立即同步，不必刷新页面

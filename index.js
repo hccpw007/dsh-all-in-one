@@ -3929,40 +3929,104 @@ __export(host_exports9, {
 // src/features/auto-run/host/settings.ts
 import { join as join17 } from "node:path";
 var MAX_SESSIONS = 200;
-var DEFAULT_SETTINGS4 = { enabledSessions: [] };
+var MAX_WORKSPACES = 100;
+function createDefaultSettings() {
+  return { sessions: {}, workspaces: {}, defaultMode: "off", lastEnabled: false };
+}
 function autoRunSettingsFile() {
   return join17(resolveDshHome(), "all-in-one", "auto-run.json");
 }
-function normalizeSettings4(value) {
-  if (typeof value !== "object" || value === null) return { ...DEFAULT_SETTINGS4 };
-  const candidate = value.enabledSessions;
-  if (!Array.isArray(candidate)) return { ...DEFAULT_SETTINGS4 };
-  const sessions = [];
-  for (const item of candidate) {
+function readDefaultMode(value) {
+  if (value === "on" || value === "last" || value === "workspace") return value;
+  return "off";
+}
+function readBooleanMap(value, limit) {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return {};
+  const entries = Object.entries(value).filter((entry) => entry[0] !== "" && typeof entry[1] === "boolean").slice(-limit);
+  return Object.fromEntries(entries);
+}
+function migrateLegacySessions(value) {
+  if (!Array.isArray(value)) return {};
+  const sessions = {};
+  for (const item of value) {
     if (typeof item !== "string" || item === "") continue;
-    if (sessions.includes(item)) continue;
-    sessions.push(item);
+    sessions[item] = true;
   }
-  return { enabledSessions: sessions.slice(-MAX_SESSIONS) };
+  return sessions;
+}
+function normalizeSettings4(value) {
+  if (typeof value !== "object" || value === null) return createDefaultSettings();
+  const candidate = value;
+  const sessions = candidate.sessions === void 0 ? migrateLegacySessions(candidate.enabledSessions) : readBooleanMap(candidate.sessions, MAX_SESSIONS);
+  return {
+    sessions,
+    workspaces: readBooleanMap(candidate.workspaces, MAX_WORKSPACES),
+    defaultMode: readDefaultMode(candidate.defaultMode),
+    lastEnabled: candidate.lastEnabled === true
+  };
 }
 var store4 = createJsonSettingsStore({
   file: autoRunSettingsFile,
   normalize: normalizeSettings4,
-  defaults: () => ({ ...DEFAULT_SETTINGS4, enabledSessions: [] }),
+  defaults: createDefaultSettings,
   label: "[auto-run]"
 });
 function readAutoRunSettings() {
   return store4.read();
 }
-function isAutoRunEnabled(sessionId) {
-  return store4.read().enabledSessions.includes(sessionId);
+function summarizeAutoRunSettings(settings) {
+  const enabledSessions = [];
+  for (const [sessionId, enabled] of Object.entries(settings.sessions)) {
+    if (enabled) enabledSessions.push(sessionId);
+  }
+  return { defaultMode: settings.defaultMode, enabledSessions };
 }
-function setAutoRunEnabled(sessionId, enabled) {
+function defaultValue(settings, workspaceId) {
+  switch (settings.defaultMode) {
+    case "on":
+      return true;
+    case "last":
+      return settings.lastEnabled;
+    case "workspace":
+      return workspaceId !== void 0 && settings.workspaces[workspaceId] === true;
+    case "off":
+      return false;
+  }
+}
+function resolveAutoRunState(sessionId, workspaceId) {
+  const settings = store4.read();
+  const explicit = settings.sessions[sessionId];
+  if (explicit !== void 0) return { enabled: explicit, explicit: true };
+  return { enabled: defaultValue(settings, workspaceId), explicit: false };
+}
+function isAutoRunEnabled(sessionId) {
+  const settings = store4.read();
+  const explicit = settings.sessions[sessionId];
+  if (explicit !== void 0) return explicit;
+  return defaultValue(settings, void 0);
+}
+function setAutoRunEnabled(sessionId, enabled, workspaceId) {
   const current = store4.read();
-  const without = current.enabledSessions.filter((item) => item !== sessionId);
-  const next = enabled ? [...without, sessionId] : without;
-  store4.write({ enabledSessions: next.slice(-MAX_SESSIONS) });
+  const sessions = { ...current.sessions };
+  delete sessions[sessionId];
+  sessions[sessionId] = enabled;
+  const workspaces = { ...current.workspaces };
+  if (workspaceId !== void 0 && workspaceId !== "") {
+    delete workspaces[workspaceId];
+    workspaces[workspaceId] = enabled;
+  }
+  store4.write({
+    sessions: Object.fromEntries(Object.entries(sessions).slice(-MAX_SESSIONS)),
+    workspaces: Object.fromEntries(Object.entries(workspaces).slice(-MAX_WORKSPACES)),
+    defaultMode: current.defaultMode,
+    lastEnabled: enabled
+  });
   return enabled;
+}
+function setAutoRunDefaultMode(mode) {
+  const current = store4.read();
+  store4.write({ ...current, defaultMode: mode });
+  return mode;
 }
 
 // src/features/auto-run/host/answer.ts
@@ -4067,15 +4131,27 @@ function installAutoRunPrompt(ctx) {
 // src/features/auto-run/host/routes.ts
 var ROUTE_PATH8 = "/dsh-all-in-one/auto-run";
 var MAX_BODY_BYTES7 = 4 * 1024;
-var MAX_SESSION_ID_LENGTH = 200;
-function parsePatch(value) {
+var MAX_ID_LENGTH = 200;
+function readId(value) {
+  if (typeof value !== "string") return void 0;
+  const id10 = value.trim();
+  return id10 === "" || id10.length > MAX_ID_LENGTH ? void 0 : id10;
+}
+function parseSessionPatch(value) {
   if (typeof value !== "object" || value === null) return void 0;
   const candidate = value;
-  if (typeof candidate.sessionId !== "string") return void 0;
   if (typeof candidate.enabled !== "boolean") return void 0;
-  const sessionId = candidate.sessionId.trim();
-  if (sessionId === "" || sessionId.length > MAX_SESSION_ID_LENGTH) return void 0;
-  return { sessionId, enabled: candidate.enabled };
+  const sessionId = readId(candidate.sessionId);
+  if (sessionId === void 0) return void 0;
+  const workspaceId = candidate.workspaceId === void 0 ? void 0 : readId(candidate.workspaceId);
+  return { sessionId, enabled: candidate.enabled, workspaceId };
+}
+function parseDefaultModePatch(value) {
+  if (typeof value !== "object" || value === null) return void 0;
+  const mode = value.defaultMode;
+  if (mode === "on" || mode === "last" || mode === "workspace") return mode;
+  if (mode === "off") return "off";
+  return void 0;
 }
 function installAutoRunRoutes(webServer) {
   return webServer.register({
@@ -4089,12 +4165,13 @@ function installAutoRunRoutes(webServer) {
       try {
         const url = new URL(request.url ?? ROUTE_PATH8, "http://127.0.0.1");
         if (request.method === "GET") {
-          const sessionId = url.searchParams.get("sessionId");
-          if (sessionId === null || sessionId.trim() === "") {
-            sendJson(response, 200, readAutoRunSettings());
+          const sessionId = readId(url.searchParams.get("sessionId"));
+          if (sessionId === void 0) {
+            sendJson(response, 200, summarizeAutoRunSettings(readAutoRunSettings()));
             return;
           }
-          sendJson(response, 200, { enabled: isAutoRunEnabled(sessionId.trim()) });
+          const workspaceId = readId(url.searchParams.get("workspaceId"));
+          sendJson(response, 200, resolveAutoRunState(sessionId, workspaceId));
           return;
         }
         if (request.method !== "POST") {
@@ -4107,14 +4184,21 @@ function installAutoRunRoutes(webServer) {
           sendJsonBodyError(response, body, "\u8BF7\u6C42\u4F53\u4E0D\u662F\u5408\u6CD5 JSON");
           return;
         }
-        const patch = parsePatch(body.value);
+        const defaultMode = parseDefaultModePatch(body.value);
+        if (defaultMode !== void 0) {
+          setAutoRunDefaultMode(defaultMode);
+          sendJson(response, 200, summarizeAutoRunSettings(readAutoRunSettings()));
+          return;
+        }
+        const patch = parseSessionPatch(body.value);
         if (patch === void 0) {
-          sendJson(response, 400, { error: "\u9700\u8981 { sessionId, enabled }" });
+          sendJson(response, 400, { error: "\u9700\u8981 { sessionId, enabled } \u6216 { defaultMode }" });
           return;
         }
         sendJson(response, 200, {
           sessionId: patch.sessionId,
-          enabled: setAutoRunEnabled(patch.sessionId, patch.enabled)
+          enabled: setAutoRunEnabled(patch.sessionId, patch.enabled, patch.workspaceId),
+          explicit: true
         });
       } catch (error) {
         console.error("[auto-run] \u5904\u7406\u5F00\u5173\u8BF7\u6C42\u5931\u8D25:", error);

@@ -6,7 +6,7 @@
  *
  * 集合的来源仍是宿主配置文件：开关切换后就地更新，页面刷新后重新拉取。
  */
-import { loadEnabledSessions } from './api'
+import { loadAutoRunSettings } from './api'
 
 /** 已开启全自动的会话标识。 */
 const enabledSessions = new Set<string>()
@@ -47,10 +47,10 @@ export function ensureEnabledSessionsLoaded(): void {
   if (loadStarted) return
   loadStarted = true
 
-  void loadEnabledSessions()
-    .then((sessionIds) => {
+  void loadAutoRunSettings()
+    .then((settings) => {
       enabledSessions.clear()
-      for (const sessionId of sessionIds) enabledSessions.add(sessionId)
+      for (const sessionId of settings.enabledSessions) enabledSessions.add(sessionId)
       notify()
     })
     .catch((error: unknown) => {

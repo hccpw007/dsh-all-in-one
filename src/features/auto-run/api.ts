@@ -2,27 +2,33 @@
  * 「全自动执行」与宿主侧之间的 HTTP 客户端。
  *
  * 自动模式要在宿主侧生效（系统提示词段落与询问应答都在宿主进程里），
- * 浏览器端只通过插件注册的本地路由读写当前会话的开关。
+ * 浏览器端只通过插件注册的本地路由读写开关与默认值。
  */
-import type { AutoRunState } from './types'
+import type { AutoRunDefaultMode, AutoRunSettingsSummary, AutoRunState } from './types'
 
 /** 宿主侧注册的路由地址。 */
 const ENDPOINT = '/dsh-all-in-one/auto-run'
 
-/** 请求超时；本接口只读写一个会话标识。 */
+/** 请求超时；本接口只读写少量标识。 */
 const REQUEST_TIMEOUT_MS = 10000
 
 /**
  * 发起一次 JSON 请求。
- * @param sessionId 会话标识
+ * @param search 查询参数，值为 undefined 时不带该参数
  * @param init fetch 配置
- * @returns 解析后的开关状态
+ * @returns 解析后的响应体
  */
-async function request(sessionId: string, init: RequestInit = {}): Promise<AutoRunState> {
+async function requestJson<T>(
+  search: Record<string, string | undefined>,
+  init: RequestInit = {},
+): Promise<T> {
   const controller = new AbortController()
   const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
   const url = new URL(ENDPOINT, window.location.origin)
-  url.searchParams.set('sessionId', sessionId)
+
+  for (const [key, value] of Object.entries(search)) {
+    if (value !== undefined) url.searchParams.set(key, value)
+  }
 
   try {
     const response = await fetch(url.toString(), {
@@ -47,9 +53,9 @@ async function request(sessionId: string, init: RequestInit = {}): Promise<AutoR
       throw new Error(message || `HTTP ${response.status}`)
     }
 
-    return (await response.json()) as AutoRunState
+    return (await response.json()) as T
   } catch (error) {
-    console.error('[auto-run] 请求全自动状态失败:', error)
+    console.error('[auto-run] 请求全自动配置失败:', error)
     throw error
   } finally {
     window.clearTimeout(timer)
@@ -59,65 +65,51 @@ async function request(sessionId: string, init: RequestInit = {}): Promise<AutoR
 /**
  * 读取某个会话的开关状态。
  * @param sessionId 会话标识
+ * @param workspaceId 会话所属工作空间，未知时省略
  * @returns 该会话是否处于全自动模式
  */
-export function loadAutoRunState(sessionId: string): Promise<AutoRunState> {
-  return request(sessionId)
+export function loadAutoRunState(sessionId: string, workspaceId?: string): Promise<AutoRunState> {
+  return requestJson<AutoRunState>({ sessionId, workspaceId })
 }
 
 /**
  * 写入某个会话的开关状态。
  * @param sessionId 会话标识
  * @param enabled 目标状态
+ * @param workspaceId 会话所属工作空间，未知时省略
  * @returns 宿主确认后的状态
  */
-export function saveAutoRunState(sessionId: string, enabled: boolean): Promise<AutoRunState> {
-  return request(sessionId, {
+export function saveAutoRunState(
+  sessionId: string,
+  enabled: boolean,
+  workspaceId?: string,
+): Promise<AutoRunState> {
+  return requestJson<AutoRunState>({}, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ sessionId, enabled }),
+    body: JSON.stringify({ sessionId, enabled, workspaceId }),
   })
 }
 
-/** 全量配置的响应形状；字段缺失时按空集合处理。 */
-interface AutoRunConfigResponse {
-  enabledSessions?: unknown
+/**
+ * 读取设置摘要：默认值来源与显式开启的会话列表。
+ * @returns 设置页与侧边栏需要的数据
+ */
+export function loadAutoRunSettings(): Promise<AutoRunSettingsSummary> {
+  return requestJson<AutoRunSettingsSummary>({})
 }
 
 /**
- * 读取所有处于全自动的会话。
- *
- * 侧边栏要给每个会话行判断是否画标识，逐行请求会把列表放大成几十次请求，
- * 因此单独走一次全量读取。
- * @returns 会话标识列表
+ * 写入新会话默认状态的来源。
+ * @param defaultMode 目标来源
+ * @returns 写入后的设置摘要
  */
-export async function loadEnabledSessions(): Promise<string[]> {
-  const controller = new AbortController()
-  const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
-
-  try {
-    const response = await fetch(new URL(ENDPOINT, window.location.origin).toString(), {
-      credentials: 'same-origin',
-      cache: 'no-store',
-      signal: controller.signal,
-    })
-
-    if (!response.ok) {
-      const text = await response.text()
-
-      throw new Error(text || `HTTP ${response.status}`)
-    }
-
-    const parsed = (await response.json()) as AutoRunConfigResponse
-    const list = parsed.enabledSessions
-
-    if (!Array.isArray(list)) return []
-
-    return list.filter((item): item is string => typeof item === 'string')
-  } catch (error) {
-    console.error('[auto-run] 读取全自动会话列表失败:', error)
-    throw error
-  } finally {
-    window.clearTimeout(timer)
-  }
+export function saveAutoRunDefaultMode(
+  defaultMode: AutoRunDefaultMode,
+): Promise<AutoRunSettingsSummary> {
+  return requestJson<AutoRunSettingsSummary>({}, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ defaultMode }),
+  })
 }

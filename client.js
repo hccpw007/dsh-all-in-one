@@ -42,7 +42,7 @@ window.__ModuleLoader__.load({
     var import_react31 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = '*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.inline{display:inline}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-7{height:1.75rem}.h-8{height:2rem}.h-\\[18px\\]{height:18px}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.translate-x-\\[18px\\],.translate-x-\\[20px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[20px\\]{--tw-translate-x:20px}.translate-x-\\[2px\\]{--tw-translate-x:2px}.transform,.translate-x-\\[2px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-60{opacity:.6}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{--tw-shadow:0 1px 2px rgba(0,0,0,.2);--tw-shadow-colored:0 1px 2px var(--tw-shadow-color)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.ring{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color)}.ring,.ring-1{box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.ring-1{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color)}.ring-black\\/5{--tw-ring-color:rgba(0,0,0,.05)}.blur{--tw-blur:blur(8px)}.blur,.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.duration-200{transition-duration:.2s}.ease-out{transition-timing-function:cubic-bezier(0,0,.2,1)}.\\[all-in-one\\:perf\\]{all-in-one:perf}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.aio-workspace-count:after{content:"\uFF08" attr(data-aio-workspace-count) "\uFF09";color:var(--dsw-alias-label-tertiary);font-size:12px;font-weight:400;margin-inline-start:1px}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}';
+    var styles_default = '*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.inline{display:inline}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-7{height:1.75rem}.h-8{height:2rem}.h-\\[18px\\]{height:18px}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.translate-x-\\[18px\\],.translate-x-\\[20px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[20px\\]{--tw-translate-x:20px}.translate-x-\\[2px\\]{--tw-translate-x:2px}.transform,.translate-x-\\[2px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.whitespace-nowrap{white-space:nowrap}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-2{padding-left:.5rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-60{opacity:.6}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{--tw-shadow:0 1px 2px rgba(0,0,0,.2);--tw-shadow-colored:0 1px 2px var(--tw-shadow-color)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.ring{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color)}.ring,.ring-1{box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.ring-1{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color)}.ring-black\\/5{--tw-ring-color:rgba(0,0,0,.05)}.blur{--tw-blur:blur(8px)}.blur,.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.duration-200{transition-duration:.2s}.ease-out{transition-timing-function:cubic-bezier(0,0,.2,1)}.\\[all-in-one\\:perf\\]{all-in-one:perf}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.aio-workspace-count:after{content:"\uFF08" attr(data-aio-workspace-count) "\uFF09";color:var(--dsw-alias-label-tertiary);font-size:12px;font-weight:400;margin-inline-start:1px}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}';
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -2592,11 +2592,13 @@ window.__ModuleLoader__.load({
     // src/features/auto-run/api.ts
     var ENDPOINT2 = "/dsh-all-in-one/auto-run";
     var REQUEST_TIMEOUT_MS2 = 1e4;
-    async function request(sessionId, init = {}) {
+    async function requestJson(search, init = {}) {
       const controller = new AbortController();
       const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS2);
       const url = new URL(ENDPOINT2, window.location.origin);
-      url.searchParams.set("sessionId", sessionId);
+      for (const [key, value] of Object.entries(search)) {
+        if (value !== void 0) url.searchParams.set(key, value);
+      }
       try {
         const response = await fetch(url.toString(), {
           credentials: "same-origin",
@@ -2617,45 +2619,31 @@ window.__ModuleLoader__.load({
         }
         return await response.json();
       } catch (error) {
-        console.error("[auto-run] \u8BF7\u6C42\u5168\u81EA\u52A8\u72B6\u6001\u5931\u8D25:", error);
+        console.error("[auto-run] \u8BF7\u6C42\u5168\u81EA\u52A8\u914D\u7F6E\u5931\u8D25:", error);
         throw error;
       } finally {
         window.clearTimeout(timer);
       }
     }
-    function loadAutoRunState(sessionId) {
-      return request(sessionId);
+    function loadAutoRunState(sessionId, workspaceId) {
+      return requestJson({ sessionId, workspaceId });
     }
-    function saveAutoRunState(sessionId, enabled) {
-      return request(sessionId, {
+    function saveAutoRunState(sessionId, enabled, workspaceId) {
+      return requestJson({}, {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ sessionId, enabled })
+        body: JSON.stringify({ sessionId, enabled, workspaceId })
       });
     }
-    async function loadEnabledSessions() {
-      const controller = new AbortController();
-      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS2);
-      try {
-        const response = await fetch(new URL(ENDPOINT2, window.location.origin).toString(), {
-          credentials: "same-origin",
-          cache: "no-store",
-          signal: controller.signal
-        });
-        if (!response.ok) {
-          const text = await response.text();
-          throw new Error(text || `HTTP ${response.status}`);
-        }
-        const parsed = await response.json();
-        const list = parsed.enabledSessions;
-        if (!Array.isArray(list)) return [];
-        return list.filter((item) => typeof item === "string");
-      } catch (error) {
-        console.error("[auto-run] \u8BFB\u53D6\u5168\u81EA\u52A8\u4F1A\u8BDD\u5217\u8868\u5931\u8D25:", error);
-        throw error;
-      } finally {
-        window.clearTimeout(timer);
-      }
+    function loadAutoRunSettings() {
+      return requestJson({});
+    }
+    function saveAutoRunDefaultMode(defaultMode) {
+      return requestJson({}, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ defaultMode })
+      });
     }
 
     // src/features/auto-run/session-state.ts
@@ -2674,9 +2662,9 @@ window.__ModuleLoader__.load({
     function ensureEnabledSessionsLoaded() {
       if (loadStarted) return;
       loadStarted = true;
-      void loadEnabledSessions().then((sessionIds) => {
+      void loadAutoRunSettings().then((settings) => {
         enabledSessions.clear();
-        for (const sessionId of sessionIds) enabledSessions.add(sessionId);
+        for (const sessionId of settings.enabledSessions) enabledSessions.add(sessionId);
         notify2();
       }).catch((error) => {
         console.error("[auto-run] \u8BFB\u53D6\u5168\u81EA\u52A8\u4F1A\u8BDD\u5217\u8868\u5931\u8D25:", error);
@@ -2693,7 +2681,7 @@ window.__ModuleLoader__.load({
     }
 
     // src/features/auto-run/AutoRunToggle.tsx
-    function AutoRunToggle({ sessionId, t }) {
+    function AutoRunToggle({ sessionId, t, workspaceIdOf }) {
       const [enabled, setEnabled] = (0, import_react8.useState)(null);
       const [pending3, setPending] = (0, import_react8.useState)(false);
       const [failure, setFailure] = (0, import_react8.useState)(null);
@@ -2706,9 +2694,17 @@ window.__ModuleLoader__.load({
         let active = true;
         setEnabled(null);
         setFailure(null);
-        void loadAutoRunState(sessionId).then((state) => {
+        const workspaceId = workspaceIdOf?.(sessionId);
+        void loadAutoRunState(sessionId, workspaceId).then((state) => {
           if (!active) return;
           setEnabled(state.enabled);
+          if (state.explicit || !state.enabled) return;
+          void saveAutoRunState(sessionId, true, workspaceId).then((saved) => {
+            if (!active) return;
+            setSessionEnabled(sessionId, saved.enabled);
+          }).catch((error) => {
+            console.error("[auto-run] \u56FA\u5316\u9ED8\u8BA4\u5F00\u542F\u72B6\u6001\u5931\u8D25:", error);
+          });
         }).catch((error) => {
           if (!active) return;
           console.error("[auto-run] \u8BFB\u53D6\u5168\u81EA\u52A8\u72B6\u6001\u5931\u8D25:", error);
@@ -2717,7 +2713,7 @@ window.__ModuleLoader__.load({
         return () => {
           active = false;
         };
-      }, [sessionId]);
+      }, [sessionId, workspaceIdOf]);
       const hint = (() => {
         if (failure !== null) return `${t("toggleFailed")}\uFF1A${failure}`;
         if (sessionId === void 0) return t("unavailable");
@@ -2727,11 +2723,12 @@ window.__ModuleLoader__.load({
       const toggle = () => {
         if (sessionId === void 0 || enabled === null || pending3) return;
         const target = sessionId;
+        const workspaceId = workspaceIdOf?.(target);
         const next = !enabled;
         setEnabled(next);
         setPending(true);
         setFailure(null);
-        void saveAutoRunState(target, next).then((state) => {
+        void saveAutoRunState(target, next, workspaceId).then((state) => {
           setEnabled(state.enabled);
           setSessionEnabled(target, state.enabled);
         }).catch((error) => {
@@ -2940,8 +2937,27 @@ window.__ModuleLoader__.load({
 
     // src/features/auto-run/client.tsx
     var INPUT_RIGHT_SLOT = "conversation.input.right";
+    function findWorkspaceId(uiWorkspace, sessionId) {
+      try {
+        const items = uiWorkspace.workspaces?.list.getSnapshot().items ?? [];
+        for (const item of items) {
+          if (item.sessionIds.includes(sessionId)) return item.workspaceId;
+        }
+        return void 0;
+      } catch (error) {
+        console.error("[auto-run] \u8BFB\u53D6\u4F1A\u8BDD\u6240\u5C5E\u5DE5\u4F5C\u7A7A\u95F4\u5931\u8D25:", error);
+        return void 0;
+      }
+    }
     function apply4(ctx, t) {
       if (!readAutoRunButtonEnabled()) return;
+      let workspaceLookup = () => void 0;
+      ctx.inject(["uiWorkspace"], (scoped) => {
+        const uiWorkspace = scoped.uiWorkspace;
+        if (uiWorkspace === void 0) return;
+        workspaceLookup = (sessionId) => findWorkspaceId(uiWorkspace, sessionId);
+      });
+      const workspaceIdOf = (sessionId) => workspaceLookup(sessionId);
       ctx.slots.inject(
         INPUT_RIGHT_SLOT,
         () => ctx.slots.register(
@@ -2953,7 +2969,14 @@ window.__ModuleLoader__.load({
           },
           // sessionId 取宿主每次渲染传入的 standardProps：切换对话时插槽会重新渲染，
           // 组件随之读到新会话；若在注册时用 inject 固化，切换对话后按钮会继续改旧会话的开关
-          (props) => /* @__PURE__ */ import_react9.default.createElement(AutoRunToggle, { ...props, t })
+          (props) => /* @__PURE__ */ import_react9.default.createElement(
+            AutoRunToggle,
+            {
+              ...props,
+              t,
+              workspaceIdOf
+            }
+          )
         )
       );
       ctx.effect(() => startSessionMarkDecorator(), "auto-run: session mark");
@@ -2964,10 +2987,30 @@ window.__ModuleLoader__.load({
       zh: {
         // 设置页开关标题
         title: "\u5168\u81EA\u52A8\u6267\u884C",
-        // 设置页开关用途说明：点明入口位置与会话级语义
-        description: "\u8F93\u5165\u6846\u53F3\u4FA7\u65B0\u589E\u300C\u5168\u81EA\u52A8\u300D\u5F00\u5173\uFF1A\u6253\u5F00\u540E\u672C\u5BF9\u8BDD\u4E0D\u63D0\u95EE\u3001\u4E0D\u7B49\u5F85\u786E\u8BA4\uFF0C\u6539\u5B8C\u81EA\u884C\u9A8C\u8BC1\uFF1B\u5173\u95ED\u5373\u6062\u590D\u539F\u6709\u6D41\u7A0B\u3002",
+        // 设置页开关用途说明：点明入口位置与会话级语义，控制在两行以内
+        description: "\u8F93\u5165\u6846\u53F3\u4FA7\u65B0\u589E\u300C\u5168\u81EA\u52A8\u300D\u5F00\u5173\uFF1A\u6253\u5F00\u540E\u4E0D\u63D0\u95EE\u3001\u4E0D\u7B49\u786E\u8BA4\uFF0C\u6539\u5B8C\u81EA\u884C\u9A8C\u8BC1\u3002",
         // 设置页开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
+        // 默认值选项读取失败时的提示
+        loadFailed: "\u8BFB\u53D6\u9ED8\u8BA4\u503C\u5931\u8D25\uFF0C\u8BF7\u5237\u65B0\u9875\u9762\u91CD\u8BD5\u3002",
+        // 默认值选项组的无障碍名称（选项标签不显示，避免挤占窄卡片宽度）
+        modeGroupLabel: "\u65B0\u5BF9\u8BDD\u9ED8\u8BA4\u72B6\u6001",
+        // 默认值选项：新对话一律关闭全自动
+        modeOff: "\u9ED8\u8BA4\u5173",
+        // 默认值选项：新对话一律开启全自动
+        modeOn: "\u9ED8\u8BA4\u5F00",
+        // 默认值选项：新对话沿用最近一次的全自动状态
+        modeLast: "\u4E0A\u4E00\u6B21",
+        // 默认值选项：新对话沿用所属工作空间最近一次的状态
+        modeWorkspace: "\u5DE5\u4F5C\u7A7A\u95F4",
+        // 「默认关」的悬停说明
+        modeOffHint: "\u65B0\u5BF9\u8BDD\u9ED8\u8BA4\u5173\u95ED\u5168\u81EA\u52A8",
+        // 「默认开」的悬停说明
+        modeOnHint: "\u65B0\u5BF9\u8BDD\u9ED8\u8BA4\u5F00\u542F\u5168\u81EA\u52A8",
+        // 「上一次」的悬停说明
+        modeLastHint: "\u65B0\u5BF9\u8BDD\u6CBF\u7528\u6700\u8FD1\u4E00\u6B21\u5207\u6362\u540E\u7684\u72B6\u6001",
+        // 「工作空间」的悬停说明
+        modeWorkspaceHint: "\u65B0\u5BF9\u8BDD\u6CBF\u7528\u6240\u5C5E\u5DE5\u4F5C\u7A7A\u95F4\u6700\u8FD1\u4E00\u6B21\u7684\u72B6\u6001",
         // 输入框按钮的名称与无障碍标签
         action: "\u5168\u81EA\u52A8",
         // 开启状态下的悬停提示：说明模型不会再来问
@@ -2984,10 +3027,30 @@ window.__ModuleLoader__.load({
       en: {
         // Switch title
         title: "Full auto",
-        // Switch description: entry position and per-conversation semantics
-        description: "Adds a Full auto switch right of the composer: while on, this conversation never asks or waits for confirmation and verifies its own changes; turn it off to restore the normal flow.",
+        // Switch description: entry position and per-conversation semantics, kept within two lines
+        description: "Adds a Full auto switch in the composer: no questions, no waits, self-verified changes.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Saving the switch state failed. Check the browser storage permission.",
+        // Shown when the default options cannot be read
+        loadFailed: "Reading the default state failed. Reload the page and try again.",
+        // Accessible name of the default state group (its label is hidden to save width)
+        modeGroupLabel: "Default state for new conversations",
+        // Default option: new conversations always start with full auto off
+        modeOff: "Off",
+        // Default option: new conversations always start with full auto on
+        modeOn: "On",
+        // Default option: new conversations reuse the most recent state
+        modeLast: "Previous",
+        // Default option: new conversations reuse their workspace's most recent state
+        modeWorkspace: "Workspace",
+        // Hover hint for the "Off" option
+        modeOffHint: "New conversations start with full auto off",
+        // Hover hint for the "On" option
+        modeOnHint: "New conversations start with full auto on",
+        // Hover hint for the "Previous" option
+        modeLastHint: "New conversations reuse the most recently switched state",
+        // Hover hint for the "Workspace" option
+        modeWorkspaceHint: "New conversations reuse their workspace\u2019s most recent state",
         // Composer button label and accessible name
         action: "Full auto",
         // Tooltip while enabled: the model will not come back with questions
@@ -3005,12 +3068,33 @@ window.__ModuleLoader__.load({
 
     // src/features/auto-run/toggle.tsx
     var import_react10 = __toESM(require("react"), 1);
+    var MODE_OPTIONS2 = [
+      { value: "off", labelKey: "modeOff", hintKey: "modeOffHint" },
+      { value: "on", labelKey: "modeOn", hintKey: "modeOnHint" },
+      { value: "last", labelKey: "modeLast", hintKey: "modeLastHint" },
+      { value: "workspace", labelKey: "modeWorkspace", hintKey: "modeWorkspaceHint" }
+    ];
     function AutoRunIcon() {
       return /* @__PURE__ */ import_react10.default.createElement("svg", { viewBox: "0 0 24 24", width: "14", height: "14", "aria-hidden": "true", fill: "currentColor" }, /* @__PURE__ */ import_react10.default.createElement("path", { d: "M13.6 2 4.8 13.4h5.5L10.2 22l8.9-11.6h-5.6z" }));
     }
     function AutoRunButtonToggle({ t }) {
-      const [enabled, setEnabled] = (0, import_react10.useState)(readAutoRunButtonEnabled);
+      const [enabled] = (0, import_react10.useState)(readAutoRunButtonEnabled);
+      const [mode, setMode] = (0, import_react10.useState)(null);
+      const [pending3, setPending] = (0, import_react10.useState)(false);
       const [saveFailed, setSaveFailed] = (0, import_react10.useState)(false);
+      const [loadFailed, setLoadFailed] = (0, import_react10.useState)(false);
+      (0, import_react10.useEffect)(() => {
+        let active = true;
+        void loadAutoRunSettings().then((settings) => {
+          if (active) setMode(settings.defaultMode);
+        }).catch((error) => {
+          console.error("[auto-run] \u8BFB\u53D6\u9ED8\u8BA4\u503C\u9009\u9879\u5931\u8D25:", error);
+          if (active) setLoadFailed(true);
+        });
+        return () => {
+          active = false;
+        };
+      }, []);
       const handleToggle = () => {
         const next = !enabled;
         if (!writeAutoRunButtonEnabled(next)) {
@@ -3018,10 +3102,23 @@ window.__ModuleLoader__.load({
           return;
         }
         setSaveFailed(false);
-        setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react10.default.createElement(AutoRunIcon, null)), /* @__PURE__ */ import_react10.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react10.default.createElement(
+      const handleModeChange = (next) => {
+        if (next === mode || pending3) return;
+        setPending(true);
+        setSaveFailed(false);
+        void saveAutoRunDefaultMode(next).then((settings) => {
+          setMode(settings.defaultMode);
+          setPending(false);
+          window.location.reload();
+        }).catch((error) => {
+          console.error("[auto-run] \u4FDD\u5B58\u9ED8\u8BA4\u503C\u9009\u9879\u5931\u8D25:", error);
+          setSaveFailed(true);
+          setPending(false);
+        });
+      };
+      return /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex w-full flex-1 flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react10.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react10.default.createElement(AutoRunIcon, null)), /* @__PURE__ */ import_react10.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react10.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react10.default.createElement(
         "button",
         {
           type: "button",
@@ -3045,7 +3142,39 @@ window.__ModuleLoader__.load({
             )
           }
         )
-      )), saveFailed ? /* @__PURE__ */ import_react10.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
+      )), enabled && mode !== null ? /* @__PURE__ */ import_react10.default.createElement(
+        "div",
+        {
+          className: "flex flex-wrap items-center gap-1 pl-2",
+          role: "radiogroup",
+          "aria-label": t("modeGroupLabel")
+        },
+        MODE_OPTIONS2.map((option) => {
+          const checked = option.value === mode;
+          return (
+            // 每个选项一个单选按钮：点击后写入宿主并刷新页面
+            /* @__PURE__ */ import_react10.default.createElement(
+              "button",
+              {
+                key: option.value,
+                type: "button",
+                role: "radio",
+                "aria-checked": checked,
+                title: t(option.hintKey),
+                disabled: pending3,
+                onClick: () => handleModeChange(option.value),
+                className: cn(
+                  "shrink-0 whitespace-nowrap rounded-md border px-1 py-0 text-[11px] leading-[16px] transition",
+                  checked ? "border-brand bg-base text-brand" : "border-line4 bg-layer1 text-secondary hover:text-primary",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1",
+                  pending3 ? "opacity-60" : ""
+                )
+              },
+              t(option.labelKey)
+            )
+          );
+        })
+      ) : null), saveFailed ? /* @__PURE__ */ import_react10.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : loadFailed ? /* @__PURE__ */ import_react10.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("loadFailed")) : null);
     }
 
     // src/features/auto-run/index.tsx
@@ -4078,13 +4207,13 @@ window.__ModuleLoader__.load({
       const [pending3, setPending] = (0, import_react15.useState)(false);
       const [error, setError] = (0, import_react15.useState)(null);
       const readRequest = useRequest ?? useNoRequest;
-      const request6 = readRequest((value) => value);
-      const requestKey = request6 === null ? "" : request6.kind === "session" ? request6.sessionId : request6.workspaceId;
+      const request5 = readRequest((value) => value);
+      const requestKey = request5 === null ? "" : request5.kind === "session" ? request5.sessionId : request5.workspaceId;
       (0, import_react15.useEffect)(() => {
         setError(null);
       }, [requestKey]);
-      if (request6 === null) return null;
-      const isWorkspace = request6.kind === "workspace";
+      if (request5 === null) return null;
+      const isWorkspace = request5.kind === "workspace";
       const close = () => {
         if (pending3) return;
         setError(null);
@@ -4095,15 +4224,15 @@ window.__ModuleLoader__.load({
         setPending(true);
         setError(null);
         try {
-          if (request6.kind === "workspace") {
-            const report = await deleteWorkspaceSessions?.(request6.workspaceId, request6.sessionIds);
+          if (request5.kind === "workspace") {
+            const report = await deleteWorkspaceSessions?.(request5.workspaceId, request5.sessionIds);
             if (report !== void 0 && report.failed.length > 0) {
               setPending(false);
               setError(t("deleteAllPartial").replace("{count}", String(report.failed.length)));
               return;
             }
           } else {
-            await deleteSession?.(request6.sessionId);
+            await deleteSession?.(request5.sessionId);
           }
         } catch (failure) {
           console.error("[delete-session] \u5220\u9664\u4F1A\u8BDD\u5931\u8D25:", failure);
@@ -4133,8 +4262,8 @@ window.__ModuleLoader__.load({
             pending3 ? t("deleting") : t("confirmDelete")
           ))
         },
-        /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-1 text-[13px] font-medium leading-5 text-primary" }, request6.title),
-        request6.kind === "workspace" ? /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("confirmAllCount").replace("{count}", String(request6.sessionIds.length))) : null,
+        /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-1 text-[13px] font-medium leading-5 text-primary" }, request5.title),
+        request5.kind === "workspace" ? /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("confirmAllCount").replace("{count}", String(request5.sessionIds.length))) : null,
         /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-3 text-[12px] leading-[18px] text-secondary" }, isWorkspace ? t("confirmAllMessage") : t("confirmMessage")),
         error !== null ? /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null
       );
@@ -4295,7 +4424,7 @@ window.__ModuleLoader__.load({
         isCurrent: (summary?.retainedBy?.mainView ?? 0) > 0
       };
     }
-    function findWorkspaceId(uiWorkspace, sessionId) {
+    function findWorkspaceId2(uiWorkspace, sessionId) {
       const items = uiWorkspace?.workspaces?.list.getSnapshot().items ?? [];
       return items.find((item) => item.sessionIds.includes(sessionId))?.workspaceId;
     }
@@ -4332,7 +4461,7 @@ window.__ModuleLoader__.load({
         });
         const deleteSession = async (sessionId) => {
           const wasCurrent = resolveSession(sessions, sessionId).isCurrent;
-          const workspaceId = findWorkspaceId(uiWorkspace, sessionId);
+          const workspaceId = findWorkspaceId2(uiWorkspace, sessionId);
           await requestDeleteSession2(sessionId);
           const stillCurrent = resolveSession(sessions, sessionId).isCurrent;
           sessions.handleSessionRemoved?.(sessionId);
@@ -4685,7 +4814,7 @@ window.__ModuleLoader__.load({
     // src/features/power-pack/api.ts
     var ENDPOINT4 = "/dsh-all-in-one/power-packs";
     var REQUEST_TIMEOUT_MS4 = 2e4;
-    async function request2(init = {}) {
+    async function request(init = {}) {
       const controller = new AbortController();
       const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS4);
       try {
@@ -4715,11 +4844,11 @@ window.__ModuleLoader__.load({
       }
     }
     function loadPowerPacks() {
-      return request2();
+      return request();
     }
     function composePowerPack(pack, mode) {
       const body = { action: "compose", pack, mode };
-      return request2({
+      return request({
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(body)
@@ -4727,7 +4856,7 @@ window.__ModuleLoader__.load({
     }
     function savePowerPack(pack) {
       const body = { action: "save", pack };
-      return request2({
+      return request({
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(body)
@@ -4735,7 +4864,7 @@ window.__ModuleLoader__.load({
     }
     function deletePowerPack(id) {
       const body = { action: "delete", id };
-      return request2({
+      return request({
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(body)
@@ -4743,7 +4872,7 @@ window.__ModuleLoader__.load({
     }
     function setDefaultPowerPack(id) {
       const body = { action: "setDefault", id };
-      return request2({
+      return request({
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(body)
@@ -4751,7 +4880,7 @@ window.__ModuleLoader__.load({
     }
     function setPowerPackEnabled(enabled) {
       const body = { action: "setEnabled", enabled };
-      return request2({
+      return request({
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(body)
@@ -5735,7 +5864,7 @@ window.__ModuleLoader__.load({
     // src/features/project-memory/api.ts
     var ENDPOINT5 = "/dsh-all-in-one/memory";
     var REQUEST_TIMEOUT_MS5 = 1e4;
-    async function request3(init = {}) {
+    async function request2(init = {}) {
       const controller = new AbortController();
       const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS5);
       try {
@@ -5765,10 +5894,10 @@ window.__ModuleLoader__.load({
       }
     }
     function loadMemorySettings() {
-      return request3();
+      return request2();
     }
     function saveMemorySettings(update) {
-      return request3({
+      return request2({
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(update)
@@ -6126,7 +6255,7 @@ window.__ModuleLoader__.load({
     // src/features/auto-compact/api.ts
     var ENDPOINT6 = "/dsh-all-in-one/auto-compact";
     var REQUEST_TIMEOUT_MS6 = 1e4;
-    async function request4(init = {}) {
+    async function request3(init = {}) {
       const controller = new AbortController();
       const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS6);
       try {
@@ -6156,10 +6285,10 @@ window.__ModuleLoader__.load({
       }
     }
     function loadAutoCompactSettings() {
-      return request4();
+      return request3();
     }
     function saveAutoCompactSettings(update) {
-      return request4({
+      return request3({
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(update)
@@ -6234,16 +6363,16 @@ window.__ModuleLoader__.load({
       }, [t]);
       const persist = async (patch) => {
         latestRequest.current += 1;
-        const request6 = latestRequest.current;
+        const request5 = latestRequest.current;
         setError(null);
         try {
           const next = await saveAutoCompactSettings(patch);
-          if (latestRequest.current !== request6) return;
+          if (latestRequest.current !== request5) return;
           setSettings(next);
           setThresholdDraft(String(next.thresholdPercent));
           setRetainDraft(String(next.retainPercent));
         } catch (failure) {
-          if (latestRequest.current !== request6) return;
+          if (latestRequest.current !== request5) return;
           console.error("[auto-compact] \u4FDD\u5B58\u81EA\u52A8\u538B\u7F29\u8BBE\u7F6E\u5931\u8D25:", failure);
           setError(`${t("saveFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
         }
@@ -6385,7 +6514,7 @@ window.__ModuleLoader__.load({
     // src/features/desktop-cookie/api.ts
     var ENDPOINT7 = "/dsh-all-in-one/desktop-cookie";
     var REQUEST_TIMEOUT_MS7 = 1e4;
-    async function request5(init = {}) {
+    async function request4(init = {}) {
       const controller = new AbortController();
       const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS7);
       try {
@@ -6415,10 +6544,10 @@ window.__ModuleLoader__.load({
       }
     }
     function loadDesktopCookieSettings() {
-      return request5();
+      return request4();
     }
     function saveDesktopCookieSettings(update) {
-      return request5({
+      return request4({
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(update)
@@ -6494,16 +6623,16 @@ window.__ModuleLoader__.load({
       }, [t]);
       const persist = async (patch) => {
         latestRequest.current += 1;
-        const request6 = latestRequest.current;
+        const request5 = latestRequest.current;
         setError(null);
         try {
           const next = await saveDesktopCookieSettings(patch);
-          if (latestRequest.current !== request6) return;
+          if (latestRequest.current !== request5) return;
           setSettings(next);
           setThresholdDraft(String(next.threshold));
           setRetainDraft(String(next.retain));
         } catch (failure) {
-          if (latestRequest.current !== request6) return;
+          if (latestRequest.current !== request5) return;
           console.error("[desktop-cookie] \u4FDD\u5B58\u6E05\u7406\u8BBE\u7F6E\u5931\u8D25:", failure);
           setError(`${t("saveFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
         }
