@@ -74,7 +74,7 @@ function scanSubtree(root: Element): void {
 }
 
 /**
- * 安装会话图片预览观察器。
+ * 安装图片预览观察器。
  * @returns 清理函数：断开观察、撤销定时器并移除已插入的预览
  */
 export function installImagePreviewObserver(): () => void {

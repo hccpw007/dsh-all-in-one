@@ -1,12 +1,12 @@
 import type { FeatureLocales } from '../../shell/registry'
 
 /**
- * 「菜单收进更多」开关的中英文文案；key 由外壳统一加 `sidebar-more.` 前缀。
+ * 「顶部菜单收纳」开关的中英文文案；key 由外壳统一加 `sidebar-more.` 前缀。
  */
 export const sidebarMoreLocales: FeatureLocales = {
   zh: {
-    // 开关标题
-    title: '菜单收进更多',
+    // 开关标题：顶部菜单是否收进底部的「更多」菜单
+    title: '顶部菜单收纳',
     // 开关用途说明：解释打开后侧边栏顶部的哪些入口会被搬进底部菜单
     description: '顶部插件、Skill / MCP 与自动化任务收进左下角「更多」菜单。',
     // 开关状态写入失败时的提示
@@ -19,8 +19,8 @@ export const sidebarMoreLocales: FeatureLocales = {
     createPlugin: '创建你的插件',
   },
   en: {
-    // Switch title
-    title: 'Tuck menus into More',
+    // Switch title: whether the top menus move into the bottom More menu
+    title: 'Tuck top menus into More',
     // Switch description explaining which sidebar entries move into the bottom menu
     description: 'Move Plugins, Skill / MCP and Automation into the bottom-left More menu.',
     // Shown when the switch state cannot be persisted

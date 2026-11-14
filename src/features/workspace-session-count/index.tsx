@@ -4,7 +4,7 @@ import { workspaceSessionCountLocales } from './locales'
 import { WorkspaceSessionCountToggle } from './toggle'
 
 /**
- * 「项目会话数」的注册定义。
+ * 「项目显示会话数」的注册定义。
  *
  * 开关型 feature，没有独立页面：网格里是开关，打开后客户端扩展在侧边栏
  * 项目名后显示该项目自身的会话数量。

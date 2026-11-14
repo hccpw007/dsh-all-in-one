@@ -77,8 +77,8 @@ window.__ModuleLoader__.load({
     // src/features/expand-process/locales.ts
     var expandProcessLocales = {
       zh: {
-        // 开关标题
-        title: "\u5C55\u5F00\u8FC7\u7A0B",
+        // 开关标题：会话里的过程条目是否默认展开
+        title: "\u6267\u884C\u8FC7\u7A0B\u5C55\u5F00",
         // 开关用途说明：解释打开后会话里的哪些内容会展开
         description: "\u4F1A\u8BDD\u91CC\u7684\u300C\u601D\u8003\u300D\u4E0E\u300C\u8FD0\u884C\u547D\u4EE4\u300D\u9ED8\u8BA4\u5C55\u5F00\uFF0C\u65E0\u9700\u9010\u6761\u70B9\u5F00\u3002",
         // 展开范围标签
@@ -91,8 +91,8 @@ window.__ModuleLoader__.load({
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002"
       },
       en: {
-        // Switch title
-        title: "Expand process",
+        // Switch title: whether process rows open without a click
+        title: "Expand execution steps",
         // Switch description explaining what expands when enabled
         description: "Keep reasoning and command rows expanded so they need no manual opening.",
         // Expansion scope label
@@ -1319,10 +1319,10 @@ window.__ModuleLoader__.load({
     // src/features/image-preview/locales.ts
     var imagePreviewLocales = {
       zh: {
-        // 开关标题
-        title: "\u4F1A\u8BDD\u56FE\u7247\u9884\u89C8",
-        // 开关用途说明：解释打开后会话里的哪些内容会出现预览，并点明只读
-        description: "\u672C\u5730\u56FE\u7247\u5730\u5740\u4E0B\u65B9\u76F4\u63A5\u663E\u793A\u9884\u89C8\uFF0C\u70B9\u5F00\u540E\u53EF\u7F29\u653E\u770B\u6E05\u7EC6\u8282\uFF0C\u53EA\u8BFB\u53D6\u6587\u4EF6\uFF0C\u4E0D\u6539\u52A8\u4EFB\u4F55\u5185\u5BB9\u3002",
+        // 开关标题：消息里的本地图片是否直接显示预览
+        title: "\u56FE\u7247\u76F4\u63A5\u9884\u89C8",
+        // 开关用途说明：解释预览覆盖的图片来源（本地路径与附件库）并点明只读
+        description: "\u4F1A\u8BDD\u91CC\u7684\u672C\u5730\u56FE\u7247\u5730\u5740\u4E0E\u9644\u4EF6\u5E93\u56FE\u7247\u90FD\u5728\u539F\u5904\u663E\u793A\u9884\u89C8\uFF0C\u70B9\u5F00\u53EF\u7F29\u653E\uFF0C\u53EA\u8BFB\u4E0D\u6539\u52A8\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 放大层的无障碍名称，读屏软件据此说明当前是图片查看对话框
@@ -1343,8 +1343,8 @@ window.__ModuleLoader__.load({
       en: {
         // Switch title
         title: "Inline image preview",
-        // Switch description explaining what gets previewed, that images zoom, and that files stay untouched
-        description: "Show previews under local image paths. Click to zoom into details; files are only read, never changed.",
+        // Switch description naming both image sources (local paths, attachment library) and the read-only promise
+        description: "Show previews under local image paths and attachment-library images; click to zoom. Files are only read.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions.",
         // Accessible name of the zoom layer dialog
@@ -2026,10 +2026,10 @@ window.__ModuleLoader__.load({
     // src/features/clear-session/locales.ts
     var clearSessionLocales = {
       zh: {
-        // 开关标题：与输入框按钮的悬停提示同名，指向同一个动作
-        title: "\u5F00\u542F\u65B0\u4F1A\u8BDD",
-        // 开关用途说明：点明入口位置与两个可选结果
-        description: "\u8F93\u5165\u6846\u5DE6\u4FA7\u65B0\u589E\u6309\u94AE\uFF0C\u786E\u8BA4\u540E\u5728\u540C\u4E00\u5DE5\u4F5C\u533A\u6253\u5F00\u4E00\u6761\u7A7A\u767D\u5BF9\u8BDD\uFF0C\u53EF\u9009\u62E9\u4FDD\u7559\u8FD8\u662F\u5220\u9664\u5F53\u524D\u4F1A\u8BDD\u3002",
+        // 开关标题：卡片只说输入框旁多了入口，动作语义留给下面的按钮文案
+        title: "\u65B0\u4F1A\u8BDD\u5165\u53E3",
+        // 开关用途说明：点明入口位置（输入框左下角、加号按钮左侧）与两个可选结果
+        description: "\u8F93\u5165\u6846\u5DE6\u4E0B\u89D2\u65B0\u589E\u5706\u5F62\u6309\u94AE\uFF0C\u786E\u8BA4\u540E\u5728\u540C\u4E00\u5DE5\u4F5C\u533A\u6253\u5F00\u7A7A\u767D\u5BF9\u8BDD\uFF0C\u53EF\u4FDD\u7559\u6216\u5220\u9664\u5F53\u524D\u4F1A\u8BDD\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 输入框按钮的名称与悬停提示
@@ -2058,8 +2058,8 @@ window.__ModuleLoader__.load({
         failed: "\u64CD\u4F5C\u5931\u8D25"
       },
       en: {
-        // Switch title: matches the composer button tooltip, both name the same action
-        title: "Start a new session",
+        // Switch title: the card names the added entry; the action stays in the button label
+        title: "New session button",
         // Switch description: entry position and the two possible outcomes
         description: "Adds a button left of the composer. Confirming opens a blank conversation in the same workspace, keeping or deleting the current one.",
         // Shown when the switch state cannot be persisted
@@ -3282,12 +3282,14 @@ window.__ModuleLoader__.load({
     // src/features/session-history/locales.ts
     var sessionHistoryLocales = {
       zh: {
-        title: "\u4F1A\u8BDD\u5386\u53F2\u5DE6\u4FA7",
+        // 开关标题：轮次导航条停靠在对话的哪一侧
+        title: "\u8F6E\u6B21\u5BFC\u822A\u5DE6\u7F6E",
         description: "\u8F6E\u6B21\u5BFC\u822A\u6761\u4ECE\u5BF9\u8BDD\u53F3\u4FA7\u79FB\u5230\u5DE6\u4FA7\uFF0C\u70B9\u51FB\u8DF3\u8F6C\u4FDD\u6301\u4E0D\u53D8\u3002",
         saveFailed: "\u5F00\u5173\u72B6\u6001\u4FDD\u5B58\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u3002"
       },
       en: {
-        title: "Turn history on the left",
+        // Switch title: which side the turn navigator sits on
+        title: "Turn navigator on the left",
         description: "Move the turn navigator to the left side; jump-on-click is unchanged.",
         saveFailed: "Failed to save the switch state. Check browser storage."
       }
@@ -3652,8 +3654,8 @@ window.__ModuleLoader__.load({
     // src/features/sidebar-more/locales.ts
     var sidebarMoreLocales = {
       zh: {
-        // 开关标题
-        title: "\u83DC\u5355\u6536\u8FDB\u66F4\u591A",
+        // 开关标题：顶部菜单是否收进底部的「更多」菜单
+        title: "\u9876\u90E8\u83DC\u5355\u6536\u7EB3",
         // 开关用途说明：解释打开后侧边栏顶部的哪些入口会被搬进底部菜单
         description: "\u9876\u90E8\u63D2\u4EF6\u3001Skill / MCP \u4E0E\u81EA\u52A8\u5316\u4EFB\u52A1\u6536\u8FDB\u5DE6\u4E0B\u89D2\u300C\u66F4\u591A\u300D\u83DC\u5355\u3002",
         // 开关状态写入失败时的提示
@@ -3666,8 +3668,8 @@ window.__ModuleLoader__.load({
         createPlugin: "\u521B\u5EFA\u4F60\u7684\u63D2\u4EF6"
       },
       en: {
-        // Switch title
-        title: "Tuck menus into More",
+        // Switch title: whether the top menus move into the bottom More menu
+        title: "Tuck top menus into More",
         // Switch description explaining which sidebar entries move into the bottom menu
         description: "Move Plugins, Skill / MCP and Automation into the bottom-left More menu.",
         // Shown when the switch state cannot be persisted
@@ -3923,18 +3925,18 @@ window.__ModuleLoader__.load({
     // src/features/workspace-session-count/locales.ts
     var workspaceSessionCountLocales = {
       zh: {
-        // 开关标题
-        title: "\u9879\u76EE\u4F1A\u8BDD\u6570",
-        // 开关用途说明：解释项目名后会显示该项目自身的会话数量
-        description: "\u4FA7\u8FB9\u680F\u9879\u76EE\u540D\u540E\u663E\u793A\u8BE5\u9879\u76EE\u81EA\u8EAB\u7684\u4F1A\u8BDD\u6570\u91CF\u3002",
+        // 开关标题：侧边栏项目名后是否显示会话数量
+        title: "\u9879\u76EE\u663E\u793A\u4F1A\u8BDD\u6570",
+        // 开关用途说明：解释项目名后会显示会话数，并点明空白会话不计入
+        description: "\u4FA7\u8FB9\u680F\u9879\u76EE\u540D\u540E\u663E\u793A\u8BE5\u9879\u76EE\u7684\u4F1A\u8BDD\u6570\uFF0C\u7A7A\u767D\u4F1A\u8BDD\u4E0D\u8BA1\u5165\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002"
       },
       en: {
-        // Switch title
+        // Switch title: what the sidebar shows; kept short so it stays on one line in the card
         title: "Workspace session count",
-        // Switch description explaining where the count appears and what it counts
-        description: "Show each workspace\u2019s own session count after its name in the sidebar.",
+        // Switch description explaining where the count appears and that blank sessions are excluded
+        description: "Show each workspace\u2019s session count after its name; blank sessions excluded.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions."
       }
@@ -4523,9 +4525,9 @@ window.__ModuleLoader__.load({
     var deleteSessionLocales = {
       zh: {
         // 开关标题
-        title: "\u5220\u9664\u4F1A\u8BDD",
-        // 开关用途说明：说明打开后会话行会出现删除入口、工作区菜单会出现批量删除入口，且删除前需要先在弹窗里确认
-        description: "\u4F1A\u8BDD\u60AC\u505C\u64CD\u4F5C\u91CC\u65B0\u589E\u5220\u9664\u6309\u94AE\uFF0C\u5DE5\u4F5C\u533A\u300C\u66F4\u591A\u300D\u83DC\u5355\u53EF\u4E00\u952E\u5220\u9664\u5168\u90E8\u4F1A\u8BDD\uFF0C\u786E\u8BA4\u540E\u6E05\u9664\u672C\u5730\u8BB0\u5F55\u3002",
+        title: "\u5F00\u542F\u65B0\u4F1A\u8BDD",
+        // 开关用途说明：说明两个删除入口、运行中的会话会被跳过，以及删除前需要先在弹窗里确认
+        description: "\u4F1A\u8BDD\u60AC\u505C\u64CD\u4F5C\u65B0\u589E\u5220\u9664\u6309\u94AE\uFF0C\u5DE5\u4F5C\u533A\u300C\u66F4\u591A\u300D\u53EF\u4E00\u952E\u5220\u5168\u90E8\u4F1A\u8BDD\uFF0C\u8FD0\u884C\u4E2D\u7684\u4F1A\u8DF3\u8FC7\uFF0C\u786E\u8BA4\u540E\u6E05\u672C\u5730\u8BB0\u5F55\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 会话行删除按钮的可访问名称与悬停提示
@@ -4559,9 +4561,9 @@ window.__ModuleLoader__.load({
       },
       en: {
         // Switch title
-        title: "Delete sessions",
-        // Switch description covering the row action, the bulk workspace entry, and the confirmation step
-        description: "Adds a delete button to session hover actions and a delete-all entry to the workspace menu; a dialog confirms first.",
+        title: "Start a new session",
+        // Switch description covering both delete entries, the running-session skip, and the confirmation step
+        description: "Adds a delete button to session hover actions and a delete-all entry to More; running sessions are skipped; a dialog confirms.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions.",
         // Accessible name and hover hint of the row delete button
@@ -6446,10 +6448,10 @@ window.__ModuleLoader__.load({
     // src/features/desktop-cookie/locales.ts
     var desktopCookieLocales = {
       zh: {
-        // 开关标题
-        title: "Cookie \u6E05\u7406",
-        // 开关用途说明
-        description: "\u542F\u52A8\u65F6\u6E05\u7406\u8FC7\u671F\u7684\u767B\u5F55 Cookie\uFF0C\u907F\u514D\u684C\u9762\u7248\u8BA4\u8BC1\u5931\u8D25\u3002",
+        // 开关标题：启动时清掉过期的登录 Cookie
+        title: "\u8FC7\u671F\u767B\u5F55\u6E05\u7406",
+        // 开关用途说明：清理对象是启动时留下的旧认证 Cookie，不是等它过期
+        description: "\u542F\u52A8\u65F6\u6E05\u6389\u66F4\u65E9\u7684\u684C\u9762\u7248\u8BA4\u8BC1 Cookie\uFF0C\u907F\u514D\u65E7\u8BB0\u5F55\u5806\u5230\u8BA4\u8BC1\u5931\u8D25\u3002",
         // 阈值输入框的标签
         thresholdLabel: "\u9608\u503C",
         // 保留条数输入框的标签
@@ -6466,8 +6468,8 @@ window.__ModuleLoader__.load({
         retainInvalid: "\u4FDD\u7559\u6761\u6570\u9700\u8981\u662F\u6574\u6570\uFF0C\u4E14\u5C0F\u4E8E\u9608\u503C"
       },
       en: {
-        // Switch title
-        title: "Cookie cleanup",
+        // Switch title: prunes expired sign-in cookies at launch
+        title: "Stale sign-in cleanup",
         // Switch description
         description: "Prune stale sign-in cookies at launch so the desktop app can authenticate.",
         // Label of the threshold input

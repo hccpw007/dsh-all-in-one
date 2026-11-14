@@ -1,12 +1,12 @@
 import type { FeatureLocales } from '../../shell/registry'
 
-/** 「开启新会话」的中英文文案；key 由外壳统一加 `clear-session.` 前缀。 */
+/** 「新会话入口」的中英文文案；key 由外壳统一加 `clear-session.` 前缀。 */
 export const clearSessionLocales: FeatureLocales = {
   zh: {
-    // 开关标题：与输入框按钮的悬停提示同名，指向同一个动作
-    title: '开启新会话',
-    // 开关用途说明：点明入口位置与两个可选结果
-    description: '输入框左侧新增按钮，确认后在同一工作区打开一条空白对话，可选择保留还是删除当前会话。',
+    // 开关标题：卡片只说输入框旁多了入口，动作语义留给下面的按钮文案
+    title: '新会话入口',
+    // 开关用途说明：点明入口位置（输入框左下角、加号按钮左侧）与两个可选结果
+    description: '输入框左下角新增圆形按钮，确认后在同一工作区打开空白对话，可保留或删除当前会话。',
     // 开关状态写入失败时的提示
     saveFailed: '保存开关状态失败，请检查浏览器存储权限。',
     // 输入框按钮的名称与悬停提示
@@ -35,8 +35,8 @@ export const clearSessionLocales: FeatureLocales = {
     failed: '操作失败',
   },
   en: {
-    // Switch title: matches the composer button tooltip, both name the same action
-    title: 'Start a new session',
+    // Switch title: the card names the added entry; the action stays in the button label
+    title: 'New session button',
     // Switch description: entry position and the two possible outcomes
     description:
       'Adds a button left of the composer. Confirming opens a blank conversation in the same workspace, keeping or deleting the current one.',

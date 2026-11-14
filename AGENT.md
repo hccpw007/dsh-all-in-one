@@ -133,7 +133,7 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 │       │   │   ├── read-cache.ts     # 读取链路的 TTL 缓存与 in-flight 合并
 │       │   │   └── with-timeout.ts   # 给宿主异步操作加可诊断的超时
 │       │   └── locales.ts   # 本功能的中英文文案
-│       ├── expand-process/  # 开关型功能：展开过程
+│       ├── expand-process/  # 开关型功能：执行过程展开
 │           ├── index.tsx    # 注册定义：只提供 switch，没有独立页面
 │           ├── toggle.tsx   # 网格中的开关入口
 │           ├── expand-process.ts # 引导脚本与开关状态读写，本功能专属
@@ -261,9 +261,9 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 
 | 分组 | group id | 包含功能 | 切换开关是否刷新页面 |
 |---|---|---|---|
-| 对话体验 | `conversation` | 展开过程、会话图片预览、开启新会话、编辑排队消息、全自动执行 | 是 |
-| 界面布局 | `layout` | 会话历史左侧、菜单收进更多、项目会话数、删除会话 | 是 |
-| 配置与维护 | `config` | 技能包、项目记忆、自动压缩会话、Cookie 清理 | 否 |
+| 对话体验 | `conversation` | 执行过程展开、图片直接预览、新会话入口、编辑排队消息、全自动执行 | 是 |
+| 界面布局 | `layout` | 轮次导航左置、顶部菜单收纳、项目显示会话数、开启新会话 | 是 |
+| 配置与维护 | `config` | 技能包、项目记忆、自动压缩会话、过期登录清理 | 否 |
 
 组内功能全部声明 `reloadsPage: true` 时，外壳在分组标题旁统一标注「切换后刷新生效」，
 不再逐卡重复同一句提示；新增需要刷新的开关功能时，除了给条目补 `reloadsPage: true`，

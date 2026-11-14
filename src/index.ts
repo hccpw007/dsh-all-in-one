@@ -2,7 +2,7 @@
  * All In One 的宿主侧入口。
  *
  * 壳子只负责装配：合并各 feature 的宿主服务依赖，并依次调用它们的 apply。
- * 具体能力（如「展开过程」的 index.html 注入）由 feature 目录内的 host.ts 实现。
+ * 具体能力（如「执行过程展开」的 index.html 注入）由 feature 目录内的 host.ts 实现。
  *
  * 宿主按 package.json 的 exports 直接加载根目录 index.js（JS），
  * 源码放在这里，由 build.ts 产出同名产物。

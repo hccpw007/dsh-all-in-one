@@ -3,10 +3,10 @@ import type { FeatureLocales } from '../../shell/registry'
 /** 「桌面版 Cookie 清理」的中英文文案；key 由外壳统一加 `desktop-cookie.` 前缀。 */
 export const desktopCookieLocales: FeatureLocales = {
   zh: {
-    // 开关标题
-    title: 'Cookie 清理',
-    // 开关用途说明
-    description: '启动时清理过期的登录 Cookie，避免桌面版认证失败。',
+    // 开关标题：启动时清掉过期的登录 Cookie
+    title: '过期登录清理',
+    // 开关用途说明：清理对象是启动时留下的旧认证 Cookie，不是等它过期
+    description: '启动时清掉更早的桌面版认证 Cookie，避免旧记录堆到认证失败。',
     // 阈值输入框的标签
     thresholdLabel: '阈值',
     // 保留条数输入框的标签
@@ -23,8 +23,8 @@ export const desktopCookieLocales: FeatureLocales = {
     retainInvalid: '保留条数需要是整数，且小于阈值',
   },
   en: {
-    // Switch title
-    title: 'Cookie cleanup',
+    // Switch title: prunes expired sign-in cookies at launch
+    title: 'Stale sign-in cleanup',
     // Switch description
     description: 'Prune stale sign-in cookies at launch so the desktop app can authenticate.',
     // Label of the threshold input

@@ -4,7 +4,7 @@ import { imagePreviewLocales } from './locales'
 import { ImagePreviewToggle } from './toggle'
 
 /**
- * 「会话图片预览」开关的注册定义。
+ * 「图片直接预览」开关的注册定义。
  *
  * 开关型 feature 没有独立页面：网格里是开关，打开后客户端扩展在会话区域
  * 扫描本地图片地址并在下方插入预览。

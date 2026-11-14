@@ -1,10 +1,10 @@
 import type { FeatureLocales } from '../../shell/registry'
 
-/** 「展开过程」开关的中英文文案；key 由外壳统一加 `expand-process.` 前缀。 */
+/** 「执行过程展开」开关的中英文文案；key 由外壳统一加 `expand-process.` 前缀。 */
 export const expandProcessLocales: FeatureLocales = {
   zh: {
-    // 开关标题
-    title: '展开过程',
+    // 开关标题：会话里的过程条目是否默认展开
+    title: '执行过程展开',
     // 开关用途说明：解释打开后会话里的哪些内容会展开
     description: '会话里的「思考」与「运行命令」默认展开，无需逐条点开。',
     // 展开范围标签
@@ -17,8 +17,8 @@ export const expandProcessLocales: FeatureLocales = {
     saveFailed: '保存开关状态失败，请检查浏览器存储权限。',
   },
   en: {
-    // Switch title
-    title: 'Expand process',
+    // Switch title: whether process rows open without a click
+    title: 'Expand execution steps',
     // Switch description explaining what expands when enabled
     description: 'Keep reasoning and command rows expanded so they need no manual opening.',
     // Expansion scope label

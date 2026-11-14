@@ -1,12 +1,17 @@
 import type { FeatureLocales } from '../../shell/registry'
 
-/** 「删除会话」的中英文文案；key 由外壳统一加 `delete-session.` 前缀。 */
+/**
+ * 「开启新会话」卡片的中英文文案；key 由外壳统一加 `delete-session.` 前缀。
+ *
+ * 卡片标题按界面用词叫「开启新会话」，本功能实际做的是删除会话，
+ * 因此条目里的动作与确认弹窗文案仍保持删除语义。
+ */
 export const deleteSessionLocales: FeatureLocales = {
   zh: {
     // 开关标题
-    title: '删除会话',
-    // 开关用途说明：说明打开后会话行会出现删除入口、工作区菜单会出现批量删除入口，且删除前需要先在弹窗里确认
-    description: '会话悬停操作里新增删除按钮，工作区「更多」菜单可一键删除全部会话，确认后清除本地记录。',
+    title: '开启新会话',
+    // 开关用途说明：说明两个删除入口、运行中的会话会被跳过，以及删除前需要先在弹窗里确认
+    description: '会话悬停操作新增删除按钮，工作区「更多」可一键删全部会话，运行中的会跳过，确认后清本地记录。',
     // 开关状态写入失败时的提示
     saveFailed: '保存开关状态失败，请检查浏览器存储权限。',
     // 会话行删除按钮的可访问名称与悬停提示
@@ -42,9 +47,9 @@ export const deleteSessionLocales: FeatureLocales = {
   },
   en: {
     // Switch title
-    title: 'Delete sessions',
-    // Switch description covering the row action, the bulk workspace entry, and the confirmation step
-    description: 'Adds a delete button to session hover actions and a delete-all entry to the workspace menu; a dialog confirms first.',
+    title: 'Start a new session',
+    // Switch description covering both delete entries, the running-session skip, and the confirmation step
+    description: 'Adds a delete button to session hover actions and a delete-all entry to More; running sessions are skipped; a dialog confirms.',
     // Shown when the switch state cannot be persisted
     saveFailed: 'Could not save the switch state. Check browser storage permissions.',
     // Accessible name and hover hint of the row delete button
