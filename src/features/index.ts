@@ -6,6 +6,7 @@ import imagePreview from './image-preview'
 import sessionHistory from './session-history'
 import sidebarMore from './sidebar-more'
 import deleteSession from './delete-session'
+import clearSession from './clear-session'
 import projectMemory from './project-memory'
 import autoCompact from './auto-compact'
 import desktopCookie from './desktop-cookie'
@@ -28,6 +29,7 @@ export const featureList: FeatureDefinition[] = [
   sessionHistory,
   sidebarMore,
   deleteSession,
+  clearSession,
   projectMemory,
   powerPack,
   autoCompact,

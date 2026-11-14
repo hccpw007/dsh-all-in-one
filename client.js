@@ -39,10 +39,10 @@ window.__ModuleLoader__.load({
       default: () => entry_default
     });
     module.exports = __toCommonJS(entry_exports);
-    var import_react24 = __toESM(require("react"), 1);
+    var import_react27 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = '*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-8{height:2rem}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.transform,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[13px\\]{line-height:13px}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-xl{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.\\[all-in-one\\:perf\\]{all-in-one:perf}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.aio-workspace-count:after{content:"\uFF08" attr(data-aio-workspace-count) "\uFF09";color:var(--dsw-alias-label-tertiary);font-size:12px;font-weight:400;margin-inline-start:1px}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}';
+    var styles_default = '*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-8{height:2rem}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.transform,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pl-\\[22px\\]{padding-left:22px}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[13px\\]{line-height:13px}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-\\[var\\(--dsw-alias-brand-primary\\)\\],.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-xl{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.ring{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.\\[all-in-one\\:perf\\]{all-in-one:perf}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.aio-workspace-count:after{content:"\uFF08" attr(data-aio-workspace-count) "\uFF09";color:var(--dsw-alias-label-tertiary);font-size:12px;font-weight:400;margin-inline-start:1px}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}';
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -277,17 +277,17 @@ window.__ModuleLoader__.load({
     }
     function createSeatStore() {
       let snapshot = initialState();
-      const listeners2 = /* @__PURE__ */ new Set();
+      const listeners3 = /* @__PURE__ */ new Set();
       return {
         getSnapshot: () => snapshot,
         set(patch) {
           snapshot = { ...snapshot, ...patch };
-          for (const listener of listeners2) listener();
+          for (const listener of listeners3) listener();
         },
         subscribe(listener) {
-          listeners2.add(listener);
+          listeners3.add(listener);
           return () => {
-            listeners2.delete(listener);
+            listeners3.delete(listener);
           };
         }
       };
@@ -1613,8 +1613,8 @@ window.__ModuleLoader__.load({
       const [enabled] = (0, import_react10.useState)(readExpandProcessEnabled);
       const [mode] = (0, import_react10.useState)(readExpandProcessMode);
       const [saveFailed, setSaveFailed] = (0, import_react10.useState)(false);
-      const save = (apply7) => {
-        if (!apply7()) {
+      const save = (apply8) => {
+        if (!apply8()) {
           setSaveFailed(true);
           return;
         }
@@ -2368,16 +2368,16 @@ window.__ModuleLoader__.load({
     }
     function installImagePreviewObserver() {
       let container = findConversationContainer();
-      const pending2 = /* @__PURE__ */ new Set();
+      const pending3 = /* @__PURE__ */ new Set();
       let frame = 0;
       let disposed = false;
       function flush() {
         if (container === void 0 || !container.isConnected) {
-          pending2.clear();
+          pending3.clear();
           return;
         }
-        const nodes = Array.from(pending2).slice(0, MAX_NODES_PER_FRAME);
-        for (const node of nodes) pending2.delete(node);
+        const nodes = Array.from(pending3).slice(0, MAX_NODES_PER_FRAME);
+        for (const node of nodes) pending3.delete(node);
         const blocks = /* @__PURE__ */ new Set();
         let rescanContainer = false;
         for (const node of nodes) {
@@ -2411,15 +2411,15 @@ window.__ModuleLoader__.load({
         frame = window.requestAnimationFrame(() => {
           frame = 0;
           flush();
-          if (pending2.size > 0) schedule();
+          if (pending3.size > 0) schedule();
         });
       }
       function trimPending() {
-        if (pending2.size <= MAX_PENDING_NODES) return;
-        let overflow = pending2.size - MAX_PENDING_NODES;
-        for (const node of pending2) {
+        if (pending3.size <= MAX_PENDING_NODES) return;
+        let overflow = pending3.size - MAX_PENDING_NODES;
+        for (const node of pending3) {
           if (overflow <= 0) break;
-          pending2.delete(node);
+          pending3.delete(node);
           overflow -= 1;
         }
       }
@@ -2430,20 +2430,20 @@ window.__ModuleLoader__.load({
             continue;
           }
           if (record.type === "characterData") {
-            pending2.add(record.target);
+            pending3.add(record.target);
             continue;
           }
-          for (const node of record.addedNodes) pending2.add(node);
+          for (const node of record.addedNodes) pending3.add(node);
         }
         trimPending();
         schedule();
       });
       function enqueueTree(element) {
         if (element.children.length === 0) {
-          pending2.add(element);
+          pending3.add(element);
           return;
         }
-        for (const child of element.children) pending2.add(child);
+        for (const child of element.children) pending3.add(child);
       }
       function attach() {
         if (container === void 0) return;
@@ -3400,7 +3400,7 @@ window.__ModuleLoader__.load({
       deleteWorkspaceSessions,
       settle
     }) {
-      const [pending2, setPending] = (0, import_react15.useState)(false);
+      const [pending3, setPending] = (0, import_react15.useState)(false);
       const [error, setError] = (0, import_react15.useState)(null);
       const readRequest = useRequest ?? useNoRequest;
       const request5 = readRequest((value) => value);
@@ -3411,12 +3411,12 @@ window.__ModuleLoader__.load({
       if (request5 === null) return null;
       const isWorkspace = request5.kind === "workspace";
       const close = () => {
-        if (pending2) return;
+        if (pending3) return;
         setError(null);
         settle?.();
       };
       const confirm = async () => {
-        if (pending2) return;
+        if (pending3) return;
         setPending(true);
         setError(null);
         try {
@@ -3447,15 +3447,15 @@ window.__ModuleLoader__.load({
           closeLabel: t("confirmCancel"),
           title: isWorkspace ? t("confirmAllTitle") : t("confirmTitle"),
           description: isWorkspace ? t("confirmAllTarget") : t("confirmTarget"),
-          footer: /* @__PURE__ */ import_react15.default.createElement(import_react15.default.Fragment, null, /* @__PURE__ */ import_react15.default.createElement(Button, { variant: "outline", disabled: pending2, onClick: close }, t("confirmCancel")), /* @__PURE__ */ import_react15.default.createElement(
+          footer: /* @__PURE__ */ import_react15.default.createElement(import_react15.default.Fragment, null, /* @__PURE__ */ import_react15.default.createElement(Button, { variant: "outline", disabled: pending3, onClick: close }, t("confirmCancel")), /* @__PURE__ */ import_react15.default.createElement(
             Button,
             {
               variant: "danger",
               "data-modal-autofocus": "",
-              disabled: pending2,
+              disabled: pending3,
               onClick: () => void confirm()
             },
-            pending2 ? t("deleting") : t("confirmDelete")
+            pending3 ? t("deleting") : t("confirmDelete")
           ))
         },
         /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-1 text-[13px] font-medium leading-5 text-primary" }, request5.title),
@@ -3573,7 +3573,7 @@ window.__ModuleLoader__.load({
       deleteWorkspace.parentElement?.insertBefore(item, deleteWorkspace);
     }
     function installWorkspaceMenu(t, sessions, readUiWorkspace) {
-      let pending2;
+      let pending3;
       let scheduled = false;
       let disposed = false;
       const onClick = (event) => {
@@ -3583,17 +3583,17 @@ window.__ModuleLoader__.load({
         if (!(row instanceof HTMLElement)) return;
         const button = node.closest("button");
         if (button === null || row.querySelector("button") !== button) return;
-        pending2 = readWorkspaceRow(row);
+        pending3 = readWorkspaceRow(row);
       };
       const scan = () => {
         scheduled = false;
-        if (disposed || pending2 === void 0) return;
+        if (disposed || pending3 === void 0) return;
         const menu = document.querySelector(MENU_SELECTOR);
         if (!(menu instanceof HTMLElement)) return;
         if (readDeleteSessionEnabled()) {
-          injectMenuItem(menu, pending2, sessions, readUiWorkspace(), t);
+          injectMenuItem(menu, pending3, sessions, readUiWorkspace(), t);
         }
-        pending2 = void 0;
+        pending3 = void 0;
       };
       const schedule = () => {
         if (scheduled || disposed) return;
@@ -3890,17 +3890,573 @@ window.__ModuleLoader__.load({
     };
     var delete_session_default = deleteSessionFeature;
 
-    // src/features/project-memory/entry.tsx
-    var import_react18 = __toESM(require("react"), 1);
+    // src/features/clear-session/client.tsx
+    var import_react19 = __toESM(require("react"), 1);
 
-    // src/features/project-memory/api.ts
-    var ENDPOINT3 = "/dsh-all-in-one/memory";
-    var REQUEST_TIMEOUT_MS3 = 1e4;
-    async function request2(init = {}) {
+    // src/features/clear-session/clear-button.ts
+    var BUTTON_ATTRIBUTE = "data-aio-clear-session";
+    var STYLE_ID3 = "aio-clear-session-style";
+    var BUTTON_CLASS = "aio-clear-session";
+    var SVG_NAMESPACE3 = "http://www.w3.org/2000/svg";
+    var STYLE_TEXT3 = `
+    .${BUTTON_CLASS} {
+      display: grid;
+      place-items: center;
+      flex: none;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border: 0;
+      border-radius: 8px;
+      corner-shape: round;
+      background: transparent;
+      color: var(--dsw-alias-label-secondary, currentColor);
+      cursor: pointer;
+    }
+    .${BUTTON_CLASS}:hover:not(:disabled) {
+      background: var(--dsw-alias-interactive-bg-hover, rgba(127, 127, 127, 0.12));
+      color: var(--dsw-alias-label-primary, currentColor);
+    }
+    .${BUTTON_CLASS}:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+    .${BUTTON_CLASS} svg {
+      display: block;
+    }
+    `;
+    function createClearIcon() {
+      const svg = document.createElementNS(SVG_NAMESPACE3, "svg");
+      svg.setAttribute("width", "16");
+      svg.setAttribute("height", "16");
+      svg.setAttribute("viewBox", "0 0 16 16");
+      svg.setAttribute("fill", "none");
+      svg.setAttribute("stroke", "currentColor");
+      svg.setAttribute("stroke-width", "1.4");
+      svg.setAttribute("stroke-linecap", "round");
+      svg.setAttribute("stroke-linejoin", "round");
+      svg.setAttribute("aria-hidden", "true");
+      const ring = document.createElementNS(SVG_NAMESPACE3, "path");
+      ring.setAttribute("d", "M8 3.2a4.8 4.8 0 1 1-4.8 4.8");
+      svg.appendChild(ring);
+      const bar = document.createElementNS(SVG_NAMESPACE3, "path");
+      bar.setAttribute("d", "M5.9 8h4.2");
+      svg.appendChild(bar);
+      return svg;
+    }
+    function ensureStyle2() {
+      if (document.getElementById(STYLE_ID3) !== null) return;
+      const style = document.createElement("style");
+      style.id = STYLE_ID3;
+      style.textContent = STYLE_TEXT3;
+      document.head.appendChild(style);
+    }
+    function syncButton(button, target, options) {
+      const disabled = target === void 0 || target.running;
+      button.disabled = disabled;
+      button.title = target?.running === true ? options.runningHint : options.label;
+    }
+    function findToolbars() {
+      const toolbars = [];
+      for (const input of document.querySelectorAll('input[type="file"]')) {
+        const parent = input.parentElement;
+        if (parent === null) continue;
+        if (parent.querySelector("button") === null) continue;
+        if (parent.querySelector(`[${BUTTON_ATTRIBUTE}]`) !== null) continue;
+        toolbars.push(parent);
+      }
+      return toolbars;
+    }
+    function installClearButton(options) {
+      ensureStyle2();
+      const buttons = /* @__PURE__ */ new Set();
+      let frame = 0;
+      let scheduled = false;
+      let disposed = false;
+      const syncAll = () => {
+        const target = options.readTarget();
+        for (const button of buttons) {
+          if (!button.isConnected) {
+            buttons.delete(button);
+            continue;
+          }
+          syncButton(button, target, options);
+        }
+      };
+      const scan = () => {
+        frame = 0;
+        scheduled = false;
+        if (disposed) return;
+        for (const toolbar of findToolbars()) {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = BUTTON_CLASS;
+          button.setAttribute(BUTTON_ATTRIBUTE, "");
+          button.appendChild(createClearIcon());
+          button.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            const target = options.readTarget();
+            if (target === void 0 || target.running) return;
+            options.onRequest(target);
+          });
+          toolbar.insertBefore(button, toolbar.firstElementChild);
+          buttons.add(button);
+        }
+        syncAll();
+      };
+      const schedule = () => {
+        if (scheduled || disposed) return;
+        scheduled = true;
+        frame = window.requestAnimationFrame(scan);
+      };
+      const observer = new MutationObserver(schedule);
+      observer.observe(document.body, { childList: true, subtree: true });
+      schedule();
+      return () => {
+        disposed = true;
+        observer.disconnect();
+        if (frame !== 0) window.cancelAnimationFrame(frame);
+        for (const button of buttons) button.remove();
+        buttons.clear();
+        document.getElementById(STYLE_ID3)?.remove();
+      };
+    }
+
+    // src/features/clear-session/api.ts
+    var ENDPOINT3 = "/dsh-all-in-one/sessions";
+    var REQUEST_TIMEOUT_MS3 = 15e3;
+    async function requestDeleteSession2(sessionId) {
       const controller = new AbortController();
       const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS3);
       try {
         const response = await fetch(new URL(ENDPOINT3, window.location.origin).toString(), {
+          method: "POST",
+          credentials: "same-origin",
+          cache: "no-store",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ sessionId }),
+          signal: controller.signal
+        });
+        if (!response.ok) {
+          if (response.status === 404) {
+            console.info("[clear-session] \u65E7\u4F1A\u8BDD\u5DF2\u4E0D\u5B58\u5728\uFF0C\u6309\u5DF2\u6E05\u7A7A\u5904\u7406:", sessionId);
+            return;
+          }
+          const text = await response.text();
+          let message = `HTTP ${response.status}`;
+          try {
+            const parsed = JSON.parse(text);
+            if (typeof parsed.error === "string") message = parsed.error;
+            else console.error("[clear-session] \u5BBF\u4E3B\u8FD4\u56DE\u4E86\u975E\u9884\u671F\u9519\u8BEF\u4F53:", text);
+          } catch (error) {
+            console.error("[clear-session] \u89E3\u6790\u9519\u8BEF\u54CD\u5E94\u5931\u8D25:", error, text);
+          }
+          throw new Error(message);
+        }
+        const payload = await response.json();
+        if (payload.deleted !== true) throw new Error(payload.error ?? "\u5BBF\u4E3B\u672A\u786E\u8BA4\u5220\u9664");
+      } catch (error) {
+        console.error("[clear-session] \u8BF7\u6C42\u5BBF\u4E3B\u5220\u9664\u4F1A\u8BDD\u5931\u8D25:", sessionId, error);
+        throw error;
+      } finally {
+        window.clearTimeout(timer);
+      }
+    }
+
+    // src/features/clear-session/clear-session.ts
+    var DETACH_TIMEOUT_MS = 1500;
+    var DETACH_POLL_MS = 50;
+    function findCurrentSession(deps) {
+      const state = deps.sessions.list.getSnapshot();
+      const sessionId = state.ids.find((id) => (state.byId[id]?.retainedBy?.mainView ?? 0) > 0);
+      if (sessionId === void 0) return void 0;
+      const summary = state.byId[sessionId];
+      const workspaceId = deps.uiWorkspace?.workspaces?.list.getSnapshot().items.find((item) => item.sessionIds.includes(sessionId))?.workspaceId;
+      return {
+        sessionId,
+        workspaceId,
+        cwd: summary?.cwd,
+        running: summary?.running === true
+      };
+    }
+    async function prepareBlank(deps, target) {
+      const create = async () => {
+        if (typeof deps.sessions.create !== "function") return void 0;
+        try {
+          return await deps.sessions.create({
+            ...target.workspaceId === void 0 ? {} : { workspaceId: target.workspaceId },
+            ...target.cwd === void 0 ? {} : { cwd: target.cwd }
+          });
+        } catch (error) {
+          console.error("[clear-session] \u65B0\u5EFA\u7A7A\u767D\u4F1A\u8BDD\u5931\u8D25:", error);
+          throw error;
+        }
+      };
+      if (target.workspaceId !== void 0 && typeof deps.uiWorkspace?.connectWorkspace === "function") {
+        try {
+          const reused = await deps.uiWorkspace.connectWorkspace(target.workspaceId);
+          if (reused !== target.sessionId) return reused;
+        } catch (error) {
+          console.error("[clear-session] \u590D\u7528\u7A7A\u767D\u4F1A\u8BDD\u5931\u8D25\uFF0C\u6539\u7528\u65B0\u5EFA:", error);
+        }
+      }
+      return await create();
+    }
+    async function waitDetached(sessions, sessionId) {
+      const startedAt = Date.now();
+      while (Date.now() - startedAt < DETACH_TIMEOUT_MS) {
+        const summary = sessions.list.getSnapshot().byId[sessionId];
+        if (summary === void 0 || (summary.retainedBy?.mainView ?? 0) === 0) return;
+        await new Promise((resolve) => {
+          window.setTimeout(resolve, DETACH_POLL_MS);
+        });
+      }
+      console.warn("[clear-session] \u7B49\u5F85\u4E3B\u89C6\u56FE\u91CA\u653E\u65E7\u4F1A\u8BDD\u8D85\u65F6\uFF0C\u7EE7\u7EED\u5904\u7406:", sessionId);
+    }
+    async function clearSession(deps, target, keepSource) {
+      if (target.running) throw new Error("\u5F53\u524D\u5BF9\u8BDD\u6B63\u5728\u8FD0\u884C\uFF0C\u8BF7\u5148\u505C\u6B62");
+      const nextId = await prepareBlank(deps, target);
+      if (nextId !== void 0) deps.uiWorkspace?.openSession?.(nextId);
+      else deps.uiWorkspace?.startSession?.(target.workspaceId);
+      await waitDetached(deps.sessions, target.sessionId);
+      if (keepSource) {
+        if (typeof deps.uiWorkspace?.archiveSession !== "function") {
+          throw new Error("\u5BBF\u4E3B\u7248\u672C\u4E0D\u652F\u6301\u5F52\u6863\u4F1A\u8BDD");
+        }
+        try {
+          await deps.uiWorkspace.archiveSession(target.sessionId, { stopActivity: true });
+        } catch (error) {
+          console.error("[clear-session] \u5F52\u6863\u65E7\u4F1A\u8BDD\u5931\u8D25:", target.sessionId, error);
+          throw error;
+        }
+      } else {
+        await requestDeleteSession2(target.sessionId);
+        deps.sessions.handleSessionRemoved?.(target.sessionId);
+      }
+      return nextId;
+    }
+
+    // src/features/clear-session/ClearSessionDialog.tsx
+    var import_dsh_client_ui_primitives3 = require("@deepseek-ai/dsh-client-ui-primitives");
+    var import_react18 = __toESM(require("react"), 1);
+    var useNoTarget = (() => null);
+    function ClearSessionDialog({ t, useTarget, clear, settle }) {
+      const [keepSource, setKeepSource] = (0, import_react18.useState)(true);
+      const [pending3, setPending] = (0, import_react18.useState)(false);
+      const [error, setError] = (0, import_react18.useState)(null);
+      const readTarget = useTarget ?? useNoTarget;
+      const target = readTarget((value) => value);
+      const targetKey = target?.sessionId ?? "";
+      (0, import_react18.useEffect)(() => {
+        setKeepSource(true);
+        setError(null);
+      }, [targetKey]);
+      if (target === null) return null;
+      const close = () => {
+        if (pending3) return;
+        setError(null);
+        settle?.();
+      };
+      const confirm = async () => {
+        if (pending3 || target.running) return;
+        setPending(true);
+        setError(null);
+        try {
+          await clear?.(target, keepSource);
+        } catch (failure) {
+          console.error("[clear-session] \u6E05\u7A7A\u4F1A\u8BDD\u5931\u8D25:", failure);
+          setPending(false);
+          setError(`${t("failed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
+          return;
+        }
+        setPending(false);
+        settle?.();
+      };
+      return /* @__PURE__ */ import_react18.default.createElement(
+        import_dsh_client_ui_primitives3.Modal,
+        {
+          open: true,
+          onClose: close,
+          closeLabel: t("cancel"),
+          title: t("dialogTitle"),
+          description: t("dialogMessage"),
+          footer: /* @__PURE__ */ import_react18.default.createElement(import_react18.default.Fragment, null, /* @__PURE__ */ import_react18.default.createElement(Button, { variant: "outline", disabled: pending3, onClick: close }, t("cancel")), /* @__PURE__ */ import_react18.default.createElement(
+            Button,
+            {
+              variant: "danger",
+              "data-modal-autofocus": "",
+              disabled: pending3 || target.running,
+              onClick: () => void confirm()
+            },
+            pending3 ? t("clearing") : t("confirm")
+          ))
+        },
+        /* @__PURE__ */ import_react18.default.createElement("label", { className: "mt-3 flex cursor-pointer items-start gap-2" }, /* @__PURE__ */ import_react18.default.createElement(
+          "input",
+          {
+            type: "checkbox",
+            className: "mt-0.5 h-3.5 w-3.5 flex-none accent-[var(--dsw-alias-brand-primary)]",
+            checked: keepSource,
+            disabled: pending3,
+            onChange: (event) => setKeepSource(event.target.checked)
+          }
+        ), /* @__PURE__ */ import_react18.default.createElement("span", { className: "text-[13px] font-medium leading-5 text-primary" }, t("keepLabel"))),
+        /* @__PURE__ */ import_react18.default.createElement("p", { className: "mt-1 pl-[22px] text-[12px] leading-[18px] text-secondary" }, keepSource ? t("keepHint") : t("discardHint")),
+        target.running ? /* @__PURE__ */ import_react18.default.createElement("p", { className: "mt-2 pl-[22px] text-[12px] leading-[18px] text-warn", role: "alert" }, t("runningHint")) : null,
+        error !== null ? /* @__PURE__ */ import_react18.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null
+      );
+    }
+
+    // src/features/clear-session/dialog-store.ts
+    var listeners2 = /* @__PURE__ */ new Set();
+    var pending2 = null;
+    function notify2() {
+      for (const listener of [...listeners2]) {
+        try {
+          listener();
+        } catch (error) {
+          console.error("[clear-session] \u786E\u8BA4\u5F39\u7A97\u8BA2\u9605\u8005\u5904\u7406\u5931\u8D25:", error);
+        }
+      }
+    }
+    var clearSessionStore = {
+      getSnapshot: () => pending2,
+      subscribe(listener) {
+        listeners2.add(listener);
+        return () => {
+          listeners2.delete(listener);
+        };
+      },
+      request(target) {
+        pending2 = target;
+        notify2();
+      },
+      settle() {
+        if (pending2 === null) return;
+        pending2 = null;
+        notify2();
+      }
+    };
+
+    // src/features/clear-session/storage.ts
+    var CLEAR_SESSION_STORAGE_KEY = "dsh-all-in-one:clear-session";
+    function readClearSessionEnabled() {
+      try {
+        return window.localStorage.getItem(CLEAR_SESSION_STORAGE_KEY) === "1";
+      } catch (error) {
+        console.error("[clear-session] \u8BFB\u53D6\u5F00\u5173\u72B6\u6001\u5931\u8D25:", error);
+        return false;
+      }
+    }
+    function writeClearSessionEnabled(enabled) {
+      try {
+        window.localStorage.setItem(CLEAR_SESSION_STORAGE_KEY, enabled ? "1" : "0");
+        return true;
+      } catch (error) {
+        console.error("[clear-session] \u5199\u5165\u5F00\u5173\u72B6\u6001\u5931\u8D25:", error);
+        return false;
+      }
+    }
+
+    // src/features/clear-session/client.tsx
+    var OVERLAY_SLOT2 = "shell.overlay";
+    function apply6(ctx, t) {
+      ctx.inject(["sessions"], (scoped) => {
+        const sessions = scoped.sessions;
+        if (sessions === void 0) return;
+        let uiWorkspace;
+        scoped.inject(["uiWorkspace"], (withWorkspace) => {
+          uiWorkspace = withWorkspace.uiWorkspace;
+          return () => {
+            uiWorkspace = void 0;
+          };
+        });
+        const runClear = async (target, keepSource) => clearSession({ sessions, uiWorkspace }, target, keepSource);
+        ctx.slots.inject(
+          OVERLAY_SLOT2,
+          () => ctx.slots.register(
+            {
+              name: OVERLAY_SLOT2,
+              id: "clear-session-confirm",
+              inject: () => ({
+                hooks: { target: clearSessionStore },
+                clear: runClear,
+                settle: clearSessionStore.settle
+              })
+            },
+            (props) => /* @__PURE__ */ import_react19.default.createElement(
+              ClearSessionDialog,
+              {
+                ...props,
+                t
+              }
+            )
+          )
+        );
+        if (!readClearSessionEnabled()) return;
+        ctx.effect(
+          () => installClearButton({
+            label: t("action"),
+            runningHint: t("runningHint"),
+            readTarget: () => findCurrentSession({ sessions, uiWorkspace }),
+            onRequest: (target) => clearSessionStore.request(target)
+          }),
+          "clear-session: input button"
+        );
+      });
+    }
+
+    // src/features/clear-session/locales.ts
+    var clearSessionLocales = {
+      zh: {
+        // 开关标题
+        title: "\u6E05\u7A7A\u4F1A\u8BDD",
+        // 开关用途说明：点明入口位置与两种结果（归档或删除）
+        description: "\u8F93\u5165\u6846\u5DE6\u4FA7\u65B0\u589E\u6E05\u7A7A\u6309\u94AE\uFF0C\u786E\u8BA4\u540E\u5728\u540C\u4E00\u5DE5\u4F5C\u533A\u6253\u5F00\u4E00\u6761\u7A7A\u767D\u5BF9\u8BDD\uFF0C\u65E7\u5BF9\u8BDD\u6309\u4F60\u7684\u9009\u62E9\u5F52\u6863\u6216\u5220\u9664\u3002",
+        // 提示切换开关会刷新页面，避免用户丢失滚动位置与未保存的输入
+        reloadHint: "\u5207\u6362\u540E\u4F1A\u5237\u65B0\u9875\u9762\u4EE5\u751F\u6548\u3002",
+        // 开关状态写入失败时的提示
+        saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
+        // 输入框按钮的名称与悬停提示
+        action: "\u6E05\u7A7A\u4F1A\u8BDD",
+        // 当前对话正在运行、按钮不可用时的悬停提示
+        runningHint: "\u5F53\u524D\u5BF9\u8BDD\u6B63\u5728\u8FD0\u884C\uFF0C\u8BF7\u5148\u505C\u6B62",
+        // 确认弹窗标题
+        dialogTitle: "\u6E05\u7A7A\u4F1A\u8BDD",
+        // 确认弹窗说明：解释清空不是删除消息，而是换到一条新对话
+        dialogMessage: "\u5F53\u524D\u5BF9\u8BDD\u4E0D\u4F1A\u7EE7\u7EED\u4F7F\u7528\uFF0C\u5C06\u5728\u540C\u4E00\u5DE5\u4F5C\u533A\u6253\u5F00\u4E00\u6761\u65B0\u7684\u7A7A\u767D\u5BF9\u8BDD\u3002",
+        // 「保留当前会话」复选框标签
+        keepLabel: "\u4FDD\u7559\u5F53\u524D\u4F1A\u8BDD",
+        // 勾选时的说明：旧对话走归档，可恢复
+        keepHint: "\u65E7\u5BF9\u8BDD\u4F1A\u88AB\u5F52\u6863\uFF0C\u53EF\u5728\u5F52\u6863\u5217\u8868\u91CC\u627E\u56DE\u3002",
+        // 取消勾选时的说明：旧对话被真删，不可恢复
+        discardHint: "\u65E7\u5BF9\u8BDD\u7684\u672C\u5730\u8BB0\u5F55\u4F1A\u88AB\u6C38\u4E45\u5220\u9664\uFF0C\u65E0\u6CD5\u6062\u590D\u3002",
+        // 弹窗取消按钮
+        cancel: "\u53D6\u6D88",
+        // 弹窗确认按钮
+        confirm: "\u6E05\u7A7A",
+        // 执行中的确认按钮文字
+        clearing: "\u6E05\u7A7A\u4E2D\u2026",
+        // 清空失败的提示前缀，后面拼接宿主返回的原因
+        failed: "\u6E05\u7A7A\u5931\u8D25"
+      },
+      en: {
+        // Switch title
+        title: "Clear session",
+        // Switch description: entry position and the two possible outcomes
+        description: "Adds a clear button to the left of the composer. Confirming opens a blank conversation in the same workspace, and the old one is archived or deleted as you choose.",
+        // Switching reloads the page so the composer button appears or disappears
+        reloadHint: "Switching reloads the page to take effect.",
+        // Shown when the switch state cannot be persisted
+        saveFailed: "Could not save the switch state. Check the browser storage permission.",
+        // Composer button label and hover tooltip
+        action: "Clear session",
+        // Tooltip while the current conversation is running
+        runningHint: "This conversation is running. Stop it first.",
+        // Dialog title
+        dialogTitle: "Clear session",
+        // Dialog message: clearing starts a new conversation instead of deleting messages
+        dialogMessage: "This conversation will no longer be used. A new blank conversation opens in the same workspace.",
+        // Keep-current-session checkbox label
+        keepLabel: "Keep the current conversation",
+        // Hint while keeping: the old conversation is archived and recoverable
+        keepHint: "The old conversation is archived and can be restored from the archive list.",
+        // Hint after unchecking: the old conversation is deleted for good
+        discardHint: "The local records of the old conversation are deleted permanently.",
+        // Dialog cancel button
+        cancel: "Cancel",
+        // Dialog confirm button
+        confirm: "Clear",
+        // Confirm button while the operation runs
+        clearing: "Clearing\u2026",
+        // Failure prefix followed by the reason returned by the host
+        failed: "Clear failed"
+      }
+    };
+
+    // src/features/clear-session/toggle.tsx
+    var import_react20 = __toESM(require("react"), 1);
+    function ClearIcon() {
+      return /* @__PURE__ */ import_react20.default.createElement(
+        "svg",
+        {
+          viewBox: "0 0 24 24",
+          width: "14",
+          height: "14",
+          "aria-hidden": "true",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: "1.8",
+          strokeLinecap: "round",
+          strokeLinejoin: "round"
+        },
+        /* @__PURE__ */ import_react20.default.createElement("path", { d: "M12 4.8a7.2 7.2 0 1 1-7.2 7.2" }),
+        /* @__PURE__ */ import_react20.default.createElement("path", { d: "M8.9 12h6.2" })
+      );
+    }
+    function ClearSessionToggle({ t }) {
+      const [enabled, setEnabled] = (0, import_react20.useState)(readClearSessionEnabled);
+      const [saveFailed, setSaveFailed] = (0, import_react20.useState)(false);
+      const handleToggle = () => {
+        const next = !enabled;
+        if (!writeClearSessionEnabled(next)) {
+          setSaveFailed(true);
+          return;
+        }
+        setSaveFailed(false);
+        setEnabled(next);
+        window.location.reload();
+      };
+      return /* @__PURE__ */ import_react20.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react20.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react20.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react20.default.createElement(ClearIcon, null)), /* @__PURE__ */ import_react20.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react20.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react20.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), /* @__PURE__ */ import_react20.default.createElement("span", { className: "block text-[10px] leading-[13px] text-secondary" }, t("reloadHint"))), /* @__PURE__ */ import_react20.default.createElement(
+        "button",
+        {
+          type: "button",
+          role: "switch",
+          "aria-checked": enabled,
+          "aria-label": t("title"),
+          onClick: handleToggle,
+          className: cn(
+            "flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition",
+            enabled ? "bg-brand" : "bg-line2",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+          )
+        },
+        /* @__PURE__ */ import_react20.default.createElement(
+          "span",
+          {
+            "aria-hidden": "true",
+            className: cn(
+              "h-4 w-4 aio-switch bg-base shadow transition-transform",
+              enabled ? "translate-x-[18px]" : "translate-x-0.5"
+            )
+          }
+        )
+      )), saveFailed ? /* @__PURE__ */ import_react20.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
+    }
+
+    // src/features/clear-session/index.tsx
+    var clearSessionFeature = {
+      id: "clear-session",
+      group: "conversation",
+      order: 25,
+      switch: ClearSessionToggle,
+      client: { apply: apply6 },
+      locales: clearSessionLocales
+    };
+    var clear_session_default = clearSessionFeature;
+
+    // src/features/project-memory/entry.tsx
+    var import_react21 = __toESM(require("react"), 1);
+
+    // src/features/project-memory/api.ts
+    var ENDPOINT4 = "/dsh-all-in-one/memory";
+    var REQUEST_TIMEOUT_MS4 = 1e4;
+    async function request2(init = {}) {
+      const controller = new AbortController();
+      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS4);
+      try {
+        const response = await fetch(new URL(ENDPOINT4, window.location.origin).toString(), {
           credentials: "same-origin",
           cache: "no-store",
           ...init,
@@ -3938,7 +4494,7 @@ window.__ModuleLoader__.load({
 
     // src/features/project-memory/entry.tsx
     function MemoryIcon() {
-      return /* @__PURE__ */ import_react18.default.createElement(
+      return /* @__PURE__ */ import_react21.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -3951,8 +4507,8 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react18.default.createElement("path", { d: "M6 4h12v17l-6-4-6 4V4Z" }),
-        /* @__PURE__ */ import_react18.default.createElement("path", { d: "M9.5 9h5" })
+        /* @__PURE__ */ import_react21.default.createElement("path", { d: "M6 4h12v17l-6-4-6 4V4Z" }),
+        /* @__PURE__ */ import_react21.default.createElement("path", { d: "M9.5 9h5" })
       );
     }
     var EMPTY_PAYLOAD = {
@@ -3963,12 +4519,12 @@ window.__ModuleLoader__.load({
       settingsPath: ""
     };
     function ProjectMemoryEntry({ t, open }) {
-      const [payload, setPayload] = (0, import_react18.useState)(null);
-      const [error, setError] = (0, import_react18.useState)(null);
-      const [saving, setSaving] = (0, import_react18.useState)(false);
-      const translate = (0, import_react18.useRef)(t);
+      const [payload, setPayload] = (0, import_react21.useState)(null);
+      const [error, setError] = (0, import_react21.useState)(null);
+      const [saving, setSaving] = (0, import_react21.useState)(false);
+      const translate = (0, import_react21.useRef)(t);
       translate.current = t;
-      (0, import_react18.useEffect)(() => {
+      (0, import_react21.useEffect)(() => {
         let active = true;
         void loadMemorySettings().then((next) => {
           if (active) setPayload(next);
@@ -3999,16 +4555,16 @@ window.__ModuleLoader__.load({
       };
       return (
         // 卡片容器：主体按钮、开关与设置按钮是并列的交互区，不能互相嵌套
-        /* @__PURE__ */ import_react18.default.createElement("div", { className: "flex w-full items-start gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 transition hover:bg-layer2" }, /* @__PURE__ */ import_react18.default.createElement(
+        /* @__PURE__ */ import_react21.default.createElement("div", { className: "flex w-full items-start gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 transition hover:bg-layer2" }, /* @__PURE__ */ import_react21.default.createElement(
           "button",
           {
             type: "button",
             onClick: open,
             className: "flex min-w-0 flex-1 items-start gap-2 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           },
-          /* @__PURE__ */ import_react18.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react18.default.createElement(MemoryIcon, null)),
-          /* @__PURE__ */ import_react18.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react18.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react18.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react18.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)
-        ), /* @__PURE__ */ import_react18.default.createElement("div", { className: "flex shrink-0 flex-col items-center justify-between gap-1 self-stretch" }, /* @__PURE__ */ import_react18.default.createElement(
+          /* @__PURE__ */ import_react21.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react21.default.createElement(MemoryIcon, null)),
+          /* @__PURE__ */ import_react21.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react21.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react21.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react21.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)
+        ), /* @__PURE__ */ import_react21.default.createElement("div", { className: "flex shrink-0 flex-col items-center justify-between gap-1 self-stretch" }, /* @__PURE__ */ import_react21.default.createElement(
           "button",
           {
             type: "button",
@@ -4023,7 +4579,7 @@ window.__ModuleLoader__.load({
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
             )
           },
-          /* @__PURE__ */ import_react18.default.createElement(
+          /* @__PURE__ */ import_react21.default.createElement(
             "span",
             {
               "aria-hidden": "true",
@@ -4033,7 +4589,7 @@ window.__ModuleLoader__.load({
               )
             }
           )
-        ), /* @__PURE__ */ import_react18.default.createElement(
+        ), /* @__PURE__ */ import_react21.default.createElement(
           "button",
           {
             type: "button",
@@ -4043,7 +4599,7 @@ window.__ModuleLoader__.load({
             className: "flex items-center justify-center gap-0.5 rounded-md border-0 bg-transparent p-0 text-[12px] leading-[16px] text-secondary transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           },
           t("settingsAction"),
-          /* @__PURE__ */ import_react18.default.createElement(CardChevron, null)
+          /* @__PURE__ */ import_react21.default.createElement(CardChevron, null)
         )))
       );
     }
@@ -4129,29 +4685,29 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/project-memory/page.tsx
-    var import_react19 = __toESM(require("react"), 1);
+    var import_react22 = __toESM(require("react"), 1);
     var INPUT_CLASS2 = "w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand";
     function isValidRoot(value) {
       const trimmed = value.trim();
       return trimmed === "" || trimmed === "~" || trimmed.startsWith("/") || trimmed.startsWith("~/");
     }
     function ProjectMemoryPage({ t }) {
-      const [payload, setPayload] = (0, import_react19.useState)(null);
-      const [draft, setDraft] = (0, import_react19.useState)("");
-      const [loading, setLoading] = (0, import_react19.useState)(true);
-      const [saving, setSaving] = (0, import_react19.useState)(false);
-      const [error, setError] = (0, import_react19.useState)(null);
-      const [saved, setSaved] = (0, import_react19.useState)(false);
-      const setPageActions = (0, import_react19.useContext)(PageActionsContext);
-      const draftRef = (0, import_react19.useRef)(draft);
-      const savingRef = (0, import_react19.useRef)(saving);
-      (0, import_react19.useEffect)(() => {
+      const [payload, setPayload] = (0, import_react22.useState)(null);
+      const [draft, setDraft] = (0, import_react22.useState)("");
+      const [loading, setLoading] = (0, import_react22.useState)(true);
+      const [saving, setSaving] = (0, import_react22.useState)(false);
+      const [error, setError] = (0, import_react22.useState)(null);
+      const [saved, setSaved] = (0, import_react22.useState)(false);
+      const setPageActions = (0, import_react22.useContext)(PageActionsContext);
+      const draftRef = (0, import_react22.useRef)(draft);
+      const savingRef = (0, import_react22.useRef)(saving);
+      (0, import_react22.useEffect)(() => {
         draftRef.current = draft;
       }, [draft]);
-      (0, import_react19.useEffect)(() => {
+      (0, import_react22.useEffect)(() => {
         savingRef.current = saving;
       }, [saving]);
-      (0, import_react19.useEffect)(() => {
+      (0, import_react22.useEffect)(() => {
         let active = true;
         void loadMemorySettings().then((next) => {
           if (!active) return;
@@ -4168,7 +4724,7 @@ window.__ModuleLoader__.load({
           active = false;
         };
       }, [t]);
-      const handleSave = (0, import_react19.useCallback)(async () => {
+      const handleSave = (0, import_react22.useCallback)(async () => {
         if (savingRef.current) return;
         const trimmed = draftRef.current.trim();
         if (!isValidRoot(trimmed)) {
@@ -4191,16 +4747,16 @@ window.__ModuleLoader__.load({
           setSaving(false);
         }
       }, [t]);
-      const saveAction = (0, import_react19.useMemo)(
-        () => /* @__PURE__ */ import_react19.default.createElement(Button, { variant: "outline", disabled: loading || saving, onClick: () => void handleSave() }, saving ? t("saving") : t("save")),
+      const saveAction = (0, import_react22.useMemo)(
+        () => /* @__PURE__ */ import_react22.default.createElement(Button, { variant: "outline", disabled: loading || saving, onClick: () => void handleSave() }, saving ? t("saving") : t("save")),
         [handleSave, loading, saving, t]
       );
-      (0, import_react19.useEffect)(() => {
+      (0, import_react22.useEffect)(() => {
         if (!setPageActions) return;
         setPageActions(saveAction);
         return () => setPageActions(null);
       }, [saveAction, setPageActions]);
-      return /* @__PURE__ */ import_react19.default.createElement("div", null, /* @__PURE__ */ import_react19.default.createElement("h2", { className: "text-[15px] font-semibold leading-6 text-primary" }, t("pathTitle")), /* @__PURE__ */ import_react19.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-secondary" }, t("pathHint")), /* @__PURE__ */ import_react19.default.createElement("section", { className: "mt-4 rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react19.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react19.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("pathLabel")), /* @__PURE__ */ import_react19.default.createElement(
+      return /* @__PURE__ */ import_react22.default.createElement("div", null, /* @__PURE__ */ import_react22.default.createElement("h2", { className: "text-[15px] font-semibold leading-6 text-primary" }, t("pathTitle")), /* @__PURE__ */ import_react22.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-secondary" }, t("pathHint")), /* @__PURE__ */ import_react22.default.createElement("section", { className: "mt-4 rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react22.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("pathLabel")), /* @__PURE__ */ import_react22.default.createElement(
         "input",
         {
           value: draft,
@@ -4212,7 +4768,7 @@ window.__ModuleLoader__.load({
           },
           className: INPUT_CLASS2
         }
-      )), /* @__PURE__ */ import_react19.default.createElement("div", { className: "mt-2 flex items-center gap-2" }, /* @__PURE__ */ import_react19.default.createElement(
+      )), /* @__PURE__ */ import_react22.default.createElement("div", { className: "mt-2 flex items-center gap-2" }, /* @__PURE__ */ import_react22.default.createElement(
         Button,
         {
           variant: "ghost",
@@ -4223,7 +4779,7 @@ window.__ModuleLoader__.load({
           }
         },
         t("reset")
-      ), saved ? /* @__PURE__ */ import_react19.default.createElement("span", { className: "text-[12px] leading-[18px] text-secondary" }, t("saved")) : null), /* @__PURE__ */ import_react19.default.createElement("dl", { className: "mt-3 space-y-1 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react19.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react19.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("effectivePath")), /* @__PURE__ */ import_react19.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.effectiveRoot || "\u2014")), /* @__PURE__ */ import_react19.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react19.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("defaultPath")), /* @__PURE__ */ import_react19.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.defaultRoot || "\u2014")), /* @__PURE__ */ import_react19.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react19.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("settingsFile")), /* @__PURE__ */ import_react19.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.settingsPath || "\u2014"))), /* @__PURE__ */ import_react19.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-secondary" }, t("namingHint")), error !== null ? /* @__PURE__ */ import_react19.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null));
+      ), saved ? /* @__PURE__ */ import_react22.default.createElement("span", { className: "text-[12px] leading-[18px] text-secondary" }, t("saved")) : null), /* @__PURE__ */ import_react22.default.createElement("dl", { className: "mt-3 space-y-1 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react22.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react22.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("effectivePath")), /* @__PURE__ */ import_react22.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.effectiveRoot || "\u2014")), /* @__PURE__ */ import_react22.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react22.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("defaultPath")), /* @__PURE__ */ import_react22.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.defaultRoot || "\u2014")), /* @__PURE__ */ import_react22.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react22.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("settingsFile")), /* @__PURE__ */ import_react22.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.settingsPath || "\u2014"))), /* @__PURE__ */ import_react22.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-secondary" }, t("namingHint")), error !== null ? /* @__PURE__ */ import_react22.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null));
     }
 
     // src/features/project-memory/index.tsx
@@ -4282,16 +4838,16 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/auto-compact/toggle.tsx
-    var import_react20 = __toESM(require("react"), 1);
+    var import_react23 = __toESM(require("react"), 1);
 
     // src/features/auto-compact/api.ts
-    var ENDPOINT4 = "/dsh-all-in-one/auto-compact";
-    var REQUEST_TIMEOUT_MS4 = 1e4;
+    var ENDPOINT5 = "/dsh-all-in-one/auto-compact";
+    var REQUEST_TIMEOUT_MS5 = 1e4;
     async function request3(init = {}) {
       const controller = new AbortController();
-      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS4);
+      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS5);
       try {
-        const response = await fetch(new URL(ENDPOINT4, window.location.origin).toString(), {
+        const response = await fetch(new URL(ENDPOINT5, window.location.origin).toString(), {
           credentials: "same-origin",
           cache: "no-store",
           ...init,
@@ -4332,7 +4888,7 @@ window.__ModuleLoader__.load({
     var MAX_PERCENT = 100;
     var INPUT_CLASS3 = "w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] text-primary outline-none focus:border-brand";
     function PercentField({ label, unit, value, onChange, onCommit }) {
-      return /* @__PURE__ */ import_react20.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react20.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, label), /* @__PURE__ */ import_react20.default.createElement(
+      return /* @__PURE__ */ import_react23.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react23.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, label), /* @__PURE__ */ import_react23.default.createElement(
         "input",
         {
           type: "number",
@@ -4349,10 +4905,10 @@ window.__ModuleLoader__.load({
           },
           className: INPUT_CLASS3
         }
-      ), /* @__PURE__ */ import_react20.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, unit));
+      ), /* @__PURE__ */ import_react23.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, unit));
     }
     function CompactIcon() {
-      return /* @__PURE__ */ import_react20.default.createElement(
+      return /* @__PURE__ */ import_react23.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -4365,19 +4921,19 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react20.default.createElement("path", { d: "M4 9a8 8 0 0 1 13.7-4.3L20 7" }),
-        /* @__PURE__ */ import_react20.default.createElement("path", { d: "M20 4v3.5h-3.5" }),
-        /* @__PURE__ */ import_react20.default.createElement("path", { d: "M20 15a8 8 0 0 1-13.7 4.3L4 17" }),
-        /* @__PURE__ */ import_react20.default.createElement("path", { d: "M4 20v-3.5h3.5" })
+        /* @__PURE__ */ import_react23.default.createElement("path", { d: "M4 9a8 8 0 0 1 13.7-4.3L20 7" }),
+        /* @__PURE__ */ import_react23.default.createElement("path", { d: "M20 4v3.5h-3.5" }),
+        /* @__PURE__ */ import_react23.default.createElement("path", { d: "M20 15a8 8 0 0 1-13.7 4.3L4 17" }),
+        /* @__PURE__ */ import_react23.default.createElement("path", { d: "M4 20v-3.5h3.5" })
       );
     }
     function AutoCompactToggle({ t }) {
-      const [settings, setSettings] = (0, import_react20.useState)(null);
-      const [thresholdDraft, setThresholdDraft] = (0, import_react20.useState)("");
-      const [retainDraft, setRetainDraft] = (0, import_react20.useState)("");
-      const [error, setError] = (0, import_react20.useState)(null);
-      const latestRequest = (0, import_react20.useRef)(0);
-      (0, import_react20.useEffect)(() => {
+      const [settings, setSettings] = (0, import_react23.useState)(null);
+      const [thresholdDraft, setThresholdDraft] = (0, import_react23.useState)("");
+      const [retainDraft, setRetainDraft] = (0, import_react23.useState)("");
+      const [error, setError] = (0, import_react23.useState)(null);
+      const latestRequest = (0, import_react23.useRef)(0);
+      (0, import_react23.useEffect)(() => {
         let active = true;
         void loadAutoCompactSettings().then((next) => {
           if (!active) return;
@@ -4439,7 +4995,7 @@ window.__ModuleLoader__.load({
       return (
         // 卡片容器：文字区不参与交互，开关与阈值输入各自独立，不能互相嵌套；
         // 阈值输入单独占下面一行，避免挤在开关下方把整行卡片撑高
-        /* @__PURE__ */ import_react20.default.createElement("div", { className: "flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react20.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react20.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react20.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react20.default.createElement(CompactIcon, null)), /* @__PURE__ */ import_react20.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react20.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react20.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react20.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)), /* @__PURE__ */ import_react20.default.createElement(
+        /* @__PURE__ */ import_react23.default.createElement("div", { className: "flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react23.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react23.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react23.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react23.default.createElement(CompactIcon, null)), /* @__PURE__ */ import_react23.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react23.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react23.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react23.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)), /* @__PURE__ */ import_react23.default.createElement(
           "button",
           {
             type: "button",
@@ -4454,7 +5010,7 @@ window.__ModuleLoader__.load({
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-default"
             )
           },
-          /* @__PURE__ */ import_react20.default.createElement(
+          /* @__PURE__ */ import_react23.default.createElement(
             "span",
             {
               "aria-hidden": "true",
@@ -4464,7 +5020,7 @@ window.__ModuleLoader__.load({
               )
             }
           )
-        )), enabled ? /* @__PURE__ */ import_react20.default.createElement("div", { className: "flex items-center gap-3 pl-7" }, /* @__PURE__ */ import_react20.default.createElement(
+        )), enabled ? /* @__PURE__ */ import_react23.default.createElement("div", { className: "flex items-center gap-3 pl-7" }, /* @__PURE__ */ import_react23.default.createElement(
           PercentField,
           {
             label: t("thresholdLabel"),
@@ -4473,7 +5029,7 @@ window.__ModuleLoader__.load({
             onChange: setThresholdDraft,
             onCommit: commitThreshold
           }
-        ), /* @__PURE__ */ import_react20.default.createElement(
+        ), /* @__PURE__ */ import_react23.default.createElement(
           PercentField,
           {
             label: t("retainLabel"),
@@ -4541,16 +5097,16 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/desktop-cookie/toggle.tsx
-    var import_react21 = __toESM(require("react"), 1);
+    var import_react24 = __toESM(require("react"), 1);
 
     // src/features/desktop-cookie/api.ts
-    var ENDPOINT5 = "/dsh-all-in-one/desktop-cookie";
-    var REQUEST_TIMEOUT_MS5 = 1e4;
+    var ENDPOINT6 = "/dsh-all-in-one/desktop-cookie";
+    var REQUEST_TIMEOUT_MS6 = 1e4;
     async function request4(init = {}) {
       const controller = new AbortController();
-      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS5);
+      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS6);
       try {
-        const response = await fetch(new URL(ENDPOINT5, window.location.origin).toString(), {
+        const response = await fetch(new URL(ENDPOINT6, window.location.origin).toString(), {
           credentials: "same-origin",
           cache: "no-store",
           ...init,
@@ -4592,7 +5148,7 @@ window.__ModuleLoader__.load({
     var MIN_RETAIN = 0;
     var INPUT_CLASS4 = "w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] text-primary outline-none focus:border-brand";
     function CountField({ label, unit, value, onChange, onCommit }) {
-      return /* @__PURE__ */ import_react21.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react21.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, label), /* @__PURE__ */ import_react21.default.createElement(
+      return /* @__PURE__ */ import_react24.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react24.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, label), /* @__PURE__ */ import_react24.default.createElement(
         "input",
         {
           type: "number",
@@ -4609,10 +5165,10 @@ window.__ModuleLoader__.load({
           },
           className: INPUT_CLASS4
         }
-      ), /* @__PURE__ */ import_react21.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, unit));
+      ), /* @__PURE__ */ import_react24.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, unit));
     }
     function CookieIcon() {
-      return /* @__PURE__ */ import_react21.default.createElement(
+      return /* @__PURE__ */ import_react24.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -4625,19 +5181,19 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react21.default.createElement("path", { d: "M20.5 12.5A8.5 8.5 0 1 1 11.5 3.5a3.5 3.5 0 0 0 4 4 3.5 3.5 0 0 0 5 5Z" }),
-        /* @__PURE__ */ import_react21.default.createElement("circle", { cx: "9", cy: "10", r: "0.9", fill: "currentColor", stroke: "none" }),
-        /* @__PURE__ */ import_react21.default.createElement("circle", { cx: "12", cy: "15", r: "0.9", fill: "currentColor", stroke: "none" }),
-        /* @__PURE__ */ import_react21.default.createElement("circle", { cx: "7", cy: "15.5", r: "0.9", fill: "currentColor", stroke: "none" })
+        /* @__PURE__ */ import_react24.default.createElement("path", { d: "M20.5 12.5A8.5 8.5 0 1 1 11.5 3.5a3.5 3.5 0 0 0 4 4 3.5 3.5 0 0 0 5 5Z" }),
+        /* @__PURE__ */ import_react24.default.createElement("circle", { cx: "9", cy: "10", r: "0.9", fill: "currentColor", stroke: "none" }),
+        /* @__PURE__ */ import_react24.default.createElement("circle", { cx: "12", cy: "15", r: "0.9", fill: "currentColor", stroke: "none" }),
+        /* @__PURE__ */ import_react24.default.createElement("circle", { cx: "7", cy: "15.5", r: "0.9", fill: "currentColor", stroke: "none" })
       );
     }
     function DesktopCookieToggle({ t }) {
-      const [settings, setSettings] = (0, import_react21.useState)(null);
-      const [thresholdDraft, setThresholdDraft] = (0, import_react21.useState)("");
-      const [retainDraft, setRetainDraft] = (0, import_react21.useState)("");
-      const [error, setError] = (0, import_react21.useState)(null);
-      const latestRequest = (0, import_react21.useRef)(0);
-      (0, import_react21.useEffect)(() => {
+      const [settings, setSettings] = (0, import_react24.useState)(null);
+      const [thresholdDraft, setThresholdDraft] = (0, import_react24.useState)("");
+      const [retainDraft, setRetainDraft] = (0, import_react24.useState)("");
+      const [error, setError] = (0, import_react24.useState)(null);
+      const latestRequest = (0, import_react24.useRef)(0);
+      (0, import_react24.useEffect)(() => {
         let active = true;
         void loadDesktopCookieSettings().then((next) => {
           if (!active) return;
@@ -4699,7 +5255,7 @@ window.__ModuleLoader__.load({
       return (
         // 卡片容器：文字区不参与交互，开关与输入框各自独立，不能互相嵌套；
         // 两个输入框单独占下面一行，避免挤在开关下方把整行卡片撑高
-        /* @__PURE__ */ import_react21.default.createElement("div", { className: "flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react21.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react21.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react21.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react21.default.createElement(CookieIcon, null)), /* @__PURE__ */ import_react21.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react21.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react21.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react21.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)), /* @__PURE__ */ import_react21.default.createElement(
+        /* @__PURE__ */ import_react24.default.createElement("div", { className: "flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react24.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react24.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react24.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react24.default.createElement(CookieIcon, null)), /* @__PURE__ */ import_react24.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react24.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react24.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react24.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)), /* @__PURE__ */ import_react24.default.createElement(
           "button",
           {
             type: "button",
@@ -4714,7 +5270,7 @@ window.__ModuleLoader__.load({
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-default"
             )
           },
-          /* @__PURE__ */ import_react21.default.createElement(
+          /* @__PURE__ */ import_react24.default.createElement(
             "span",
             {
               "aria-hidden": "true",
@@ -4724,7 +5280,7 @@ window.__ModuleLoader__.load({
               )
             }
           )
-        )), enabled ? /* @__PURE__ */ import_react21.default.createElement("div", { className: "flex items-center gap-3 pl-7" }, /* @__PURE__ */ import_react21.default.createElement(
+        )), enabled ? /* @__PURE__ */ import_react24.default.createElement("div", { className: "flex items-center gap-3 pl-7" }, /* @__PURE__ */ import_react24.default.createElement(
           CountField,
           {
             label: t("thresholdLabel"),
@@ -4733,7 +5289,7 @@ window.__ModuleLoader__.load({
             onChange: setThresholdDraft,
             onCommit: commitThreshold
           }
-        ), /* @__PURE__ */ import_react21.default.createElement(
+        ), /* @__PURE__ */ import_react24.default.createElement(
           CountField,
           {
             label: t("retainLabel"),
@@ -4906,7 +5462,7 @@ window.__ModuleLoader__.load({
     }
 
     // src/features/workspace-session-count/client.tsx
-    function apply6(ctx, _t) {
+    function apply7(ctx, _t) {
       if (!readWorkspaceSessionCountEnabled()) return;
       ctx.inject(["sessions", "uiWorkspace"], (scoped) => {
         const sessions = scoped.sessions;
@@ -4944,9 +5500,9 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/workspace-session-count/toggle.tsx
-    var import_react22 = __toESM(require("react"), 1);
+    var import_react25 = __toESM(require("react"), 1);
     function FolderCountIcon() {
-      return /* @__PURE__ */ import_react22.default.createElement(
+      return /* @__PURE__ */ import_react25.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -4959,15 +5515,15 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react22.default.createElement("path", { d: "M3 7h6l2 2h10v11H3Z" }),
-        /* @__PURE__ */ import_react22.default.createElement("circle", { cx: "16", cy: "16", r: "1", fill: "currentColor", stroke: "none" }),
-        /* @__PURE__ */ import_react22.default.createElement("circle", { cx: "19", cy: "16", r: "1", fill: "currentColor", stroke: "none" }),
-        /* @__PURE__ */ import_react22.default.createElement("circle", { cx: "13", cy: "16", r: "1", fill: "currentColor", stroke: "none" })
+        /* @__PURE__ */ import_react25.default.createElement("path", { d: "M3 7h6l2 2h10v11H3Z" }),
+        /* @__PURE__ */ import_react25.default.createElement("circle", { cx: "16", cy: "16", r: "1", fill: "currentColor", stroke: "none" }),
+        /* @__PURE__ */ import_react25.default.createElement("circle", { cx: "19", cy: "16", r: "1", fill: "currentColor", stroke: "none" }),
+        /* @__PURE__ */ import_react25.default.createElement("circle", { cx: "13", cy: "16", r: "1", fill: "currentColor", stroke: "none" })
       );
     }
     function WorkspaceSessionCountToggle({ t }) {
-      const [enabled, setEnabled] = (0, import_react22.useState)(readWorkspaceSessionCountEnabled);
-      const [saveFailed, setSaveFailed] = (0, import_react22.useState)(false);
+      const [enabled, setEnabled] = (0, import_react25.useState)(readWorkspaceSessionCountEnabled);
+      const [saveFailed, setSaveFailed] = (0, import_react25.useState)(false);
       const handleToggle = () => {
         const next = !enabled;
         if (!writeWorkspaceSessionCountEnabled(next)) {
@@ -4978,7 +5534,7 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react22.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react22.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react22.default.createElement(FolderCountIcon, null)), /* @__PURE__ */ import_react22.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react22.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), /* @__PURE__ */ import_react22.default.createElement("span", { className: "block text-[10px] leading-[13px] text-secondary" }, t("reloadHint"))), /* @__PURE__ */ import_react22.default.createElement(
+      return /* @__PURE__ */ import_react25.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react25.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react25.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react25.default.createElement(FolderCountIcon, null)), /* @__PURE__ */ import_react25.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react25.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react25.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), /* @__PURE__ */ import_react25.default.createElement("span", { className: "block text-[10px] leading-[13px] text-secondary" }, t("reloadHint"))), /* @__PURE__ */ import_react25.default.createElement(
         "button",
         {
           type: "button",
@@ -4992,7 +5548,7 @@ window.__ModuleLoader__.load({
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           )
         },
-        /* @__PURE__ */ import_react22.default.createElement(
+        /* @__PURE__ */ import_react25.default.createElement(
           "span",
           {
             "aria-hidden": "true",
@@ -5002,7 +5558,7 @@ window.__ModuleLoader__.load({
             )
           }
         )
-      )), saveFailed ? /* @__PURE__ */ import_react22.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
+      )), saveFailed ? /* @__PURE__ */ import_react25.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
     }
 
     // src/features/workspace-session-count/index.tsx
@@ -5011,7 +5567,7 @@ window.__ModuleLoader__.load({
       group: "layout",
       order: 18,
       switch: WorkspaceSessionCountToggle,
-      client: { apply: apply6 },
+      client: { apply: apply7 },
       locales: workspaceSessionCountLocales
     };
     var workspace_session_count_default = workspaceSessionCountFeature;
@@ -5023,6 +5579,7 @@ window.__ModuleLoader__.load({
       session_history_default,
       sidebar_more_default,
       delete_session_default,
+      clear_session_default,
       project_memory_default,
       power_pack_default,
       auto_compact_default,
@@ -5068,9 +5625,9 @@ window.__ModuleLoader__.load({
     var registry = createFeatureRegistry(featureList);
 
     // src/shell/AllInOnePage.tsx
-    var import_react23 = __toESM(require("react"), 1);
+    var import_react26 = __toESM(require("react"), 1);
     function BackGlyph() {
-      return /* @__PURE__ */ import_react23.default.createElement(
+      return /* @__PURE__ */ import_react26.default.createElement(
         "svg",
         {
           viewBox: "0 0 16 16",
@@ -5083,7 +5640,7 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react23.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
+        /* @__PURE__ */ import_react26.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
       );
     }
     var FALLBACK_GROUP = "other";
@@ -5103,34 +5660,34 @@ window.__ModuleLoader__.load({
       return sections;
     }
     function FeatureCard({ feature, t, open }) {
-      const featureT = (0, import_react23.useMemo)(() => (key) => t(`${feature.id}.${key}`), [feature.id, t]);
+      const featureT = (0, import_react26.useMemo)(() => (key) => t(`${feature.id}.${key}`), [feature.id, t]);
       if ("switch" in feature) {
         const SwitchEntry = feature.switch;
-        return /* @__PURE__ */ import_react23.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react23.default.createElement(SwitchEntry, { t: featureT }));
+        return /* @__PURE__ */ import_react26.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react26.default.createElement(SwitchEntry, { t: featureT }));
       }
       const Entry = feature.entry;
-      return /* @__PURE__ */ import_react23.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react23.default.createElement(Entry, { t: featureT, open: () => open(feature.id) }));
+      return /* @__PURE__ */ import_react26.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react26.default.createElement(Entry, { t: featureT, open: () => open(feature.id) }));
     }
     function AllInOnePage({ t }) {
-      const [activeId, setActiveId] = (0, import_react23.useState)(null);
-      const [pageActions, setPageActions] = (0, import_react23.useState)(null);
+      const [activeId, setActiveId] = (0, import_react26.useState)(null);
+      const [pageActions, setPageActions] = (0, import_react26.useState)(null);
       const active = activeId ? registry.find(activeId) : void 0;
       const activePage = active && "page" in active ? active : void 0;
-      const featureTranslate = (0, import_react23.useCallback)(
+      const featureTranslate = (0, import_react26.useCallback)(
         // 网格视图不会调用此函数，activePage 为空时直接返回 key 兜底
         (key) => activePage ? t(`${activePage.id}.${key}`) : key,
         [activePage, t]
       );
       if (activePage) {
         const ActivePage = activePage.page;
-        return /* @__PURE__ */ import_react23.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react23.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react23.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react23.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react23.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react23.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react23.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react23.default.createElement(ActivePage, { t: featureTranslate }))));
+        return /* @__PURE__ */ import_react26.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react26.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react26.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react26.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react26.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react26.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react26.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react26.default.createElement(ActivePage, { t: featureTranslate }))));
       }
-      return /* @__PURE__ */ import_react23.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react23.default.createElement("header", null, /* @__PURE__ */ import_react23.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react23.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
+      return /* @__PURE__ */ import_react26.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react26.default.createElement("header", null, /* @__PURE__ */ import_react26.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react26.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
         // 尚未注册功能时的空态提示
-        /* @__PURE__ */ import_react23.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
+        /* @__PURE__ */ import_react26.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
       ) : (
         // 按分组逐块渲染：组标题说明这一块功能解决什么问题，组内仍是一张网格
-        /* @__PURE__ */ import_react23.default.createElement("div", { className: "mt-4 space-y-4" }, groupFeatures(registry.list).map((section) => /* @__PURE__ */ import_react23.default.createElement("section", { key: section.group }, /* @__PURE__ */ import_react23.default.createElement("h2", { className: "mb-2 text-[12px] font-medium text-secondary" }, t(`shell.group.${section.group}`)), /* @__PURE__ */ import_react23.default.createElement("div", { className: "aio-card-grid grid auto-rows-fr gap-2.5" }, section.features.map((feature) => /* @__PURE__ */ import_react23.default.createElement(
+        /* @__PURE__ */ import_react26.default.createElement("div", { className: "mt-4 space-y-4" }, groupFeatures(registry.list).map((section) => /* @__PURE__ */ import_react26.default.createElement("section", { key: section.group }, /* @__PURE__ */ import_react26.default.createElement("h2", { className: "mb-2 text-[12px] font-medium text-secondary" }, t(`shell.group.${section.group}`)), /* @__PURE__ */ import_react26.default.createElement("div", { className: "aio-card-grid grid auto-rows-fr gap-2.5" }, section.features.map((feature) => /* @__PURE__ */ import_react26.default.createElement(
           FeatureCard,
           {
             key: feature.id,
@@ -5314,7 +5871,7 @@ window.__ModuleLoader__.load({
         });
         const t = ctx.locale.bind(LOCALE_NAMESPACE);
         installSettingsNavIcon(ctx, t, icon_default);
-        const SettingsSection = () => /* @__PURE__ */ import_react24.default.createElement(AllInOnePage, { t });
+        const SettingsSection = () => /* @__PURE__ */ import_react27.default.createElement(AllInOnePage, { t });
         ctx.slots.inject(
           "settings.section",
           () => ctx.slots.register(

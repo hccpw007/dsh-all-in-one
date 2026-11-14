@@ -1,0 +1,228 @@
+/**
+ * 输入框左侧的清空按钮。
+ *
+ * 宿主的 `conversation.input.left` 插槽排在「添加文件 / 调用指令」的加号之后，
+ * 而本功能要出现在加号之前，插槽无法满足，只能按 DOM 注入：找到与加号同级的
+ * 隐藏文件选择器，取它的父节点作为工具区，把按钮插到第一个子节点之前。
+ *
+ * 按钮只是入口：点击时读取当前对话并写入待确认请求，真正的清空由确认弹窗执行。
+ */
+import type { ClearSessionTarget } from './types'
+
+/** 注入按钮上的标记属性，扫描时用它判断是否已经插过。 */
+const BUTTON_ATTRIBUTE = 'data-aio-clear-session'
+
+/** 按钮样式的节点 id；重复安装时复用同一节点。 */
+const STYLE_ID = 'aio-clear-session-style'
+
+/** 按钮类名，样式与宿主加号按钮同高，但默认透明、悬停才显背景。 */
+const BUTTON_CLASS = 'aio-clear-session'
+
+const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
+
+/**
+ * 按钮样式。
+ *
+ * 尺寸与宿主加号按钮一致（28×28），圆角重置为圆角而不是宿主的超椭圆，
+ * 否则小尺寸控件在 `--dsw-corner-shape` 下看起来「圆角不够」。
+ */
+const STYLE_TEXT = `
+.${BUTTON_CLASS} {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  corner-shape: round;
+  background: transparent;
+  color: var(--dsw-alias-label-secondary, currentColor);
+  cursor: pointer;
+}
+.${BUTTON_CLASS}:hover:not(:disabled) {
+  background: var(--dsw-alias-interactive-bg-hover, rgba(127, 127, 127, 0.12));
+  color: var(--dsw-alias-label-primary, currentColor);
+}
+.${BUTTON_CLASS}:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.${BUTTON_CLASS} svg {
+  display: block;
+}
+`
+
+/** 按钮行为：读取当前对话，以及用户点击后的动作。 */
+export interface ClearButtonOptions {
+  /** 按钮名称，同时作为无障碍标签与悬停提示。 */
+  label: string
+  /** 当前对话正在运行时的悬停提示。 */
+  runningHint: string
+  /** 读取当前对话；没有正在浏览的对话时返回 undefined。 */
+  readTarget: () => ClearSessionTarget | undefined
+  /** 点击后发起确认请求。 */
+  onRequest: (target: ClearSessionTarget) => void
+}
+
+/**
+ * 创建清空图标：一道开口圆环内嵌一条横线，表达「把对话内容清掉」；
+ * 圆环开口留出缺口，比闭合圆更像一次操作而不是状态标记。
+ * @returns 16×16 的 svg 元素
+ */
+function createClearIcon(): Element {
+  const svg = document.createElementNS(SVG_NAMESPACE, 'svg')
+  svg.setAttribute('width', '16')
+  svg.setAttribute('height', '16')
+  svg.setAttribute('viewBox', '0 0 16 16')
+  svg.setAttribute('fill', 'none')
+  svg.setAttribute('stroke', 'currentColor')
+  svg.setAttribute('stroke-width', '1.4')
+  svg.setAttribute('stroke-linecap', 'round')
+  svg.setAttribute('stroke-linejoin', 'round')
+  svg.setAttribute('aria-hidden', 'true')
+
+  // 圆环：从顶部顺时针绕到左侧，左上留缺口
+  const ring = document.createElementNS(SVG_NAMESPACE, 'path')
+  ring.setAttribute('d', 'M8 3.2a4.8 4.8 0 1 1-4.8 4.8')
+  svg.appendChild(ring)
+
+  // 中心横线：被清掉的那段内容
+  const bar = document.createElementNS(SVG_NAMESPACE, 'path')
+  bar.setAttribute('d', 'M5.9 8h4.2')
+  svg.appendChild(bar)
+
+  return svg
+}
+
+/** 注入样式；重复安装时复用同一节点。 */
+function ensureStyle(): void {
+  if (document.getElementById(STYLE_ID) !== null) return
+
+  const style = document.createElement('style')
+  style.id = STYLE_ID
+  style.textContent = STYLE_TEXT
+  document.head.appendChild(style)
+}
+
+/**
+ * 按当前对话状态刷新按钮的可用性。
+ *
+ * 会话未就绪（新建对话页尚未创建会话）或正在执行任务时禁用，
+ * 避免点击后落到一条不存在的对话或删掉仍被写句柄持有的记录。
+ * @param button 注入的按钮
+ * @param target 当前对话
+ * @param options 按钮文案
+ */
+function syncButton(
+  button: HTMLButtonElement,
+  target: ClearSessionTarget | undefined,
+  options: ClearButtonOptions,
+): void {
+  const disabled = target === undefined || target.running
+  button.disabled = disabled
+  button.title = target?.running === true ? options.runningHint : options.label
+}
+
+/**
+ * 找到所有宿主输入框的工具区。
+ *
+ * 定位依据是宿主输入框里的隐藏文件选择器：它与「+」按钮同级，父节点就是工具区。
+ * 只认带按钮的父节点，避免把设置页等其它地方的文件选择器当成输入框。
+ * @returns 尚未注入按钮的工具区
+ */
+function findToolbars(): HTMLElement[] {
+  const toolbars: HTMLElement[] = []
+
+  for (const input of document.querySelectorAll('input[type="file"]')) {
+    const parent = input.parentElement
+    if (parent === null) continue
+    if (parent.querySelector('button') === null) continue
+    if (parent.querySelector(`[${BUTTON_ATTRIBUTE}]`) !== null) continue
+
+    toolbars.push(parent)
+  }
+
+  return toolbars
+}
+
+/**
+ * 在输入框工具区最左侧安装清空按钮。
+ * @param options 按钮文案与点击行为
+ * @returns 卸载函数：移除按钮、样式与观察器
+ */
+export function installClearButton(options: ClearButtonOptions): () => void {
+  ensureStyle()
+
+  const buttons = new Set<HTMLButtonElement>()
+  let frame = 0
+  let scheduled = false
+  let disposed = false
+
+  /** 每次扫描后统一刷新按钮状态：会话可能在两次 DOM 变化之间切换。 */
+  const syncAll = (): void => {
+    const target = options.readTarget()
+
+    for (const button of buttons) {
+      // 宿主整块重建输入框时按钮会被摘掉，这里顺手清理失效引用
+      if (!button.isConnected) {
+        buttons.delete(button)
+        continue
+      }
+      syncButton(button, target, options)
+    }
+  }
+
+  /** 扫描并注入；节点增删很频繁，回调里只做少量查询。 */
+  const scan = (): void => {
+    frame = 0
+    scheduled = false
+    if (disposed) return
+
+    for (const toolbar of findToolbars()) {
+      const button = document.createElement('button')
+      button.type = 'button'
+      button.className = BUTTON_CLASS
+      button.setAttribute(BUTTON_ATTRIBUTE, '')
+      button.appendChild(createClearIcon())
+
+      // 阻止默认行为与冒泡：输入框区域有点击聚焦与快捷键处理，按钮不应触发它们
+      button.addEventListener('click', (event) => {
+        event.preventDefault()
+        event.stopPropagation()
+
+        const target = options.readTarget()
+        if (target === undefined || target.running) return
+
+        options.onRequest(target)
+      })
+
+      toolbar.insertBefore(button, toolbar.firstElementChild)
+      buttons.add(button)
+    }
+
+    syncAll()
+  }
+
+  const schedule = (): void => {
+    if (scheduled || disposed) return
+    scheduled = true
+    frame = window.requestAnimationFrame(scan)
+  }
+
+  // 只监听节点增删：流式输出会频繁改动文本节点，回调已是合并到每帧一次
+  const observer = new MutationObserver(schedule)
+  observer.observe(document.body, { childList: true, subtree: true })
+  schedule()
+
+  return () => {
+    disposed = true
+    observer.disconnect()
+    if (frame !== 0) window.cancelAnimationFrame(frame)
+
+    for (const button of buttons) button.remove()
+    buttons.clear()
+    document.getElementById(STYLE_ID)?.remove()
+  }
+}

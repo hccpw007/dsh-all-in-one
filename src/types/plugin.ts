@@ -72,6 +72,8 @@ export interface SessionSummary {
   updatedAt?: number
   /** 当前被哪些界面持有；`mainView` 大于 0 表示这是正在浏览的对话。 */
   retainedBy?: { mainView?: number }
+  /** 会话工作目录；工作区不可用时用它把新对话建在同一项目里。 */
+  cwd?: string
   projectionValues?: { agentPreset?: unknown }
 }
 
@@ -91,6 +93,16 @@ export interface UiWorkspaceApi {
   startSession?(workspaceId?: string): void
   /** 把指定会话打开到主视图，不新建会话。 */
   openSession?(sessionId: string): void
+  /**
+   * 取工作区的空白会话：宿主复用第一条可用的空白成员，没有才新建。
+   * 宿主版本不带该能力时省略。
+   */
+  connectWorkspace?(workspaceId: string): Promise<string>
+  /**
+   * 归档一条会话，并清掉宿主的当前选中（当前对话被归档时视图会切走）。
+   * `stopActivity` 让宿主停止该会话正在执行的任务，而不是拒绝归档。
+   */
+  archiveSession?(sessionId: string, options?: { stopActivity?: boolean }): Promise<void>
   /**
    * 工作区列表快照。宿主用它维护会话分组与归档集合，
    * 这里只读取「会话属于哪个工作空间」与归档状态。
@@ -115,6 +127,11 @@ export interface SessionsApi {
     /** 会话快照变化通知，返回注销函数；宿主版本不带该能力时省略。 */
     subscribe?(listener: () => void): () => void
   }
+  /**
+   * 新建一条会话。宿主版本不带该能力时省略；
+   * 传入 `workspaceId` 时新会话归属该工作区，否则按 `cwd` 或宿主默认目录创建。
+   */
+  create?(options: { workspaceId?: string; cwd?: string }): Promise<string>
   /**
    * 本地摘掉一条会话（宿主列表快照层的移除入口）。
    * 宿主不提供时调用方跳过即可，其它功能不受影响。
