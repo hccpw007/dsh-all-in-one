@@ -2966,8 +2966,8 @@ window.__ModuleLoader__.load({
       zh: {
         // 设置页开关标题
         title: "\u5168\u81EA\u52A8\u6267\u884C",
-        // 设置页开关用途说明：点明入口位置与会话级语义，控制在两行以内
-        description: "\u8F93\u5165\u6846\u53F3\u4FA7\u65B0\u589E\u300C\u5168\u81EA\u52A8\u300D\u5F00\u5173\uFF1A\u4E0D\u63D0\u95EE\uFF0C\u6539\u5B8C\u81EA\u884C\u9A8C\u8BC1\u3002",
+        // 设置页开关用途说明：点明入口位置与「无需确认即可完成任务」的语义，控制在两行以内
+        description: "\u8F93\u5165\u6846\u65B0\u589E\u300C\u5168\u81EA\u52A8\u300D\u5F00\u5173\uFF1A\u65E0\u9700\u4EFB\u4F55\u786E\u8BA4\u5373\u53EF\u5B8C\u6210\u4EFB\u52A1\uFF08\u6388\u6743\u9664\u5916\uFF09\u3002",
         // 设置页开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 默认值选项读取失败时的提示
@@ -3006,8 +3006,8 @@ window.__ModuleLoader__.load({
       en: {
         // Switch title
         title: "Full auto",
-        // Switch description: entry position and per-conversation semantics, kept within two lines
-        description: "Adds a Full auto switch in the composer: no questions, self-verified changes.",
+        // Switch description: entry position and "finish the task without confirmation", kept within two lines
+        description: "Adds a Full auto switch in the composer: it finishes the task without any confirmation (approvals excepted).",
         // Shown when the switch state cannot be persisted
         saveFailed: "Saving the switch state failed. Check the browser storage permission.",
         // Shown when the default options cannot be read
