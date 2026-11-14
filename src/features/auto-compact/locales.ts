@@ -5,8 +5,8 @@ export const autoCompactLocales: FeatureLocales = {
   zh: {
     // 开关标题
     title: '自动压缩会话',
-    // 开关用途说明
-    description: '超过阈值自动压缩，避免越聊越慢。',
+    // 开关用途说明：点明触发条件、压缩方式与效果
+    description: '上下文占用超过阈值时压缩旧对话，只保留近期内容，避免越聊越慢。',
     // 阈值输入框的标签
     thresholdLabel: '阈值',
     // 阈值输入框的单位
@@ -25,8 +25,9 @@ export const autoCompactLocales: FeatureLocales = {
   en: {
     // Switch title
     title: 'Auto-compact sessions',
-    // Switch description
-    description: 'Compact a session once it crosses the threshold, so long chats stay fast.',
+    // Switch description: trigger, what gets compacted, and the payoff
+    description:
+      'Compact older turns once the context crosses the threshold, keeping only the recent ones so long chats stay fast.',
     // Label of the threshold input
     thresholdLabel: 'Threshold',
     // Unit shown after the threshold input

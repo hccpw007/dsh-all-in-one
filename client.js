@@ -6189,8 +6189,8 @@ window.__ModuleLoader__.load({
       zh: {
         // 开关标题
         title: "\u81EA\u52A8\u538B\u7F29\u4F1A\u8BDD",
-        // 开关用途说明
-        description: "\u8D85\u8FC7\u9608\u503C\u81EA\u52A8\u538B\u7F29\uFF0C\u907F\u514D\u8D8A\u804A\u8D8A\u6162\u3002",
+        // 开关用途说明：点明触发条件、压缩方式与效果
+        description: "\u4E0A\u4E0B\u6587\u5360\u7528\u8D85\u8FC7\u9608\u503C\u65F6\u538B\u7F29\u65E7\u5BF9\u8BDD\uFF0C\u53EA\u4FDD\u7559\u8FD1\u671F\u5185\u5BB9\uFF0C\u907F\u514D\u8D8A\u804A\u8D8A\u6162\u3002",
         // 阈值输入框的标签
         thresholdLabel: "\u9608\u503C",
         // 阈值输入框的单位
@@ -6209,8 +6209,8 @@ window.__ModuleLoader__.load({
       en: {
         // Switch title
         title: "Auto-compact sessions",
-        // Switch description
-        description: "Compact a session once it crosses the threshold, so long chats stay fast.",
+        // Switch description: trigger, what gets compacted, and the payoff
+        description: "Compact older turns once the context crosses the threshold, keeping only the recent ones so long chats stay fast.",
         // Label of the threshold input
         thresholdLabel: "Threshold",
         // Unit shown after the threshold input
