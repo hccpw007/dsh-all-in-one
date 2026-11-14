@@ -123,15 +123,16 @@ export function AutoRunToggle({ sessionId, t }: AutoRunToggleProps) {
       <span
         aria-hidden="true"
         className={cn(
-          'flex h-[18px] w-8 shrink-0 items-center rounded-full transition-colors',
+          'flex h-5 w-9 shrink-0 items-center rounded-full transition-colors duration-200 ease-out',
           enabled === true ? 'bg-brand' : 'bg-line2',
         )}
       >
-        {/* 滑块：靠位移区分开与关，transition 让它滑过去而不是直接跳位 */}
+        {/* 滑块：靠位移区分开与关；描边加投影让它在灰轨道与品牌色轨道上都不糊边 */}
         <span
           className={cn(
-            'h-3.5 w-3.5 rounded-full bg-base shadow transition-transform',
-            enabled === true ? 'translate-x-[16px]' : 'translate-x-[2px]',
+            'h-4 w-4 rounded-full bg-base ring-1 ring-black/5 shadow-[0_1px_3px_rgba(0,0,0,0.22)]',
+            'transition-transform duration-200 ease-out',
+            enabled === true ? 'translate-x-[18px]' : 'translate-x-[2px]',
           )}
         />
       </span>
