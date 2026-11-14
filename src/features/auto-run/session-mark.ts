@@ -91,11 +91,44 @@ function alignMark(mark: HTMLElement, title: HTMLElement): void {
   mark.style.marginRight = `${marginRight - delta}px`
 }
 
-/** 状态槽里由宿主绘制的状态点容器；槽位本身是 `display:contents`，位置由子元素决定。 */
-const STATUS_SLOT_SELECTOR = '[data-slot="sidebar.session.row.leading"]'
+/**
+ * 状态槽：行内第一个 `_slot` 容器。
+ *
+ * 槽位本身没有 `data-slot` 属性——`data-slot` 只出现在插槽内容上（会话空闲时
+ * 渲染的 `sidebar.session.row.leading`）。会话一进入执行状态，槽里换成宿主自己
+ * 画的转圈 / 状态点，`data-slot` 就没了，所以这里按 CSS Module 里稳定保留的
+ * `_slot` 类名定位，并用 `:scope >` 锁定行的直接子元素。
+ */
+const STATUS_SLOT_SELECTOR = ':scope > [class*="_slot"]'
 
 /** 状态点与标识之间至少留出的空隙，避免转圈压在闪电上。 */
 const STATUS_MARK_GAP = 2
+
+/** 开了全自动的行标记；样式表靠它限定作用范围，React 重建状态点时规则依然生效。 */
+const ROW_ATTRIBUTE = 'data-dsh-auto-run-row'
+
+/** 注入样式的唯一 id，保证只插一次。 */
+const STYLE_ID = 'dsh-auto-run-mark-style'
+
+/** 状态点位移量的 CSS 变量名，值由脚本按实测重叠量写入。 */
+const DOT_SHIFT_VARIABLE = '--dsh-auto-run-dot-shift'
+
+/**
+ * 给宿主的状态点挂一条位移规则。
+ *
+ * 直接改状态点的 inline style 会被 React 重渲染抹掉（转圈每次状态更新都可能
+ * 换新节点），所以位移改由样式表承担：行上打标记，变量控制位移量，宿主新建
+ * 多少个转圈节点都由规则自动套上。
+ */
+function ensureStyle(): void {
+  if (document.getElementById(STYLE_ID) !== null) return
+
+  const style = document.createElement('style')
+  style.id = STYLE_ID
+  style.textContent = `[${ROW_ATTRIBUTE}] > [class*="_slot"] > [data-state]`
+    + `{transform:translateX(var(${DOT_SHIFT_VARIABLE},0px))}`
+  document.head.appendChild(style)
+}
 
 /**
  * 把状态点整体往前（左）挪，给标识让出位置。
@@ -107,20 +140,34 @@ const STATUS_MARK_GAP = 2
  * @param mark 该行的标识节点
  */
 function shiftStatusDot(row: Element, mark: HTMLElement): void {
+  const rowEl = row as HTMLElement
   const slot = row.querySelector(STATUS_SLOT_SELECTOR)
-  const dots = slot === null ? [] : [...slot.children].filter((child): child is HTMLElement => child instanceof HTMLElement)
+  if (slot === null) return
+
+  const dots = [...slot.children].filter((child): child is Element => {
+    if (!(child instanceof Element)) return false
+    // 只认宿主画的状态点：执行中的转圈是 <svg data-state="ongoing">，其余状态是
+    // <span data-state="...">。会话空闲时槽里放的是插槽内容（没有 data-state），
+    // 读屏文本是 1×1 的隐藏节点，两者都不该跟着位移。
+    if (!child.hasAttribute('data-state')) return false
+    const rect = child.getBoundingClientRect()
+
+    return rect.width > 2 && rect.height > 2
+  })
   if (dots.length === 0) return
 
+  // 量到的位置带着上一轮的位移，先加回去还原成宿主原始位置，否则会越挪越远
+  const applied = Number.parseFloat(rowEl.style.getPropertyValue(DOT_SHIFT_VARIABLE)) || 0
   const markLeft = mark.getBoundingClientRect().left
-  const dotsRight = Math.max(...dots.map((dot) => dot.getBoundingClientRect().right))
+  const dotsRight = Math.max(...dots.map((dot) => dot.getBoundingClientRect().right - applied))
   const overlap = markLeft - STATUS_MARK_GAP - dotsRight
   // 只有真的压到了才挪；反过来（状态点本身更靠左）不要动它
   const shift = Math.min(0, Math.round(overlap))
 
-  for (const dot of dots) {
-    const next = shift === 0 ? '' : `translateX(${shift}px)`
-    if (dot.style.transform !== next) dot.style.transform = next
-  }
+  ensureStyle()
+  if (rowEl.getAttribute(ROW_ATTRIBUTE) === null) rowEl.setAttribute(ROW_ATTRIBUTE, '')
+  if (shift === 0) rowEl.style.removeProperty(DOT_SHIFT_VARIABLE)
+  else rowEl.style.setProperty(DOT_SHIFT_VARIABLE, `${shift}px`)
 }
 
 /** 清掉标识带来状态点位移，恢复宿主原始位置。 */
@@ -128,9 +175,9 @@ function resetStatusDot(row: Element): void {
   const slot = row.querySelector(STATUS_SLOT_SELECTOR)
   if (slot === null) return
 
-  for (const dot of slot.children) {
-    if (dot instanceof HTMLElement && dot.style.transform !== '') dot.style.transform = ''
-  }
+  const rowEl = row as HTMLElement
+  rowEl.removeAttribute(ROW_ATTRIBUTE)
+  rowEl.style.removeProperty(DOT_SHIFT_VARIABLE)
 }
 
 /**
