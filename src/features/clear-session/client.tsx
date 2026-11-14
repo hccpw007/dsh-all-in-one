@@ -17,7 +17,7 @@ import { clearSession, findCurrentSession } from './clear-session'
 import { ClearSessionDialog, type ClearSessionDialogProps } from './ClearSessionDialog'
 import { clearSessionStore } from './dialog-store'
 import { readClearSessionEnabled } from './storage'
-import type { ClearSessionTarget } from './types'
+import type { ClearSessionAction, ClearSessionTarget } from './types'
 
 /** 应用级浮层插槽；宿主自带的归档确认弹窗也注册在这里。 */
 const OVERLAY_SLOT = 'shell.overlay'
@@ -33,8 +33,8 @@ export function apply(ctx: PluginContext, t: Translate): void {
     const sessions = scoped.sessions
     if (sessions === undefined) return
 
-    // 切换主视图与归档都要工作区服务：服务缺失时不勾选「保留」的删除分支仍可用，
-    // 但视图不会自动切换、归档会报错，因此这里只做订阅，不阻断按钮安装
+    // 切换主视图要工作区服务：服务缺失时仍能新建并删除，但视图不会自动切走，
+    // 因此这里只做订阅，不阻断按钮安装
     let uiWorkspace: UiWorkspaceApi | undefined
     scoped.inject(['uiWorkspace'], (withWorkspace) => {
       uiWorkspace = withWorkspace.uiWorkspace
@@ -44,8 +44,8 @@ export function apply(ctx: PluginContext, t: Translate): void {
     })
 
     /** 执行清空；每次调用都重新读 uiWorkspace，避免把安装期的空值缓存下来。 */
-    const runClear = async (target: ClearSessionTarget, keepSource: boolean): Promise<unknown> => (
-      clearSession({ sessions, uiWorkspace }, target, keepSource)
+    const runClear = async (target: ClearSessionTarget, action: ClearSessionAction): Promise<unknown> => (
+      clearSession({ sessions, uiWorkspace }, target, action)
     )
 
     ctx.slots.inject(OVERLAY_SLOT, () =>

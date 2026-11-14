@@ -2,12 +2,12 @@
  * 「清空会话」的执行层。
  *
  * 宿主没有「把一条会话的历史清零后继续用」的能力，会话日志是只追加的，
- * 因此清空只能换一条新对话：先准备一条空白会话，再按用户选择归档或删除旧会话，
- * 最后把主视图切到新对话。
+ * 因此清空等于换一条新对话：先准备一条空白会话并切过去，
+ * 再按用户所选动作决定原对话的去向（保留不动，或删除本地记录）。
  */
 import type { SessionsApi, UiWorkspaceApi } from '../../types/plugin'
 import { requestDeleteSession } from './api'
-import type { ClearSessionTarget } from './types'
+import type { ClearSessionAction, ClearSessionTarget } from './types'
 
 /** 清空执行所需的宿主客户端服务。 */
 export interface ClearSessionDeps {
@@ -50,8 +50,8 @@ export function findCurrentSession(deps: ClearSessionDeps): ClearSessionTarget |
 /**
  * 准备一条空白会话作为清空后的落点。
  *
- * 工作区的 `connectWorkspace` 会复用已有的空白会话；若复用到的正是要被归档或
- * 删除的当前对话，清空后就没有落点了，这种情况改为显式新建。
+ * 工作区的 `connectWorkspace` 会复用已有的空白会话；若复用到的正是当前对话，
+ * 换过去等于没换，这种情况改为显式新建。
  * @param deps 宿主客户端服务
  * @param target 要清空的会话
  * @returns 新会话标识；宿主两个创建入口都不可用时返回 undefined
@@ -112,42 +112,33 @@ async function waitDetached(sessions: SessionsApi, sessionId: string): Promise<v
 }
 
 /**
- * 清空当前对话：准备新对话、处理旧对话、切换视图。
+ * 开一条新对话；删除动作还要清掉原对话的本地记录。
  * @param deps 宿主客户端服务
- * @param target 要清空的会话
- * @param keepSource 是否保留旧对话：true 归档，false 删除本地记录
+ * @param target 当前对话
+ * @param action 保留原对话，或删除它
  * @returns 新对话的标识；宿主没有创建入口时为 undefined
  */
 export async function clearSession(
   deps: ClearSessionDeps,
   target: ClearSessionTarget,
-  keepSource: boolean,
+  action: ClearSessionAction,
 ): Promise<string | undefined> {
   if (target.running) throw new Error('当前对话正在运行，请先停止')
 
   const nextId = await prepareBlank(deps, target)
 
-  // 先把主视图切到新对话：归档与删除都要求旧对话不再被主视图持有，
-  // 否则宿主会按内存中的状态把它重新落盘
+  // 先把主视图切到新对话：删除要求原对话不再被主视图持有，
+  // 否则宿主会按内存中的状态把它重新落盘；保留动作同样要落到新对话上
   if (nextId !== undefined) deps.uiWorkspace?.openSession?.(nextId)
   else deps.uiWorkspace?.startSession?.(target.workspaceId)
-  await waitDetached(deps.sessions, target.sessionId)
 
-  if (keepSource) {
-    if (typeof deps.uiWorkspace?.archiveSession !== 'function') {
-      throw new Error('宿主版本不支持归档会话')
-    }
-    try {
-      await deps.uiWorkspace.archiveSession(target.sessionId, { stopActivity: true })
-    } catch (error) {
-      console.error('[clear-session] 归档旧会话失败:', target.sessionId, error)
-      throw error
-    }
-  } else {
-    await requestDeleteSession(target.sessionId)
-    // 磁盘上的记录已删除，但客户端快照仍留着这一行：同步摘掉，列表立即刷新
-    deps.sessions.handleSessionRemoved?.(target.sessionId)
-  }
+  // 保留动作到这里就结束了：原对话原样留在列表里，不做归档也不做删除
+  if (action === 'keep') return nextId
+
+  await waitDetached(deps.sessions, target.sessionId)
+  await requestDeleteSession(target.sessionId)
+  // 磁盘上的记录已删除，但客户端快照仍留着这一行：同步摘掉，列表立即刷新
+  deps.sessions.handleSessionRemoved?.(target.sessionId)
 
   return nextId
 }

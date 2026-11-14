@@ -99,11 +99,6 @@ export interface UiWorkspaceApi {
    */
   connectWorkspace?(workspaceId: string): Promise<string>
   /**
-   * 归档一条会话，并清掉宿主的当前选中（当前对话被归档时视图会切走）。
-   * `stopActivity` 让宿主停止该会话正在执行的任务，而不是拒绝归档。
-   */
-  archiveSession?(sessionId: string, options?: { stopActivity?: boolean }): Promise<void>
-  /**
    * 工作区列表快照。宿主用它维护会话分组与归档集合，
    * 这里只读取「会话属于哪个工作空间」与归档状态。
    */
