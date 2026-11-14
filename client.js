@@ -7102,30 +7102,16 @@ window.__ModuleLoader__.load({
       zh: {
         // 开关标题
         title: "\u5185\u5B58\u5B88\u62A4",
-        // 开关用途说明：点明检查节奏、回收档位与触发条件
-        description: "\u5B9A\u65F6\u6E05\u7406\u754C\u9762\u5185\u5B58\uFF1A\u6BCF\u6B21\u68C0\u67E5\u5148\u6E05\u7F13\u5B58\uFF0C\u5360\u7528\u8FC7\u9AD8\u4E14\u65E0\u4EBA\u64CD\u4F5C\u65F6\u81EA\u52A8\u91CD\u5EFA\u9875\u9762\u3002",
         // 检查间隔输入框的标签
-        intervalLabel: "\u68C0\u67E5\u95F4\u9694",
+        intervalLabel: "\u95F4\u9694",
         // 检查间隔输入框的单位
         intervalUnit: "\u5206\u949F",
         // 重建阈值输入框的标签
-        thresholdLabel: "\u91CD\u5EFA\u9608\u503C",
+        thresholdLabel: "\u9608\u503C",
         // 重建阈值输入框的单位
         thresholdUnit: "MB",
-        // 读数行的标题
-        readingTitle: "\u5F53\u524D\u5360\u7528",
-        // 桌面版读数：渲染进程常驻内存
-        readingProcess: "\u6E32\u67D3\u8FDB\u7A0B {value} MB",
-        // 浏览器环境读数：页面 JS 堆
-        readingHeap: "JS \u5806 {value} MB",
-        // 附加读数：DOM 节点数
-        readingNodes: "DOM {value} \u8282\u70B9",
-        // 读不到内存时的占位
-        readingUnknown: "\u6682\u65E0\u8BFB\u6570",
         // 上次轻量回收的时间与释放量
         lastReclaim: "\u4E0A\u6B21\u56DE\u6536 {time}",
-        // 回收没有释放出可测量的内存时的说明
-        lastReclaimIdle: "\u4E0A\u6B21\u56DE\u6536\u672A\u91CA\u653E\u53EF\u6D4B\u91CF\u5185\u5B58",
         // 上次重建的时间
         lastRebuild: "\u4E0A\u6B21\u91CD\u5EFA {time}",
         // 从未执行过时的占位
@@ -7136,8 +7122,6 @@ window.__ModuleLoader__.load({
         rebuildNow: "\u7ACB\u5373\u91CD\u5EFA",
         // 轻量回收执行中的按钮文案
         reclaiming: "\u56DE\u6536\u4E2D\u2026",
-        // 重建会重置滚动位置与面板状态的提醒
-        rebuildHint: "\u91CD\u5EFA\u4F1A\u91CD\u7F6E\u6EDA\u52A8\u4F4D\u7F6E\u4E0E\u9762\u677F\uFF0C\u4F1A\u8BDD\u4E0E\u8349\u7A3F\u4E0D\u4E22\u3002",
         // 自动重建前的倒计时提示，占位符是剩余秒数
         noticeCountdown: "\u5185\u5B58\u5B88\u62A4\u6B63\u5728\u56DE\u6536\uFF0C{seconds} \u79D2\u540E\u91CD\u5EFA\u9875\u9762",
         // 倒计时提示上的取消按钮
@@ -7164,30 +7148,16 @@ window.__ModuleLoader__.load({
       en: {
         // Switch title
         title: "Memory guard",
-        // Switch description: cadence, two tiers, and the trigger condition
-        description: "Reclaim UI memory on a timer: clear caches on every check, and rebuild the page once usage passes the threshold while you are away.",
         // Label of the interval input
-        intervalLabel: "Check every",
+        intervalLabel: "Interval",
         // Unit shown after the interval input
         intervalUnit: "min",
         // Label of the rebuild threshold input
-        thresholdLabel: "Rebuild at",
+        thresholdLabel: "Threshold",
         // Unit shown after the threshold input
         thresholdUnit: "MB",
-        // Heading of the usage line
-        readingTitle: "Usage",
-        // Desktop reading: renderer resident memory
-        readingProcess: "Renderer {value} MB",
-        // Browser reading: page JS heap
-        readingHeap: "JS heap {value} MB",
-        // Supporting reading: DOM node count
-        readingNodes: "DOM {value} nodes",
-        // Placeholder when no memory API is available
-        readingUnknown: "No reading yet",
         // Time and freed amount of the last light reclaim
         lastReclaim: "Reclaimed {time}",
-        // Shown when a reclaim freed nothing measurable
-        lastReclaimIdle: "Last reclaim freed nothing measurable",
         // Time of the last rebuild
         lastRebuild: "Rebuilt {time}",
         // Placeholder for an action that never ran
@@ -7198,8 +7168,6 @@ window.__ModuleLoader__.load({
         rebuildNow: "Rebuild now",
         // Button label while a light reclaim runs
         reclaiming: "Reclaiming\u2026",
-        // Reminder that a rebuild resets scroll and panel state
-        rebuildHint: "A rebuild resets scroll and panels; sessions and drafts survive.",
         // Countdown notice before an automatic rebuild; the placeholder is seconds left
         noticeCountdown: "Memory guard is reclaiming, rebuilding in {seconds}s",
         // Cancel button on the countdown notice
@@ -7227,7 +7195,7 @@ window.__ModuleLoader__.load({
 
     // src/features/memory-guard/toggle.tsx
     var import_react30 = __toESM(require("react"), 1);
-    var READING_REFRESH_MS = 1e4;
+    var STATE_REFRESH_MS = 1e4;
     var INPUT_CLASS5 = "w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] text-primary outline-none focus:border-brand";
     var BUTTON_CLASS2 = "rounded-md border border-line4 px-2 py-0.5 text-[11px] text-primary transition hover:border-brand hover:text-brand disabled:cursor-default disabled:opacity-50";
     function NumberField({
@@ -7284,7 +7252,6 @@ window.__ModuleLoader__.load({
     }
     function MemoryGuardToggle({ t }) {
       const [settings, setSettings] = (0, import_react30.useState)(() => readMemoryGuardSettings());
-      const [reading, setReading] = (0, import_react30.useState)(null);
       const [runtime, setRuntime] = (0, import_react30.useState)(() => readMemoryGuardState());
       const [intervalDraft, setIntervalDraft] = (0, import_react30.useState)(
         () => String(readMemoryGuardSettings().intervalMinutes)
@@ -7297,22 +7264,15 @@ window.__ModuleLoader__.load({
       (0, import_react30.useEffect)(() => {
         let active2 = true;
         const refresh = () => {
-          void readMemory().then((next) => {
-            if (active2) setReading(next);
-          }).catch((error) => {
-            if (!active2) return;
-            console.error("[memory-guard] \u8BFB\u53D6\u5185\u5B58\u5360\u7528\u5931\u8D25:", error);
-            setMessage(t("measureFailed"));
-          });
           if (active2) setRuntime(readMemoryGuardState());
         };
         refresh();
-        const timer = window.setInterval(refresh, READING_REFRESH_MS);
+        const timer = window.setInterval(refresh, STATE_REFRESH_MS);
         return () => {
           active2 = false;
           window.clearInterval(timer);
         };
-      }, [t]);
+      }, []);
       const persist = (patch) => {
         const next = updateMemoryGuardSettings(patch);
         setSettings(next);
@@ -7352,8 +7312,7 @@ window.__ModuleLoader__.load({
         setWorking("reclaim");
         setMessage("");
         try {
-          const after = await guard.reclaimNow();
-          setReading(after);
+          await guard.reclaimNow();
           setRuntime(readMemoryGuardState());
         } catch (error) {
           console.error("[memory-guard] \u624B\u52A8\u8F7B\u91CF\u56DE\u6536\u5931\u8D25:", error);
@@ -7380,10 +7339,9 @@ window.__ModuleLoader__.load({
           setWorking(null);
         }
       };
-      const readingText = reading === null ? t("readingUnknown") : reading.source === "process" ? t("readingProcess").replace("{value}", String(reading.megabytes)) : reading.source === "heap" ? t("readingHeap").replace("{value}", String(reading.megabytes)) : t("readingUnknown");
       return (
         // 卡片容器：文字区不参与交互，开关与参数各自独立，不能互相嵌套
-        /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react30.default.createElement(MemoryIcon2, null)), /* @__PURE__ */ import_react30.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")))), /* @__PURE__ */ import_react30.default.createElement(
+        /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react30.default.createElement(MemoryIcon2, null)), /* @__PURE__ */ import_react30.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")))), /* @__PURE__ */ import_react30.default.createElement(
           "button",
           {
             type: "button",
@@ -7429,7 +7387,7 @@ window.__ModuleLoader__.load({
             onChange: setThresholdDraft,
             onCommit: commitThreshold
           }
-        )), /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex flex-wrap items-center gap-x-2 pl-7 text-[11px] leading-[16px] text-secondary" }, /* @__PURE__ */ import_react30.default.createElement("span", null, t("readingTitle")), /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-primary" }, readingText), reading !== null ? /* @__PURE__ */ import_react30.default.createElement("span", null, t("readingNodes").replace("{value}", String(reading.domNodes))) : null), /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex flex-wrap items-center gap-x-2 pl-7 text-[11px] leading-[16px] text-secondary" }, /* @__PURE__ */ import_react30.default.createElement("span", null, t("lastReclaim").replace("{time}", formatTime(runtime.lastReclaimAt, t("never"))), runtime.lastReclaimFreedMB > 0 ? ` \xB7 ${runtime.lastReclaimFreedMB} MB` : ""), /* @__PURE__ */ import_react30.default.createElement("span", null, t("lastRebuild").replace("{time}", formatTime(runtime.lastRebuildAt, t("never"))))), /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex flex-wrap items-center gap-2 pl-7" }, /* @__PURE__ */ import_react30.default.createElement(
+        )), /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex flex-wrap items-center gap-x-2 pl-7 text-[11px] leading-[16px] text-secondary" }, /* @__PURE__ */ import_react30.default.createElement("span", null, t("lastReclaim").replace("{time}", formatTime(runtime.lastReclaimAt, t("never"))), runtime.lastReclaimFreedMB > 0 ? ` \xB7 ${runtime.lastReclaimFreedMB} MB` : ""), /* @__PURE__ */ import_react30.default.createElement("span", null, t("lastRebuild").replace("{time}", formatTime(runtime.lastRebuildAt, t("never"))))), /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex flex-wrap items-center gap-2 pl-7" }, /* @__PURE__ */ import_react30.default.createElement(
           "button",
           {
             type: "button",
@@ -7447,7 +7405,7 @@ window.__ModuleLoader__.load({
             className: BUTTON_CLASS2
           },
           t("rebuildNow")
-        ), /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, t("rebuildHint"))), message !== "" ? /* @__PURE__ */ import_react30.default.createElement("span", { className: "pl-7 text-[11px] leading-[16px] text-danger", role: "alert" }, message) : null) : null)
+        )), message !== "" ? /* @__PURE__ */ import_react30.default.createElement("span", { className: "pl-7 text-[11px] leading-[16px] text-danger", role: "alert" }, message) : null) : null)
       );
     }
 

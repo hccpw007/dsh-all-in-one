@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react'
 import { cn } from '../../common/cn'
 import type { FeatureSwitchProps } from '../../shell/registry'
 import { activeMemoryGuard } from './guard'
-import { readMemory } from './measure'
 import {
   INTERVAL_RANGE,
   readMemoryGuardSettings,
@@ -11,10 +10,10 @@ import {
   THRESHOLD_RANGE,
   updateMemoryGuardSettings,
 } from './storage'
-import type { MemoryGuardSettings, MemoryGuardState, MemoryReading } from './types'
+import type { MemoryGuardSettings, MemoryGuardState } from './types'
 
-/** 读数的刷新间隔：卡片只在设置页打开时存在，十秒一次足以看出趋势。 */
-const READING_REFRESH_MS = 10_000
+/** 运行状态的刷新间隔：回收与重建由定时器在后台触发，卡片要跟上最新时间。 */
+const STATE_REFRESH_MS = 10_000
 
 /** 数字输入框样式，与其它开关型功能的参数输入保持一致。 */
 const INPUT_CLASS =
@@ -126,8 +125,6 @@ function MemoryIcon() {
 export function MemoryGuardToggle({ t }: FeatureSwitchProps) {
   // 当前配置；所有变更都先落 localStorage 再回填，保证刷新后仍是用户选的值
   const [settings, setSettings] = useState(() => readMemoryGuardSettings())
-  // 最近一次读数；null 表示还在读
-  const [reading, setReading] = useState<MemoryReading | null>(null)
   // 运行状态：上次回收与上次重建的时间
   const [runtime, setRuntime] = useState<MemoryGuardState>(() => readMemoryGuardState())
   // 检查间隔的输入草稿，提交前不影响已保存的配置
@@ -146,29 +143,19 @@ export function MemoryGuardToggle({ t }: FeatureSwitchProps) {
   useEffect(() => {
     let active = true
 
-    /** 刷新读数与运行状态；异步返回时组件可能已卸载，用 active 拦住。 */
+    /** 刷新运行状态；卡片可能在请求返回前被切走，用 active 拦住。 */
     const refresh = (): void => {
-      void readMemory()
-        .then((next) => {
-          if (active) setReading(next)
-        })
-        .catch((error: unknown) => {
-          if (!active) return
-
-          console.error('[memory-guard] 读取内存占用失败:', error)
-          setMessage(t('measureFailed'))
-        })
       if (active) setRuntime(readMemoryGuardState())
     }
 
     refresh()
-    const timer = window.setInterval(refresh, READING_REFRESH_MS)
+    const timer = window.setInterval(refresh, STATE_REFRESH_MS)
 
     return () => {
       active = false
       window.clearInterval(timer)
     }
-  }, [t])
+  }, [])
 
   /**
    * 提交一份配置补丁。
@@ -236,8 +223,7 @@ export function MemoryGuardToggle({ t }: FeatureSwitchProps) {
     setMessage('')
 
     try {
-      const after = await guard.reclaimNow()
-      setReading(after)
+      await guard.reclaimNow()
       setRuntime(readMemoryGuardState())
     } catch (error) {
       console.error('[memory-guard] 手动轻量回收失败:', error)
@@ -270,14 +256,6 @@ export function MemoryGuardToggle({ t }: FeatureSwitchProps) {
     }
   }
 
-  const readingText = reading === null
-    ? t('readingUnknown')
-    : reading.source === 'process'
-      ? t('readingProcess').replace('{value}', String(reading.megabytes))
-      : reading.source === 'heap'
-        ? t('readingHeap').replace('{value}', String(reading.megabytes))
-        : t('readingUnknown')
-
   return (
     // 卡片容器：文字区不参与交互，开关与参数各自独立，不能互相嵌套
     <div className="flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1">
@@ -289,14 +267,10 @@ export function MemoryGuardToggle({ t }: FeatureSwitchProps) {
           <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand">
             <MemoryIcon />
           </span>
-          {/* 入口标题与说明 */}
+          {/* 入口标题 */}
           <span className="min-w-0 flex-1">
             {/* 开关标题 */}
             <span className="block text-[13px] font-medium leading-[16px] text-primary">{t('title')}</span>
-            {/* 开关用途说明 */}
-            <span className="block text-[11px] leading-[14px] text-secondary">
-              {t('description')}
-            </span>
           </span>
         </div>
         <button
@@ -344,15 +318,6 @@ export function MemoryGuardToggle({ t }: FeatureSwitchProps) {
               onCommit={commitThreshold}
             />
           </div>
-          {/* 实时读数：桌面版是渲染进程 RSS，浏览器环境退回 JS 堆 */}
-          <div className="flex flex-wrap items-center gap-x-2 pl-7 text-[11px] leading-[16px] text-secondary">
-            {/* 读数标题 */}
-            <span>{t('readingTitle')}</span>
-            <span className="text-primary">{readingText}</span>
-            {reading !== null ? (
-              <span>{t('readingNodes').replace('{value}', String(reading.domNodes))}</span>
-            ) : null}
-          </div>
           {/* 运行状态：上次回收与上次重建的时间，方便判断定时器是否在工作 */}
           <div className="flex flex-wrap items-center gap-x-2 pl-7 text-[11px] leading-[16px] text-secondary">
             <span>
@@ -361,7 +326,7 @@ export function MemoryGuardToggle({ t }: FeatureSwitchProps) {
             </span>
             <span>{t('lastRebuild').replace('{time}', formatTime(runtime.lastRebuildAt, t('never')))}</span>
           </div>
-          {/* 操作行：手动回收与手动重建；重建会重置滚动位置，说明一并给出 */}
+          {/* 操作行：手动回收与手动重建 */}
           <div className="flex flex-wrap items-center gap-2 pl-7">
             <button
               type="button"
@@ -379,8 +344,6 @@ export function MemoryGuardToggle({ t }: FeatureSwitchProps) {
             >
               {t('rebuildNow')}
             </button>
-            {/* 重建影响面提醒 */}
-            <span className="text-[11px] leading-[16px] text-secondary">{t('rebuildHint')}</span>
           </div>
           {/* 结果与校验提示 */}
           {message !== '' ? (

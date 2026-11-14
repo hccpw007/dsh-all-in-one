@@ -5,30 +5,16 @@ export const memoryGuardLocales: FeatureLocales = {
   zh: {
     // 开关标题
     title: '内存守护',
-    // 开关用途说明：点明检查节奏、回收档位与触发条件
-    description: '定时清理界面内存：每次检查先清缓存，占用过高且无人操作时自动重建页面。',
     // 检查间隔输入框的标签
-    intervalLabel: '检查间隔',
+    intervalLabel: '间隔',
     // 检查间隔输入框的单位
     intervalUnit: '分钟',
     // 重建阈值输入框的标签
-    thresholdLabel: '重建阈值',
+    thresholdLabel: '阈值',
     // 重建阈值输入框的单位
     thresholdUnit: 'MB',
-    // 读数行的标题
-    readingTitle: '当前占用',
-    // 桌面版读数：渲染进程常驻内存
-    readingProcess: '渲染进程 {value} MB',
-    // 浏览器环境读数：页面 JS 堆
-    readingHeap: 'JS 堆 {value} MB',
-    // 附加读数：DOM 节点数
-    readingNodes: 'DOM {value} 节点',
-    // 读不到内存时的占位
-    readingUnknown: '暂无读数',
     // 上次轻量回收的时间与释放量
     lastReclaim: '上次回收 {time}',
-    // 回收没有释放出可测量的内存时的说明
-    lastReclaimIdle: '上次回收未释放可测量内存',
     // 上次重建的时间
     lastRebuild: '上次重建 {time}',
     // 从未执行过时的占位
@@ -39,8 +25,6 @@ export const memoryGuardLocales: FeatureLocales = {
     rebuildNow: '立即重建',
     // 轻量回收执行中的按钮文案
     reclaiming: '回收中…',
-    // 重建会重置滚动位置与面板状态的提醒
-    rebuildHint: '重建会重置滚动位置与面板，会话与草稿不丢。',
     // 自动重建前的倒计时提示，占位符是剩余秒数
     noticeCountdown: '内存守护正在回收，{seconds} 秒后重建页面',
     // 倒计时提示上的取消按钮
@@ -67,31 +51,16 @@ export const memoryGuardLocales: FeatureLocales = {
   en: {
     // Switch title
     title: 'Memory guard',
-    // Switch description: cadence, two tiers, and the trigger condition
-    description:
-      'Reclaim UI memory on a timer: clear caches on every check, and rebuild the page once usage passes the threshold while you are away.',
     // Label of the interval input
-    intervalLabel: 'Check every',
+    intervalLabel: 'Interval',
     // Unit shown after the interval input
     intervalUnit: 'min',
     // Label of the rebuild threshold input
-    thresholdLabel: 'Rebuild at',
+    thresholdLabel: 'Threshold',
     // Unit shown after the threshold input
     thresholdUnit: 'MB',
-    // Heading of the usage line
-    readingTitle: 'Usage',
-    // Desktop reading: renderer resident memory
-    readingProcess: 'Renderer {value} MB',
-    // Browser reading: page JS heap
-    readingHeap: 'JS heap {value} MB',
-    // Supporting reading: DOM node count
-    readingNodes: 'DOM {value} nodes',
-    // Placeholder when no memory API is available
-    readingUnknown: 'No reading yet',
     // Time and freed amount of the last light reclaim
     lastReclaim: 'Reclaimed {time}',
-    // Shown when a reclaim freed nothing measurable
-    lastReclaimIdle: 'Last reclaim freed nothing measurable',
     // Time of the last rebuild
     lastRebuild: 'Rebuilt {time}',
     // Placeholder for an action that never ran
@@ -102,8 +71,6 @@ export const memoryGuardLocales: FeatureLocales = {
     rebuildNow: 'Rebuild now',
     // Button label while a light reclaim runs
     reclaiming: 'Reclaiming…',
-    // Reminder that a rebuild resets scroll and panel state
-    rebuildHint: 'A rebuild resets scroll and panels; sessions and drafts survive.',
     // Countdown notice before an automatic rebuild; the placeholder is seconds left
     noticeCountdown: 'Memory guard is reclaiming, rebuilding in {seconds}s',
     // Cancel button on the countdown notice

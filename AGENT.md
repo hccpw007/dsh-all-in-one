@@ -226,7 +226,7 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 │       │   └── locales.ts   # 本功能的中英文文案
 │       ├── memory-guard/   # 开关型功能：定时轻量回收界面内存，占用过高时重建页面
 │       │   ├── index.tsx    # 注册定义：switch 入口 + client 扩展
-│       │   ├── toggle.tsx   # 网格开关、检查间隔/重建阈值、实时读数与手动按钮
+│       │   ├── toggle.tsx   # 网格开关、检查间隔/重建阈值、上次时间与手动按钮
 │       │   ├── storage.ts   # 配置与运行状态的 localStorage 读写，本功能专属
 │       │   ├── client.tsx   # 客户端扩展：常驻安装定时检查
 │       │   ├── guard.ts     # 定时编排：轻量回收 → 阈值 → 空闲判定 → 倒计时 → 重建
