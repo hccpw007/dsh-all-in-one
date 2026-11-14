@@ -68,10 +68,10 @@ export function MemoryUsagePill({ t }: MemoryUsagePillProps) {
       active = false
       window.clearInterval(timer)
     }
-  }, [])
+  }, [enabled])
 
-  // 还没有读数时整块隐藏，避免状态栏出现半个空标签
-  if (reading === null) return null
+  // 开关关闭或首帧还没读到读数时整块隐藏，避免状态栏出现半个空标签
+  if (!enabled || reading === null) return null
 
   // 桌面版显示全部进程合计；浏览器打开的实例只有页面 JS 堆
   const megabytes = reading.totalMB ?? reading.megabytes

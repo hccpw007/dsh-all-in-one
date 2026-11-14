@@ -13,6 +13,8 @@ export const contextInspectLocales: FeatureLocales = {
     systemHint: '查看当前系统提示词',
     // 工具定义行的悬停提示
     toolsHint: '查看当前工具定义',
+    // 对话消息行的悬停提示
+    messagesHint: '查看当前对话消息',
     // 详情窗口标题
     dialogTitle: '上下文详情',
     // 详情窗口的数据来源说明
@@ -21,6 +23,8 @@ export const contextInspectLocales: FeatureLocales = {
     tabSystem: '系统提示词',
     // 「工具定义」页签
     tabTools: '工具定义',
+    // 「对话消息」页签
+    tabMessages: '对话消息',
     // 读取中的占位提示
     loading: '正在读取…',
     // 读取失败的提示前缀，后面接宿主返回的原因
@@ -39,6 +43,8 @@ export const contextInspectLocales: FeatureLocales = {
     emptySystem: '本会话还没有发起过请求，暂时没有系统提示词。',
     // 会话还没有工具定义时的说明
     emptyTools: '本会话还没有发起过请求，暂时没有工具定义。',
+    // 会话还没有对话消息时的说明
+    emptyMessages: '本会话还没有发起过请求，暂时没有对话消息。',
     // 定位不到当前会话时的说明
     noSession: '没有找到当前打开的会话，请先进入一条对话再试。',
     // 更新时间前缀
@@ -49,6 +55,18 @@ export const contextInspectLocales: FeatureLocales = {
     charCount: '{count} 个字符',
     // 单个工具的参数数量模板
     paramCount: '{count} 个参数',
+    // 对话消息数量模板
+    messageCount: '共 {count} 条消息',
+    // 消息被截断时的说明模板
+    messagesTruncated: '仅显示最近 {count} 条',
+    // 「用户」角色标签
+    roleUser: '用户',
+    // 「助手」角色标签
+    roleAssistant: '助手',
+    // 「工具」角色标签
+    roleTool: '工具',
+    // 「开发」角色标签：模型看到的工具声明等内部消息
+    roleDeveloper: '声明',
     // 工具没有说明文字时的占位
     noDescription: '（无说明）',
   },
@@ -63,6 +81,8 @@ export const contextInspectLocales: FeatureLocales = {
     systemHint: 'Show the current system prompt',
     // Hover hint of the tool definition row
     toolsHint: 'Show the current tool definitions',
+    // Hover hint of the conversation messages row
+    messagesHint: 'Show the current conversation messages',
     // Title of the details dialog
     dialogTitle: 'Context details',
     // Subtitle naming where the content comes from
@@ -71,6 +91,8 @@ export const contextInspectLocales: FeatureLocales = {
     tabSystem: 'System prompt',
     // Tab showing the tool definitions
     tabTools: 'Tool definitions',
+    // Tab showing the conversation messages
+    tabMessages: 'Messages',
     // Placeholder while reading
     loading: 'Loading…',
     // Failure prefix followed by the host-provided reason
@@ -89,6 +111,8 @@ export const contextInspectLocales: FeatureLocales = {
     emptySystem: 'This session has not sent a request yet, so there is no system prompt.',
     // Shown when the session has no tool definitions yet
     emptyTools: 'This session has not sent a request yet, so there are no tool definitions.',
+    // Shown when the session has no conversation messages yet
+    emptyMessages: 'This session has not sent a request yet, so there are no messages.',
     // Shown when no open session can be located
     noSession: 'No open session found. Open a conversation first.',
     // Update-time prefix
@@ -99,6 +123,18 @@ export const contextInspectLocales: FeatureLocales = {
     charCount: '{count} characters',
     // Parameter count template for one tool
     paramCount: '{count} params',
+    // Message count template
+    messageCount: '{count} messages',
+    // Shown when older messages are omitted
+    messagesTruncated: 'showing the latest {count}',
+    // Role label for user messages
+    roleUser: 'User',
+    // Role label for assistant messages
+    roleAssistant: 'Assistant',
+    // Role label for tool results
+    roleTool: 'Tool',
+    // Role label for developer messages (tool declarations)
+    roleDeveloper: 'Decl',
     // Placeholder for a tool without a description
     noDescription: '(no description)',
   },

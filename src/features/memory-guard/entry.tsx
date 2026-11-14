@@ -19,7 +19,8 @@ export function MemoryGuardEntry({ t, open }: FeatureEntryProps) {
   // 开关状态；存储不可用时拿到的是默认值，不影响卡片渲染
   const [enabled, setEnabled] = useState(() => readMemoryGuardSettings().enabled)
 
-  /** 切换开关并立即重排定时器：关闭后定时器仍在跑，但每次检查都会因未启用而跳过。 */
+  /** 切换开关并立即重排定时器：关闭后定时器仍在跑，但每次检查都会因未启用而跳过；
+   *  状态栏读数与头部按钮则随开关立即隐藏，不需要刷新页面。 */
   const handleToggle = (): void => {
     const next = updateMemoryGuardSettings({ enabled: !enabled })
     setEnabled(next.enabled)

@@ -1657,11 +1657,12 @@ window.__ModuleLoader__.load({
         }
         try {
           const next = await load(controller.signal);
+          const wasLoading = loading;
           payload = next;
           failed = void 0;
           loading = false;
           const nextSignature = next === null ? "null" : `${next.system.length}:${next.tools.map((tool) => tool.name).join(",")}:${JSON.stringify(next.tools).length}`;
-          if (nextSignature !== signature) {
+          if (!silent || wasLoading || nextSignature !== signature) {
             signature = nextSignature;
             renderBody();
           }
@@ -1919,6 +1920,8 @@ window.__ModuleLoader__.load({
         systemHint: "\u67E5\u770B\u5F53\u524D\u7CFB\u7EDF\u63D0\u793A\u8BCD",
         // 工具定义行的悬停提示
         toolsHint: "\u67E5\u770B\u5F53\u524D\u5DE5\u5177\u5B9A\u4E49",
+        // 对话消息行的悬停提示
+        messagesHint: "\u67E5\u770B\u5F53\u524D\u5BF9\u8BDD\u6D88\u606F",
         // 详情窗口标题
         dialogTitle: "\u4E0A\u4E0B\u6587\u8BE6\u60C5",
         // 详情窗口的数据来源说明
@@ -1927,6 +1930,8 @@ window.__ModuleLoader__.load({
         tabSystem: "\u7CFB\u7EDF\u63D0\u793A\u8BCD",
         // 「工具定义」页签
         tabTools: "\u5DE5\u5177\u5B9A\u4E49",
+        // 「对话消息」页签
+        tabMessages: "\u5BF9\u8BDD\u6D88\u606F",
         // 读取中的占位提示
         loading: "\u6B63\u5728\u8BFB\u53D6\u2026",
         // 读取失败的提示前缀，后面接宿主返回的原因
@@ -1945,6 +1950,8 @@ window.__ModuleLoader__.load({
         emptySystem: "\u672C\u4F1A\u8BDD\u8FD8\u6CA1\u6709\u53D1\u8D77\u8FC7\u8BF7\u6C42\uFF0C\u6682\u65F6\u6CA1\u6709\u7CFB\u7EDF\u63D0\u793A\u8BCD\u3002",
         // 会话还没有工具定义时的说明
         emptyTools: "\u672C\u4F1A\u8BDD\u8FD8\u6CA1\u6709\u53D1\u8D77\u8FC7\u8BF7\u6C42\uFF0C\u6682\u65F6\u6CA1\u6709\u5DE5\u5177\u5B9A\u4E49\u3002",
+        // 会话还没有对话消息时的说明
+        emptyMessages: "\u672C\u4F1A\u8BDD\u8FD8\u6CA1\u6709\u53D1\u8D77\u8FC7\u8BF7\u6C42\uFF0C\u6682\u65F6\u6CA1\u6709\u5BF9\u8BDD\u6D88\u606F\u3002",
         // 定位不到当前会话时的说明
         noSession: "\u6CA1\u6709\u627E\u5230\u5F53\u524D\u6253\u5F00\u7684\u4F1A\u8BDD\uFF0C\u8BF7\u5148\u8FDB\u5165\u4E00\u6761\u5BF9\u8BDD\u518D\u8BD5\u3002",
         // 更新时间前缀
@@ -1955,6 +1962,18 @@ window.__ModuleLoader__.load({
         charCount: "{count} \u4E2A\u5B57\u7B26",
         // 单个工具的参数数量模板
         paramCount: "{count} \u4E2A\u53C2\u6570",
+        // 对话消息数量模板
+        messageCount: "\u5171 {count} \u6761\u6D88\u606F",
+        // 消息被截断时的说明模板
+        messagesTruncated: "\u4EC5\u663E\u793A\u6700\u8FD1 {count} \u6761",
+        // 「用户」角色标签
+        roleUser: "\u7528\u6237",
+        // 「助手」角色标签
+        roleAssistant: "\u52A9\u624B",
+        // 「工具」角色标签
+        roleTool: "\u5DE5\u5177",
+        // 「开发」角色标签：模型看到的工具声明等内部消息
+        roleDeveloper: "\u58F0\u660E",
         // 工具没有说明文字时的占位
         noDescription: "\uFF08\u65E0\u8BF4\u660E\uFF09"
       },
@@ -1969,6 +1988,8 @@ window.__ModuleLoader__.load({
         systemHint: "Show the current system prompt",
         // Hover hint of the tool definition row
         toolsHint: "Show the current tool definitions",
+        // Hover hint of the conversation messages row
+        messagesHint: "Show the current conversation messages",
         // Title of the details dialog
         dialogTitle: "Context details",
         // Subtitle naming where the content comes from
@@ -1977,6 +1998,8 @@ window.__ModuleLoader__.load({
         tabSystem: "System prompt",
         // Tab showing the tool definitions
         tabTools: "Tool definitions",
+        // Tab showing the conversation messages
+        tabMessages: "Messages",
         // Placeholder while reading
         loading: "Loading\u2026",
         // Failure prefix followed by the host-provided reason
@@ -1995,6 +2018,8 @@ window.__ModuleLoader__.load({
         emptySystem: "This session has not sent a request yet, so there is no system prompt.",
         // Shown when the session has no tool definitions yet
         emptyTools: "This session has not sent a request yet, so there are no tool definitions.",
+        // Shown when the session has no conversation messages yet
+        emptyMessages: "This session has not sent a request yet, so there are no messages.",
         // Shown when no open session can be located
         noSession: "No open session found. Open a conversation first.",
         // Update-time prefix
@@ -2005,6 +2030,18 @@ window.__ModuleLoader__.load({
         charCount: "{count} characters",
         // Parameter count template for one tool
         paramCount: "{count} params",
+        // Message count template
+        messageCount: "{count} messages",
+        // Shown when older messages are omitted
+        messagesTruncated: "showing the latest {count}",
+        // Role label for user messages
+        roleUser: "User",
+        // Role label for assistant messages
+        roleAssistant: "Assistant",
+        // Role label for tool results
+        roleTool: "Tool",
+        // Role label for developer messages (tool declarations)
+        roleDeveloper: "Decl",
         // Placeholder for a tool without a description
         noDescription: "(no description)"
       }
@@ -8017,8 +8054,8 @@ window.__ModuleLoader__.load({
           active2 = false;
           window.clearInterval(timer);
         };
-      }, []);
-      if (reading === null) return null;
+      }, [enabled]);
+      if (!enabled || reading === null) return null;
       const megabytes = reading.totalMB ?? reading.megabytes;
       return /* @__PURE__ */ import_react35.default.createElement(import_react35.default.Fragment, null, /* @__PURE__ */ import_react35.default.createElement(
         "button",
@@ -8058,6 +8095,7 @@ window.__ModuleLoader__.load({
       );
     }
     function MemoryGuardAction({ t }) {
+      const enabled = useMemoryGuardEnabled();
       const [working, setWorking] = (0, import_react36.useState)(false);
       const handleClick = async () => {
         const guard = activeMemoryGuard();
@@ -8078,6 +8116,7 @@ window.__ModuleLoader__.load({
           setWorking(false);
         }
       };
+      if (!enabled) return null;
       return /* @__PURE__ */ import_react36.default.createElement(
         "button",
         {

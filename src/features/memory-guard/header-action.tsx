@@ -3,11 +3,13 @@
  *
  * 一点即走完整动作：先做一次轻量回收，再进入 5 秒倒计时重建页面；倒计时浮层
  * 上可以取消。挂在 `conversation.session.header.utilities` 列表末尾，与宿主的
- * 工具按钮同排，不占用底部状态栏的位置。
+ * 工具按钮同排，不占用底部状态栏的位置。开关关闭后按钮随之隐藏：不需要它的人
+ * 不该在每一屏的头部多看到一个刷新图标。
  */
 import React, { useState } from 'react'
 
 import type { Translate } from '../../types/plugin'
+import { useMemoryGuardEnabled } from './enabled'
 import { activeMemoryGuard } from './guard'
 
 /** 刷新图标：环形箭头，表达「回收后重载」。 */
@@ -42,6 +44,8 @@ export interface MemoryGuardActionProps {
  * @param props 翻译函数
  */
 export function MemoryGuardAction({ t }: MemoryGuardActionProps) {
+  // 开关状态：关闭后不再渲染这个入口
+  const enabled = useMemoryGuardEnabled()
   // 回收与倒计时期间禁用按钮并转动图标，避免连点叠加两次重建
   const [working, setWorking] = useState(false)
 
@@ -68,6 +72,9 @@ export function MemoryGuardAction({ t }: MemoryGuardActionProps) {
       setWorking(false)
     }
   }
+
+  // 开关关闭后整块不渲染，头部工具区不会留下空位
+  if (!enabled) return null
 
   return (
     <button

@@ -2235,6 +2235,10 @@ __export(host_exports4, {
 
 // src/features/context-inspect/host/inspect.ts
 var CACHE_LIMIT = 16;
+var MAX_MESSAGE_CHARS = 8e3;
+var MAX_TOTAL_CHARS = 3e5;
+var MAX_MESSAGES = 300;
+var MAX_TOOL_ARGS_CHARS = 300;
 var cache = /* @__PURE__ */ new Map();
 var inflight = /* @__PURE__ */ new Map();
 function systemTextOf(event) {
@@ -2246,6 +2250,112 @@ function isToolSchema(value) {
   if (typeof value !== "object" || value === null) return false;
   const candidate = value;
   return typeof candidate.name === "string" && typeof candidate.parameters === "object" && candidate.parameters !== null;
+}
+function replaceOpOf(value) {
+  if (typeof value !== "object" || value === null) return void 0;
+  const candidate = value;
+  if (candidate.op !== "replace") return void 0;
+  if (typeof candidate.startSeq !== "number" || typeof candidate.endSeq !== "number") return void 0;
+  return { op: "replace", startSeq: candidate.startSeq, endSeq: candidate.endSeq };
+}
+function foldBlocks(blocks) {
+  const parts = [];
+  for (const block of blocks) {
+    switch (block.type) {
+      case "text":
+        if (typeof block.text === "string" && block.text !== "") parts.push(block.text);
+        break;
+      case "tool-call": {
+        const name = typeof block.name === "string" ? block.name : "\u672A\u77E5\u5DE5\u5177";
+        const args = typeof block.arguments === "string" ? block.arguments : "";
+        const shown = args.length > MAX_TOOL_ARGS_CHARS ? `${args.slice(0, MAX_TOOL_ARGS_CHARS)}\u2026` : args;
+        parts.push(`\u2192 ${name}${shown === "" ? "" : `(${shown})`}`);
+        break;
+      }
+      case "tool-addition":
+        if (typeof block.toolName === "string") parts.push(`+ \u5DE5\u5177 ${block.toolName}`);
+        break;
+      case "tool-removal":
+        if (typeof block.toolName === "string") parts.push(`- \u5DE5\u5177 ${block.toolName}`);
+        break;
+      case "image":
+        parts.push("[\u56FE\u7247]");
+        break;
+      case "file":
+        parts.push("[\u6587\u4EF6]");
+        break;
+      default:
+        break;
+    }
+  }
+  return parts.join("\n");
+}
+function roleOf(type) {
+  switch (type) {
+    case "user/message":
+      return "user";
+    case "assistant/message":
+      return "assistant";
+    case "tool/result":
+      return "tool";
+    case "developer/message":
+      return "developer";
+    default:
+      return void 0;
+  }
+}
+function messageOf(event) {
+  const role = roleOf(event.type);
+  if (role === void 0) return null;
+  if (typeof event.seq !== "number") return null;
+  const blocks = event.data?.message?.content;
+  const text = Array.isArray(blocks) ? foldBlocks(blocks) : "";
+  if (text.trim() === "") return null;
+  return {
+    seq: event.seq,
+    role,
+    // 超长单条截断：保留开头，尾部标记说明已截断
+    text: text.length > MAX_MESSAGE_CHARS ? `${text.slice(0, MAX_MESSAGE_CHARS)}
+\u2026\uFF08\u5DF2\u622A\u65AD\uFF09` : text
+  };
+}
+function foldSurface(events) {
+  const surface = [];
+  for (const value of events) {
+    const event = value;
+    if (typeof event !== "object" || event === null) continue;
+    const op = event.surfaceOp;
+    if (op === void 0) continue;
+    if (op === "append") {
+      surface.push(event);
+      continue;
+    }
+    const replace = replaceOpOf(op);
+    if (replace === void 0) continue;
+    const from = surface.findIndex((node) => node.seq === replace.startSeq);
+    const to = surface.findIndex((node) => node.seq === replace.endSeq);
+    if (from === -1 || to === -1 || to < from) continue;
+    surface.splice(from, to - from + 1, event);
+  }
+  return surface;
+}
+function collectMessages(surface) {
+  const all = [];
+  for (const event of surface) {
+    const message = messageOf(event);
+    if (message !== null) all.push(message);
+  }
+  const kept = [];
+  let chars = 0;
+  for (let index = all.length - 1; index >= 0; index -= 1) {
+    const message = all[index];
+    if (kept.length >= MAX_MESSAGES) break;
+    if (kept.length > 0 && chars + message.text.length > MAX_TOTAL_CHARS) break;
+    kept.push(message);
+    chars += message.text.length;
+  }
+  kept.reverse();
+  return { messages: kept, total: all.length, truncated: kept.length < all.length };
 }
 function extractInspect(events) {
   let system;
@@ -2263,7 +2373,13 @@ function extractInspect(events) {
     }
     if (system !== void 0 && tools !== void 0) break;
   }
-  return { system: system ?? "", tools: tools ?? [] };
+  const collected = collectMessages(foldSurface(events));
+  return {
+    system: system ?? "",
+    tools: tools ?? [],
+    messages: collected.messages,
+    messagesTotal: collected.total
+  };
 }
 function remember(sessionId, entry) {
   cache.delete(sessionId);
@@ -2307,7 +2423,9 @@ async function readContextInspect(persistence, sessionId) {
       session: sessionId,
       readAt: Date.now(),
       system: extracted.system,
-      tools: extracted.tools
+      tools: extracted.tools,
+      messages: extracted.messages,
+      messagesTotal: extracted.messagesTotal
     };
     remember(sessionId, { revision, payload });
     return payload;

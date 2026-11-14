@@ -374,7 +374,7 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
   }
 
   /**
-   * 读取一次数据；内容变化时才重画正文。
+   * 读取一次数据；后台自动刷新只在内容变化时重画正文。
    * @param silent 自动刷新时为 true：失败不覆盖已经展示的内容
    */
   async function refresh(silent = false): Promise<void> {
@@ -387,6 +387,7 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
 
     try {
       const next = await load(controller.signal)
+      const wasLoading = loading
       payload = next
       failed = undefined
       loading = false
@@ -394,8 +395,9 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
       const nextSignature = next === null
         ? 'null'
         : `${next.system.length}:${next.tools.map((tool) => tool.name).join(',')}:${JSON.stringify(next.tools).length}`
-      // 内容未变时只更新统计，不动正文，滚动位置因此保持不动
-      if (nextSignature !== signature) {
+      // 正文此时可能正显示加载占位（手动刷新刚把它换掉），内容即使未变也必须重画，
+      // 否则会一直停在占位上；只有纯后台刷新才按变化与否决定，避免抖动滚动位置
+      if (!silent || wasLoading || nextSignature !== signature) {
         signature = nextSignature
         renderBody()
       }
