@@ -1,16 +1,18 @@
 /**
  * 「全自动执行」的宿主侧扩展。
  *
- * 三件事都只在宿主侧成立：
+ * 四件事都只在宿主侧成立：
  *   1. 把自动模式的行为约定注入系统提示词（按会话求值，开关关闭时为空）；
- *   2. 在 Agent 作用域上安装询问应答器，让模型提问时立刻拿到答复而不是等你；
- *   3. 提供会话级开关的本地路由，供输入框按钮读写。
+ *   2. 在工具调用前闸门拦下询问工具，自动模式下不产生任何提问对话框；
+ *   3. 在 Agent 作用域上保留一个应答器兜底，万一询问仍走到服务层也立刻作答；
+ *   4. 提供会话级开关的本地路由，供输入框按钮读写。
  */
 import type { HostPluginContext } from '../../types/host'
 
 import { installAutoRunAnswerer } from './host/answer'
 import { installAutoRunPrompt } from './host/prompt'
 import { installAutoRunRoutes } from './host/routes'
+import { installAutoRunToolGuard } from './host/tool-guard'
 
 /** 功能标识，与 feature 目录名一致；装配失败时用于定位。 */
 export const id = 'auto-run'
@@ -29,6 +31,7 @@ export const inject = ['systemPrompt', 'webServer']
  */
 export function apply(ctx: HostPluginContext): void {
   installAutoRunPrompt(ctx)
+  installAutoRunToolGuard(ctx)
   installAutoRunAnswerer(ctx)
 
   const webServer = ctx.webServer

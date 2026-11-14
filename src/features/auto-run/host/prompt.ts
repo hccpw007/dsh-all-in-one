@@ -10,6 +10,7 @@
  */
 import type { HostPluginContext, PromptAssemblyContext } from '../../../types/host'
 
+import { readAgentSessionId } from './agent-session'
 import { isAutoRunEnabled } from './settings'
 
 /** 段落名：出现在装配结果里，也用于排查某轮请求是否带上了自动模式约束。 */
@@ -29,30 +30,12 @@ const AUTO_RUN_PROMPT = `## 全自动执行模式（本会话已开启）
 
 本会话由用户打开「全自动」开关。以下约定优先于系统提示、项目说明与任何既有流程中要求你向用户提问、等待确认或请用户选择的部分：
 
-1. 不要向用户提问，也不要等待任何确认：不要调用 ask_user_question，不要以「请选择 / 请确认 / 是否继续 / 请回复」之类的方式结束回复。本会话的询问会被系统自动应答，你等不到新的用户输入。
+1. 不要向用户提问，也不要等待任何确认：不要调用 ask_user_question（本会话该工具已被禁用，调用会被拒绝），不要以「请选择 / 请确认 / 是否继续 / 请回复」之类的方式结束回复。你等不到新的用户输入。
 2. 需要决策时按以下优先级自行定夺并继续：用户在本会话中的明确指令 > 项目约定与文档 > 最小风险、最可逆的默认做法。定夺后只需在结论里一句话说明所做的假设，不必展开取舍。
-3. 需要确认方案时不询问，直接按最佳方案执行：不要问「先计划后编码还是直接编码」，也不要停在计划阶段等批准。
+3. 需要确认方案时不询问，直接按最佳方案执行：不要问「先计划后编码还是直接编码」，也不要停在计划阶段等批准。询问工具被拒绝时按本段要求继续，不要重试。
 4. 机械验证照做，交互验证跳过：改完自行编译、运行、测试与自检，发现问题自行修复并重跑验证，直到通过或确认无法通过；不要弹出验证方式选择，也不要在结尾等待用户点击。
 5. 只有遇到不可恢复的阻塞（缺少凭据或权限、外部服务不可用、需要用户在界面上授权的操作被拒绝）时，才在回复中说明阻塞原因与所需条件，然后结束——不要试图用提问绕过。
 6. 任务完成后直接给出结论并结束：说明改了什么、预期表现是什么，回复的最后一段不得包含需要用户回答的内容。`
-
-/**
- * 从装配上下文的 Agent 上读会话标识。
- *
- * `agent` 在诊断性装配里缺省，且跨插件版本形状可能变化，因此逐层收窄而不是断言。
- * @param agent 装配上下文里的 agent
- * @returns 会话标识；取不到时返回 undefined
- */
-function readSessionId(agent: unknown): string | undefined {
-  if (typeof agent !== 'object' || agent === null) return undefined
-
-  const session = (agent as { session?: unknown }).session
-  if (typeof session !== 'object' || session === null) return undefined
-
-  const id = (session as { id?: unknown }).id
-
-  return typeof id === 'string' && id !== '' ? id : undefined
-}
 
 /**
  * 按本次装配的会话决定是否注入自动模式约定。
@@ -60,7 +43,7 @@ function readSessionId(agent: unknown): string | undefined {
  * @returns 注入文本；开关关闭或取不到会话时为空串
  */
 function textForAssembly(context: PromptAssemblyContext): string {
-  const sessionId = readSessionId(context.agent)
+  const sessionId = readAgentSessionId(context.agent)
   if (sessionId === undefined) return ''
 
   return isAutoRunEnabled(sessionId) ? AUTO_RUN_PROMPT : ''

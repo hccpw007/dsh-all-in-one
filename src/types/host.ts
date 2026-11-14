@@ -94,6 +94,16 @@ export interface HostPluginContext {
     listener: (payload: AgentCreatedEvent) => unknown,
     options?: { prepend?: boolean },
   ): () => void
+  /**
+   * 订阅工具调用前的闸门 waterfall。
+   *
+   * listener 返回 `allow` 或调用 `next()` 放行，返回 `deny` 则按理由物化成模型
+   * 看到的工具结果、且不执行工具本体；宿主的调度、超时与权限不受影响。
+   */
+  on(
+    event: 'tools/pre-execute',
+    listener: (exec: ToolPreExecuteEvent, next: () => Promise<unknown>) => Promise<unknown>,
+  ): () => void
   /** 在依赖服务就绪后执行回调，回调拿到带对应服务的子上下文。 */
   inject(names: string[], callback: (ctx: HostPluginContext) => void): void
   /** 按名称读取服务；服务在当前作用域不可见时返回 undefined。 */
@@ -128,6 +138,20 @@ export interface AgentCreatedEvent {
   agent: AgentLike
   /** 会话级取消信号；Agent 结束时会触发。 */
   signal?: AbortSignal
+}
+
+/**
+ * 工具调用前的闸门事件负载。
+ *
+ * 宿主还会给出调用标识、取消信号等字段；本插件只按工具名、参数与发起者决定放行。
+ */
+export interface ToolPreExecuteEvent {
+  /** 模型请求的工具名。 */
+  name: string
+  /** 已解析的工具参数。 */
+  arguments: unknown
+  /** 发起调用的 Agent；系统调用或诊断场景可能缺省。 */
+  agent?: unknown
 }
 
 /**
