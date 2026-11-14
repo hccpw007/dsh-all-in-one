@@ -6835,13 +6835,13 @@ window.__ModuleLoader__.load({
     async function readMemory() {
       const page = readPageMemory();
       const host = await fetchHostMemory();
-      const rendererRssMB = host?.rendererRssMB ?? null;
-      const source = rendererRssMB !== null ? "process" : page.heapMB !== null ? "heap" : "none";
+      const rendererMB = host?.rendererMB ?? null;
+      const source = rendererMB !== null ? "process" : page.heapMB !== null ? "heap" : "none";
       return {
-        megabytes: rendererRssMB ?? page.heapMB ?? 0,
+        megabytes: rendererMB ?? page.heapMB ?? 0,
         source,
         heapMB: page.heapMB,
-        rendererRssMB,
+        rendererMB,
         domNodes: page.domNodes
       };
     }
@@ -7205,7 +7205,7 @@ window.__ModuleLoader__.load({
         memoryUsage: "\u5F53\u524D\u5360\u7528",
         // 页面 DOM 节点数量
         domNodeCount: "DOM \u8282\u70B9",
-        // 读数来自渲染进程常驻内存
+        // 读数来自渲染进程物理内存
         sourceProcess: "\u6E32\u67D3\u8FDB\u7A0B",
         // 读数来自页面 JS 堆
         sourceHeap: "\u9875\u9762\u5806",
@@ -7213,6 +7213,8 @@ window.__ModuleLoader__.load({
         sourceNone: "\u4E0D\u53EF\u7528",
         // 读数尚未返回时的占位
         readingPending: "\u8BFB\u53D6\u4E2D\u2026",
+        // 读数的口径说明：和活动监视器对比时避免误以为读错进程
+        readingHint: "\u4E0E\u6D3B\u52A8\u76D1\u89C6\u5668\u7684\u300C\u5185\u5B58\u300D\u5217\u540C\u53E3\u5F84\uFF08\u7269\u7406\u5185\u5B58\uFF09\u3002",
         // 上次轻量回收的时间
         lastReclaim: "\u4E0A\u6B21\u56DE\u6536",
         // 上次重建的时间
@@ -7279,7 +7281,7 @@ window.__ModuleLoader__.load({
         memoryUsage: "In use",
         // Number of DOM nodes on the page
         domNodeCount: "DOM nodes",
-        // Reading comes from the renderer RSS
+        // Reading comes from the renderer phys footprint
         sourceProcess: "renderer",
         // Reading comes from the page JS heap
         sourceHeap: "JS heap",
@@ -7287,6 +7289,8 @@ window.__ModuleLoader__.load({
         sourceNone: "unavailable",
         // Placeholder before the first reading arrives
         readingPending: "Reading\u2026",
+        // Explains the metric so it can be compared with Activity Monitor
+        readingHint: "Same metric as Activity Monitor's Memory column (phys footprint).",
         // Time of the last light reclaim
         lastReclaim: "Reclaimed",
         // Time of the last rebuild
@@ -7477,7 +7481,7 @@ window.__ModuleLoader__.load({
           onChange: setThresholdDraft,
           onCommit: commitThreshold
         }
-      )), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-1 text-[11px] leading-4 text-secondary" }, t("thresholdHint")), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-3 text-[11px] leading-4 text-secondary" }, t("autoSaveHint"))), /* @__PURE__ */ import_react31.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react31.default.createElement("dl", { className: "space-y-1.5 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("memoryUsage")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, reading === null ? t("readingPending") : `${reading.megabytes} MB \xB7 ${sourceLabel(reading.source, t)}`)), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("domNodeCount")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 text-primary" }, reading === null ? t("readingPending") : reading.domNodes)), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("lastReclaim")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastReclaimAt, t("never")), runtime.lastReclaimFreedMB > 0 ? `\uFF08${t("freedAmount").replace("{amount}", String(runtime.lastReclaimFreedMB))}\uFF09` : "")), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("lastRebuild")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastRebuildAt, t("never"))))), /* @__PURE__ */ import_react31.default.createElement("div", { className: "mt-3 flex flex-wrap items-center gap-2" }, /* @__PURE__ */ import_react31.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleReclaim() }, working === "reclaim" ? t("reclaiming") : t("reclaimNow")), /* @__PURE__ */ import_react31.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleRebuild() }, t("rebuildNow")))), message !== "" ? /* @__PURE__ */ import_react31.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, message) : null);
+      )), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-1 text-[11px] leading-4 text-secondary" }, t("thresholdHint")), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-3 text-[11px] leading-4 text-secondary" }, t("autoSaveHint"))), /* @__PURE__ */ import_react31.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react31.default.createElement("dl", { className: "space-y-1.5 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("memoryUsage")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, reading === null ? t("readingPending") : `${reading.megabytes} MB \xB7 ${sourceLabel(reading.source, t)}`)), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("domNodeCount")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 text-primary" }, reading === null ? t("readingPending") : reading.domNodes)), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("lastReclaim")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastReclaimAt, t("never")), runtime.lastReclaimFreedMB > 0 ? `\uFF08${t("freedAmount").replace("{amount}", String(runtime.lastReclaimFreedMB))}\uFF09` : "")), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: LABEL_CLASS }, t("lastRebuild")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastRebuildAt, t("never"))))), reading?.source === "process" ? /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-2 text-[11px] leading-4 text-secondary" }, t("readingHint")) : null, /* @__PURE__ */ import_react31.default.createElement("div", { className: "mt-3 flex flex-wrap items-center gap-2" }, /* @__PURE__ */ import_react31.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleReclaim() }, working === "reclaim" ? t("reclaiming") : t("reclaimNow")), /* @__PURE__ */ import_react31.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleRebuild() }, t("rebuildNow")))), message !== "" ? /* @__PURE__ */ import_react31.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, message) : null);
     }
 
     // src/features/memory-guard/index.tsx

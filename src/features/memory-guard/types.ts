@@ -32,16 +32,16 @@ export interface MemoryReading {
   source: MemorySource
   /** 页面 JS 堆（MB）；浏览器不提供该 API 时为 null。 */
   heapMB: number | null
-  /** 宿主侧渲染进程 RSS（MB）；浏览器打开的实例为 null。 */
-  rendererRssMB: number | null
+  /** 宿主侧渲染进程物理内存（MB，活动监视器同口径）；浏览器打开的实例为 null。 */
+  rendererMB: number | null
   /** 页面 DOM 节点数，作为界面规模与长会话累积的旁证。 */
   domNodes: number
 }
 
 /** 宿主内存路由的返回。 */
 export interface HostMemoryPayload {
-  /** 渲染进程常驻内存（MB）；无法定位时为 null。 */
-  rendererRssMB: number | null
+  /** 渲染进程物理内存（MB，活动监视器「内存」列同口径）；无法定位时为 null。 */
+  rendererMB: number | null
   /** 宿主 Node 进程常驻内存（MB）；读取失败时为 null。 */
   hostRssMB: number | null
 }

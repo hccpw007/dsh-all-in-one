@@ -4356,12 +4356,14 @@ import { promisify } from "node:util";
 var PS_TIMEOUT_MS = 2500;
 var CACHE_TTL_MS = 4e3;
 var PS_MAX_BUFFER = 8 * 1024 * 1024;
+var MAX_FOOTPRINT_PROBES = 3;
+var SIZE_TO_MB = { B: 1 / 1048576, KB: 1 / 1024, MB: 1, GB: 1024 };
 var runFile = promisify(execFile);
 var cache;
 var inFlight;
-function parseRendererRss(output) {
+function parseRenderers(output) {
   const targetPpid = process.ppid;
-  let largest = 0;
+  const found = [];
   for (const line of output.split("\n")) {
     const match = /^\s*(\d+)\s+(\d+)\s+(\d+)\s+(.*)$/.exec(line);
     if (match === null) continue;
@@ -4369,12 +4371,29 @@ function parseRendererRss(output) {
     if (ppid !== targetPpid) continue;
     const command = match[4] ?? "";
     if (!command.includes("--type=renderer")) continue;
+    const pid = Number(match[1]);
     const rssKb = Number(match[3]);
-    if (!Number.isFinite(rssKb)) continue;
-    const megabytes = Math.round(rssKb / 1024);
-    if (megabytes > largest) largest = megabytes;
+    if (!Number.isFinite(pid) || !Number.isFinite(rssKb)) continue;
+    found.push({ pid, rssMB: Math.round(rssKb / 1024) });
   }
-  return largest > 0 ? largest : null;
+  return found.sort((a, b) => b.rssMB - a.rssMB);
+}
+async function readFootprintMB(pid) {
+  try {
+    const { stdout } = await runFile("footprint", [String(pid)], {
+      timeout: PS_TIMEOUT_MS,
+      maxBuffer: PS_MAX_BUFFER
+    });
+    const match = /Footprint:\s*([\d.]+)\s*(B|KB|MB|GB)/.exec(stdout);
+    if (match === null) return null;
+    const value = Number(match[1]);
+    const factor = SIZE_TO_MB[match[2] ?? "MB"];
+    if (!Number.isFinite(value) || factor === void 0) return null;
+    return Math.round(value * factor);
+  } catch (error) {
+    console.warn(`[memory-guard] \u8BFB\u53D6\u8FDB\u7A0B ${pid} \u7684\u7269\u7406\u5185\u5B58\u5931\u8D25\uFF0C\u9000\u56DE RSS:`, error);
+    return null;
+  }
 }
 async function sample() {
   if (process.platform !== "darwin") return null;
@@ -4383,13 +4402,18 @@ async function sample() {
       timeout: PS_TIMEOUT_MS,
       maxBuffer: PS_MAX_BUFFER
     });
-    return parseRendererRss(stdout);
+    const candidates = parseRenderers(stdout).slice(0, MAX_FOOTPRINT_PROBES);
+    if (candidates.length === 0) return null;
+    const readings = await Promise.all(
+      candidates.map(async (item) => await readFootprintMB(item.pid) ?? item.rssMB)
+    );
+    return Math.max(...readings);
   } catch (error) {
     console.error("[memory-guard] \u8BFB\u53D6\u6E32\u67D3\u8FDB\u7A0B\u5185\u5B58\u5931\u8D25:", error);
     return null;
   }
 }
-async function readRendererRssMB() {
+async function readRendererMemoryMB() {
   const now = Date.now();
   if (cache !== void 0 && now - cache.at < CACHE_TTL_MS) return cache.value;
   if (inFlight !== void 0) return inFlight;
@@ -4421,16 +4445,16 @@ function installMemoryGuardRoutes(webServer) {
         return;
       }
       try {
-        const rendererRssMB = await readRendererRssMB();
+        const rendererMB = await readRendererMemoryMB();
         const payload = {
-          rendererRssMB,
+          rendererMB,
           hostRssMB: Math.round(process.memoryUsage().rss / 1048576),
           sampledAt: Date.now()
         };
         sendJson(response, 200, payload);
       } catch (error) {
         console.error("[memory-guard] \u8BFB\u53D6\u8FDB\u7A0B\u5185\u5B58\u5931\u8D25:", error);
-        sendJson(response, 200, { rendererRssMB: null, hostRssMB: null, sampledAt: Date.now() });
+        sendJson(response, 200, { rendererMB: null, hostRssMB: null, sampledAt: Date.now() });
       }
     }
   });

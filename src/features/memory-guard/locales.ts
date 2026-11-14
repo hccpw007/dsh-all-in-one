@@ -31,7 +31,7 @@ export const memoryGuardLocales: FeatureLocales = {
     memoryUsage: '当前占用',
     // 页面 DOM 节点数量
     domNodeCount: 'DOM 节点',
-    // 读数来自渲染进程常驻内存
+    // 读数来自渲染进程物理内存
     sourceProcess: '渲染进程',
     // 读数来自页面 JS 堆
     sourceHeap: '页面堆',
@@ -39,6 +39,8 @@ export const memoryGuardLocales: FeatureLocales = {
     sourceNone: '不可用',
     // 读数尚未返回时的占位
     readingPending: '读取中…',
+    // 读数的口径说明：和活动监视器对比时避免误以为读错进程
+    readingHint: '与活动监视器的「内存」列同口径（物理内存）。',
     // 上次轻量回收的时间
     lastReclaim: '上次回收',
     // 上次重建的时间
@@ -105,7 +107,7 @@ export const memoryGuardLocales: FeatureLocales = {
     memoryUsage: 'In use',
     // Number of DOM nodes on the page
     domNodeCount: 'DOM nodes',
-    // Reading comes from the renderer RSS
+    // Reading comes from the renderer phys footprint
     sourceProcess: 'renderer',
     // Reading comes from the page JS heap
     sourceHeap: 'JS heap',
@@ -113,6 +115,8 @@ export const memoryGuardLocales: FeatureLocales = {
     sourceNone: 'unavailable',
     // Placeholder before the first reading arrives
     readingPending: 'Reading…',
+    // Explains the metric so it can be compared with Activity Monitor
+    readingHint: "Same metric as Activity Monitor's Memory column (phys footprint).",
     // Time of the last light reclaim
     lastReclaim: 'Reclaimed',
     // Time of the last rebuild

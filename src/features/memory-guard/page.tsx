@@ -332,6 +332,10 @@ export function MemoryGuardPage({ t }: FeaturePageProps) {
             </dd>
           </div>
         </dl>
+        {/* 读数口径说明：只在拿到进程读数时显示，页面 JS 堆没有可比对象 */}
+        {reading?.source === 'process' ? (
+          <p className="mt-2 text-[11px] leading-4 text-secondary">{t('readingHint')}</p>
+        ) : null}
         {/* 手动操作：立即回收与立即重建 */}
         <div className="mt-3 flex flex-wrap items-center gap-2">
           {/* 立即回收：清缓存，不碰界面与会话 */}

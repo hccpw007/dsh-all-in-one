@@ -8,7 +8,7 @@ import type { WebServerApi } from '../../../types/host'
 
 import { isLocalRequest, sendJson } from '../../../common/http-route'
 import type { RendererMemoryPayload } from '../types'
-import { readRendererRssMB } from './process-memory'
+import { readRendererMemoryMB } from './process-memory'
 
 /** 读数接口路径；注册为精确匹配，避免子路径被当成同一接口。 */
 const ROUTE_PATH = '/dsh-all-in-one/memory-guard'
@@ -37,9 +37,9 @@ export function installMemoryGuardRoutes(webServer: WebServerApi): () => void {
       }
 
       try {
-        const rendererRssMB = await readRendererRssMB()
+        const rendererMB = await readRendererMemoryMB()
         const payload: RendererMemoryPayload = {
-          rendererRssMB,
+          rendererMB,
           hostRssMB: Math.round(process.memoryUsage().rss / 1048576),
           sampledAt: Date.now(),
         }
@@ -47,7 +47,7 @@ export function installMemoryGuardRoutes(webServer: WebServerApi): () => void {
         sendJson(response, 200, payload)
       } catch (error) {
         console.error('[memory-guard] 读取进程内存失败:', error)
-        sendJson(response, 200, { rendererRssMB: null, hostRssMB: null, sampledAt: Date.now() })
+        sendJson(response, 200, { rendererMB: null, hostRssMB: null, sampledAt: Date.now() })
       }
     },
   })
