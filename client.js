@@ -3907,18 +3907,19 @@ window.__ModuleLoader__.load({
       height: 28px;
       padding: 0;
       border: 0;
-      border-radius: 8px;
+      border-radius: 999px;
       corner-shape: round;
-      background: transparent;
-      color: var(--dsw-alias-label-secondary, currentColor);
+      background: var(--dsw-specific-selector, var(--dsw-alias-bg-layer-2));
+      color: var(--dsw-alias-label-primary, currentColor);
       cursor: pointer;
     }
-    .${BUTTON_CLASS}:hover:not(:disabled) {
-      background: var(--dsw-alias-interactive-bg-hover, rgba(127, 127, 127, 0.12));
-      color: var(--dsw-alias-label-primary, currentColor);
+    @media (hover: hover) {
+      .${BUTTON_CLASS}:hover:not(:disabled) {
+        background: var(--dsw-alias-interactive-bg-hover-solid, var(--dsw-specific-selector));
+      }
     }
     .${BUTTON_CLASS}:disabled {
-      opacity: 0.4;
+      opacity: 0.5;
       cursor: default;
     }
     .${BUTTON_CLASS} svg {
@@ -3927,12 +3928,12 @@ window.__ModuleLoader__.load({
     `;
     function createClearIcon() {
       const svg = document.createElementNS(SVG_NAMESPACE3, "svg");
-      svg.setAttribute("width", "16");
-      svg.setAttribute("height", "16");
+      svg.setAttribute("width", "14");
+      svg.setAttribute("height", "14");
       svg.setAttribute("viewBox", "0 0 16 16");
       svg.setAttribute("fill", "none");
       svg.setAttribute("stroke", "currentColor");
-      svg.setAttribute("stroke-width", "1.4");
+      svg.setAttribute("stroke-width", "1.5");
       svg.setAttribute("stroke-linecap", "round");
       svg.setAttribute("stroke-linejoin", "round");
       svg.setAttribute("aria-hidden", "true");

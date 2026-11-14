@@ -23,8 +23,9 @@ const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 /**
  * 按钮样式。
  *
- * 尺寸与宿主加号按钮一致（28×28），圆角重置为圆角而不是宿主的超椭圆，
- * 否则小尺寸控件在 `--dsw-corner-shape` 下看起来「圆角不够」。
+ * 完全对齐宿主加号按钮（同 `.add` 规则）：28px 圆形、selector 底色、primary 图标色，
+ * 两个圆钮并排才读作同一组工具。圆角重置为圆角而不是宿主的超椭圆，
+ * 否则 `--dsw-corner-shape` 会让小尺寸圆钮看起来「不够圆」。
  */
 const STYLE_TEXT = `
 .${BUTTON_CLASS} {
@@ -35,18 +36,19 @@ const STYLE_TEXT = `
   height: 28px;
   padding: 0;
   border: 0;
-  border-radius: 8px;
+  border-radius: 999px;
   corner-shape: round;
-  background: transparent;
-  color: var(--dsw-alias-label-secondary, currentColor);
+  background: var(--dsw-specific-selector, var(--dsw-alias-bg-layer-2));
+  color: var(--dsw-alias-label-primary, currentColor);
   cursor: pointer;
 }
-.${BUTTON_CLASS}:hover:not(:disabled) {
-  background: var(--dsw-alias-interactive-bg-hover, rgba(127, 127, 127, 0.12));
-  color: var(--dsw-alias-label-primary, currentColor);
+@media (hover: hover) {
+  .${BUTTON_CLASS}:hover:not(:disabled) {
+    background: var(--dsw-alias-interactive-bg-hover-solid, var(--dsw-specific-selector));
+  }
 }
 .${BUTTON_CLASS}:disabled {
-  opacity: 0.4;
+  opacity: 0.5;
   cursor: default;
 }
 .${BUTTON_CLASS} svg {
@@ -73,12 +75,12 @@ export interface ClearButtonOptions {
  */
 function createClearIcon(): Element {
   const svg = document.createElementNS(SVG_NAMESPACE, 'svg')
-  svg.setAttribute('width', '16')
-  svg.setAttribute('height', '16')
+  svg.setAttribute('width', '14')
+  svg.setAttribute('height', '14')
   svg.setAttribute('viewBox', '0 0 16 16')
   svg.setAttribute('fill', 'none')
   svg.setAttribute('stroke', 'currentColor')
-  svg.setAttribute('stroke-width', '1.4')
+  svg.setAttribute('stroke-width', '1.5')
   svg.setAttribute('stroke-linecap', 'round')
   svg.setAttribute('stroke-linejoin', 'round')
   svg.setAttribute('aria-hidden', 'true')
