@@ -75,7 +75,6 @@ export function apply(ctx: PluginContext, t: Translate): void {
     ctx.effect(
       () => installClearButton({
         label: t('action'),
-        runningHint: t('runningHint'),
         readTarget: () => findCurrentSession({ sessions, uiWorkspace }),
         onRequest: (target) => clearSessionStore.request(target),
       }),

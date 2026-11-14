@@ -7,6 +7,7 @@
  *
  * 按钮只是入口：点击时读取当前对话并写入待确认请求，真正的清空由确认弹窗执行。
  */
+import { attachTooltip } from './clear-tooltip'
 import type { ClearSessionTarget } from './types'
 
 /** 注入按钮上的标记属性，扫描时用它判断是否已经插过。 */
@@ -59,8 +60,6 @@ const STYLE_TEXT = `
 export interface ClearButtonOptions {
   /** 按钮名称，同时作为无障碍标签与悬停提示。 */
   label: string
-  /** 当前对话正在运行时的悬停提示。 */
-  runningHint: string
   /** 读取当前对话；没有正在浏览的对话时返回 undefined。 */
   readTarget: () => ClearSessionTarget | undefined
   /** 点击后发起确认请求。 */
@@ -108,23 +107,6 @@ function ensureStyle(): void {
 }
 
 /**
- * 按当前对话状态刷新按钮的悬停提示。
- *
- * 按钮不进入禁用态（见上方样式说明），因此这里只切换提示文案：
- * 对话在运行时点开弹窗会说明要先停止，外观与加号保持一致。
- * @param button 注入的按钮
- * @param target 当前对话
- * @param options 按钮文案
- */
-function syncButton(
-  button: HTMLButtonElement,
-  target: ClearSessionTarget | undefined,
-  options: ClearButtonOptions,
-): void {
-  button.title = target?.running === true ? options.runningHint : options.label
-}
-
-/**
  * 找到所有宿主输入框的工具区。
  *
  * 定位依据是宿主输入框里的隐藏文件选择器：它与「+」按钮同级，父节点就是工具区。
@@ -155,21 +137,20 @@ export function installClearButton(options: ClearButtonOptions): () => void {
   ensureStyle()
 
   const buttons = new Set<HTMLButtonElement>()
+  /** 每个按钮的提示卸载函数：按钮被宿主摘掉时一并解绑。 */
+  const detachers = new Map<HTMLButtonElement, () => void>()
   let frame = 0
   let scheduled = false
   let disposed = false
 
-  /** 每次扫描后统一刷新按钮状态：会话可能在两次 DOM 变化之间切换。 */
-  const syncAll = (): void => {
-    const target = options.readTarget()
-
+  /** 宿主整块重建输入框时按钮会被摘掉，这里顺手清理失效引用与事件。 */
+  const pruneButtons = (): void => {
     for (const button of buttons) {
-      // 宿主整块重建输入框时按钮会被摘掉，这里顺手清理失效引用
-      if (!button.isConnected) {
-        buttons.delete(button)
-        continue
-      }
-      syncButton(button, target, options)
+      if (button.isConnected) continue
+
+      detachers.get(button)?.()
+      detachers.delete(button)
+      buttons.delete(button)
     }
   }
 
@@ -178,6 +159,8 @@ export function installClearButton(options: ClearButtonOptions): () => void {
     frame = 0
     scheduled = false
     if (disposed) return
+
+    pruneButtons()
 
     for (const toolbar of findToolbars()) {
       const button = document.createElement('button')
@@ -198,11 +181,13 @@ export function installClearButton(options: ClearButtonOptions): () => void {
         options.onRequest(target)
       })
 
+      // 提示与无障碍标签用同一份文案，外观与相邻的加号按钮一致
+      button.setAttribute('aria-label', options.label)
+      detachers.set(button, attachTooltip(button, () => options.label))
+
       toolbar.insertBefore(button, toolbar.firstElementChild)
       buttons.add(button)
     }
-
-    syncAll()
   }
 
   const schedule = (): void => {
@@ -221,7 +206,11 @@ export function installClearButton(options: ClearButtonOptions): () => void {
     observer.disconnect()
     if (frame !== 0) window.cancelAnimationFrame(frame)
 
-    for (const button of buttons) button.remove()
+    for (const button of buttons) {
+      detachers.get(button)?.()
+      button.remove()
+    }
+    detachers.clear()
     buttons.clear()
     document.getElementById(STYLE_ID)?.remove()
   }
