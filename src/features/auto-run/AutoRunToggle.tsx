@@ -22,22 +22,6 @@ export interface AutoRunToggleProps {
   t: Translate
 }
 
-/** 按钮图标：一道雷电，表达「一口气跑完、不中途等停」。 */
-function AutoRunIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width="13"
-      height="13"
-      aria-hidden="true"
-      fill="currentColor"
-    >
-      {/* 雷电：上宽下尖，向右折一次 */}
-      <path d="M13.6 2 4.8 13.4h5.5L10.2 22l8.9-11.6h-5.6z" />
-    </svg>
-  )
-}
-
 /**
  * 渲染「全自动」开关。
  * @param props 当前会话标识与翻译函数
@@ -117,7 +101,7 @@ export function AutoRunToggle({ sessionId, t }: AutoRunToggleProps) {
   const disabled = sessionId === undefined || enabled === null || pending
 
   return (
-    // 整颗按钮即开关：role 与 aria-checked 表达状态，视觉上靠图标颜色与底色区分
+    // 整行即一个开关：左侧固定功能名，右侧滑动轨道表达状态，避免文字长短变化挤动布局
     <button
       type="button"
       role="switch"
@@ -127,18 +111,30 @@ export function AutoRunToggle({ sessionId, t }: AutoRunToggleProps) {
       disabled={disabled}
       onClick={toggle}
       className={cn(
-        'flex h-7 shrink-0 items-center gap-1 rounded-full border-0 px-2 text-[12px] font-medium leading-none transition',
+        'flex h-7 shrink-0 items-center gap-2 rounded-full border-0 bg-transparent px-2 text-[12px] font-medium leading-none transition',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand',
-        enabled === true
-          ? 'bg-layer2 text-brand ring-1 ring-brand'
-          : 'bg-transparent text-secondary hover:text-primary hover:ring-1 hover:ring-line2',
+        enabled === true ? 'text-primary' : 'text-secondary hover:text-primary',
         disabled ? 'opacity-60' : '',
       )}
     >
-      {/* 状态图标：开启时随文字变成品牌色，关闭时保持次要色 */}
-      <AutoRunIcon />
-      {/* 按钮文字：固定为功能名，状态由颜色与 aria-checked 表达 */}
+      {/* 功能名：不随开关状态改文案，状态只由右侧轨道与 aria-checked 表达 */}
       <span>{t('action')}</span>
+      {/* 轨道：开启走品牌色，关闭走次级线色；滑块取底色，深浅主题下都能分辨 */}
+      <span
+        aria-hidden="true"
+        className={cn(
+          'flex h-[18px] w-8 shrink-0 items-center rounded-full transition-colors',
+          enabled === true ? 'bg-brand' : 'bg-line2',
+        )}
+      >
+        {/* 滑块：靠位移区分开与关，transition 让它滑过去而不是直接跳位 */}
+        <span
+          className={cn(
+            'h-3.5 w-3.5 rounded-full bg-base shadow transition-transform',
+            enabled === true ? 'translate-x-[16px]' : 'translate-x-[2px]',
+          )}
+        />
+      </span>
     </button>
   )
 }
