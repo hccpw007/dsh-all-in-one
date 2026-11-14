@@ -23,8 +23,8 @@ const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
     'shell.navTitle': 'All In One',
     // 页面主标题
     'shell.pageTitle': 'All In One',
-    // 页面说明，解释这一页的用途
-    'shell.pageDescription': '所有独立的小工具都收拢在这里，点击卡片进入对应的功能。',
+    // 页面说明：区分开关与入口卡片，避免误以为每张卡片都能点进去
+    'shell.pageDescription': '开关即时生效，带「设置」的卡片进入配置页。',
     // 分组标题：改变对话阅读与操作行为的功能
     'shell.group.conversation': '对话体验',
     // 分组标题：改变侧边栏、导航等界面结构的功能
@@ -33,6 +33,8 @@ const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
     'shell.group.config': '配置与维护',
     // 分组标题：未声明分组的兜底分组
     'shell.group.other': '其他',
+    // 分组标题旁的整组提示：该组开关切换后页面会刷新
+    'shell.groupReloadHint': '切换后刷新生效',
     // 尚未注册任何功能时的空态提示
     'shell.empty': '还没有注册任何功能，在 src/features 下新建文件夹即可添加。',
     // 从功能页面返回功能网格的按钮文案
@@ -43,8 +45,8 @@ const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
     'shell.navTitle': 'All In One',
     // Page heading
     'shell.pageTitle': 'All In One',
-    // Page description explaining the purpose of this section
-    'shell.pageDescription': 'Every standalone tool lives here. Pick a card to open it.',
+    // Page description distinguishing switches from cards that open a page
+    'shell.pageDescription': 'Switches apply immediately; cards with Settings open a configuration page.',
     // Group heading: features that change how conversations are read and operated
     'shell.group.conversation': 'Conversation',
     // Group heading: features that restructure the sidebar and navigation
@@ -53,6 +55,8 @@ const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
     'shell.group.config': 'Configuration & maintenance',
     // Group heading: fallback for features that declare no group
     'shell.group.other': 'Other',
+    // Group-level hint shown next to a heading when toggling any switch reloads the page
+    'shell.groupReloadHint': 'reloads the page on toggle',
     // Empty state shown when no feature is registered
     'shell.empty': 'No features registered yet. Add a folder under src/features.',
     // Button that leaves a feature page and returns to the grid

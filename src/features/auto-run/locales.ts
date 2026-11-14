@@ -7,8 +7,6 @@ export const autoRunLocales: FeatureLocales = {
     title: '全自动执行',
     // 设置页开关用途说明：点明入口位置与会话级语义
     description: '输入框右侧新增「全自动」开关：打开后本对话不提问、不等待确认，改完自行验证；关闭即恢复原有流程。',
-    // 提示切换设置页开关会刷新页面，避免用户丢失未保存的输入
-    reloadHint: '切换后会刷新页面以生效。',
     // 设置页开关状态写入失败时的提示
     saveFailed: '保存开关状态失败，请检查浏览器存储权限。',
     // 输入框按钮的名称与无障碍标签
@@ -30,8 +28,6 @@ export const autoRunLocales: FeatureLocales = {
     // Switch description: entry position and per-conversation semantics
     description:
       'Adds a Full auto switch right of the composer: while on, this conversation never asks or waits for confirmation and verifies its own changes; turn it off to restore the normal flow.',
-    // Switching reloads the page so the composer button appears or disappears
-    reloadHint: 'Switching reloads the page to take effect.',
     // Shown when the switch state cannot be persisted
     saveFailed: 'Saving the switch state failed. Check the browser storage permission.',
     // Composer button label and accessible name

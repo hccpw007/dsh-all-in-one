@@ -10,8 +10,8 @@ import { AutoCompactToggle } from './toggle'
  */
 const autoCompactFeature: FeatureDefinition = {
   id: 'auto-compact',
-  group: 'conversation',
-  order: 40,
+  group: 'config',
+  order: 30,
   switch: AutoCompactToggle,
   locales: autoCompactLocales,
 }

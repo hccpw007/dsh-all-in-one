@@ -12,7 +12,8 @@ import { SessionHistoryToggle } from './toggle'
 const sessionHistoryFeature: FeatureDefinition = {
   id: 'session-history',
   group: 'layout',
-  order: 16,
+  order: 10,
+  reloadsPage: true,
   switch: SessionHistoryToggle,
   client: { apply: applyClient },
   locales: sessionHistoryLocales,

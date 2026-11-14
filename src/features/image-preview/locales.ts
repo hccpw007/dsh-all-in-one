@@ -7,8 +7,6 @@ export const imagePreviewLocales: FeatureLocales = {
     title: '会话图片预览',
     // 开关用途说明：解释打开后会话里的哪些内容会出现预览，并点明只读
     description: '本地图片地址下方直接显示预览，点开后可缩放看清细节，只读取文件，不改动任何内容。',
-    // 提示切换开关会刷新页面，避免用户丢失滚动位置与未保存的输入
-    reloadHint: '切换后会刷新页面以生效。',
     // 开关状态写入失败时的提示
     saveFailed: '保存开关状态失败，请检查浏览器存储权限。',
     // 放大层的无障碍名称，读屏软件据此说明当前是图片查看对话框
@@ -31,8 +29,6 @@ export const imagePreviewLocales: FeatureLocales = {
     title: 'Inline image preview',
     // Switch description explaining what gets previewed, that images zoom, and that files stay untouched
     description: 'Show previews under local image paths. Click to zoom into details; files are only read, never changed.',
-    // Tells the user that toggling reloads the page so state applies everywhere
-    reloadHint: 'Reloads the page so the change takes effect.',
     // Shown when the switch state cannot be persisted
     saveFailed: 'Could not save the switch state. Check browser storage permissions.',
     // Accessible name of the zoom layer dialog

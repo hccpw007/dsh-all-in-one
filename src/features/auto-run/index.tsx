@@ -12,7 +12,8 @@ import { AutoRunButtonToggle } from './toggle'
 const autoRunFeature: FeatureDefinition = {
   id: 'auto-run',
   group: 'conversation',
-  order: 28,
+  order: 40,
+  reloadsPage: true,
   switch: AutoRunButtonToggle,
   client: { apply: applyClient },
   locales: autoRunLocales,

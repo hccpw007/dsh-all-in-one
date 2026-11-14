@@ -62,6 +62,12 @@ interface FeatureCommon {
   group?: FeatureGroup
   /** 同一分组内的排序权重，越小越靠前，默认 100，相同权重保持注册顺序。 */
   order?: number
+  /**
+   * 切换本功能的开关会刷新整个页面。
+   *
+   * 外壳据此在分组标题旁统一标注一次；不逐卡声明时，八张卡会各重复一行同样的提示。
+   */
+  reloadsPage?: boolean
   /** 本功能的中英文文案，外壳统一加 id 前缀后注册。 */
   locales: FeatureLocales
   /** 网格与功能页之外的客户端扩展，可选。 */

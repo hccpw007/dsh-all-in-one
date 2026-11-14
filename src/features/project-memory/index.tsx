@@ -13,7 +13,7 @@ import { ProjectMemoryPage } from './page'
 const projectMemoryFeature: FeatureDefinition = {
   id: 'project-memory',
   group: 'config',
-  order: 30,
+  order: 20,
   entry: ProjectMemoryEntry,
   page: ProjectMemoryPage,
   locales: projectMemoryLocales,

@@ -11,6 +11,7 @@ const expandProcessFeature: FeatureDefinition = {
   id: 'expand-process',
   group: 'conversation',
   order: 10,
+  reloadsPage: true,
   switch: ExpandProcessToggle,
   locales: expandProcessLocales,
 }

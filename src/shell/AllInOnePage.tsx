@@ -83,6 +83,18 @@ function groupFeatures(features: readonly FeatureDefinition[]): FeatureSection[]
   return sections
 }
 
+/**
+ * 判定一个分组是否要在标题旁标注「切换后刷新生效」。
+ *
+ * 只有组内全部是开关型、且每个都声明了 reloadsPage 时才标注：任一功能不需要刷新，
+ * 或将来混入页面型功能，组级提示就会失真，此时退回不标注。
+ * @param features 该分组下的功能
+ * @returns 是否显示组级刷新提示
+ */
+function needsReloadHint(features: readonly FeatureDefinition[]): boolean {
+  return features.length > 0 && features.every((feature) => 'switch' in feature && feature.reloadsPage === true)
+}
+
 /** 网格中的单个功能入口。 */
 interface FeatureCardProps {
   /** 通过注册表校验的功能定义 */
@@ -198,10 +210,19 @@ export function AllInOnePage({ t }: AllInOnePageProps) {
         <div className="mt-4 space-y-4">
           {groupFeatures(registry.list).map((section) => (
             <section key={section.group}>
-              {/* 分组标题 */}
-              <h2 className="mb-2 text-[12px] font-medium text-secondary">
-                {t(`shell.group.${section.group}`)}
-              </h2>
+              {/* 分组标题；组内开关都会刷新页面时，在标题右侧统一说明一次 */}
+              <div className="mb-2 flex items-baseline gap-1">
+                {/* 分组标题 */}
+                <h2 className="text-[12px] font-medium text-secondary">
+                  {t(`shell.group.${section.group}`)}
+                </h2>
+                {/* 整组开关切换后都会刷新页面，替代每张卡片各写一行的重复提示 */}
+                {needsReloadHint(section.features) ? (
+                  <span className="text-[11px] leading-[16px] text-secondary">
+                    · {t('shell.groupReloadHint')}
+                  </span>
+                ) : null}
+              </div>
               {/* 分组内的功能网格 */}
               <div className="aio-card-grid grid auto-rows-fr gap-2.5">
                 {section.features.map((feature) => (

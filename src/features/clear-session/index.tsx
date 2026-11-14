@@ -12,7 +12,8 @@ import { ClearSessionToggle } from './toggle'
 const clearSessionFeature: FeatureDefinition = {
   id: 'clear-session',
   group: 'conversation',
-  order: 25,
+  order: 30,
+  reloadsPage: true,
   switch: ClearSessionToggle,
   client: { apply: applyClient },
   locales: clearSessionLocales,

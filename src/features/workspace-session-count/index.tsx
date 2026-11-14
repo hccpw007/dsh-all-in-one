@@ -12,7 +12,8 @@ import { WorkspaceSessionCountToggle } from './toggle'
 const workspaceSessionCountFeature: FeatureDefinition = {
   id: 'workspace-session-count',
   group: 'layout',
-  order: 18,
+  order: 30,
+  reloadsPage: true,
   switch: WorkspaceSessionCountToggle,
   client: { apply: applyClient },
   locales: workspaceSessionCountLocales,
