@@ -95,8 +95,8 @@ function buildPackRows(pack, isolate) {
 }
 
 // src/features/power-pack/host/isolation.ts
-function isDenied(rule, id10) {
-  const selected = rule.items.includes(id10);
+function isDenied(rule, id11) {
+  const selected = rule.items.includes(id11);
   switch (rule.mode) {
     case "include":
       return !selected;
@@ -119,7 +119,7 @@ function sectionPrefixes(packageName) {
 }
 function deniedMcpServers(rule) {
   if (rule.mode !== "exclude") return [];
-  const servers = rule.items.filter((id10) => id10.startsWith("mcp:") && id10.length > 4).map((id10) => id10.slice(4));
+  const servers = rule.items.filter((id11) => id11.startsWith("mcp:") && id11.length > 4).map((id11) => id11.slice(4));
   return [...new Set(servers)];
 }
 function planIsolation(pack, groups) {
@@ -426,8 +426,8 @@ var legacyProbed = false;
 function powerPacksFile() {
   return join3(resolveDshHome(), "all-in-one", "power-packs.json");
 }
-function isValidPackId(id10) {
-  return PACK_ID_PATTERN.test(id10);
+function isValidPackId(id11) {
+  return PACK_ID_PATTERN.test(id11);
 }
 function stringList(value) {
   return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
@@ -441,11 +441,11 @@ function normalizeRule(value) {
 function normalizePack(value) {
   if (typeof value !== "object" || value === null) return void 0;
   const candidate = value;
-  const id10 = typeof candidate.id === "string" ? candidate.id.trim() : "";
+  const id11 = typeof candidate.id === "string" ? candidate.id.trim() : "";
   const name = typeof candidate.name === "string" ? candidate.name.trim() : "";
-  if (!PACK_ID_PATTERN.test(id10) || name === "") return void 0;
+  if (!PACK_ID_PATTERN.test(id11) || name === "") return void 0;
   return {
-    id: id10,
+    id: id11,
     name,
     description: typeof candidate.description === "string" ? candidate.description : "",
     systemPrompt: typeof candidate.systemPrompt === "string" ? candidate.systemPrompt : "",
@@ -687,9 +687,9 @@ async function pendingComposedMeta() {
   for (const selection of selections) {
     const pack = byId.get(selection.pack);
     if (pack === void 0) continue;
-    const id10 = composedPresetId(selection.pack, selection.mode);
-    if (hasComposedPreset(id10)) continue;
-    result.set(id10, { name: pack.name, description: pack.description });
+    const id11 = composedPresetId(selection.pack, selection.mode);
+    if (hasComposedPreset(id11)) continue;
+    result.set(id11, { name: pack.name, description: pack.description });
   }
   return result;
 }
@@ -699,31 +699,31 @@ async function ensureComposedPreset(api, modeId, pack, groups) {
   if (modeRows === void 0) {
     throw new Error(`\u65E0\u6CD5\u8BFB\u53D6\u6A21\u5F0F ${modeId} \u7684\u7EC4\u5408\u884C`);
   }
-  const id10 = composedPresetId(pack.id, modeId);
+  const id11 = composedPresetId(pack.id, modeId);
   const rows = composePackRows(modeRows, pack, groups);
-  const registered = readPresetRows(api, id10);
+  const registered = readPresetRows(api, id11);
   if (registered !== void 0) {
-    if (packRowSignature(registered) === packRowSignature(rows)) return id10;
-    await dropHostPreset(api, id10);
+    if (packRowSignature(registered) === packRowSignature(rows)) return id11;
+    await dropHostPreset(api, id11);
     composed.delete(key);
   }
   try {
     const dispose = await api.register({
-      id: id10,
+      id: id11,
       name: pack.name,
       description: pack.description,
       order: PRESET_ORDER,
       plugins: rows
     });
-    composed.set(key, { key, id: id10, dispose });
+    composed.set(key, { key, id: id11, dispose });
     while (composed.size > MAX_COMPOSED_PRESETS) {
       const oldest = composed.values().next();
       if (oldest.done || oldest.value.key === key) break;
       await disposeOne(oldest.value);
     }
-    return id10;
+    return id11;
   } catch (error) {
-    if (readPresetRows(api, id10) !== void 0) return id10;
+    if (readPresetRows(api, id11) !== void 0) return id11;
     throw error;
   }
 }
@@ -862,8 +862,8 @@ async function listPluginCatalog(currentProfileDir2) {
 async function listPluginItems(currentProfileDir2) {
   const { standard, installed } = await listPluginCatalog(currentProfileDir2);
   return [
-    ...standard.map(({ id: id10, label, description, kind }) => ({ id: id10, label, description, kind })),
-    ...installed.map(({ id: id10, label, description, kind }) => ({ id: id10, label, description, kind }))
+    ...standard.map(({ id: id11, label, description, kind }) => ({ id: id11, label, description, kind })),
+    ...installed.map(({ id: id11, label, description, kind }) => ({ id: id11, label, description, kind }))
   ];
 }
 
@@ -1143,11 +1143,11 @@ function mergeRoster(result, meta) {
   const holder = result;
   if (!Array.isArray(holder.presets)) return result;
   const rows = holder.presets;
-  const present = new Set(rows.map((row) => row?.id).filter((id10) => typeof id10 === "string"));
+  const present = new Set(rows.map((row) => row?.id).filter((id11) => typeof id11 === "string"));
   const missing = [];
-  for (const [id10, entry] of meta) {
-    if (present.has(id10)) continue;
-    missing.push({ id: id10, name: entry.name, description: entry.description, isDefault: false });
+  for (const [id11, entry] of meta) {
+    if (present.has(id11)) continue;
+    missing.push({ id: id11, name: entry.name, description: entry.description, isDefault: false });
   }
   if (missing.length === 0) return result;
   return { ...holder, presets: [...rows, ...missing] };
@@ -2660,7 +2660,7 @@ function isEnoent2(error) {
   return error.code === "ENOENT";
 }
 function createJsonSettingsStore(options) {
-  let cache;
+  let cache2;
   const load = () => {
     const file = options.file();
     try {
@@ -2676,24 +2676,24 @@ function createJsonSettingsStore(options) {
   };
   const read = () => {
     const now = Date.now();
-    if (cache !== void 0 && now - cache.checkedAt < EXTERNAL_RECHECK_MS) return cache.value;
+    if (cache2 !== void 0 && now - cache2.checkedAt < EXTERNAL_RECHECK_MS) return cache2.value;
     const file = options.file();
     try {
       const info = statSync(file);
-      if (cache !== void 0 && cache.mtimeMs === info.mtimeMs && cache.size === info.size) {
-        cache.checkedAt = now;
-        return cache.value;
+      if (cache2 !== void 0 && cache2.mtimeMs === info.mtimeMs && cache2.size === info.size) {
+        cache2.checkedAt = now;
+        return cache2.value;
       }
     } catch (error) {
       if (isEnoent2(error)) {
-        cache = { mtimeMs: 0, size: 0, value: options.defaults(), checkedAt: now };
-        return cache.value;
+        cache2 = { mtimeMs: 0, size: 0, value: options.defaults(), checkedAt: now };
+        return cache2.value;
       }
       console.error(`${options.label} \u68C0\u67E5\u8BBE\u7F6E\u6587\u4EF6\u5931\u8D25:`, file, error);
-      return cache?.value ?? options.defaults();
+      return cache2?.value ?? options.defaults();
     }
-    cache = load();
-    return cache.value;
+    cache2 = load();
+    return cache2.value;
   };
   const write = (next) => {
     const file = options.file();
@@ -2704,7 +2704,7 @@ function createJsonSettingsStore(options) {
 `, "utf8");
       renameSync(temp, file);
       const info = statSync(file);
-      cache = { mtimeMs: info.mtimeMs, size: info.size, value: next, checkedAt: Date.now() };
+      cache2 = { mtimeMs: info.mtimeMs, size: info.size, value: next, checkedAt: Date.now() };
     } catch (error) {
       console.error(`${options.label} \u5199\u5165\u8BBE\u7F6E\u5931\u8D25:`, file, error);
       throw error;
@@ -3589,24 +3589,24 @@ function installAutoCompactWatcher(ctx) {
     if (!oldest.done) map.delete(oldest.value);
   };
   const contextWindowFor = (agent) => {
-    const id10 = agent.session.id;
-    const cached = windows.get(id10);
+    const id11 = agent.session.id;
+    const cached = windows.get(id11);
     const now = Date.now();
     if (cached !== void 0 && now - cached.at < CONTEXT_WINDOW_TTL_MS) return cached.value;
     const value = readContextWindow(agent);
-    windows.set(id10, { at: now, value });
+    windows.set(id11, { at: now, value });
     evictOldest(windows);
     return value;
   };
   const measureFor = (meter, agent, force) => {
-    const id10 = agent.session.id;
-    const cached = measurements.get(id10);
+    const id11 = agent.session.id;
+    const cached = measurements.get(id11);
     const now = Date.now();
     if (!force && cached !== void 0 && now - cached.at < MEASURE_INTERVAL_MS) {
       return { measurement: cached.value, fresh: false };
     }
     const value = meter.measure(agent.session);
-    measurements.set(id10, { at: now, value });
+    measurements.set(id11, { at: now, value });
     evictOldest(measurements);
     return { measurement: value, fresh: true };
   };
@@ -4035,9 +4035,9 @@ function pruneAutoRunSettings(existingSessionIds, existingWorkspaceIds) {
   if (existingSessionIds === void 0 && existingWorkspaceIds === void 0) {
     return { sessions: 0, workspaces: 0 };
   }
-  const sessions = existingSessionIds === void 0 ? current.sessions : Object.fromEntries(Object.entries(current.sessions).filter(([id10]) => existingSessionIds.has(id10)));
+  const sessions = existingSessionIds === void 0 ? current.sessions : Object.fromEntries(Object.entries(current.sessions).filter(([id11]) => existingSessionIds.has(id11)));
   const workspaces = existingWorkspaceIds === void 0 ? current.workspaces : Object.fromEntries(
-    Object.entries(current.workspaces).filter(([id10]) => existingWorkspaceIds.has(id10))
+    Object.entries(current.workspaces).filter(([id11]) => existingWorkspaceIds.has(id11))
   );
   const removedSessions = Object.keys(current.sessions).length - Object.keys(sessions).length;
   const removedWorkspaces = Object.keys(current.workspaces).length - Object.keys(workspaces).length;
@@ -4104,8 +4104,8 @@ function readAgentSessionId(agent) {
   if (typeof agent !== "object" || agent === null) return void 0;
   const session = agent.session;
   if (typeof session !== "object" || session === null) return void 0;
-  const id10 = session.id;
-  return typeof id10 === "string" && id10 !== "" ? id10 : void 0;
+  const id11 = session.id;
+  return typeof id11 === "string" && id11 !== "" ? id11 : void 0;
 }
 
 // src/features/auto-run/host/prompt.ts
@@ -4185,7 +4185,7 @@ async function listExistingWorkspaceIds() {
     const global = parsed.global;
     const ids = global?.workspaceIds;
     if (!Array.isArray(ids)) return void 0;
-    return new Set(ids.filter((id10) => typeof id10 === "string" && id10 !== ""));
+    return new Set(ids.filter((id11) => typeof id11 === "string" && id11 !== ""));
   } catch (error) {
     if (error.code === "ENOENT") return void 0;
     console.error("[auto-run] \u8BFB\u53D6\u5DE5\u4F5C\u7A7A\u95F4\u6CE8\u518C\u8868\u5931\u8D25\uFF0C\u8DF3\u8FC7\u672C\u6B21\u5DE5\u4F5C\u7A7A\u95F4\u6E05\u7406:", error);
@@ -4228,8 +4228,8 @@ var MAX_BODY_BYTES7 = 4 * 1024;
 var MAX_ID_LENGTH = 200;
 function readId(value) {
   if (typeof value !== "string") return void 0;
-  const id10 = value.trim();
-  return id10 === "" || id10.length > MAX_ID_LENGTH ? void 0 : id10;
+  const id11 = value.trim();
+  return id11 === "" || id11.length > MAX_ID_LENGTH ? void 0 : id11;
 }
 function parseSessionPatch(value) {
   if (typeof value !== "object" || value === null) return void 0;
@@ -4342,6 +4342,112 @@ function apply9(ctx) {
   ctx.effect(() => installAutoRunRoutes(webServer), "auto-run: routes");
 }
 
+// src/features/memory-guard/host.ts
+var host_exports10 = {};
+__export(host_exports10, {
+  apply: () => apply10,
+  id: () => id10,
+  inject: () => inject10
+});
+
+// src/features/memory-guard/host/process-memory.ts
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+var PS_TIMEOUT_MS = 2500;
+var CACHE_TTL_MS = 4e3;
+var PS_MAX_BUFFER = 8 * 1024 * 1024;
+var runFile = promisify(execFile);
+var cache;
+var inFlight;
+function parseRendererRss(output) {
+  const targetPpid = process.ppid;
+  let largest = 0;
+  for (const line of output.split("\n")) {
+    const match = /^\s*(\d+)\s+(\d+)\s+(\d+)\s+(.*)$/.exec(line);
+    if (match === null) continue;
+    const ppid = Number(match[2]);
+    if (ppid !== targetPpid) continue;
+    const command = match[4] ?? "";
+    if (!command.includes("--type=renderer")) continue;
+    const rssKb = Number(match[3]);
+    if (!Number.isFinite(rssKb)) continue;
+    const megabytes = Math.round(rssKb / 1024);
+    if (megabytes > largest) largest = megabytes;
+  }
+  return largest > 0 ? largest : null;
+}
+async function sample() {
+  if (process.platform !== "darwin") return null;
+  try {
+    const { stdout } = await runFile("ps", ["-axo", "pid,ppid,rss,command"], {
+      timeout: PS_TIMEOUT_MS,
+      maxBuffer: PS_MAX_BUFFER
+    });
+    return parseRendererRss(stdout);
+  } catch (error) {
+    console.error("[memory-guard] \u8BFB\u53D6\u6E32\u67D3\u8FDB\u7A0B\u5185\u5B58\u5931\u8D25:", error);
+    return null;
+  }
+}
+async function readRendererRssMB() {
+  const now = Date.now();
+  if (cache !== void 0 && now - cache.at < CACHE_TTL_MS) return cache.value;
+  if (inFlight !== void 0) return inFlight;
+  const attempt = sample();
+  inFlight = attempt;
+  try {
+    const value = await attempt;
+    cache = { value, at: Date.now() };
+    return value;
+  } finally {
+    inFlight = void 0;
+  }
+}
+
+// src/features/memory-guard/host/routes.ts
+var ROUTE_PATH9 = "/dsh-all-in-one/memory-guard";
+function installMemoryGuardRoutes(webServer) {
+  return webServer.register({
+    kind: "exact",
+    path: ROUTE_PATH9,
+    handler: async (request, response) => {
+      if (!isLocalRequest(request)) {
+        sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
+        return;
+      }
+      if (request.method !== "GET") {
+        response.writeHead(405, { allow: "GET" });
+        response.end();
+        return;
+      }
+      try {
+        const rendererRssMB = await readRendererRssMB();
+        const payload = {
+          rendererRssMB,
+          hostRssMB: Math.round(process.memoryUsage().rss / 1048576),
+          sampledAt: Date.now()
+        };
+        sendJson(response, 200, payload);
+      } catch (error) {
+        console.error("[memory-guard] \u8BFB\u53D6\u8FDB\u7A0B\u5185\u5B58\u5931\u8D25:", error);
+        sendJson(response, 200, { rendererRssMB: null, hostRssMB: null, sampledAt: Date.now() });
+      }
+    }
+  });
+}
+
+// src/features/memory-guard/host.ts
+var id10 = "memory-guard";
+var inject10 = ["webServer"];
+function apply10(ctx) {
+  const webServer = ctx.webServer;
+  if (webServer === void 0) {
+    console.error("[memory-guard] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u5185\u5B58\u8BFB\u6570\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
+    return;
+  }
+  ctx.effect(() => installMemoryGuardRoutes(webServer), "memory-guard: routes");
+}
+
 // src/features/host.ts
 var featureHosts = [
   host_exports2,
@@ -4352,12 +4458,13 @@ var featureHosts = [
   host_exports,
   host_exports7,
   host_exports8,
-  host_exports9
+  host_exports9,
+  host_exports10
 ];
 
 // src/index.ts
-var inject10 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
-function apply10(ctx) {
+var inject11 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
+function apply11(ctx) {
   for (const feature of featureHosts) {
     try {
       feature.apply(ctx);
@@ -4367,6 +4474,6 @@ function apply10(ctx) {
   }
 }
 export {
-  apply10 as apply,
-  inject10 as inject
+  apply11 as apply,
+  inject11 as inject
 };

@@ -39,10 +39,10 @@ window.__ModuleLoader__.load({
       default: () => entry_default
     });
     module.exports = __toCommonJS(entry_exports);
-    var import_react31 = __toESM(require("react"), 1);
+    var import_react32 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = '*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.inline{display:inline}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-7{height:1.75rem}.h-8{height:2rem}.h-\\[18px\\]{height:18px}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.translate-x-\\[18px\\],.translate-x-\\[20px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[20px\\]{--tw-translate-x:20px}.translate-x-\\[2px\\]{--tw-translate-x:2px}.transform,.translate-x-\\[2px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.whitespace-nowrap{white-space:nowrap}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-60{opacity:.6}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{--tw-shadow:0 1px 2px rgba(0,0,0,.2);--tw-shadow-colored:0 1px 2px var(--tw-shadow-color)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.ring-1{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.ring-black\\/5{--tw-ring-color:rgba(0,0,0,.05)}.blur{--tw-blur:blur(8px)}.blur,.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.duration-200{transition-duration:.2s}.ease-out{transition-timing-function:cubic-bezier(0,0,.2,1)}.\\[all-in-one\\:perf\\]{all-in-one:perf}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.aio-workspace-count:after{content:"\uFF08" attr(data-aio-workspace-count) "\uFF09";color:var(--dsw-alias-label-tertiary);font-size:12px;font-weight:400;margin-inline-start:1px}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}';
+    var styles_default = '*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.inline{display:inline}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-7{height:1.75rem}.h-8{height:2rem}.h-\\[18px\\]{height:18px}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.translate-x-\\[18px\\],.translate-x-\\[20px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[20px\\]{--tw-translate-x:20px}.translate-x-\\[2px\\]{--tw-translate-x:2px}.transform,.translate-x-\\[2px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-x-2{-moz-column-gap:.5rem;column-gap:.5rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.whitespace-nowrap{white-space:nowrap}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-0\\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-60{opacity:.6}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{--tw-shadow:0 1px 2px rgba(0,0,0,.2);--tw-shadow-colored:0 1px 2px var(--tw-shadow-color)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.ring-1{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.ring-black\\/5{--tw-ring-color:rgba(0,0,0,.05)}.blur{--tw-blur:blur(8px)}.blur,.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.duration-200{transition-duration:.2s}.ease-out{transition-timing-function:cubic-bezier(0,0,.2,1)}.\\[all-in-one\\:perf\\]{all-in-one:perf}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.aio-workspace-count:after{content:"\uFF08" attr(data-aio-workspace-count) "\uFF09";color:var(--dsw-alias-label-tertiary);font-size:12px;font-weight:400;margin-inline-start:1px}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:border-brand:hover{border-color:var(--dsw-alias-brand-primary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-brand:hover{color:var(--dsw-alias-brand-primary)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}';
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -416,8 +416,8 @@ window.__ModuleLoader__.load({
       const [enabled] = (0, import_react.useState)(readExpandProcessEnabled);
       const [mode] = (0, import_react.useState)(readExpandProcessMode);
       const [saveFailed, setSaveFailed] = (0, import_react.useState)(false);
-      const save = (apply10) => {
-        if (!apply10()) {
+      const save = (apply11) => {
+        if (!apply11()) {
           setSaveFailed(true);
           return;
         }
@@ -2670,27 +2670,27 @@ window.__ModuleLoader__.load({
           setFailure(null);
           return;
         }
-        let active = true;
+        let active2 = true;
         setEnabled(null);
         setFailure(null);
         const workspaceId = workspaceIdOf?.(sessionId);
         void loadAutoRunState(sessionId, workspaceId).then((state) => {
-          if (!active) return;
+          if (!active2) return;
           setEnabled(state.enabled);
           if (state.explicit || !state.enabled) return;
           void saveAutoRunState(sessionId, true, workspaceId).then((saved) => {
-            if (!active) return;
+            if (!active2) return;
             setSessionEnabled(sessionId, saved.enabled);
           }).catch((error) => {
             console.error("[auto-run] \u56FA\u5316\u9ED8\u8BA4\u5F00\u542F\u72B6\u6001\u5931\u8D25:", error);
           });
         }).catch((error) => {
-          if (!active) return;
+          if (!active2) return;
           console.error("[auto-run] \u8BFB\u53D6\u5168\u81EA\u52A8\u72B6\u6001\u5931\u8D25:", error);
           setFailure(error instanceof Error ? error.message : String(error));
         });
         return () => {
-          active = false;
+          active2 = false;
         };
       }, [sessionId, workspaceIdOf]);
       const hint = (() => {
@@ -3063,15 +3063,15 @@ window.__ModuleLoader__.load({
       const [saveFailed, setSaveFailed] = (0, import_react10.useState)(false);
       const [loadFailed, setLoadFailed] = (0, import_react10.useState)(false);
       (0, import_react10.useEffect)(() => {
-        let active = true;
+        let active2 = true;
         void loadAutoRunSettings().then((settings) => {
-          if (active) setMode(settings.defaultMode);
+          if (active2) setMode(settings.defaultMode);
         }).catch((error) => {
           console.error("[auto-run] \u8BFB\u53D6\u9ED8\u8BA4\u503C\u9009\u9879\u5931\u8D25:", error);
-          if (active) setLoadFailed(true);
+          if (active2) setLoadFailed(true);
         });
         return () => {
-          active = false;
+          active2 = false;
         };
       }, []);
       const handleToggle = () => {
@@ -5110,16 +5110,16 @@ window.__ModuleLoader__.load({
       const translate = (0, import_react21.useRef)(t);
       translate.current = t;
       (0, import_react21.useEffect)(() => {
-        let active = true;
+        let active2 = true;
         void loadPowerPacks().then((next) => {
-          if (active) setPayload(next);
+          if (active2) setPayload(next);
         }).catch((failure) => {
-          if (!active) return;
+          if (!active2) return;
           console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u5305\u5F00\u5173\u72B6\u6001\u5931\u8D25:", failure);
           setError(translate.current("loadFailed"));
         });
         return () => {
-          active = false;
+          active2 = false;
         };
       }, []);
       const enabled = payload?.enabled === true;
@@ -5461,20 +5461,20 @@ window.__ModuleLoader__.load({
         // 分组标签
         /* @__PURE__ */ import_react23.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, title)
       ) : null, /* @__PURE__ */ import_react23.default.createElement("div", { className: "ml-auto flex items-center gap-2" }, /* @__PURE__ */ import_react23.default.createElement("div", { className: "inline-flex", role: "group" }, MODE_ORDER.map((mode, index) => {
-        const active = rule.mode === mode;
+        const active2 = rule.mode === mode;
         return /* @__PURE__ */ import_react23.default.createElement(
           "button",
           {
             key: mode,
             type: "button",
-            "aria-pressed": active,
+            "aria-pressed": active2,
             onClick: () => onChange({ mode, items: rule.items }),
             className: cn(
               "border border-line4 px-2.5 py-1 text-[12px] leading-4 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
               // 首尾各自圆角，中间按钮用负边距与前一格共享一条描边
               index === 0 ? "rounded-l-lg" : "-ml-px",
               index === MODE_ORDER.length - 1 ? "rounded-r-lg" : "",
-              active ? (
+              active2 ? (
                 // 选中项抬高层级，让实底盖住相邻按钮的描边
                 "relative z-10 border-primary bg-primary font-medium text-[color:var(--dsw-alias-bg-base)]"
               ) : "bg-base text-secondary hover:bg-layer2 hover:text-primary"
@@ -5678,25 +5678,25 @@ window.__ModuleLoader__.load({
         }
       };
       (0, import_react25.useEffect)(() => {
-        let active = true;
+        let active2 = true;
         void (async () => {
           try {
             const next = await loadPowerPacks();
-            if (!active) return;
+            if (!active2) return;
             setPayload(next);
           } catch (failure) {
             console.error("[power-pack] \u52A0\u8F7D\u6280\u80FD\u5305\u5931\u8D25:", failure);
-            if (active) {
+            if (active2) {
               setError(
                 `${t("loadFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`
               );
             }
           } finally {
-            if (active) setLoading(false);
+            if (active2) setLoading(false);
           }
         })();
         return () => {
-          active = false;
+          active2 = false;
         };
       }, [t]);
       const handleSave = (0, import_react25.useCallback)(async (pack) => {
@@ -5918,17 +5918,17 @@ window.__ModuleLoader__.load({
       const translate = (0, import_react26.useRef)(t);
       translate.current = t;
       (0, import_react26.useEffect)(() => {
-        let active = true;
+        let active2 = true;
         void loadMemorySettings().then((next) => {
-          if (active) setPayload(next);
+          if (active2) setPayload(next);
         }).catch((failure) => {
-          if (!active) return;
+          if (!active2) return;
           console.error("[project-memory] \u8BFB\u53D6\u8BBE\u7F6E\u5931\u8D25:", failure);
           setError(translate.current("loadFailed"));
           setPayload(EMPTY_PAYLOAD);
         });
         return () => {
-          active = false;
+          active2 = false;
         };
       }, []);
       const enabled = payload?.enabled === true;
@@ -6101,20 +6101,20 @@ window.__ModuleLoader__.load({
         savingRef.current = saving;
       }, [saving]);
       (0, import_react27.useEffect)(() => {
-        let active = true;
+        let active2 = true;
         void loadMemorySettings().then((next) => {
-          if (!active) return;
+          if (!active2) return;
           setPayload(next);
           setDraft(next.root);
         }).catch((failure) => {
-          if (!active) return;
+          if (!active2) return;
           console.error("[project-memory] \u8BFB\u53D6\u8BBE\u7F6E\u5931\u8D25:", failure);
           setError(`${t("loadFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
         }).finally(() => {
-          if (active) setLoading(false);
+          if (active2) setLoading(false);
         });
         return () => {
-          active = false;
+          active2 = false;
         };
       }, [t]);
       const handleSave = (0, import_react27.useCallback)(async () => {
@@ -6327,19 +6327,19 @@ window.__ModuleLoader__.load({
       const [error, setError] = (0, import_react28.useState)(null);
       const latestRequest = (0, import_react28.useRef)(0);
       (0, import_react28.useEffect)(() => {
-        let active = true;
+        let active2 = true;
         void loadAutoCompactSettings().then((next) => {
-          if (!active) return;
+          if (!active2) return;
           setSettings(next);
           setThresholdDraft(String(next.thresholdPercent));
           setRetainDraft(String(next.retainPercent));
         }).catch((failure) => {
-          if (!active) return;
+          if (!active2) return;
           console.error("[auto-compact] \u8BFB\u53D6\u81EA\u52A8\u538B\u7F29\u8BBE\u7F6E\u5931\u8D25:", failure);
           setError(`${t("loadFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
         });
         return () => {
-          active = false;
+          active2 = false;
         };
       }, [t]);
       const persist = async (patch) => {
@@ -6587,19 +6587,19 @@ window.__ModuleLoader__.load({
       const [error, setError] = (0, import_react29.useState)(null);
       const latestRequest = (0, import_react29.useRef)(0);
       (0, import_react29.useEffect)(() => {
-        let active = true;
+        let active2 = true;
         void loadDesktopCookieSettings().then((next) => {
-          if (!active) return;
+          if (!active2) return;
           setSettings(next);
           setThresholdDraft(String(next.threshold));
           setRetainDraft(String(next.retain));
         }).catch((failure) => {
-          if (!active) return;
+          if (!active2) return;
           console.error("[desktop-cookie] \u8BFB\u53D6\u6E05\u7406\u8BBE\u7F6E\u5931\u8D25:", failure);
           setError(`${t("loadFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
         });
         return () => {
-          active = false;
+          active2 = false;
         };
       }, [t]);
       const persist = async (patch) => {
@@ -6705,6 +6705,801 @@ window.__ModuleLoader__.load({
     };
     var desktop_cookie_default = desktopCookieFeature;
 
+    // src/features/memory-guard/notice.ts
+    var COUNTDOWN_SECONDS = 5;
+    var OVERLAY_Z_INDEX = "2147483000";
+    function askRebuildConfirm(t) {
+      return new Promise((resolve) => {
+        const overlay = document.createElement("div");
+        overlay.setAttribute("data-dsh-plugin", "dsh-all-in-one-memory-guard");
+        overlay.style.position = "fixed";
+        overlay.style.insetInline = "0";
+        overlay.style.bottom = "24px";
+        overlay.style.display = "flex";
+        overlay.style.justifyContent = "center";
+        overlay.style.pointerEvents = "none";
+        overlay.style.zIndex = OVERLAY_Z_INDEX;
+        const card = document.createElement("div");
+        card.setAttribute("role", "status");
+        card.style.display = "flex";
+        card.style.alignItems = "center";
+        card.style.gap = "12px";
+        card.style.padding = "8px 12px";
+        card.style.borderRadius = "12px";
+        card.style.border = "1px solid var(--dsw-alias-border-l4)";
+        card.style.background = "var(--dsw-alias-bg-overlay)";
+        card.style.color = "var(--dsw-alias-label-primary)";
+        card.style.fontSize = "13px";
+        card.style.lineHeight = "18px";
+        card.style.pointerEvents = "auto";
+        const message = document.createElement("span");
+        message.textContent = t("noticeCountdown").replace("{seconds}", String(COUNTDOWN_SECONDS));
+        const cancel = document.createElement("button");
+        cancel.type = "button";
+        cancel.textContent = t("noticeCancel");
+        cancel.style.border = "1px solid var(--dsw-alias-border-l4)";
+        cancel.style.borderRadius = "8px";
+        cancel.style.padding = "2px 10px";
+        cancel.style.background = "transparent";
+        cancel.style.color = "var(--dsw-alias-brand-primary)";
+        cancel.style.fontSize = "12px";
+        cancel.style.cursor = "pointer";
+        card.append(message, cancel);
+        overlay.append(card);
+        document.body.append(overlay);
+        let remaining = COUNTDOWN_SECONDS;
+        let settled = false;
+        const finish = (result) => {
+          if (settled) return;
+          settled = true;
+          window.clearInterval(timer);
+          overlay.remove();
+          resolve(result);
+        };
+        const timer = window.setInterval(() => {
+          remaining -= 1;
+          if (remaining <= 0) {
+            finish("rebuild");
+            return;
+          }
+          message.textContent = t("noticeCountdown").replace("{seconds}", String(remaining));
+        }, 1e3);
+        cancel.addEventListener("click", () => finish("cancelled"));
+      });
+    }
+
+    // src/features/memory-guard/occupancy.ts
+    var lastInteractionAt = Date.now();
+    function markInteraction() {
+      lastInteractionAt = Date.now();
+    }
+    var INTERACTION_EVENTS = ["pointerdown", "keydown", "wheel", "touchstart", "input"];
+    function installInteractionTracking() {
+      markInteraction();
+      for (const eventName of INTERACTION_EVENTS) {
+        document.addEventListener(eventName, markInteraction, { capture: true, passive: true });
+      }
+      return () => {
+        for (const eventName of INTERACTION_EVENTS) {
+          document.removeEventListener(eventName, markInteraction, { capture: true });
+        }
+      };
+    }
+    function hasDraft() {
+      const fields = document.querySelectorAll('textarea, [contenteditable="true"]');
+      for (const field of fields) {
+        if (field.offsetParent === null && field.getClientRects().length === 0) continue;
+        const text = field instanceof HTMLTextAreaElement ? field.value : field.textContent ?? "";
+        if (text.trim() !== "") return true;
+      }
+      return false;
+    }
+    function readOccupancy(sessions) {
+      const idleMs = Date.now() - lastInteractionAt;
+      const focused = typeof document.hasFocus === "function" ? document.hasFocus() : true;
+      if (sessions === void 0) {
+        return { running: true, submitting: true, draft: hasDraft(), idleMs, focused };
+      }
+      let running = false;
+      let submitting = false;
+      try {
+        const snapshot = sessions.list.getSnapshot();
+        for (const id of snapshot.ids) {
+          const summary = snapshot.byId[id];
+          if (summary?.running === true) running = true;
+          const binding = sessions.binding?.(id);
+          if (binding === void 0) continue;
+          const snapshotOfSession = binding.session.getSnapshot();
+          if (snapshotOfSession.pendingSubmissions.length > 0) submitting = true;
+        }
+      } catch (error) {
+        console.error("[memory-guard] \u8BFB\u53D6\u4F1A\u8BDD\u8FD0\u884C\u72B6\u6001\u5931\u8D25\uFF0C\u6309\u5FD9\u5904\u7406:", error);
+        return { running: true, submitting: true, draft: hasDraft(), idleMs, focused };
+      }
+      return { running, submitting, draft: hasDraft(), idleMs, focused };
+    }
+    function resetIdleClock() {
+      markInteraction();
+    }
+
+    // src/features/memory-guard/api.ts
+    var ENDPOINT8 = "/dsh-all-in-one/memory-guard";
+    var REQUEST_TIMEOUT_MS8 = 2500;
+    var failureReported = false;
+    async function fetchHostMemory() {
+      const controller = new AbortController();
+      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS8);
+      try {
+        const response = await fetch(new URL(ENDPOINT8, window.location.origin).toString(), {
+          credentials: "same-origin",
+          cache: "no-store",
+          signal: controller.signal
+        });
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(text || `HTTP ${response.status}`);
+        }
+        const payload = await response.json();
+        failureReported = false;
+        return payload;
+      } catch (error) {
+        if (!failureReported) {
+          failureReported = true;
+          console.warn("[memory-guard] \u8BFB\u53D6\u5BBF\u4E3B\u8FDB\u7A0B\u5185\u5B58\u5931\u8D25\uFF0C\u6539\u7528\u9875\u9762\u8BFB\u6570:", error);
+        }
+        return null;
+      } finally {
+        window.clearTimeout(timer);
+      }
+    }
+
+    // src/features/memory-guard/measure.ts
+    function readPageMemory() {
+      const memory = performance.memory;
+      const heapMB = memory === void 0 ? null : Math.round(memory.usedJSHeapSize / 1048576);
+      return { heapMB, domNodes: document.getElementsByTagName("*").length };
+    }
+    async function readMemory() {
+      const page = readPageMemory();
+      const host = await fetchHostMemory();
+      const rendererRssMB = host?.rendererRssMB ?? null;
+      const source = rendererRssMB !== null ? "process" : page.heapMB !== null ? "heap" : "none";
+      return {
+        megabytes: rendererRssMB ?? page.heapMB ?? 0,
+        source,
+        heapMB: page.heapMB,
+        rendererRssMB,
+        domNodes: page.domNodes
+      };
+    }
+
+    // src/features/memory-guard/reclaim.ts
+    var SETTLE_DELAY_MS = 600;
+    async function clearCacheStorage() {
+      if (typeof caches === "undefined") return;
+      try {
+        const names = await caches.keys();
+        await Promise.all(names.map((name) => caches.delete(name)));
+      } catch (error) {
+        console.error("[memory-guard] \u6E05\u7406 CacheStorage \u5931\u8D25:", error);
+      }
+    }
+    function clearPerformanceTimeline() {
+      try {
+        performance.clearResourceTimings();
+        performance.clearMarks();
+        performance.clearMeasures();
+      } catch (error) {
+        console.error("[memory-guard] \u6E05\u7406 performance \u65F6\u95F4\u7EBF\u5931\u8D25:", error);
+      }
+    }
+    function collectGarbage() {
+      try {
+        window.gc?.();
+      } catch (error) {
+        console.error("[memory-guard] \u5F3A\u5236\u56DE\u6536\u5931\u8D25:", error);
+      }
+    }
+    function wait(milliseconds) {
+      return new Promise((resolve) => {
+        window.setTimeout(resolve, milliseconds);
+      });
+    }
+    async function reclaimLight() {
+      const before = await readMemory();
+      collectGarbage();
+      clearPerformanceTimeline();
+      await clearCacheStorage();
+      await wait(SETTLE_DELAY_MS);
+      const after = await readMemory();
+      const freedMB = Math.max(0, before.megabytes - after.megabytes);
+      return { before, after, freedMB, at: Date.now() };
+    }
+
+    // src/features/memory-guard/storage.ts
+    var SETTINGS_KEY = "dsh-all-in-one:memory-guard";
+    var STATE_KEY = "dsh-all-in-one:memory-guard:state";
+    var DEFAULT_SETTINGS = {
+      enabled: true,
+      intervalMinutes: 10,
+      thresholdMB: 600
+    };
+    var MIN_INTERVAL_MINUTES = 1;
+    var MAX_INTERVAL_MINUTES = 120;
+    var MIN_THRESHOLD_MB = 200;
+    var MAX_THRESHOLD_MB = 8192;
+    function normalizeInteger(value, fallback, min, max) {
+      const parsed = typeof value === "number" ? value : Number.NaN;
+      if (!Number.isFinite(parsed)) return fallback;
+      return Math.min(max, Math.max(min, Math.round(parsed)));
+    }
+    function normalizeSettings(value) {
+      if (typeof value !== "object" || value === null) return { ...DEFAULT_SETTINGS };
+      const candidate = value;
+      return {
+        enabled: typeof candidate.enabled === "boolean" ? candidate.enabled : DEFAULT_SETTINGS.enabled,
+        intervalMinutes: normalizeInteger(
+          candidate.intervalMinutes,
+          DEFAULT_SETTINGS.intervalMinutes,
+          MIN_INTERVAL_MINUTES,
+          MAX_INTERVAL_MINUTES
+        ),
+        thresholdMB: normalizeInteger(
+          candidate.thresholdMB,
+          DEFAULT_SETTINGS.thresholdMB,
+          MIN_THRESHOLD_MB,
+          MAX_THRESHOLD_MB
+        )
+      };
+    }
+    var EMPTY_STATE = {
+      lastReclaimAt: 0,
+      lastReclaimFreedMB: 0,
+      lastRebuildAt: 0
+    };
+    function normalizeState(value) {
+      if (typeof value !== "object" || value === null) return { ...EMPTY_STATE };
+      const candidate = value;
+      const timestamp = (input) => {
+        const parsed = typeof input === "number" ? input : Number.NaN;
+        return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+      };
+      const freed = typeof candidate.lastReclaimFreedMB === "number" ? Math.max(0, Math.round(candidate.lastReclaimFreedMB)) : 0;
+      return {
+        lastReclaimAt: timestamp(candidate.lastReclaimAt),
+        lastReclaimFreedMB: freed,
+        lastRebuildAt: timestamp(candidate.lastRebuildAt)
+      };
+    }
+    function readJson(key, normalize) {
+      try {
+        const raw = window.localStorage.getItem(key);
+        if (raw === null) return void 0;
+        return normalize(JSON.parse(raw));
+      } catch (error) {
+        console.error(`[memory-guard] \u8BFB\u53D6 ${key} \u5931\u8D25:`, error);
+        return void 0;
+      }
+    }
+    function writeJson(key, value) {
+      try {
+        window.localStorage.setItem(key, JSON.stringify(value));
+        return true;
+      } catch (error) {
+        console.error(`[memory-guard] \u5199\u5165 ${key} \u5931\u8D25:`, error);
+        return false;
+      }
+    }
+    function readMemoryGuardSettings() {
+      return readJson(SETTINGS_KEY, normalizeSettings) ?? { ...DEFAULT_SETTINGS };
+    }
+    function updateMemoryGuardSettings(patch) {
+      const current = readMemoryGuardSettings();
+      const next = normalizeSettings({ ...current, ...patch });
+      writeJson(SETTINGS_KEY, next);
+      return next;
+    }
+    function readMemoryGuardState() {
+      return readJson(STATE_KEY, normalizeState) ?? { ...EMPTY_STATE };
+    }
+    function updateMemoryGuardState(patch) {
+      const next = normalizeState({ ...readMemoryGuardState(), ...patch });
+      writeJson(STATE_KEY, next);
+      return next;
+    }
+    var INTERVAL_RANGE = { min: MIN_INTERVAL_MINUTES, max: MAX_INTERVAL_MINUTES };
+    var THRESHOLD_RANGE = { min: MIN_THRESHOLD_MB, max: MAX_THRESHOLD_MB };
+
+    // src/features/memory-guard/guard.ts
+    var active;
+    function activeMemoryGuard() {
+      return active;
+    }
+    function installMemoryGuard(t, sessions) {
+      const disposeTracking = installInteractionTracking();
+      let timer;
+      let disposed = false;
+      let busy = false;
+      const schedule = () => {
+        if (disposed) return;
+        const { intervalMinutes } = readMemoryGuardSettings();
+        timer = window.setTimeout(() => {
+          void runCheck();
+        }, intervalMinutes * 6e4);
+      };
+      const runCheck = async () => {
+        timer = void 0;
+        if (busy || disposed) return { rebuilt: false, reason: "busy" };
+        busy = true;
+        try {
+          const settings = readMemoryGuardSettings();
+          if (!settings.enabled) return { rebuilt: false, reason: "disabled" };
+          const reclaim = await reclaimLight();
+          updateMemoryGuardState({
+            lastReclaimAt: reclaim.at,
+            lastReclaimFreedMB: reclaim.freedMB
+          });
+          const intervalMs = settings.intervalMinutes * 6e4;
+          const state = readMemoryGuardState();
+          if (state.lastRebuildAt > 0 && Date.now() - state.lastRebuildAt < intervalMs * 2) {
+            return { rebuilt: false, reason: "cooldown", detail: t("skipCooldown") };
+          }
+          if (reclaim.after.megabytes < settings.thresholdMB) {
+            return { rebuilt: false, reason: "below-threshold", detail: t("skipBelowThreshold") };
+          }
+          return await confirmThenRebuild(intervalMs, false);
+        } finally {
+          busy = false;
+          schedule();
+        }
+      };
+      const confirmThenRebuild = async (intervalMs, manual) => {
+        const occupancy = readOccupancy(sessions);
+        if (occupancy.running || occupancy.submitting) {
+          return { rebuilt: false, reason: "busy", detail: t("skipRunning") };
+        }
+        if (occupancy.draft) {
+          return { rebuilt: false, reason: "draft", detail: t("skipDraft") };
+        }
+        if (!manual && occupancy.focused && occupancy.idleMs < intervalMs) {
+          return { rebuilt: false, reason: "active", detail: t("skipActive") };
+        }
+        const result = await askRebuildConfirm(t);
+        if (disposed) return { rebuilt: false, reason: "unavailable", detail: t("guardMissing") };
+        if (result === "cancelled") {
+          resetIdleClock();
+          return { rebuilt: false, reason: "cancelled", detail: t("skipCancelled") };
+        }
+        const recheck = readOccupancy(sessions);
+        if (recheck.running || recheck.submitting || recheck.draft) {
+          resetIdleClock();
+          return { rebuilt: false, reason: "busy", detail: t("skipRunning") };
+        }
+        updateMemoryGuardState({ lastRebuildAt: Date.now() });
+        window.location.reload();
+        return { rebuilt: true };
+      };
+      const handle = {
+        async reclaimNow() {
+          const result = await reclaimLight();
+          updateMemoryGuardState({
+            lastReclaimAt: result.at,
+            lastReclaimFreedMB: result.freedMB
+          });
+          return result.after;
+        },
+        async rebuildNow() {
+          if (busy) return { rebuilt: false, reason: "busy", detail: t("skipRunning") };
+          busy = true;
+          try {
+            return await confirmThenRebuild(0, true);
+          } finally {
+            busy = false;
+          }
+        },
+        reschedule() {
+          if (disposed) return;
+          if (timer !== void 0) window.clearTimeout(timer);
+          timer = void 0;
+          schedule();
+        },
+        dispose() {
+          disposed = true;
+          if (timer !== void 0) window.clearTimeout(timer);
+          timer = void 0;
+          disposeTracking();
+        }
+      };
+      active = handle;
+      schedule();
+      const dispose = handle.dispose;
+      handle.dispose = () => {
+        dispose();
+        if (active === handle) active = void 0;
+      };
+      return handle;
+    }
+
+    // src/features/memory-guard/client.tsx
+    function apply10(ctx, t) {
+      ctx.inject(["sessions"], (scoped) => {
+        const sessions = scoped.sessions;
+        ctx.effect(() => {
+          const handle = installMemoryGuard(t, sessions);
+          return () => handle.dispose();
+        }, "memory-guard: timer");
+      });
+    }
+
+    // src/features/memory-guard/locales.ts
+    var memoryGuardLocales = {
+      zh: {
+        // 开关标题
+        title: "\u5185\u5B58\u5B88\u62A4",
+        // 开关用途说明：点明检查节奏、回收档位与触发条件
+        description: "\u5B9A\u65F6\u6E05\u7406\u754C\u9762\u5185\u5B58\uFF1A\u65E0\u4EFB\u52A1\u4E14\u65E0\u4EBA\u64CD\u4F5C\u65F6\u5148\u6E05\u7F13\u5B58\uFF0C\u5360\u7528\u8FC7\u9AD8\u518D\u81EA\u52A8\u91CD\u5EFA\u9875\u9762\u3002",
+        // 检查间隔输入框的标签
+        intervalLabel: "\u68C0\u67E5\u95F4\u9694",
+        // 检查间隔输入框的单位
+        intervalUnit: "\u5206\u949F",
+        // 重建阈值输入框的标签
+        thresholdLabel: "\u91CD\u5EFA\u9608\u503C",
+        // 重建阈值输入框的单位
+        thresholdUnit: "MB",
+        // 读数行的标题
+        readingTitle: "\u5F53\u524D\u5360\u7528",
+        // 桌面版读数：渲染进程常驻内存
+        readingProcess: "\u6E32\u67D3\u8FDB\u7A0B {value} MB",
+        // 浏览器环境读数：页面 JS 堆
+        readingHeap: "JS \u5806 {value} MB",
+        // 附加读数：DOM 节点数
+        readingNodes: "DOM {value} \u8282\u70B9",
+        // 读不到内存时的占位
+        readingUnknown: "\u6682\u65E0\u8BFB\u6570",
+        // 上次轻量回收的时间与释放量
+        lastReclaim: "\u4E0A\u6B21\u56DE\u6536 {time}",
+        // 回收没有释放出可测量的内存时的说明
+        lastReclaimIdle: "\u4E0A\u6B21\u56DE\u6536\u672A\u91CA\u653E\u53EF\u6D4B\u91CF\u5185\u5B58",
+        // 上次重建的时间
+        lastRebuild: "\u4E0A\u6B21\u91CD\u5EFA {time}",
+        // 从未执行过时的占位
+        never: "\u4ECE\u672A",
+        // 手动触发轻量回收的按钮
+        reclaimNow: "\u7ACB\u5373\u56DE\u6536",
+        // 手动触发重建的按钮
+        rebuildNow: "\u7ACB\u5373\u91CD\u5EFA",
+        // 轻量回收执行中的按钮文案
+        reclaiming: "\u56DE\u6536\u4E2D\u2026",
+        // 重建会重置滚动位置与面板状态的提醒
+        rebuildHint: "\u91CD\u5EFA\u4F1A\u91CD\u7F6E\u6EDA\u52A8\u4F4D\u7F6E\u4E0E\u9762\u677F\uFF0C\u4F1A\u8BDD\u4E0E\u8349\u7A3F\u4E0D\u4E22\u3002",
+        // 自动重建前的倒计时提示，占位符是剩余秒数
+        noticeCountdown: "\u5185\u5B58\u5B88\u62A4\u6B63\u5728\u56DE\u6536\uFF0C{seconds} \u79D2\u540E\u91CD\u5EFA\u9875\u9762",
+        // 倒计时提示上的取消按钮
+        noticeCancel: "\u53D6\u6D88",
+        // 距上次重建太近，跳过本次
+        skipCooldown: "\u8DDD\u4E0A\u6B21\u91CD\u5EFA\u4E0D\u8DB3\u4E24\u4E2A\u68C0\u67E5\u5468\u671F\uFF0C\u8DF3\u8FC7\u672C\u6B21",
+        // 占用未超过阈值
+        skipBelowThreshold: "\u5360\u7528\u672A\u8D85\u8FC7\u9608\u503C\uFF0C\u672C\u6B21\u53EA\u505A\u8F7B\u91CF\u56DE\u6536",
+        // 有任务正在执行
+        skipRunning: "\u6709\u4EFB\u52A1\u6B63\u5728\u6267\u884C\uFF0C\u672C\u6B21\u4E0D\u91CD\u5EFA",
+        // 输入框里有未发送的草稿
+        skipDraft: "\u8F93\u5165\u6846\u6709\u672A\u53D1\u9001\u7684\u8349\u7A3F\uFF0C\u672C\u6B21\u4E0D\u91CD\u5EFA",
+        // 用户仍在操作
+        skipActive: "\u4ECD\u5728\u64CD\u4F5C\u4E2D\uFF0C\u672C\u6B21\u4E0D\u91CD\u5EFA",
+        // 用户取消了自动重建
+        skipCancelled: "\u5DF2\u53D6\u6D88\u672C\u6B21\u91CD\u5EFA",
+        // 操作面尚未装配（插件刚加载或已卸载）
+        guardMissing: "\u5185\u5B58\u5B88\u62A4\u5C1A\u672A\u5C31\u7EEA\uFF0C\u8BF7\u5237\u65B0\u9875\u9762\u540E\u91CD\u8BD5",
+        // 读取内存失败
+        measureFailed: "\u8BFB\u53D6\u5185\u5B58\u5360\u7528\u5931\u8D25",
+        // 检查间隔超出范围时的提示
+        intervalInvalid: "\u68C0\u67E5\u95F4\u9694\u9700\u8981\u662F 1 \u5230 120 \u4E4B\u95F4\u7684\u6574\u6570",
+        // 重建阈值超出范围时的提示
+        thresholdInvalid: "\u91CD\u5EFA\u9608\u503C\u9700\u8981\u662F 200 \u5230 8192 \u4E4B\u95F4\u7684\u6574\u6570"
+      },
+      en: {
+        // Switch title
+        title: "Memory guard",
+        // Switch description: cadence, two tiers, and the trigger condition
+        description: "Reclaim UI memory on a timer: clear caches while idle, and rebuild the page once usage passes the threshold with no task running.",
+        // Label of the interval input
+        intervalLabel: "Check every",
+        // Unit shown after the interval input
+        intervalUnit: "min",
+        // Label of the rebuild threshold input
+        thresholdLabel: "Rebuild at",
+        // Unit shown after the threshold input
+        thresholdUnit: "MB",
+        // Heading of the usage line
+        readingTitle: "Usage",
+        // Desktop reading: renderer resident memory
+        readingProcess: "Renderer {value} MB",
+        // Browser reading: page JS heap
+        readingHeap: "JS heap {value} MB",
+        // Supporting reading: DOM node count
+        readingNodes: "DOM {value} nodes",
+        // Placeholder when no memory API is available
+        readingUnknown: "No reading yet",
+        // Time and freed amount of the last light reclaim
+        lastReclaim: "Reclaimed {time}",
+        // Shown when a reclaim freed nothing measurable
+        lastReclaimIdle: "Last reclaim freed nothing measurable",
+        // Time of the last rebuild
+        lastRebuild: "Rebuilt {time}",
+        // Placeholder for an action that never ran
+        never: "never",
+        // Button that triggers a light reclaim
+        reclaimNow: "Reclaim now",
+        // Button that triggers a rebuild
+        rebuildNow: "Rebuild now",
+        // Button label while a light reclaim runs
+        reclaiming: "Reclaiming\u2026",
+        // Reminder that a rebuild resets scroll and panel state
+        rebuildHint: "A rebuild resets scroll and panels; sessions and drafts survive.",
+        // Countdown notice before an automatic rebuild; the placeholder is seconds left
+        noticeCountdown: "Memory guard is reclaiming, rebuilding in {seconds}s",
+        // Cancel button on the countdown notice
+        noticeCancel: "Cancel",
+        // Skipped because the last rebuild is too recent
+        skipCooldown: "Last rebuild is too recent; skipped this round",
+        // Usage stayed below the threshold
+        skipBelowThreshold: "Usage is below the threshold; only light reclaim ran",
+        // A task is running
+        skipRunning: "A task is running; no rebuild this round",
+        // The composer holds an unsent draft
+        skipDraft: "The composer has an unsent draft; no rebuild this round",
+        // The user is still interacting
+        skipActive: "You are still interacting; no rebuild this round",
+        // The user cancelled the automatic rebuild
+        skipCancelled: "Automatic rebuild cancelled",
+        // The handle is not installed yet
+        guardMissing: "Memory guard is not ready; refresh the page and retry",
+        // Reading memory failed
+        measureFailed: "Could not read memory usage",
+        // Interval outside the allowed range
+        intervalInvalid: "The interval must be an integer between 1 and 120",
+        // Threshold outside the allowed range
+        thresholdInvalid: "The threshold must be an integer between 200 and 8192"
+      }
+    };
+
+    // src/features/memory-guard/toggle.tsx
+    var import_react30 = __toESM(require("react"), 1);
+    var READING_REFRESH_MS = 1e4;
+    var INPUT_CLASS5 = "w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] text-primary outline-none focus:border-brand";
+    var BUTTON_CLASS2 = "rounded-md border border-line4 px-2 py-0.5 text-[11px] text-primary transition hover:border-brand hover:text-brand disabled:cursor-default disabled:opacity-50";
+    function NumberField({
+      label,
+      unit,
+      value,
+      min,
+      max,
+      disabled = false,
+      onChange,
+      onCommit
+    }) {
+      return /* @__PURE__ */ import_react30.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, label), /* @__PURE__ */ import_react30.default.createElement(
+        "input",
+        {
+          type: "number",
+          inputMode: "numeric",
+          min,
+          max,
+          step: 1,
+          value,
+          disabled,
+          "aria-label": label,
+          onChange: (event) => onChange(event.target.value),
+          onBlur: onCommit,
+          onKeyDown: (event) => {
+            if (event.key === "Enter") onCommit();
+          },
+          className: INPUT_CLASS5
+        }
+      ), /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, unit));
+    }
+    function formatTime(timestamp, neverLabel) {
+      if (timestamp <= 0) return neverLabel;
+      return new Date(timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    }
+    function MemoryIcon2() {
+      return /* @__PURE__ */ import_react30.default.createElement(
+        "svg",
+        {
+          viewBox: "0 0 24 24",
+          width: "14",
+          height: "14",
+          "aria-hidden": "true",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: "1.8",
+          strokeLinecap: "round",
+          strokeLinejoin: "round"
+        },
+        /* @__PURE__ */ import_react30.default.createElement("rect", { x: "3", y: "7", width: "18", height: "10", rx: "2" }),
+        /* @__PURE__ */ import_react30.default.createElement("path", { d: "M7 11v2M11 11v2M15 11v2" })
+      );
+    }
+    function MemoryGuardToggle({ t }) {
+      const [settings, setSettings] = (0, import_react30.useState)(() => readMemoryGuardSettings());
+      const [reading, setReading] = (0, import_react30.useState)(null);
+      const [runtime, setRuntime] = (0, import_react30.useState)(() => readMemoryGuardState());
+      const [intervalDraft, setIntervalDraft] = (0, import_react30.useState)(
+        () => String(readMemoryGuardSettings().intervalMinutes)
+      );
+      const [thresholdDraft, setThresholdDraft] = (0, import_react30.useState)(
+        () => String(readMemoryGuardSettings().thresholdMB)
+      );
+      const [working, setWorking] = (0, import_react30.useState)(null);
+      const [message, setMessage] = (0, import_react30.useState)("");
+      (0, import_react30.useEffect)(() => {
+        let active2 = true;
+        const refresh = () => {
+          void readMemory().then((next) => {
+            if (active2) setReading(next);
+          }).catch((error) => {
+            if (!active2) return;
+            console.error("[memory-guard] \u8BFB\u53D6\u5185\u5B58\u5360\u7528\u5931\u8D25:", error);
+            setMessage(t("measureFailed"));
+          });
+          if (active2) setRuntime(readMemoryGuardState());
+        };
+        refresh();
+        const timer = window.setInterval(refresh, READING_REFRESH_MS);
+        return () => {
+          active2 = false;
+          window.clearInterval(timer);
+        };
+      }, [t]);
+      const persist = (patch) => {
+        const next = updateMemoryGuardSettings(patch);
+        setSettings(next);
+        setIntervalDraft(String(next.intervalMinutes));
+        setThresholdDraft(String(next.thresholdMB));
+        activeMemoryGuard()?.reschedule();
+      };
+      const handleToggle = () => {
+        persist({ enabled: !settings.enabled });
+      };
+      const commitInterval = () => {
+        const parsed = Number(intervalDraft.trim());
+        if (!Number.isInteger(parsed) || parsed < INTERVAL_RANGE.min || parsed > INTERVAL_RANGE.max) {
+          setMessage(t("intervalInvalid"));
+          setIntervalDraft(String(settings.intervalMinutes));
+          return;
+        }
+        setMessage("");
+        if (parsed !== settings.intervalMinutes) persist({ intervalMinutes: parsed });
+      };
+      const commitThreshold = () => {
+        const parsed = Number(thresholdDraft.trim());
+        if (!Number.isInteger(parsed) || parsed < THRESHOLD_RANGE.min || parsed > THRESHOLD_RANGE.max) {
+          setMessage(t("thresholdInvalid"));
+          setThresholdDraft(String(settings.thresholdMB));
+          return;
+        }
+        setMessage("");
+        if (parsed !== settings.thresholdMB) persist({ thresholdMB: parsed });
+      };
+      const handleReclaim = async () => {
+        const guard = activeMemoryGuard();
+        if (guard === void 0) {
+          setMessage(t("guardMissing"));
+          return;
+        }
+        setWorking("reclaim");
+        setMessage("");
+        try {
+          const after = await guard.reclaimNow();
+          setReading(after);
+          setRuntime(readMemoryGuardState());
+        } catch (error) {
+          console.error("[memory-guard] \u624B\u52A8\u8F7B\u91CF\u56DE\u6536\u5931\u8D25:", error);
+          setMessage(t("measureFailed"));
+        } finally {
+          setWorking(null);
+        }
+      };
+      const handleRebuild = async () => {
+        const guard = activeMemoryGuard();
+        if (guard === void 0) {
+          setMessage(t("guardMissing"));
+          return;
+        }
+        setWorking("rebuild");
+        setMessage("");
+        try {
+          const outcome = await guard.rebuildNow();
+          if (!outcome.rebuilt) setMessage(outcome.detail ?? t("skipRunning"));
+        } catch (error) {
+          console.error("[memory-guard] \u624B\u52A8\u91CD\u5EFA\u5931\u8D25:", error);
+          setMessage(t("measureFailed"));
+        } finally {
+          setWorking(null);
+        }
+      };
+      const readingText = reading === null ? t("readingUnknown") : reading.source === "process" ? t("readingProcess").replace("{value}", String(reading.megabytes)) : reading.source === "heap" ? t("readingHeap").replace("{value}", String(reading.megabytes)) : t("readingUnknown");
+      return (
+        // 卡片容器：文字区不参与交互，开关与参数各自独立，不能互相嵌套
+        /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react30.default.createElement(MemoryIcon2, null)), /* @__PURE__ */ import_react30.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")))), /* @__PURE__ */ import_react30.default.createElement(
+          "button",
+          {
+            type: "button",
+            role: "switch",
+            "aria-checked": settings.enabled,
+            "aria-label": t("title"),
+            onClick: handleToggle,
+            className: cn(
+              "flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition",
+              settings.enabled ? "bg-brand" : "bg-line2",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-default"
+            )
+          },
+          /* @__PURE__ */ import_react30.default.createElement(
+            "span",
+            {
+              "aria-hidden": "true",
+              className: cn(
+                "h-4 w-4 aio-switch bg-base shadow transition-transform",
+                settings.enabled ? "translate-x-[18px]" : "translate-x-0.5"
+              )
+            }
+          )
+        )), settings.enabled ? /* @__PURE__ */ import_react30.default.createElement(import_react30.default.Fragment, null, /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex items-center gap-3 pl-7" }, /* @__PURE__ */ import_react30.default.createElement(
+          NumberField,
+          {
+            label: t("intervalLabel"),
+            unit: t("intervalUnit"),
+            value: intervalDraft,
+            min: INTERVAL_RANGE.min,
+            max: INTERVAL_RANGE.max,
+            onChange: setIntervalDraft,
+            onCommit: commitInterval
+          }
+        ), /* @__PURE__ */ import_react30.default.createElement(
+          NumberField,
+          {
+            label: t("thresholdLabel"),
+            unit: t("thresholdUnit"),
+            value: thresholdDraft,
+            min: THRESHOLD_RANGE.min,
+            max: THRESHOLD_RANGE.max,
+            onChange: setThresholdDraft,
+            onCommit: commitThreshold
+          }
+        )), /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex flex-wrap items-center gap-x-2 pl-7 text-[11px] leading-[16px] text-secondary" }, /* @__PURE__ */ import_react30.default.createElement("span", null, t("readingTitle")), /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-primary" }, readingText), reading !== null ? /* @__PURE__ */ import_react30.default.createElement("span", null, t("readingNodes").replace("{value}", String(reading.domNodes))) : null), /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex flex-wrap items-center gap-x-2 pl-7 text-[11px] leading-[16px] text-secondary" }, /* @__PURE__ */ import_react30.default.createElement("span", null, t("lastReclaim").replace("{time}", formatTime(runtime.lastReclaimAt, t("never"))), runtime.lastReclaimFreedMB > 0 ? ` \xB7 ${runtime.lastReclaimFreedMB} MB` : ""), /* @__PURE__ */ import_react30.default.createElement("span", null, t("lastRebuild").replace("{time}", formatTime(runtime.lastRebuildAt, t("never"))))), /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex flex-wrap items-center gap-2 pl-7" }, /* @__PURE__ */ import_react30.default.createElement(
+          "button",
+          {
+            type: "button",
+            onClick: () => void handleReclaim(),
+            disabled: working !== null,
+            className: BUTTON_CLASS2
+          },
+          working === "reclaim" ? t("reclaiming") : t("reclaimNow")
+        ), /* @__PURE__ */ import_react30.default.createElement(
+          "button",
+          {
+            type: "button",
+            onClick: () => void handleRebuild(),
+            disabled: working !== null,
+            className: BUTTON_CLASS2
+          },
+          t("rebuildNow")
+        ), /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, t("rebuildHint"))), message !== "" ? /* @__PURE__ */ import_react30.default.createElement("span", { className: "pl-7 text-[11px] leading-[16px] text-danger", role: "alert" }, message) : null) : null)
+      );
+    }
+
+    // src/features/memory-guard/index.tsx
+    var memoryGuardFeature = {
+      id: "memory-guard",
+      group: "config",
+      order: 40,
+      switch: MemoryGuardToggle,
+      client: { apply: apply10 },
+      locales: memoryGuardLocales
+    };
+    var memory_guard_default = memoryGuardFeature;
+
     // src/features/index.ts
     var featureList = [
       // 对话体验：一条对话内的阅读与操作
@@ -6722,7 +7517,8 @@ window.__ModuleLoader__.load({
       power_pack_default,
       project_memory_default,
       auto_compact_default,
-      desktop_cookie_default
+      desktop_cookie_default,
+      memory_guard_default
     ];
 
     // src/shell/registry.ts
@@ -6763,9 +7559,9 @@ window.__ModuleLoader__.load({
     var registry = createFeatureRegistry(featureList);
 
     // src/shell/AllInOnePage.tsx
-    var import_react30 = __toESM(require("react"), 1);
+    var import_react31 = __toESM(require("react"), 1);
     function BackGlyph() {
-      return /* @__PURE__ */ import_react30.default.createElement(
+      return /* @__PURE__ */ import_react31.default.createElement(
         "svg",
         {
           viewBox: "0 0 16 16",
@@ -6778,7 +7574,7 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react30.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
+        /* @__PURE__ */ import_react31.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
       );
     }
     var FALLBACK_GROUP = "other";
@@ -6801,34 +7597,34 @@ window.__ModuleLoader__.load({
       return features.length > 0 && features.every((feature) => "switch" in feature && feature.reloadsPage === true);
     }
     function FeatureCard({ feature, t, open }) {
-      const featureT = (0, import_react30.useMemo)(() => (key) => t(`${feature.id}.${key}`), [feature.id, t]);
+      const featureT = (0, import_react31.useMemo)(() => (key) => t(`${feature.id}.${key}`), [feature.id, t]);
       if ("switch" in feature) {
         const SwitchEntry = feature.switch;
-        return /* @__PURE__ */ import_react30.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react30.default.createElement(SwitchEntry, { t: featureT }));
+        return /* @__PURE__ */ import_react31.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react31.default.createElement(SwitchEntry, { t: featureT }));
       }
       const Entry = feature.entry;
-      return /* @__PURE__ */ import_react30.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react30.default.createElement(Entry, { t: featureT, open: () => open(feature.id) }));
+      return /* @__PURE__ */ import_react31.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react31.default.createElement(Entry, { t: featureT, open: () => open(feature.id) }));
     }
     function AllInOnePage({ t }) {
-      const [activeId, setActiveId] = (0, import_react30.useState)(null);
-      const [pageActions, setPageActions] = (0, import_react30.useState)(null);
-      const active = activeId ? registry.find(activeId) : void 0;
-      const activePage = active && "page" in active ? active : void 0;
-      const featureTranslate = (0, import_react30.useCallback)(
+      const [activeId, setActiveId] = (0, import_react31.useState)(null);
+      const [pageActions, setPageActions] = (0, import_react31.useState)(null);
+      const active2 = activeId ? registry.find(activeId) : void 0;
+      const activePage = active2 && "page" in active2 ? active2 : void 0;
+      const featureTranslate = (0, import_react31.useCallback)(
         // 网格视图不会调用此函数，activePage 为空时直接返回 key 兜底
         (key) => activePage ? t(`${activePage.id}.${key}`) : key,
         [activePage, t]
       );
       if (activePage) {
         const ActivePage = activePage.page;
-        return /* @__PURE__ */ import_react30.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react30.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react30.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react30.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react30.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react30.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react30.default.createElement(ActivePage, { t: featureTranslate }))));
+        return /* @__PURE__ */ import_react31.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react31.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react31.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react31.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react31.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react31.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react31.default.createElement(ActivePage, { t: featureTranslate }))));
       }
-      return /* @__PURE__ */ import_react30.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react30.default.createElement("header", null, /* @__PURE__ */ import_react30.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react30.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
+      return /* @__PURE__ */ import_react31.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react31.default.createElement("header", null, /* @__PURE__ */ import_react31.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
         // 尚未注册功能时的空态提示
-        /* @__PURE__ */ import_react30.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
+        /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
       ) : (
         // 按分组逐块渲染：组标题说明这一块功能解决什么问题，组内仍是一张网格
-        /* @__PURE__ */ import_react30.default.createElement("div", { className: "mt-4 space-y-4" }, groupFeatures(registry.list).map((section) => /* @__PURE__ */ import_react30.default.createElement("section", { key: section.group }, /* @__PURE__ */ import_react30.default.createElement("div", { className: "mb-2 flex items-baseline gap-1" }, /* @__PURE__ */ import_react30.default.createElement("h2", { className: "text-[12px] font-medium text-secondary" }, t(`shell.group.${section.group}`)), needsReloadHint(section.features) ? /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, "\xB7 ", t("shell.groupReloadHint")) : null), /* @__PURE__ */ import_react30.default.createElement("div", { className: "aio-card-grid grid auto-rows-fr gap-2.5" }, section.features.map((feature) => /* @__PURE__ */ import_react30.default.createElement(
+        /* @__PURE__ */ import_react31.default.createElement("div", { className: "mt-4 space-y-4" }, groupFeatures(registry.list).map((section) => /* @__PURE__ */ import_react31.default.createElement("section", { key: section.group }, /* @__PURE__ */ import_react31.default.createElement("div", { className: "mb-2 flex items-baseline gap-1" }, /* @__PURE__ */ import_react31.default.createElement("h2", { className: "text-[12px] font-medium text-secondary" }, t(`shell.group.${section.group}`)), needsReloadHint(section.features) ? /* @__PURE__ */ import_react31.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, "\xB7 ", t("shell.groupReloadHint")) : null), /* @__PURE__ */ import_react31.default.createElement("div", { className: "aio-card-grid grid auto-rows-fr gap-2.5" }, section.features.map((feature) => /* @__PURE__ */ import_react31.default.createElement(
           FeatureCard,
           {
             key: feature.id,
@@ -7016,7 +7812,7 @@ window.__ModuleLoader__.load({
         });
         const t = ctx.locale.bind(LOCALE_NAMESPACE);
         installSettingsNavIcon(ctx, t, icon_default);
-        const SettingsSection = () => /* @__PURE__ */ import_react31.default.createElement(AllInOnePage, { t });
+        const SettingsSection = () => /* @__PURE__ */ import_react32.default.createElement(AllInOnePage, { t });
         ctx.slots.inject(
           "settings.section",
           () => ctx.slots.register(

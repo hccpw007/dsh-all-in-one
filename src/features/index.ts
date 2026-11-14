@@ -13,6 +13,7 @@ import powerPack from './power-pack'
 import projectMemory from './project-memory'
 import autoCompact from './auto-compact'
 import desktopCookie from './desktop-cookie'
+import memoryGuard from './memory-guard'
 
 /**
  * 所有已注册的 feature。
@@ -46,4 +47,5 @@ export const featureList: FeatureDefinition[] = [
   projectMemory,
   autoCompact,
   desktopCookie,
+  memoryGuard,
 ]

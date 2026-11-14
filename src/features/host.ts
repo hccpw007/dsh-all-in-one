@@ -9,6 +9,7 @@ import * as projectMemory from './project-memory/host'
 import * as autoCompact from './auto-compact/host'
 import * as desktopCookie from './desktop-cookie/host'
 import * as autoRun from './auto-run/host'
+import * as memoryGuard from './memory-guard/host'
 
 /**
  * 所有 feature 提供的宿主侧扩展，由 src/index.ts 统一注册。
@@ -26,4 +27,5 @@ export const featureHosts: FeatureHostExtension[] = [
   autoCompact,
   desktopCookie,
   autoRun,
+  memoryGuard,
 ]

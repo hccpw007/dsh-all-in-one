@@ -224,6 +224,23 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 │       │   │   ├── region.ts   # 选压缩范围：保留近期尾部，压掉更早的历史
 │       │   │   └── watcher.ts  # 每步前读占用，达阈值就压缩
 │       │   └── locales.ts   # 本功能的中英文文案
+│       ├── memory-guard/   # 开关型功能：定时轻量回收界面内存，占用过高时重建页面
+│       │   ├── index.tsx    # 注册定义：switch 入口 + client 扩展
+│       │   ├── toggle.tsx   # 网格开关、检查间隔/重建阈值、实时读数与手动按钮
+│       │   ├── storage.ts   # 配置与运行状态的 localStorage 读写，本功能专属
+│       │   ├── client.tsx   # 客户端扩展：常驻安装定时检查
+│       │   ├── guard.ts     # 定时编排：轻量回收 → 阈值 → 占用判定 → 倒计时 → 重建
+│       │   ├── reclaim.ts   # 轻量回收：CacheStorage、performance 与可选强制回收
+│       │   ├── occupancy.ts # 运行中/提交中/草稿/空闲/焦点判定与交互监听
+│       │   ├── measure.ts   # 读数：JS 堆、DOM 节点，优先用宿主渲染进程 RSS
+│       │   ├── api.ts       # 与宿主读数路由通信
+│       │   ├── notice.ts    # 重建前的 5 秒倒计时浮层
+│       │   ├── types.ts     # 客户端与宿主共用的数据模型
+│       │   ├── host.ts      # 宿主侧扩展：注册内存读数路由
+│       │   ├── host/        # 读数实现
+│       │   │   ├── process-memory.ts # 从 ps 定位兄弟渲染进程的 RSS（带缓存）
+│       │   │   └── routes.ts         # GET /dsh-all-in-one/memory-guard
+│       │   └── locales.ts   # 本功能的中英文文案
 │       ├── desktop-cookie/  # 开关型功能：桌面版启动时清理过期的认证 Cookie
 │       │   ├── index.tsx    # 注册定义：只提供 switch，没有独立页面
 │       │   ├── toggle.tsx   # 网格中的开关入口与阈值/保留两个输入框
@@ -263,7 +280,7 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 |---|---|---|---|
 | 对话体验 | `conversation` | 执行过程展开、图片直接预览、新会话入口、编辑排队消息、全自动执行 | 是 |
 | 界面布局 | `layout` | 轮次导航左置、顶部菜单收纳、项目显示会话数、开启新会话 | 是 |
-| 配置与维护 | `config` | 技能包、项目记忆、自动压缩会话、过期登录清理 | 否 |
+| 配置与维护 | `config` | 技能包、项目记忆、自动压缩会话、过期登录清理、内存守护 | 否 |
 
 组内功能全部声明 `reloadsPage: true` 时，外壳在分组标题旁统一标注「切换后刷新生效」，
 不再逐卡重复同一句提示；新增需要刷新的开关功能时，除了给条目补 `reloadsPage: true`，
