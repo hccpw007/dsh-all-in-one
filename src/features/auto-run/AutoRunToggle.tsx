@@ -13,6 +13,7 @@ import React, { useEffect, useState } from 'react'
 import { cn } from '../../common/cn'
 import type { Translate } from '../../types/plugin'
 import { loadAutoRunState, saveAutoRunState } from './api'
+import { setSessionEnabled } from './session-state'
 
 /** 输入框「全自动」按钮收到的 props。 */
 export interface AutoRunToggleProps {
@@ -78,14 +79,18 @@ export function AutoRunToggle({ sessionId, t }: AutoRunToggleProps) {
   const toggle = () => {
     if (sessionId === undefined || enabled === null || pending) return
 
+    // 收窄后的会话标识：写入成功要同时更新侧边栏标识所在的共享集合
+    const target = sessionId
     const next = !enabled
     setEnabled(next)
     setPending(true)
     setFailure(null)
 
-    void saveAutoRunState(sessionId, next)
+    void saveAutoRunState(target, next)
       .then((state) => {
         setEnabled(state.enabled)
+        // 侧边栏会话行与本按钮共享同一份集合，切换后立即同步，不必刷新页面
+        setSessionEnabled(target, state.enabled)
       })
       .catch((error: unknown) => {
         console.error('[auto-run] 写入全自动状态失败:', error)

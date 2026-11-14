@@ -78,3 +78,46 @@ export function saveAutoRunState(sessionId: string, enabled: boolean): Promise<A
     body: JSON.stringify({ sessionId, enabled }),
   })
 }
+
+/** 全量配置的响应形状；字段缺失时按空集合处理。 */
+interface AutoRunConfigResponse {
+  enabledSessions?: unknown
+}
+
+/**
+ * 读取所有处于全自动的会话。
+ *
+ * 侧边栏要给每个会话行判断是否画标识，逐行请求会把列表放大成几十次请求，
+ * 因此单独走一次全量读取。
+ * @returns 会话标识列表
+ */
+export async function loadEnabledSessions(): Promise<string[]> {
+  const controller = new AbortController()
+  const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
+
+  try {
+    const response = await fetch(new URL(ENDPOINT, window.location.origin).toString(), {
+      credentials: 'same-origin',
+      cache: 'no-store',
+      signal: controller.signal,
+    })
+
+    if (!response.ok) {
+      const text = await response.text()
+
+      throw new Error(text || `HTTP ${response.status}`)
+    }
+
+    const parsed = (await response.json()) as AutoRunConfigResponse
+    const list = parsed.enabledSessions
+
+    if (!Array.isArray(list)) return []
+
+    return list.filter((item): item is string => typeof item === 'string')
+  } catch (error) {
+    console.error('[auto-run] 读取全自动会话列表失败:', error)
+    throw error
+  } finally {
+    window.clearTimeout(timer)
+  }
+}
