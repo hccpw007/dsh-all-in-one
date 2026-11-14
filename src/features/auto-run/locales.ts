@@ -6,7 +6,7 @@ export const autoRunLocales: FeatureLocales = {
     // 设置页开关标题
     title: '全自动执行',
     // 设置页开关用途说明：点明入口位置与会话级语义，控制在两行以内
-    description: '输入框右侧新增「全自动」开关：打开后不提问、不等确认，改完自行验证。',
+    description: '输入框右侧新增「全自动」开关：不提问，改完自行验证。',
     // 设置页开关状态写入失败时的提示
     saveFailed: '保存开关状态失败，请检查浏览器存储权限。',
     // 默认值选项读取失败时的提示
@@ -46,7 +46,7 @@ export const autoRunLocales: FeatureLocales = {
     // Switch title
     title: 'Full auto',
     // Switch description: entry position and per-conversation semantics, kept within two lines
-    description: 'Adds a Full auto switch in the composer: no questions, no waits, self-verified changes.',
+    description: 'Adds a Full auto switch in the composer: no questions, self-verified changes.',
     // Shown when the switch state cannot be persisted
     saveFailed: 'Saving the switch state failed. Check the browser storage permission.',
     // Shown when the default options cannot be read

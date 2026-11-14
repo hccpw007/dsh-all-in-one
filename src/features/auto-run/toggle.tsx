@@ -138,10 +138,10 @@ export function AutoRunButtonToggle({ t }: FeatureSwitchProps) {
             />
           </button>
         </div>
-        {/* 默认值选项：只在总开关打开且读回配置后出现；标签只留给读屏，不占卡片宽度 */}
+        {/* 默认值选项：只在总开关打开且读回配置后出现；与上方文字左对齐，标签只留给读屏 */}
         {enabled && mode !== null ? (
           <div
-            className="flex flex-wrap items-center gap-1 pl-2"
+            className="flex flex-wrap items-center gap-1 pl-7"
             role="radiogroup"
             aria-label={t('modeGroupLabel')}
           >
