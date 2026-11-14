@@ -2409,6 +2409,28 @@ window.__ModuleLoader__.load({
       mark.style.marginLeft = `${marginLeft + delta}px`;
       mark.style.marginRight = `${marginRight - delta}px`;
     }
+    var STATUS_SLOT_SELECTOR = '[data-slot="sidebar.session.row.leading"]';
+    var STATUS_MARK_GAP = 2;
+    function shiftStatusDot(row, mark) {
+      const slot = row.querySelector(STATUS_SLOT_SELECTOR);
+      const dots = slot === null ? [] : [...slot.children].filter((child) => child instanceof HTMLElement);
+      if (dots.length === 0) return;
+      const markLeft = mark.getBoundingClientRect().left;
+      const dotsRight = Math.max(...dots.map((dot) => dot.getBoundingClientRect().right));
+      const overlap = markLeft - STATUS_MARK_GAP - dotsRight;
+      const shift = Math.min(0, Math.round(overlap));
+      for (const dot of dots) {
+        const next = shift === 0 ? "" : `translateX(${shift}px)`;
+        if (dot.style.transform !== next) dot.style.transform = next;
+      }
+    }
+    function resetStatusDot(row) {
+      const slot = row.querySelector(STATUS_SLOT_SELECTOR);
+      if (slot === null) return;
+      for (const dot of slot.children) {
+        if (dot instanceof HTMLElement && dot.style.transform !== "") dot.style.transform = "";
+      }
+    }
     function decorateRow(row) {
       const sessionId = (row.getAttribute("data-row-key") ?? "").slice("session:".length);
       if (sessionId === "") return;
@@ -2417,16 +2439,19 @@ window.__ModuleLoader__.load({
       const existing = row.querySelector(`[${MARK_ATTRIBUTE}]`);
       if (!isEnabled(sessionId)) {
         existing?.remove();
+        resetStatusDot(row);
         return;
       }
       if (existing instanceof HTMLElement) {
         if (existing.nextElementSibling !== title) row.insertBefore(existing, title);
+        shiftStatusDot(row, existing);
         return;
       }
       const rowGap = Number.parseFloat(window.getComputedStyle(row).columnGap);
       const mark = createMark(Number.isFinite(rowGap) ? rowGap : DEFAULT_ROW_GAP);
       row.insertBefore(mark, title);
       alignMark(mark, title);
+      shiftStatusDot(row, mark);
     }
     function decorateAll() {
       for (const row of document.querySelectorAll(ROW_SELECTOR)) decorateRow(row);

@@ -91,6 +91,48 @@ function alignMark(mark: HTMLElement, title: HTMLElement): void {
   mark.style.marginRight = `${marginRight - delta}px`
 }
 
+/** 状态槽里由宿主绘制的状态点容器；槽位本身是 `display:contents`，位置由子元素决定。 */
+const STATUS_SLOT_SELECTOR = '[data-slot="sidebar.session.row.leading"]'
+
+/** 状态点与标识之间至少留出的空隙，避免转圈压在闪电上。 */
+const STATUS_MARK_GAP = 2
+
+/**
+ * 把状态点整体往前（左）挪，给标识让出位置。
+ *
+ * 标题必须和没开全自动的会话保持同一缩进，标识只能贴着文字往左长；而状态槽里
+ * 转圈 / 黄点 / 绿点的右缘本来就和标识占的地方重叠。这里测量两者的实际位置，
+ * 只把重叠量还给状态点——用 transform 移动，不改布局、不影响其它行。
+ * @param row 会话行根元素
+ * @param mark 该行的标识节点
+ */
+function shiftStatusDot(row: Element, mark: HTMLElement): void {
+  const slot = row.querySelector(STATUS_SLOT_SELECTOR)
+  const dots = slot === null ? [] : [...slot.children].filter((child): child is HTMLElement => child instanceof HTMLElement)
+  if (dots.length === 0) return
+
+  const markLeft = mark.getBoundingClientRect().left
+  const dotsRight = Math.max(...dots.map((dot) => dot.getBoundingClientRect().right))
+  const overlap = markLeft - STATUS_MARK_GAP - dotsRight
+  // 只有真的压到了才挪；反过来（状态点本身更靠左）不要动它
+  const shift = Math.min(0, Math.round(overlap))
+
+  for (const dot of dots) {
+    const next = shift === 0 ? '' : `translateX(${shift}px)`
+    if (dot.style.transform !== next) dot.style.transform = next
+  }
+}
+
+/** 清掉标识带来状态点位移，恢复宿主原始位置。 */
+function resetStatusDot(row: Element): void {
+  const slot = row.querySelector(STATUS_SLOT_SELECTOR)
+  if (slot === null) return
+
+  for (const dot of slot.children) {
+    if (dot instanceof HTMLElement && dot.style.transform !== '') dot.style.transform = ''
+  }
+}
+
 /**
  * 同步一行的标识：开启时插到标题前，关闭时移除。
  *
@@ -109,6 +151,7 @@ function decorateRow(row: Element): void {
 
   if (!isEnabled(sessionId)) {
     existing?.remove()
+    resetStatusDot(row)
 
     return
   }
@@ -116,6 +159,7 @@ function decorateRow(row: Element): void {
   if (existing instanceof HTMLElement) {
     // 宿主重排后标识可能离标题远了，挪回去；仍在原位则保持节点，避免每帧重建
     if (existing.nextElementSibling !== title) row.insertBefore(existing, title)
+    shiftStatusDot(row, existing)
 
     return
   }
@@ -125,6 +169,7 @@ function decorateRow(row: Element): void {
   row.insertBefore(mark, title)
   // 插入后立刻量一次；此时布局已可用，校准只做一次，稳定后不再触碰样式
   alignMark(mark, title)
+  shiftStatusDot(row, mark)
 }
 
 /** 扫描当前可见的全部会话行。 */
