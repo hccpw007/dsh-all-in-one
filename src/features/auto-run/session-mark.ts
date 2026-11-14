@@ -30,19 +30,25 @@ const MARK_WIDTH = 9
 /** 标识高度：略高于 13px 的标题文字，远看也不糊成一条线。 */
 const MARK_HEIGHT = 16
 
-/**
- * 标识与标题之间的额外间距。
- *
- * 会话行本身是 flex 布局并带 gap，标识与标题已经隔开约 6px；这里不再叠加间距，
- * 否则闪电会离标题太远，看起来像另一列的图标。
- */
-const MARK_GAP = 0
+/** 标识与标题文字之间的目标间距：紧贴文字，只留一丝呼吸感。 */
+const MARK_GAP = 2
+
+/** 会话行是 flex 布局，取不到 gap 时的兜底值（实测宿主为 6px）。 */
+const DEFAULT_ROW_GAP = 6
 
 /** 侧边栏树重建后的重定位间隔；容器失联时才真正重新查询选择器。 */
 const RELOCATE_INTERVAL_MS = 1500
 
-/** 构造标识节点：内联样式与图形，不依赖宿主的 Tailwind 是否收录本插件的任意值类。 */
-function createMark(): HTMLSpanElement {
+/**
+ * 构造标识节点：内联样式与图形，不依赖宿主的 Tailwind 是否收录本插件的任意值类。
+ *
+ * 标识会占掉自身宽度加一个行内 gap，把标题整体右推，导致开了全自动的会话和没开的
+ * 会话文字对不齐。这里用负外边距把这部分宽度还回去：左负外边距抵消自身宽度与目标
+ * 间距，右负外边距吃掉行内 gap 与目标间距的差，净效果是标题起始位置一字不差，
+ * 闪电却贴在文字左侧 2px 处。
+ * @param rowGap 当前行的列间距（px），用于推算右负外边距
+ */
+function createMark(rowGap: number): HTMLSpanElement {
   const mark = document.createElement('span')
   mark.setAttribute(MARK_ATTRIBUTE, '')
   mark.setAttribute('aria-hidden', 'true')
@@ -53,7 +59,8 @@ function createMark(): HTMLSpanElement {
     'justify-content:center',
     `width:${MARK_WIDTH}px`,
     `height:${MARK_HEIGHT}px`,
-    `margin-right:${MARK_GAP}px`,
+    `margin-left:${-(MARK_WIDTH + MARK_GAP)}px`,
+    `margin-right:${MARK_GAP - rowGap}px`,
     // 与标题文字基线对齐：标识比文字高，向下压一点点即可贴着文字中线
     'vertical-align:-4px',
   ].join(';')
@@ -61,6 +68,27 @@ function createMark(): HTMLSpanElement {
     + '<path d="M5.4 0 L1.6 10.6 H4 L2.8 18 L8.4 7.2 H5.6 Z"/></svg>'
 
   return mark
+}
+
+/**
+ * 把标识微调到标题左侧 MARK_GAP 处，同时保证标题位置不动。
+ *
+ * 负外边距只能按「行内 gap + 自身宽度」推算，实测还会被标题自身的内边距、行内
+ * 其它元素影响，算出来的间距常常偏大几像素。这里在标识插入后量一次真实间距，
+ * 再把差值等量地加到左外边距、从右外边距里减掉：标识整体右移，标题纹丝不动。
+ * @param mark 已插入的标识节点
+ * @param title 同一行里的标题元素
+ */
+function alignMark(mark: HTMLElement, title: HTMLElement): void {
+  const realGap = title.getBoundingClientRect().left - mark.getBoundingClientRect().right
+  const delta = realGap - MARK_GAP
+  // 半像素以下不再折腾，避免在亚像素边界上反复调整
+  if (!Number.isFinite(delta) || Math.abs(delta) < 0.5) return
+
+  const marginLeft = Number.parseFloat(mark.style.marginLeft) || 0
+  const marginRight = Number.parseFloat(mark.style.marginRight) || 0
+  mark.style.marginLeft = `${marginLeft + delta}px`
+  mark.style.marginRight = `${marginRight - delta}px`
 }
 
 /**
@@ -92,7 +120,11 @@ function decorateRow(row: Element): void {
     return
   }
 
-  row.insertBefore(createMark(), title)
+  const rowGap = Number.parseFloat(window.getComputedStyle(row).columnGap)
+  const mark = createMark(Number.isFinite(rowGap) ? rowGap : DEFAULT_ROW_GAP)
+  row.insertBefore(mark, title)
+  // 插入后立刻量一次；此时布局已可用，校准只做一次，稳定后不再触碰样式
+  alignMark(mark, title)
 }
 
 /** 扫描当前可见的全部会话行。 */
