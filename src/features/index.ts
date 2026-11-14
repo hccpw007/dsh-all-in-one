@@ -11,6 +11,7 @@ import projectMemory from './project-memory'
 import autoCompact from './auto-compact'
 import desktopCookie from './desktop-cookie'
 import workspaceSessionCount from './workspace-session-count'
+import autoRun from './auto-run'
 
 /**
  * 所有已注册的 feature。
@@ -35,4 +36,5 @@ export const featureList: FeatureDefinition[] = [
   autoCompact,
   desktopCookie,
   workspaceSessionCount,
+  autoRun,
 ]

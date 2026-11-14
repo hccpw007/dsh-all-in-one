@@ -39,10 +39,10 @@ window.__ModuleLoader__.load({
       default: () => entry_default
     });
     module.exports = __toCommonJS(entry_exports);
-    var import_react27 = __toESM(require("react"), 1);
+    var import_react30 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = '*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-8{height:2rem}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.transform,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[13px\\]{line-height:13px}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-xl{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.ring{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.\\[all-in-one\\:perf\\]{all-in-one:perf}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.aio-workspace-count:after{content:"\uFF08" attr(data-aio-workspace-count) "\uFF09";color:var(--dsw-alias-label-tertiary);font-size:12px;font-weight:400;margin-inline-start:1px}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}';
+    var styles_default = '*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[200\\]{z-index:200}.mx-1{margin-left:.25rem;margin-right:.25rem}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-7{height:1.75rem}.h-8{height:2rem}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.w-11{width:2.75rem}.w-12{width:3rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-9{width:2.25rem}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.transform,.translate-x-\\[18px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.auto-rows-fr{grid-auto-rows:minmax(0,1fr)}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.self-end{align-self:flex-end}.self-stretch{align-self:stretch}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-4{padding:1rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-0{padding-top:0;padding-bottom:0}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.text-\\[10px\\]{font-size:10px}.text-\\[11px\\]{font-size:11px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[13px\\]{line-height:13px}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-60{opacity:.6}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-xl{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.ring{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color)}.ring,.ring-1{box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.ring-1{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color)}.ring-brand{--tw-ring-color:var(--dsw-alias-brand-primary)}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.\\[all-in-one\\:perf\\]{all-in-one:perf}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.aio-workspace-count:after{content:"\uFF08" attr(data-aio-workspace-count) "\uFF09";color:var(--dsw-alias-label-tertiary);font-size:12px;font-weight:400;margin-inline-start:1px}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.hover\\:ring-1:hover{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.hover\\:ring-line2:hover{--tw-ring-color:var(--dsw-alias-border-l2)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}';
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -1613,8 +1613,8 @@ window.__ModuleLoader__.load({
       const [enabled] = (0, import_react10.useState)(readExpandProcessEnabled);
       const [mode] = (0, import_react10.useState)(readExpandProcessMode);
       const [saveFailed, setSaveFailed] = (0, import_react10.useState)(false);
-      const save = (apply8) => {
-        if (!apply8()) {
+      const save = (apply9) => {
+        if (!apply9()) {
           setSaveFailed(true);
           return;
         }
@@ -3403,13 +3403,13 @@ window.__ModuleLoader__.load({
       const [pending3, setPending] = (0, import_react15.useState)(false);
       const [error, setError] = (0, import_react15.useState)(null);
       const readRequest = useRequest ?? useNoRequest;
-      const request5 = readRequest((value) => value);
-      const requestKey = request5 === null ? "" : request5.kind === "session" ? request5.sessionId : request5.workspaceId;
+      const request6 = readRequest((value) => value);
+      const requestKey = request6 === null ? "" : request6.kind === "session" ? request6.sessionId : request6.workspaceId;
       (0, import_react15.useEffect)(() => {
         setError(null);
       }, [requestKey]);
-      if (request5 === null) return null;
-      const isWorkspace = request5.kind === "workspace";
+      if (request6 === null) return null;
+      const isWorkspace = request6.kind === "workspace";
       const close = () => {
         if (pending3) return;
         setError(null);
@@ -3420,15 +3420,15 @@ window.__ModuleLoader__.load({
         setPending(true);
         setError(null);
         try {
-          if (request5.kind === "workspace") {
-            const report = await deleteWorkspaceSessions?.(request5.workspaceId, request5.sessionIds);
+          if (request6.kind === "workspace") {
+            const report = await deleteWorkspaceSessions?.(request6.workspaceId, request6.sessionIds);
             if (report !== void 0 && report.failed.length > 0) {
               setPending(false);
               setError(t("deleteAllPartial").replace("{count}", String(report.failed.length)));
               return;
             }
           } else {
-            await deleteSession?.(request5.sessionId);
+            await deleteSession?.(request6.sessionId);
           }
         } catch (failure) {
           console.error("[delete-session] \u5220\u9664\u4F1A\u8BDD\u5931\u8D25:", failure);
@@ -3458,8 +3458,8 @@ window.__ModuleLoader__.load({
             pending3 ? t("deleting") : t("confirmDelete")
           ))
         },
-        /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-1 text-[13px] font-medium leading-5 text-primary" }, request5.title),
-        request5.kind === "workspace" ? /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("confirmAllCount").replace("{count}", String(request5.sessionIds.length))) : null,
+        /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-1 text-[13px] font-medium leading-5 text-primary" }, request6.title),
+        request6.kind === "workspace" ? /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("confirmAllCount").replace("{count}", String(request6.sessionIds.length))) : null,
         /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-3 text-[12px] leading-[18px] text-secondary" }, isWorkspace ? t("confirmAllMessage") : t("confirmMessage")),
         error !== null ? /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null
       );
@@ -3918,10 +3918,6 @@ window.__ModuleLoader__.load({
         background: var(--dsw-alias-interactive-bg-hover-solid, var(--dsw-specific-selector));
       }
     }
-    .${BUTTON_CLASS}:disabled {
-      opacity: 0.5;
-      cursor: default;
-    }
     .${BUTTON_CLASS} svg {
       display: block;
     }
@@ -3953,8 +3949,6 @@ window.__ModuleLoader__.load({
       document.head.appendChild(style);
     }
     function syncButton(button, target, options) {
-      const disabled = target === void 0 || target.running;
-      button.disabled = disabled;
       button.title = target?.running === true ? options.runningHint : options.label;
     }
     function findToolbars() {
@@ -3998,7 +3992,7 @@ window.__ModuleLoader__.load({
             event.preventDefault();
             event.stopPropagation();
             const target = options.readTarget();
-            if (target === void 0 || target.running) return;
+            if (target === void 0) return;
             options.onRequest(target);
           });
           toolbar.insertBefore(button, toolbar.firstElementChild);
@@ -4939,16 +4933,16 @@ window.__ModuleLoader__.load({
       }, [t]);
       const persist = async (patch) => {
         latestRequest.current += 1;
-        const request5 = latestRequest.current;
+        const request6 = latestRequest.current;
         setError(null);
         try {
           const next = await saveAutoCompactSettings(patch);
-          if (latestRequest.current !== request5) return;
+          if (latestRequest.current !== request6) return;
           setSettings(next);
           setThresholdDraft(String(next.thresholdPercent));
           setRetainDraft(String(next.retainPercent));
         } catch (failure) {
-          if (latestRequest.current !== request5) return;
+          if (latestRequest.current !== request6) return;
           console.error("[auto-compact] \u4FDD\u5B58\u81EA\u52A8\u538B\u7F29\u8BBE\u7F6E\u5931\u8D25:", failure);
           setError(`${t("saveFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
         }
@@ -5199,16 +5193,16 @@ window.__ModuleLoader__.load({
       }, [t]);
       const persist = async (patch) => {
         latestRequest.current += 1;
-        const request5 = latestRequest.current;
+        const request6 = latestRequest.current;
         setError(null);
         try {
           const next = await saveDesktopCookieSettings(patch);
-          if (latestRequest.current !== request5) return;
+          if (latestRequest.current !== request6) return;
           setSettings(next);
           setThresholdDraft(String(next.threshold));
           setRetainDraft(String(next.retain));
         } catch (failure) {
-          if (latestRequest.current !== request5) return;
+          if (latestRequest.current !== request6) return;
           console.error("[desktop-cookie] \u4FDD\u5B58\u6E05\u7406\u8BBE\u7F6E\u5931\u8D25:", failure);
           setError(`${t("saveFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
         }
@@ -5560,6 +5554,291 @@ window.__ModuleLoader__.load({
     };
     var workspace_session_count_default = workspaceSessionCountFeature;
 
+    // src/features/auto-run/client.tsx
+    var import_react27 = __toESM(require("react"), 1);
+
+    // src/features/auto-run/AutoRunToggle.tsx
+    var import_react26 = __toESM(require("react"), 1);
+
+    // src/features/auto-run/api.ts
+    var ENDPOINT7 = "/dsh-all-in-one/auto-run";
+    var REQUEST_TIMEOUT_MS7 = 1e4;
+    async function request5(sessionId, init = {}) {
+      const controller = new AbortController();
+      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS7);
+      const url = new URL(ENDPOINT7, window.location.origin);
+      url.searchParams.set("sessionId", sessionId);
+      try {
+        const response = await fetch(url.toString(), {
+          credentials: "same-origin",
+          cache: "no-store",
+          ...init,
+          signal: controller.signal
+        });
+        if (!response.ok) {
+          const text = await response.text();
+          let message = text;
+          try {
+            const parsed = JSON.parse(text);
+            if (typeof parsed.error === "string") message = parsed.error;
+          } catch (error) {
+            console.error("[auto-run] \u89E3\u6790\u9519\u8BEF\u54CD\u5E94\u5931\u8D25:", error);
+          }
+          throw new Error(message || `HTTP ${response.status}`);
+        }
+        return await response.json();
+      } catch (error) {
+        console.error("[auto-run] \u8BF7\u6C42\u5168\u81EA\u52A8\u72B6\u6001\u5931\u8D25:", error);
+        throw error;
+      } finally {
+        window.clearTimeout(timer);
+      }
+    }
+    function loadAutoRunState(sessionId) {
+      return request5(sessionId);
+    }
+    function saveAutoRunState(sessionId, enabled) {
+      return request5(sessionId, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ sessionId, enabled })
+      });
+    }
+
+    // src/features/auto-run/AutoRunToggle.tsx
+    function AutoRunIcon() {
+      return /* @__PURE__ */ import_react26.default.createElement(
+        "svg",
+        {
+          viewBox: "0 0 24 24",
+          width: "13",
+          height: "13",
+          "aria-hidden": "true",
+          fill: "currentColor"
+        },
+        /* @__PURE__ */ import_react26.default.createElement("path", { d: "M13.6 2 4.8 13.4h5.5L10.2 22l8.9-11.6h-5.6z" })
+      );
+    }
+    function AutoRunToggle({ sessionId, t }) {
+      const [enabled, setEnabled] = (0, import_react26.useState)(null);
+      const [pending3, setPending] = (0, import_react26.useState)(false);
+      const [failure, setFailure] = (0, import_react26.useState)(null);
+      (0, import_react26.useEffect)(() => {
+        if (sessionId === void 0) {
+          setEnabled(null);
+          setFailure(null);
+          return;
+        }
+        let active = true;
+        setEnabled(null);
+        setFailure(null);
+        void loadAutoRunState(sessionId).then((state) => {
+          if (!active) return;
+          setEnabled(state.enabled);
+        }).catch((error) => {
+          if (!active) return;
+          console.error("[auto-run] \u8BFB\u53D6\u5168\u81EA\u52A8\u72B6\u6001\u5931\u8D25:", error);
+          setFailure(error instanceof Error ? error.message : String(error));
+        });
+        return () => {
+          active = false;
+        };
+      }, [sessionId]);
+      const hint = (() => {
+        if (failure !== null) return `${t("toggleFailed")}\uFF1A${failure}`;
+        if (sessionId === void 0) return t("unavailable");
+        if (enabled === null) return t("loading");
+        return enabled ? t("hintOn") : t("hintOff");
+      })();
+      const toggle = () => {
+        if (sessionId === void 0 || enabled === null || pending3) return;
+        const next = !enabled;
+        setEnabled(next);
+        setPending(true);
+        setFailure(null);
+        void saveAutoRunState(sessionId, next).then((state) => {
+          setEnabled(state.enabled);
+        }).catch((error) => {
+          console.error("[auto-run] \u5199\u5165\u5168\u81EA\u52A8\u72B6\u6001\u5931\u8D25:", error);
+          setEnabled(!next);
+          setFailure(error instanceof Error ? error.message : String(error));
+        }).finally(() => {
+          setPending(false);
+        });
+      };
+      const disabled = sessionId === void 0 || enabled === null || pending3;
+      return (
+        // 整颗按钮即开关：role 与 aria-checked 表达状态，视觉上靠图标颜色与底色区分
+        /* @__PURE__ */ import_react26.default.createElement(
+          "button",
+          {
+            type: "button",
+            role: "switch",
+            "aria-checked": enabled === true,
+            "aria-label": t("action"),
+            title: hint,
+            disabled,
+            onClick: toggle,
+            className: cn(
+              "flex h-7 shrink-0 items-center gap-1 rounded-full border-0 px-2 text-[12px] font-medium leading-none transition",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+              enabled === true ? "bg-layer2 text-brand ring-1 ring-brand" : "bg-transparent text-secondary hover:text-primary hover:ring-1 hover:ring-line2",
+              disabled ? "opacity-60" : ""
+            )
+          },
+          /* @__PURE__ */ import_react26.default.createElement(AutoRunIcon, null),
+          /* @__PURE__ */ import_react26.default.createElement("span", null, t("action"))
+        )
+      );
+    }
+
+    // src/features/auto-run/storage.ts
+    var AUTO_RUN_BUTTON_STORAGE_KEY = "dsh-all-in-one:auto-run";
+    var DEFAULT_ENABLED = true;
+    function readAutoRunButtonEnabled() {
+      try {
+        const stored = window.localStorage.getItem(AUTO_RUN_BUTTON_STORAGE_KEY);
+        if (stored === null) return DEFAULT_ENABLED;
+        return stored === "1";
+      } catch (error) {
+        console.error("[auto-run] \u8BFB\u53D6\u8BBE\u7F6E\u9875\u5F00\u5173\u72B6\u6001\u5931\u8D25:", error);
+        return DEFAULT_ENABLED;
+      }
+    }
+    function writeAutoRunButtonEnabled(enabled) {
+      try {
+        window.localStorage.setItem(AUTO_RUN_BUTTON_STORAGE_KEY, enabled ? "1" : "0");
+        return true;
+      } catch (error) {
+        console.error("[auto-run] \u5199\u5165\u8BBE\u7F6E\u9875\u5F00\u5173\u72B6\u6001\u5931\u8D25:", error);
+        return false;
+      }
+    }
+
+    // src/features/auto-run/client.tsx
+    var INPUT_RIGHT_SLOT = "conversation.input.right";
+    function apply8(ctx, t) {
+      if (!readAutoRunButtonEnabled()) return;
+      ctx.slots.inject(
+        INPUT_RIGHT_SLOT,
+        () => ctx.slots.register(
+          {
+            name: INPUT_RIGHT_SLOT,
+            id: "auto-run-toggle",
+            // 较小的 order 让它排在模型选择器与「回退」左侧，成为这一排的第一个控件
+            order: -100
+          },
+          // sessionId 取宿主每次渲染传入的 standardProps：切换对话时插槽会重新渲染，
+          // 组件随之读到新会话；若在注册时用 inject 固化，切换对话后按钮会继续改旧会话的开关
+          (props) => /* @__PURE__ */ import_react27.default.createElement(AutoRunToggle, { ...props, t })
+        )
+      );
+    }
+
+    // src/features/auto-run/locales.ts
+    var autoRunLocales = {
+      zh: {
+        // 设置页开关标题
+        title: "\u5168\u81EA\u52A8\u6267\u884C",
+        // 设置页开关用途说明：点明入口位置与会话级语义
+        description: "\u8F93\u5165\u6846\u53F3\u4FA7\u65B0\u589E\u300C\u5168\u81EA\u52A8\u300D\u5F00\u5173\uFF1A\u6253\u5F00\u540E\u672C\u5BF9\u8BDD\u4E0D\u63D0\u95EE\u3001\u4E0D\u7B49\u5F85\u786E\u8BA4\uFF0C\u6539\u5B8C\u81EA\u884C\u9A8C\u8BC1\uFF1B\u5173\u95ED\u5373\u6062\u590D\u539F\u6709\u6D41\u7A0B\u3002",
+        // 提示切换设置页开关会刷新页面，避免用户丢失未保存的输入
+        reloadHint: "\u5207\u6362\u540E\u4F1A\u5237\u65B0\u9875\u9762\u4EE5\u751F\u6548\u3002",
+        // 设置页开关状态写入失败时的提示
+        saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
+        // 输入框按钮的名称与无障碍标签
+        action: "\u5168\u81EA\u52A8",
+        // 开启状态下的悬停提示：说明模型不会再来问
+        hintOn: "\u5168\u81EA\u52A8\u5DF2\u5F00\u542F\uFF1A\u672C\u5BF9\u8BDD\u4E0D\u5411\u4F60\u63D0\u95EE\uFF0C\u4E5F\u4E0D\u5728\u7ED3\u5C3E\u7B49\u5F85\u4F60\u9009\u62E9",
+        // 关闭状态下的悬停提示：说明打开后的效果
+        hintOff: "\u70B9\u51FB\u5F00\u542F\u5168\u81EA\u52A8\uFF1A\u672C\u5BF9\u8BDD\u4E0D\u63D0\u95EE\u3001\u4E0D\u7B49\u5F85\u786E\u8BA4\uFF0C\u6539\u5B8C\u81EA\u884C\u9A8C\u8BC1",
+        // 状态尚未从宿主读取回来时的悬停提示
+        loading: "\u6B63\u5728\u8BFB\u53D6\u5168\u81EA\u52A8\u72B6\u6001\u2026",
+        // 会话尚未创建、按钮无法切换时的悬停提示
+        unavailable: "\u4F1A\u8BDD\u672A\u5C31\u7EEA\uFF0C\u6682\u65F6\u4E0D\u80FD\u5207\u6362",
+        // 切换失败时的悬停提示前缀，后面拼接宿主返回的原因
+        toggleFailed: "\u5207\u6362\u5168\u81EA\u52A8\u5931\u8D25"
+      },
+      en: {
+        // Switch title
+        title: "Full auto",
+        // Switch description: entry position and per-conversation semantics
+        description: "Adds a Full auto switch right of the composer: while on, this conversation never asks or waits for confirmation and verifies its own changes; turn it off to restore the normal flow.",
+        // Switching reloads the page so the composer button appears or disappears
+        reloadHint: "Switching reloads the page to take effect.",
+        // Shown when the switch state cannot be persisted
+        saveFailed: "Saving the switch state failed. Check the browser storage permission.",
+        // Composer button label and accessible name
+        action: "Full auto",
+        // Tooltip while enabled: the model will not come back with questions
+        hintOn: "Full auto is on: this conversation never asks you questions or waits for a choice",
+        // Tooltip while disabled: effect of turning it on
+        hintOff: "Turn on full auto: no questions, no confirmation waits, self-verified changes",
+        // Tooltip while the host state is still loading
+        loading: "Reading the full auto state\u2026",
+        // Tooltip when no conversation exists yet
+        unavailable: "The conversation is not ready; cannot switch yet",
+        // Failure tooltip prefix followed by the host error message
+        toggleFailed: "Switching full auto failed"
+      }
+    };
+
+    // src/features/auto-run/toggle.tsx
+    var import_react28 = __toESM(require("react"), 1);
+    function AutoRunIcon2() {
+      return /* @__PURE__ */ import_react28.default.createElement("svg", { viewBox: "0 0 24 24", width: "14", height: "14", "aria-hidden": "true", fill: "currentColor" }, /* @__PURE__ */ import_react28.default.createElement("path", { d: "M13.6 2 4.8 13.4h5.5L10.2 22l8.9-11.6h-5.6z" }));
+    }
+    function AutoRunButtonToggle({ t }) {
+      const [enabled, setEnabled] = (0, import_react28.useState)(readAutoRunButtonEnabled);
+      const [saveFailed, setSaveFailed] = (0, import_react28.useState)(false);
+      const handleToggle = () => {
+        const next = !enabled;
+        if (!writeAutoRunButtonEnabled(next)) {
+          setSaveFailed(true);
+          return;
+        }
+        setSaveFailed(false);
+        setEnabled(next);
+        window.location.reload();
+      };
+      return /* @__PURE__ */ import_react28.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react28.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react28.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react28.default.createElement(AutoRunIcon2, null)), /* @__PURE__ */ import_react28.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react28.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react28.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), /* @__PURE__ */ import_react28.default.createElement("span", { className: "block text-[10px] leading-[13px] text-secondary" }, t("reloadHint"))), /* @__PURE__ */ import_react28.default.createElement(
+        "button",
+        {
+          type: "button",
+          role: "switch",
+          "aria-checked": enabled,
+          "aria-label": t("title"),
+          onClick: handleToggle,
+          className: cn(
+            "flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition",
+            enabled ? "bg-brand" : "bg-line2",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+          )
+        },
+        /* @__PURE__ */ import_react28.default.createElement(
+          "span",
+          {
+            "aria-hidden": "true",
+            className: cn(
+              "h-4 w-4 aio-switch bg-base shadow transition-transform",
+              enabled ? "translate-x-[18px]" : "translate-x-0.5"
+            )
+          }
+        )
+      )), saveFailed ? /* @__PURE__ */ import_react28.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
+    }
+
+    // src/features/auto-run/index.tsx
+    var autoRunFeature = {
+      id: "auto-run",
+      group: "conversation",
+      order: 28,
+      switch: AutoRunButtonToggle,
+      client: { apply: apply8 },
+      locales: autoRunLocales
+    };
+    var auto_run_default = autoRunFeature;
+
     // src/features/index.ts
     var featureList = [
       expand_process_default,
@@ -5572,7 +5851,8 @@ window.__ModuleLoader__.load({
       power_pack_default,
       auto_compact_default,
       desktop_cookie_default,
-      workspace_session_count_default
+      workspace_session_count_default,
+      auto_run_default
     ];
 
     // src/shell/registry.ts
@@ -5613,9 +5893,9 @@ window.__ModuleLoader__.load({
     var registry = createFeatureRegistry(featureList);
 
     // src/shell/AllInOnePage.tsx
-    var import_react26 = __toESM(require("react"), 1);
+    var import_react29 = __toESM(require("react"), 1);
     function BackGlyph() {
-      return /* @__PURE__ */ import_react26.default.createElement(
+      return /* @__PURE__ */ import_react29.default.createElement(
         "svg",
         {
           viewBox: "0 0 16 16",
@@ -5628,7 +5908,7 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react26.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
+        /* @__PURE__ */ import_react29.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
       );
     }
     var FALLBACK_GROUP = "other";
@@ -5648,34 +5928,34 @@ window.__ModuleLoader__.load({
       return sections;
     }
     function FeatureCard({ feature, t, open }) {
-      const featureT = (0, import_react26.useMemo)(() => (key) => t(`${feature.id}.${key}`), [feature.id, t]);
+      const featureT = (0, import_react29.useMemo)(() => (key) => t(`${feature.id}.${key}`), [feature.id, t]);
       if ("switch" in feature) {
         const SwitchEntry = feature.switch;
-        return /* @__PURE__ */ import_react26.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react26.default.createElement(SwitchEntry, { t: featureT }));
+        return /* @__PURE__ */ import_react29.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react29.default.createElement(SwitchEntry, { t: featureT }));
       }
       const Entry = feature.entry;
-      return /* @__PURE__ */ import_react26.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react26.default.createElement(Entry, { t: featureT, open: () => open(feature.id) }));
+      return /* @__PURE__ */ import_react29.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react29.default.createElement(Entry, { t: featureT, open: () => open(feature.id) }));
     }
     function AllInOnePage({ t }) {
-      const [activeId, setActiveId] = (0, import_react26.useState)(null);
-      const [pageActions, setPageActions] = (0, import_react26.useState)(null);
+      const [activeId, setActiveId] = (0, import_react29.useState)(null);
+      const [pageActions, setPageActions] = (0, import_react29.useState)(null);
       const active = activeId ? registry.find(activeId) : void 0;
       const activePage = active && "page" in active ? active : void 0;
-      const featureTranslate = (0, import_react26.useCallback)(
+      const featureTranslate = (0, import_react29.useCallback)(
         // 网格视图不会调用此函数，activePage 为空时直接返回 key 兜底
         (key) => activePage ? t(`${activePage.id}.${key}`) : key,
         [activePage, t]
       );
       if (activePage) {
         const ActivePage = activePage.page;
-        return /* @__PURE__ */ import_react26.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react26.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react26.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react26.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react26.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react26.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react26.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react26.default.createElement(ActivePage, { t: featureTranslate }))));
+        return /* @__PURE__ */ import_react29.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react29.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react29.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react29.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react29.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react29.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react29.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react29.default.createElement(ActivePage, { t: featureTranslate }))));
       }
-      return /* @__PURE__ */ import_react26.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react26.default.createElement("header", null, /* @__PURE__ */ import_react26.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react26.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
+      return /* @__PURE__ */ import_react29.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react29.default.createElement("header", null, /* @__PURE__ */ import_react29.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react29.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
         // 尚未注册功能时的空态提示
-        /* @__PURE__ */ import_react26.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
+        /* @__PURE__ */ import_react29.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
       ) : (
         // 按分组逐块渲染：组标题说明这一块功能解决什么问题，组内仍是一张网格
-        /* @__PURE__ */ import_react26.default.createElement("div", { className: "mt-4 space-y-4" }, groupFeatures(registry.list).map((section) => /* @__PURE__ */ import_react26.default.createElement("section", { key: section.group }, /* @__PURE__ */ import_react26.default.createElement("h2", { className: "mb-2 text-[12px] font-medium text-secondary" }, t(`shell.group.${section.group}`)), /* @__PURE__ */ import_react26.default.createElement("div", { className: "aio-card-grid grid auto-rows-fr gap-2.5" }, section.features.map((feature) => /* @__PURE__ */ import_react26.default.createElement(
+        /* @__PURE__ */ import_react29.default.createElement("div", { className: "mt-4 space-y-4" }, groupFeatures(registry.list).map((section) => /* @__PURE__ */ import_react29.default.createElement("section", { key: section.group }, /* @__PURE__ */ import_react29.default.createElement("h2", { className: "mb-2 text-[12px] font-medium text-secondary" }, t(`shell.group.${section.group}`)), /* @__PURE__ */ import_react29.default.createElement("div", { className: "aio-card-grid grid auto-rows-fr gap-2.5" }, section.features.map((feature) => /* @__PURE__ */ import_react29.default.createElement(
           FeatureCard,
           {
             key: feature.id,
@@ -5859,7 +6139,7 @@ window.__ModuleLoader__.load({
         });
         const t = ctx.locale.bind(LOCALE_NAMESPACE);
         installSettingsNavIcon(ctx, t, icon_default);
-        const SettingsSection = () => /* @__PURE__ */ import_react27.default.createElement(AllInOnePage, { t });
+        const SettingsSection = () => /* @__PURE__ */ import_react30.default.createElement(AllInOnePage, { t });
         ctx.slots.inject(
           "settings.section",
           () => ctx.slots.register(

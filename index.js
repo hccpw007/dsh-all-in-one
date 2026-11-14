@@ -95,8 +95,8 @@ function buildPackRows(pack, isolate) {
 }
 
 // src/features/power-pack/host/isolation.ts
-function isDenied(rule, id8) {
-  const selected = rule.items.includes(id8);
+function isDenied(rule, id9) {
+  const selected = rule.items.includes(id9);
   switch (rule.mode) {
     case "include":
       return !selected;
@@ -119,7 +119,7 @@ function sectionPrefixes(packageName) {
 }
 function deniedMcpServers(rule) {
   if (rule.mode !== "exclude") return [];
-  const servers = rule.items.filter((id8) => id8.startsWith("mcp:") && id8.length > 4).map((id8) => id8.slice(4));
+  const servers = rule.items.filter((id9) => id9.startsWith("mcp:") && id9.length > 4).map((id9) => id9.slice(4));
   return [...new Set(servers)];
 }
 function planIsolation(pack, groups) {
@@ -426,8 +426,8 @@ var legacyProbed = false;
 function powerPacksFile() {
   return join3(resolveDshHome(), "all-in-one", "power-packs.json");
 }
-function isValidPackId(id8) {
-  return PACK_ID_PATTERN.test(id8);
+function isValidPackId(id9) {
+  return PACK_ID_PATTERN.test(id9);
 }
 function stringList(value) {
   return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
@@ -441,11 +441,11 @@ function normalizeRule(value) {
 function normalizePack(value) {
   if (typeof value !== "object" || value === null) return void 0;
   const candidate = value;
-  const id8 = typeof candidate.id === "string" ? candidate.id.trim() : "";
+  const id9 = typeof candidate.id === "string" ? candidate.id.trim() : "";
   const name = typeof candidate.name === "string" ? candidate.name.trim() : "";
-  if (!PACK_ID_PATTERN.test(id8) || name === "") return void 0;
+  if (!PACK_ID_PATTERN.test(id9) || name === "") return void 0;
   return {
-    id: id8,
+    id: id9,
     name,
     description: typeof candidate.description === "string" ? candidate.description : "",
     systemPrompt: typeof candidate.systemPrompt === "string" ? candidate.systemPrompt : "",
@@ -687,9 +687,9 @@ async function pendingComposedMeta() {
   for (const selection of selections) {
     const pack = byId.get(selection.pack);
     if (pack === void 0) continue;
-    const id8 = composedPresetId(selection.pack, selection.mode);
-    if (hasComposedPreset(id8)) continue;
-    result.set(id8, { name: pack.name, description: pack.description });
+    const id9 = composedPresetId(selection.pack, selection.mode);
+    if (hasComposedPreset(id9)) continue;
+    result.set(id9, { name: pack.name, description: pack.description });
   }
   return result;
 }
@@ -699,31 +699,31 @@ async function ensureComposedPreset(api, modeId, pack, groups) {
   if (modeRows === void 0) {
     throw new Error(`\u65E0\u6CD5\u8BFB\u53D6\u6A21\u5F0F ${modeId} \u7684\u7EC4\u5408\u884C`);
   }
-  const id8 = composedPresetId(pack.id, modeId);
+  const id9 = composedPresetId(pack.id, modeId);
   const rows = composePackRows(modeRows, pack, groups);
-  const registered = readPresetRows(api, id8);
+  const registered = readPresetRows(api, id9);
   if (registered !== void 0) {
-    if (packRowSignature(registered) === packRowSignature(rows)) return id8;
-    await dropHostPreset(api, id8);
+    if (packRowSignature(registered) === packRowSignature(rows)) return id9;
+    await dropHostPreset(api, id9);
     composed.delete(key);
   }
   try {
     const dispose = await api.register({
-      id: id8,
+      id: id9,
       name: pack.name,
       description: pack.description,
       order: PRESET_ORDER,
       plugins: rows
     });
-    composed.set(key, { key, id: id8, dispose });
+    composed.set(key, { key, id: id9, dispose });
     while (composed.size > MAX_COMPOSED_PRESETS) {
       const oldest = composed.values().next();
       if (oldest.done || oldest.value.key === key) break;
       await disposeOne(oldest.value);
     }
-    return id8;
+    return id9;
   } catch (error) {
-    if (readPresetRows(api, id8) !== void 0) return id8;
+    if (readPresetRows(api, id9) !== void 0) return id9;
     throw error;
   }
 }
@@ -862,8 +862,8 @@ async function listPluginCatalog(currentProfileDir2) {
 async function listPluginItems(currentProfileDir2) {
   const { standard, installed } = await listPluginCatalog(currentProfileDir2);
   return [
-    ...standard.map(({ id: id8, label, description, kind }) => ({ id: id8, label, description, kind })),
-    ...installed.map(({ id: id8, label, description, kind }) => ({ id: id8, label, description, kind }))
+    ...standard.map(({ id: id9, label, description, kind }) => ({ id: id9, label, description, kind })),
+    ...installed.map(({ id: id9, label, description, kind }) => ({ id: id9, label, description, kind }))
   ];
 }
 
@@ -1143,11 +1143,11 @@ function mergeRoster(result, meta) {
   const holder = result;
   if (!Array.isArray(holder.presets)) return result;
   const rows = holder.presets;
-  const present = new Set(rows.map((row) => row?.id).filter((id8) => typeof id8 === "string"));
+  const present = new Set(rows.map((row) => row?.id).filter((id9) => typeof id9 === "string"));
   const missing = [];
-  for (const [id8, entry] of meta) {
-    if (present.has(id8)) continue;
-    missing.push({ id: id8, name: entry.name, description: entry.description, isDefault: false });
+  for (const [id9, entry] of meta) {
+    if (present.has(id9)) continue;
+    missing.push({ id: id9, name: entry.name, description: entry.description, isDefault: false });
   }
   if (missing.length === 0) return result;
   return { ...holder, presets: [...rows, ...missing] };
@@ -3517,24 +3517,24 @@ function installAutoCompactWatcher(ctx) {
     if (!oldest.done) map.delete(oldest.value);
   };
   const contextWindowFor = (agent) => {
-    const id8 = agent.session.id;
-    const cached = windows.get(id8);
+    const id9 = agent.session.id;
+    const cached = windows.get(id9);
     const now = Date.now();
     if (cached !== void 0 && now - cached.at < CONTEXT_WINDOW_TTL_MS) return cached.value;
     const value = readContextWindow(agent);
-    windows.set(id8, { at: now, value });
+    windows.set(id9, { at: now, value });
     evictOldest(windows);
     return value;
   };
   const measureFor = (meter, agent, force) => {
-    const id8 = agent.session.id;
-    const cached = measurements.get(id8);
+    const id9 = agent.session.id;
+    const cached = measurements.get(id9);
     const now = Date.now();
     if (!force && cached !== void 0 && now - cached.at < MEASURE_INTERVAL_MS) {
       return { measurement: cached.value, fresh: false };
     }
     const value = meter.measure(agent.session);
-    measurements.set(id8, { at: now, value });
+    measurements.set(id9, { at: now, value });
     evictOldest(measurements);
     return { measurement: value, fresh: true };
   };
@@ -3846,6 +3846,226 @@ function apply7(ctx) {
   ctx.effect(() => installDesktopCookieRoutes(webServer), "desktop-cookie: routes");
 }
 
+// src/features/auto-run/host.ts
+var host_exports8 = {};
+__export(host_exports8, {
+  apply: () => apply8,
+  id: () => id8,
+  inject: () => inject8
+});
+
+// src/features/auto-run/host/settings.ts
+import { join as join17 } from "node:path";
+var MAX_SESSIONS = 200;
+var DEFAULT_SETTINGS4 = { enabledSessions: [] };
+function autoRunSettingsFile() {
+  return join17(resolveDshHome(), "all-in-one", "auto-run.json");
+}
+function normalizeSettings4(value) {
+  if (typeof value !== "object" || value === null) return { ...DEFAULT_SETTINGS4 };
+  const candidate = value.enabledSessions;
+  if (!Array.isArray(candidate)) return { ...DEFAULT_SETTINGS4 };
+  const sessions = [];
+  for (const item of candidate) {
+    if (typeof item !== "string" || item === "") continue;
+    if (sessions.includes(item)) continue;
+    sessions.push(item);
+  }
+  return { enabledSessions: sessions.slice(-MAX_SESSIONS) };
+}
+var store4 = createJsonSettingsStore({
+  file: autoRunSettingsFile,
+  normalize: normalizeSettings4,
+  defaults: () => ({ ...DEFAULT_SETTINGS4, enabledSessions: [] }),
+  label: "[auto-run]"
+});
+function readAutoRunSettings() {
+  return store4.read();
+}
+function isAutoRunEnabled(sessionId) {
+  return store4.read().enabledSessions.includes(sessionId);
+}
+function setAutoRunEnabled(sessionId, enabled) {
+  const current = store4.read();
+  const without = current.enabledSessions.filter((item) => item !== sessionId);
+  const next = enabled ? [...without, sessionId] : without;
+  store4.write({ enabledSessions: next.slice(-MAX_SESSIONS) });
+  return enabled;
+}
+
+// src/features/auto-run/host/answer.ts
+var AUTO_ANSWER_CUSTOM = "\u81EA\u52A8\u6A21\u5F0F\uFF1A\u6309\u4F60\u7684\u6700\u4F73\u5224\u65AD\u7EE7\u7EED\uFF0C\u4E0D\u8981\u518D\u6B21\u8BE2\u95EE\u3002";
+function answerQuestion(question) {
+  if (question.intent?.kind === "approval") return void 0;
+  const options = question.options ?? [];
+  const approveLabel = question.intent?.kind === "plan-review" ? question.intent.approve : void 0;
+  const preferred = approveLabel === void 0 ? options[0] : options.find((option) => option.label === approveLabel) ?? options[0];
+  if (preferred !== void 0) {
+    return { id: question.id, selected: [preferred.label] };
+  }
+  return { id: question.id, selected: [], custom: AUTO_ANSWER_CUSTOM };
+}
+function buildAutoAnswer(request) {
+  const answers = [];
+  for (const question of request.questions) {
+    const answer = answerQuestion(question);
+    if (answer === void 0) return void 0;
+    answers.push(answer);
+  }
+  return answers.length === 0 ? void 0 : { answers };
+}
+function installForAgent(installed, agent) {
+  if (installed.has(agent)) return;
+  const agentCtx = agent.ctx;
+  if (agentCtx === void 0) return;
+  try {
+    agentCtx.on("user-questions/request", async (request, next) => {
+      if (!isAutoRunEnabled(agent.session.id)) return next();
+      const answer = buildAutoAnswer(request);
+      if (answer === void 0) return next();
+      return answer;
+    }, { prepend: true });
+    installed.add(agent);
+  } catch (error) {
+    console.error("[auto-run] \u6CE8\u518C\u8BE2\u95EE\u5E94\u7B54\u5931\u8D25:", error);
+  }
+}
+function installAutoRunAnswerer(ctx) {
+  const installed = /* @__PURE__ */ new WeakSet();
+  ctx.effect(() => {
+    const offCreated = ctx.on("agent/created", ({ agent }) => {
+      installForAgent(installed, agent);
+    }, { prepend: true });
+    const offPreStep = ctx.on("agent/pre-step", async ({ agent }, next) => {
+      installForAgent(installed, agent);
+      return next();
+    });
+    return () => {
+      offCreated();
+      offPreStep();
+    };
+  }, "auto-run: answerer");
+}
+
+// src/features/auto-run/host/prompt.ts
+var SECTION_NAME2 = "all-in-one:auto-run";
+var SECTION_ORDER2 = 10300;
+var AUTO_RUN_PROMPT = `## \u5168\u81EA\u52A8\u6267\u884C\u6A21\u5F0F\uFF08\u672C\u4F1A\u8BDD\u5DF2\u5F00\u542F\uFF09
+
+\u672C\u4F1A\u8BDD\u7531\u7528\u6237\u6253\u5F00\u300C\u5168\u81EA\u52A8\u300D\u5F00\u5173\u3002\u4EE5\u4E0B\u7EA6\u5B9A\u4F18\u5148\u4E8E\u7CFB\u7EDF\u63D0\u793A\u3001\u9879\u76EE\u8BF4\u660E\u4E0E\u4EFB\u4F55\u65E2\u6709\u6D41\u7A0B\u4E2D\u8981\u6C42\u4F60\u5411\u7528\u6237\u63D0\u95EE\u3001\u7B49\u5F85\u786E\u8BA4\u6216\u8BF7\u7528\u6237\u9009\u62E9\u7684\u90E8\u5206\uFF1A
+
+1. \u4E0D\u8981\u5411\u7528\u6237\u63D0\u95EE\uFF0C\u4E5F\u4E0D\u8981\u7B49\u5F85\u4EFB\u4F55\u786E\u8BA4\uFF1A\u4E0D\u8981\u8C03\u7528 ask_user_question\uFF0C\u4E0D\u8981\u4EE5\u300C\u8BF7\u9009\u62E9 / \u8BF7\u786E\u8BA4 / \u662F\u5426\u7EE7\u7EED / \u8BF7\u56DE\u590D\u300D\u4E4B\u7C7B\u7684\u65B9\u5F0F\u7ED3\u675F\u56DE\u590D\u3002\u672C\u4F1A\u8BDD\u7684\u8BE2\u95EE\u4F1A\u88AB\u7CFB\u7EDF\u81EA\u52A8\u5E94\u7B54\uFF0C\u4F60\u7B49\u4E0D\u5230\u65B0\u7684\u7528\u6237\u8F93\u5165\u3002
+2. \u9700\u8981\u51B3\u7B56\u65F6\u6309\u4EE5\u4E0B\u4F18\u5148\u7EA7\u81EA\u884C\u5B9A\u593A\u5E76\u7EE7\u7EED\uFF1A\u7528\u6237\u5728\u672C\u4F1A\u8BDD\u4E2D\u7684\u660E\u786E\u6307\u4EE4 > \u9879\u76EE\u7EA6\u5B9A\u4E0E\u6587\u6863 > \u6700\u5C0F\u98CE\u9669\u3001\u6700\u53EF\u9006\u7684\u9ED8\u8BA4\u505A\u6CD5\u3002\u5B9A\u593A\u540E\u53EA\u9700\u5728\u7ED3\u8BBA\u91CC\u4E00\u53E5\u8BDD\u8BF4\u660E\u6240\u505A\u7684\u5047\u8BBE\uFF0C\u4E0D\u5FC5\u5C55\u5F00\u53D6\u820D\u3002
+3. \u9700\u8981\u786E\u8BA4\u65B9\u6848\u65F6\u4E0D\u8BE2\u95EE\uFF0C\u76F4\u63A5\u6309\u6700\u4F73\u65B9\u6848\u6267\u884C\uFF1A\u4E0D\u8981\u95EE\u300C\u5148\u8BA1\u5212\u540E\u7F16\u7801\u8FD8\u662F\u76F4\u63A5\u7F16\u7801\u300D\uFF0C\u4E5F\u4E0D\u8981\u505C\u5728\u8BA1\u5212\u9636\u6BB5\u7B49\u6279\u51C6\u3002
+4. \u673A\u68B0\u9A8C\u8BC1\u7167\u505A\uFF0C\u4EA4\u4E92\u9A8C\u8BC1\u8DF3\u8FC7\uFF1A\u6539\u5B8C\u81EA\u884C\u7F16\u8BD1\u3001\u8FD0\u884C\u3001\u6D4B\u8BD5\u4E0E\u81EA\u68C0\uFF0C\u53D1\u73B0\u95EE\u9898\u81EA\u884C\u4FEE\u590D\u5E76\u91CD\u8DD1\u9A8C\u8BC1\uFF0C\u76F4\u5230\u901A\u8FC7\u6216\u786E\u8BA4\u65E0\u6CD5\u901A\u8FC7\uFF1B\u4E0D\u8981\u5F39\u51FA\u9A8C\u8BC1\u65B9\u5F0F\u9009\u62E9\uFF0C\u4E5F\u4E0D\u8981\u5728\u7ED3\u5C3E\u7B49\u5F85\u7528\u6237\u70B9\u51FB\u3002
+5. \u53EA\u6709\u9047\u5230\u4E0D\u53EF\u6062\u590D\u7684\u963B\u585E\uFF08\u7F3A\u5C11\u51ED\u636E\u6216\u6743\u9650\u3001\u5916\u90E8\u670D\u52A1\u4E0D\u53EF\u7528\u3001\u9700\u8981\u7528\u6237\u5728\u754C\u9762\u4E0A\u6388\u6743\u7684\u64CD\u4F5C\u88AB\u62D2\u7EDD\uFF09\u65F6\uFF0C\u624D\u5728\u56DE\u590D\u4E2D\u8BF4\u660E\u963B\u585E\u539F\u56E0\u4E0E\u6240\u9700\u6761\u4EF6\uFF0C\u7136\u540E\u7ED3\u675F\u2014\u2014\u4E0D\u8981\u8BD5\u56FE\u7528\u63D0\u95EE\u7ED5\u8FC7\u3002
+6. \u4EFB\u52A1\u5B8C\u6210\u540E\u76F4\u63A5\u7ED9\u51FA\u7ED3\u8BBA\u5E76\u7ED3\u675F\uFF1A\u8BF4\u660E\u6539\u4E86\u4EC0\u4E48\u3001\u9884\u671F\u8868\u73B0\u662F\u4EC0\u4E48\uFF0C\u56DE\u590D\u7684\u6700\u540E\u4E00\u6BB5\u4E0D\u5F97\u5305\u542B\u9700\u8981\u7528\u6237\u56DE\u7B54\u7684\u5185\u5BB9\u3002`;
+function readSessionId2(agent) {
+  if (typeof agent !== "object" || agent === null) return void 0;
+  const session = agent.session;
+  if (typeof session !== "object" || session === null) return void 0;
+  const id9 = session.id;
+  return typeof id9 === "string" && id9 !== "" ? id9 : void 0;
+}
+function textForAssembly2(context) {
+  const sessionId = readSessionId2(context.agent);
+  if (sessionId === void 0) return "";
+  return isAutoRunEnabled(sessionId) ? AUTO_RUN_PROMPT : "";
+}
+function installAutoRunPrompt(ctx) {
+  const prompt = ctx.systemPrompt;
+  if (prompt === void 0) {
+    console.error("[auto-run] \u672A\u53D6\u5F97 systemPrompt \u670D\u52A1\uFF0C\u81EA\u52A8\u6A21\u5F0F\u4E0D\u4F1A\u751F\u6548");
+    return;
+  }
+  ctx.effect(
+    () => prompt.section({
+      name: SECTION_NAME2,
+      order: SECTION_ORDER2,
+      // 约定文本里有「优先级」这类字面措辞，不参与变量插值，避免误解析
+      interpolate: false,
+      text: textForAssembly2
+    }),
+    "auto-run: prompt"
+  );
+}
+
+// src/features/auto-run/host/routes.ts
+var ROUTE_PATH7 = "/dsh-all-in-one/auto-run";
+var MAX_BODY_BYTES6 = 4 * 1024;
+var MAX_SESSION_ID_LENGTH = 200;
+function parsePatch(value) {
+  if (typeof value !== "object" || value === null) return void 0;
+  const candidate = value;
+  if (typeof candidate.sessionId !== "string") return void 0;
+  if (typeof candidate.enabled !== "boolean") return void 0;
+  const sessionId = candidate.sessionId.trim();
+  if (sessionId === "" || sessionId.length > MAX_SESSION_ID_LENGTH) return void 0;
+  return { sessionId, enabled: candidate.enabled };
+}
+function installAutoRunRoutes(webServer) {
+  return webServer.register({
+    kind: "exact",
+    path: ROUTE_PATH7,
+    handler: async (request, response) => {
+      if (!isLocalRequest(request)) {
+        sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
+        return;
+      }
+      try {
+        const url = new URL(request.url ?? ROUTE_PATH7, "http://127.0.0.1");
+        if (request.method === "GET") {
+          const sessionId = url.searchParams.get("sessionId");
+          if (sessionId === null || sessionId.trim() === "") {
+            sendJson(response, 200, readAutoRunSettings());
+            return;
+          }
+          sendJson(response, 200, { enabled: isAutoRunEnabled(sessionId.trim()) });
+          return;
+        }
+        if (request.method !== "POST") {
+          response.writeHead(405, { allow: "GET, POST" });
+          response.end();
+          return;
+        }
+        const body = await readJsonBody(request, MAX_BODY_BYTES6);
+        if (!body.ok) {
+          sendJsonBodyError(response, body, "\u8BF7\u6C42\u4F53\u4E0D\u662F\u5408\u6CD5 JSON");
+          return;
+        }
+        const patch = parsePatch(body.value);
+        if (patch === void 0) {
+          sendJson(response, 400, { error: "\u9700\u8981 { sessionId, enabled }" });
+          return;
+        }
+        sendJson(response, 200, {
+          sessionId: patch.sessionId,
+          enabled: setAutoRunEnabled(patch.sessionId, patch.enabled)
+        });
+      } catch (error) {
+        console.error("[auto-run] \u5904\u7406\u5F00\u5173\u8BF7\u6C42\u5931\u8D25:", error);
+        sendJson(response, 500, {
+          error: error instanceof Error ? error.message : String(error)
+        });
+      }
+    }
+  });
+}
+
+// src/features/auto-run/host.ts
+var id8 = "auto-run";
+var inject8 = ["systemPrompt", "webServer"];
+function apply8(ctx) {
+  installAutoRunPrompt(ctx);
+  installAutoRunAnswerer(ctx);
+  const webServer = ctx.webServer;
+  if (webServer === void 0) {
+    console.error("[auto-run] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u5F00\u5173\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
+    return;
+  }
+  ctx.effect(() => installAutoRunRoutes(webServer), "auto-run: routes");
+}
+
 // src/features/host.ts
 var featureHosts = [
   host_exports2,
@@ -3854,12 +4074,13 @@ var featureHosts = [
   host_exports5,
   host_exports,
   host_exports6,
-  host_exports7
+  host_exports7,
+  host_exports8
 ];
 
 // src/index.ts
-var inject8 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
-function apply8(ctx) {
+var inject9 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
+function apply9(ctx) {
   for (const feature of featureHosts) {
     try {
       feature.apply(ctx);
@@ -3869,6 +4090,6 @@ function apply8(ctx) {
   }
 }
 export {
-  apply8 as apply,
-  inject8 as inject
+  apply9 as apply,
+  inject9 as inject
 };

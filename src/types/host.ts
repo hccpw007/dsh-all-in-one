@@ -68,6 +68,32 @@ export interface HostPluginContext {
     event: 'agent/pre-step',
     listener: (payload: AgentPreStepEvent, next: () => Promise<unknown>) => Promise<unknown>,
   ): () => void
+  /**
+   * 订阅询问应答的 waterfall 事件。
+   *
+   * 只有注册在 Agent 作用域（`agent.ctx`）上的监听器才会收到该 Agent 的请求：
+   * 宿主派发时按 Agent 作用域过滤。listener 直接返回答案即短路用户交互，
+   * 调用 `next()` 则交回宿主原有的界面回答流程。
+   *
+   * `prepend` 把监听器排到同事件的最前面：宿主的界面转发应答器在插件加载时就已注册，
+   * 且它会一直等到用户点选才返回；不前置的话，后来的监听器根本没有机会短路它。
+   */
+  on(
+    event: 'user-questions/request',
+    listener: (
+      request: UserQuestionRequestLike,
+      next: () => Promise<unknown>,
+    ) => Promise<unknown>,
+    options?: { prepend?: boolean },
+  ): () => void
+  /**
+   * 订阅 Agent 创建事件：Agent 作用域在此时已就绪，可以立刻注册该 Agent 的监听器。
+   */
+  on(
+    event: 'agent/created',
+    listener: (payload: AgentCreatedEvent) => unknown,
+    options?: { prepend?: boolean },
+  ): () => void
   /** 在依赖服务就绪后执行回调，回调拿到带对应服务的子上下文。 */
   inject(names: string[], callback: (ctx: HostPluginContext) => void): void
   /** 按名称读取服务；服务在当前作用域不可见时返回 undefined。 */
@@ -95,6 +121,56 @@ export interface AgentPreStepEvent {
   agent: AgentLike
   /** 本轮取消信号；压缩过程也跟随它取消。 */
   signal: AbortSignal
+}
+
+/** `agent/created` 事件负载：Agent 与其作用域已就绪。 */
+export interface AgentCreatedEvent {
+  agent: AgentLike
+  /** 会话级取消信号；Agent 结束时会触发。 */
+  signal?: AbortSignal
+}
+
+/**
+ * 询问请求中本插件用到的字段。
+ *
+ * 宿主还带 `agent`、`wait` 等字段，自动应答只在需要构造答案时读取问题本身，
+ * 因此只声明这部分，其余保持未知。
+ */
+export interface UserQuestionRequestLike {
+  questions: UserQuestionItemLike[]
+}
+
+/** 一道询问题：选项、多选标记与可选的表现意图。 */
+export interface UserQuestionItemLike {
+  /** 题目标识，答案必须原样带回。 */
+  id: string
+  /** 题面；自动应答不读取它。 */
+  question: string
+  /** 可选答案项，宿主约定首项为推荐项。 */
+  options?: Array<{ label: string; description?: string }>
+  /** 是否允许多选；自动应答只选一项。 */
+  multiSelect?: boolean
+  /**
+   * 表现意图：计划审阅用 `approve` 声明批准标签，权限审批整类不自动作答。
+   */
+  intent?: {
+    kind: string
+    approve?: string
+    reject?: string
+    always?: string
+  }
+}
+
+/** 询问答案：每道题恰好一项。 */
+export interface UserQuestionAnswerLike {
+  answers: Array<{
+    /** 题目标识。 */
+    id: string
+    /** 选中的选项标签；没有选项时为空数组。 */
+    selected: string[]
+    /** 自由文本答复，仅在没有选项时使用。 */
+    custom?: string
+  }>
 }
 
 /** 在线 Agent 的最小形状：会话与 Agent 一一对应。 */

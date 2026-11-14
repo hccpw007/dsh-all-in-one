@@ -15,7 +15,7 @@ const BUTTON_ATTRIBUTE = 'data-aio-clear-session'
 /** 按钮样式的节点 id；重复安装时复用同一节点。 */
 const STYLE_ID = 'aio-clear-session-style'
 
-/** 按钮类名，样式与宿主加号按钮同高，但默认透明、悬停才显背景。 */
+/** 按钮类名，样式与宿主加号按钮完全一致（圆形 selector 底色）。 */
 const BUTTON_CLASS = 'aio-clear-session'
 
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
@@ -26,6 +26,9 @@ const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
  * 完全对齐宿主加号按钮（同 `.add` 规则）：28px 圆形、selector 底色、primary 图标色，
  * 两个圆钮并排才读作同一组工具。圆角重置为圆角而不是宿主的超椭圆，
  * 否则 `--dsw-corner-shape` 会让小尺寸圆钮看起来「不够圆」。
+ *
+ * 刻意不定义禁用态：宿主加号在任何时候都保持满底色，按钮一旦被置灰就会与它
+ * 明显不一致；「当前对话在运行」这类限制改由弹窗说明，外观始终对齐。
  */
 const STYLE_TEXT = `
 .${BUTTON_CLASS} {
@@ -46,10 +49,6 @@ const STYLE_TEXT = `
   .${BUTTON_CLASS}:hover:not(:disabled) {
     background: var(--dsw-alias-interactive-bg-hover-solid, var(--dsw-specific-selector));
   }
-}
-.${BUTTON_CLASS}:disabled {
-  opacity: 0.5;
-  cursor: default;
 }
 .${BUTTON_CLASS} svg {
   display: block;
@@ -109,10 +108,10 @@ function ensureStyle(): void {
 }
 
 /**
- * 按当前对话状态刷新按钮的可用性。
+ * 按当前对话状态刷新按钮的悬停提示。
  *
- * 会话未就绪（新建对话页尚未创建会话）或正在执行任务时禁用，
- * 避免点击后落到一条不存在的对话或删掉仍被写句柄持有的记录。
+ * 按钮不进入禁用态（见上方样式说明），因此这里只切换提示文案：
+ * 对话在运行时点开弹窗会说明要先停止，外观与加号保持一致。
  * @param button 注入的按钮
  * @param target 当前对话
  * @param options 按钮文案
@@ -122,8 +121,6 @@ function syncButton(
   target: ClearSessionTarget | undefined,
   options: ClearButtonOptions,
 ): void {
-  const disabled = target === undefined || target.running
-  button.disabled = disabled
   button.title = target?.running === true ? options.runningHint : options.label
 }
 
@@ -195,7 +192,8 @@ export function installClearButton(options: ClearButtonOptions): () => void {
         event.stopPropagation()
 
         const target = options.readTarget()
-        if (target === undefined || target.running) return
+        // 会话未就绪时没有可清空的目标；运行中的对话仍打开弹窗，由弹窗说明需先停止
+        if (target === undefined) return
 
         options.onRequest(target)
       })

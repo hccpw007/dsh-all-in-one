@@ -7,6 +7,7 @@ import * as deleteSession from './delete-session/host'
 import * as projectMemory from './project-memory/host'
 import * as autoCompact from './auto-compact/host'
 import * as desktopCookie from './desktop-cookie/host'
+import * as autoRun from './auto-run/host'
 
 /**
  * 所有 feature 提供的宿主侧扩展，由 src/index.ts 统一注册。
@@ -22,4 +23,5 @@ export const featureHosts: FeatureHostExtension[] = [
   powerPack,
   autoCompact,
   desktopCookie,
+  autoRun,
 ]
