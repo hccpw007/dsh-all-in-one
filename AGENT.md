@@ -229,9 +229,9 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 │       │   ├── toggle.tsx   # 网格开关、检查间隔/重建阈值、实时读数与手动按钮
 │       │   ├── storage.ts   # 配置与运行状态的 localStorage 读写，本功能专属
 │       │   ├── client.tsx   # 客户端扩展：常驻安装定时检查
-│       │   ├── guard.ts     # 定时编排：轻量回收 → 阈值 → 占用判定 → 倒计时 → 重建
+│       │   ├── guard.ts     # 定时编排：轻量回收 → 阈值 → 空闲判定 → 倒计时 → 重建
 │       │   ├── reclaim.ts   # 轻量回收：CacheStorage、performance 与可选强制回收
-│       │   ├── occupancy.ts # 运行中/提交中/草稿/空闲/焦点判定与交互监听
+│       │   ├── occupancy.ts # 空闲与焦点判定、交互监听
 │       │   ├── measure.ts   # 读数：JS 堆、DOM 节点，优先用宿主渲染进程 RSS
 │       │   ├── api.ts       # 与宿主读数路由通信
 │       │   ├── notice.ts    # 重建前的 5 秒倒计时浮层

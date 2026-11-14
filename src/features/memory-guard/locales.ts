@@ -6,7 +6,7 @@ export const memoryGuardLocales: FeatureLocales = {
     // 开关标题
     title: '内存守护',
     // 开关用途说明：点明检查节奏、回收档位与触发条件
-    description: '定时清理界面内存：无任务且无人操作时先清缓存，占用过高再自动重建页面。',
+    description: '定时清理界面内存：每次检查先清缓存，占用过高且无人操作时自动重建页面。',
     // 检查间隔输入框的标签
     intervalLabel: '检查间隔',
     // 检查间隔输入框的单位
@@ -49,10 +49,8 @@ export const memoryGuardLocales: FeatureLocales = {
     skipCooldown: '距上次重建不足两个检查周期，跳过本次',
     // 占用未超过阈值
     skipBelowThreshold: '占用未超过阈值，本次只做轻量回收',
-    // 有任务正在执行
-    skipRunning: '有任务正在执行，本次不重建',
-    // 输入框里有未发送的草稿
-    skipDraft: '输入框有未发送的草稿，本次不重建',
+    // 一次检查正在进行，手动重建需要等它结束
+    busyChecking: '正在执行检查，请稍后再试',
     // 用户仍在操作
     skipActive: '仍在操作中，本次不重建',
     // 用户取消了自动重建
@@ -71,7 +69,7 @@ export const memoryGuardLocales: FeatureLocales = {
     title: 'Memory guard',
     // Switch description: cadence, two tiers, and the trigger condition
     description:
-      'Reclaim UI memory on a timer: clear caches while idle, and rebuild the page once usage passes the threshold with no task running.',
+      'Reclaim UI memory on a timer: clear caches on every check, and rebuild the page once usage passes the threshold while you are away.',
     // Label of the interval input
     intervalLabel: 'Check every',
     // Unit shown after the interval input
@@ -114,10 +112,8 @@ export const memoryGuardLocales: FeatureLocales = {
     skipCooldown: 'Last rebuild is too recent; skipped this round',
     // Usage stayed below the threshold
     skipBelowThreshold: 'Usage is below the threshold; only light reclaim ran',
-    // A task is running
-    skipRunning: 'A task is running; no rebuild this round',
-    // The composer holds an unsent draft
-    skipDraft: 'The composer has an unsent draft; no rebuild this round',
+    // A check is already running; a manual rebuild must wait for it
+    busyChecking: 'A check is running; try again in a moment',
     // The user is still interacting
     skipActive: 'You are still interacting; no rebuild this round',
     // The user cancelled the automatic rebuild

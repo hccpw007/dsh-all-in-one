@@ -4,13 +4,13 @@
  * 每 `intervalMinutes` 分钟检查一次，一次检查包含三步：
  *   1. 轻量回收（清可丢弃缓存），收益约一成，随时安全；
  *   2. 读占用，低于阈值就结束；
- *   3. 读占用状态，无运行中任务、无待落地提交、无草稿，且「窗口失焦或空闲满
- *      一个检查周期」时，倒计时 5 秒后重建页面，收益约八成五。
+ *   3. 「窗口失焦或空闲满一个检查周期」时，倒计时 5 秒后重建页面，收益约八成五。
  *
- * 两个安全边界：重建前做两次占用判定（倒计时期间用户可能刚开始操作），以及
- * 重建后至少冷却两个周期，避免阈值设得过低时反复刷新。
+ * 运行中的任务与输入框草稿都不阻止重建：两者都由宿主持久化，重载后重放或恢复。
+ * 两个安全边界：倒计时结束时再复核一次空闲（用户可能刚回来操作），以及重建后
+ * 至少冷却两个周期，避免阈值设得过低时反复刷新。
  */
-import type { SessionsApi, Translate } from '../../types/plugin'
+import type { Translate } from '../../types/plugin'
 import { askRebuildConfirm } from './notice'
 import { installInteractionTracking, readOccupancy, resetIdleClock } from './occupancy'
 import { reclaimLight } from './reclaim'
@@ -21,7 +21,7 @@ import type { MemoryReading, RebuildOutcome } from './types'
 export interface MemoryGuardHandle {
   /** 立即执行一次轻量回收，返回回收后的读数。 */
   reclaimNow(): Promise<MemoryReading>
-  /** 立即重建：只挡运行中任务与草稿，不要求空闲满一个周期。 */
+  /** 立即重建：不要求空闲满一个周期，点击即进入倒计时。 */
   rebuildNow(): Promise<RebuildOutcome>
   /** 按最新配置重排定时器；用户改完检查间隔后调用，不必等旧周期走完。 */
   reschedule(): void
@@ -43,10 +43,9 @@ export function activeMemoryGuard(): MemoryGuardHandle | undefined {
 /**
  * 装配定时器与手动操作面。
  * @param t 已绑定本 feature 前缀的翻译函数
- * @param sessions 宿主会话列表服务，用于判断是否有任务在跑
  * @returns 操作面；`dispose` 后定时器与监听一并撤销
  */
-export function installMemoryGuard(t: Translate, sessions: SessionsApi | undefined): MemoryGuardHandle {
+export function installMemoryGuard(t: Translate): MemoryGuardHandle {
   const disposeTracking = installInteractionTracking()
   let timer: number | undefined
   let disposed = false
@@ -106,21 +105,13 @@ export function installMemoryGuard(t: Translate, sessions: SessionsApi | undefin
   }
 
   /**
-   * 占用判定 + 倒计时 + 重建。
+   * 空闲判定 + 倒计时 + 重建。
    * @param intervalMs 空闲阈值（毫秒）；手动重建传 0 跳过空闲要求
    * @param manual 是否为用户主动点击
    * @returns 重建结果
    */
   const confirmThenRebuild = async (intervalMs: number, manual: boolean): Promise<RebuildOutcome> => {
-    const occupancy = readOccupancy(sessions)
-
-    if (occupancy.running || occupancy.submitting) {
-      return { rebuilt: false, reason: 'busy', detail: t('skipRunning') }
-    }
-
-    if (occupancy.draft) {
-      return { rebuilt: false, reason: 'draft', detail: t('skipDraft') }
-    }
+    const occupancy = readOccupancy()
 
     // 失焦即视为「不在前台操作」；前台则必须空闲满一个检查周期
     if (!manual && occupancy.focused && occupancy.idleMs < intervalMs) {
@@ -137,12 +128,14 @@ export function installMemoryGuard(t: Translate, sessions: SessionsApi | undefin
       return { rebuilt: false, reason: 'cancelled', detail: t('skipCancelled') }
     }
 
-    // 倒计时的 5 秒里用户可能刚点了发送或开始输入，重建前再确认一次
-    const recheck = readOccupancy(sessions)
-    if (recheck.running || recheck.submitting || recheck.draft) {
-      resetIdleClock()
+    // 倒计时的 5 秒里用户可能刚回来操作，重建前再复核一次空闲
+    if (!manual) {
+      const recheck = readOccupancy()
+      if (recheck.focused && recheck.idleMs < intervalMs) {
+        resetIdleClock()
 
-      return { rebuilt: false, reason: 'busy', detail: t('skipRunning') }
+        return { rebuilt: false, reason: 'active', detail: t('skipActive') }
+      }
     }
 
     updateMemoryGuardState({ lastRebuildAt: Date.now() })
@@ -163,7 +156,7 @@ export function installMemoryGuard(t: Translate, sessions: SessionsApi | undefin
     },
 
     async rebuildNow(): Promise<RebuildOutcome> {
-      if (busy) return { rebuilt: false, reason: 'busy', detail: t('skipRunning') }
+      if (busy) return { rebuilt: false, reason: 'busy', detail: t('busyChecking') }
       busy = true
 
       try {

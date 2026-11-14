@@ -46,15 +46,14 @@ export interface HostMemoryPayload {
   hostRssMB: number | null
 }
 
-/** 能否安全重建的判定材料。 */
+/** 能否重建的判定材料。 */
 export interface OccupancyState {
-  /** 是否存在正在执行的会话。 */
-  running: boolean
-  /** 是否存在已提交但尚未落地的消息。 */
-  submitting: boolean
-  /** 输入框里是否有未发送的草稿。 */
-  draft: boolean
-  /** 距最后一次人工交互的毫秒数。 */
+  /**
+   * 距最后一次人工交互的毫秒数。
+   *
+   * 运行中的任务与输入框草稿都不阻止重建：宿主把事件流与 composer 草稿都持久化
+   * 在磁盘上，页面重载后重放并恢复，内容不丢。判定只剩「有没有人在操作」。
+   */
   idleMs: number
   /** 窗口当前是否持有焦点。 */
   focused: boolean
@@ -77,7 +76,6 @@ export type RebuildSkipReason =
   | 'disabled'
   | 'below-threshold'
   | 'busy'
-  | 'draft'
   | 'active'
   | 'cooldown'
   | 'cancelled'

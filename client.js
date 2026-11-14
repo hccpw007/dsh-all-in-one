@@ -6785,38 +6785,11 @@ window.__ModuleLoader__.load({
         }
       };
     }
-    function hasDraft() {
-      const fields = document.querySelectorAll('textarea, [contenteditable="true"]');
-      for (const field of fields) {
-        if (field.offsetParent === null && field.getClientRects().length === 0) continue;
-        const text = field instanceof HTMLTextAreaElement ? field.value : field.textContent ?? "";
-        if (text.trim() !== "") return true;
-      }
-      return false;
-    }
-    function readOccupancy(sessions) {
-      const idleMs = Date.now() - lastInteractionAt;
-      const focused = typeof document.hasFocus === "function" ? document.hasFocus() : true;
-      if (sessions === void 0) {
-        return { running: true, submitting: true, draft: hasDraft(), idleMs, focused };
-      }
-      let running = false;
-      let submitting = false;
-      try {
-        const snapshot = sessions.list.getSnapshot();
-        for (const id of snapshot.ids) {
-          const summary = snapshot.byId[id];
-          if (summary?.running === true) running = true;
-          const binding = sessions.binding?.(id);
-          if (binding === void 0) continue;
-          const snapshotOfSession = binding.session.getSnapshot();
-          if (snapshotOfSession.pendingSubmissions.length > 0) submitting = true;
-        }
-      } catch (error) {
-        console.error("[memory-guard] \u8BFB\u53D6\u4F1A\u8BDD\u8FD0\u884C\u72B6\u6001\u5931\u8D25\uFF0C\u6309\u5FD9\u5904\u7406:", error);
-        return { running: true, submitting: true, draft: hasDraft(), idleMs, focused };
-      }
-      return { running, submitting, draft: hasDraft(), idleMs, focused };
+    function readOccupancy() {
+      return {
+        idleMs: Date.now() - lastInteractionAt,
+        focused: typeof document.hasFocus === "function" ? document.hasFocus() : true
+      };
     }
     function resetIdleClock() {
       markInteraction();
@@ -7015,7 +6988,7 @@ window.__ModuleLoader__.load({
     function activeMemoryGuard() {
       return active;
     }
-    function installMemoryGuard(t, sessions) {
+    function installMemoryGuard(t) {
       const disposeTracking = installInteractionTracking();
       let timer;
       let disposed = false;
@@ -7054,13 +7027,7 @@ window.__ModuleLoader__.load({
         }
       };
       const confirmThenRebuild = async (intervalMs, manual) => {
-        const occupancy = readOccupancy(sessions);
-        if (occupancy.running || occupancy.submitting) {
-          return { rebuilt: false, reason: "busy", detail: t("skipRunning") };
-        }
-        if (occupancy.draft) {
-          return { rebuilt: false, reason: "draft", detail: t("skipDraft") };
-        }
+        const occupancy = readOccupancy();
         if (!manual && occupancy.focused && occupancy.idleMs < intervalMs) {
           return { rebuilt: false, reason: "active", detail: t("skipActive") };
         }
@@ -7070,10 +7037,12 @@ window.__ModuleLoader__.load({
           resetIdleClock();
           return { rebuilt: false, reason: "cancelled", detail: t("skipCancelled") };
         }
-        const recheck = readOccupancy(sessions);
-        if (recheck.running || recheck.submitting || recheck.draft) {
-          resetIdleClock();
-          return { rebuilt: false, reason: "busy", detail: t("skipRunning") };
+        if (!manual) {
+          const recheck = readOccupancy();
+          if (recheck.focused && recheck.idleMs < intervalMs) {
+            resetIdleClock();
+            return { rebuilt: false, reason: "active", detail: t("skipActive") };
+          }
         }
         updateMemoryGuardState({ lastRebuildAt: Date.now() });
         window.location.reload();
@@ -7089,7 +7058,7 @@ window.__ModuleLoader__.load({
           return result.after;
         },
         async rebuildNow() {
-          if (busy) return { rebuilt: false, reason: "busy", detail: t("skipRunning") };
+          if (busy) return { rebuilt: false, reason: "busy", detail: t("busyChecking") };
           busy = true;
           try {
             return await confirmThenRebuild(0, true);
@@ -7122,13 +7091,10 @@ window.__ModuleLoader__.load({
 
     // src/features/memory-guard/client.tsx
     function apply10(ctx, t) {
-      ctx.inject(["sessions"], (scoped) => {
-        const sessions = scoped.sessions;
-        ctx.effect(() => {
-          const handle = installMemoryGuard(t, sessions);
-          return () => handle.dispose();
-        }, "memory-guard: timer");
-      });
+      ctx.effect(() => {
+        const handle = installMemoryGuard(t);
+        return () => handle.dispose();
+      }, "memory-guard: timer");
     }
 
     // src/features/memory-guard/locales.ts
@@ -7137,7 +7103,7 @@ window.__ModuleLoader__.load({
         // 开关标题
         title: "\u5185\u5B58\u5B88\u62A4",
         // 开关用途说明：点明检查节奏、回收档位与触发条件
-        description: "\u5B9A\u65F6\u6E05\u7406\u754C\u9762\u5185\u5B58\uFF1A\u65E0\u4EFB\u52A1\u4E14\u65E0\u4EBA\u64CD\u4F5C\u65F6\u5148\u6E05\u7F13\u5B58\uFF0C\u5360\u7528\u8FC7\u9AD8\u518D\u81EA\u52A8\u91CD\u5EFA\u9875\u9762\u3002",
+        description: "\u5B9A\u65F6\u6E05\u7406\u754C\u9762\u5185\u5B58\uFF1A\u6BCF\u6B21\u68C0\u67E5\u5148\u6E05\u7F13\u5B58\uFF0C\u5360\u7528\u8FC7\u9AD8\u4E14\u65E0\u4EBA\u64CD\u4F5C\u65F6\u81EA\u52A8\u91CD\u5EFA\u9875\u9762\u3002",
         // 检查间隔输入框的标签
         intervalLabel: "\u68C0\u67E5\u95F4\u9694",
         // 检查间隔输入框的单位
@@ -7180,10 +7146,8 @@ window.__ModuleLoader__.load({
         skipCooldown: "\u8DDD\u4E0A\u6B21\u91CD\u5EFA\u4E0D\u8DB3\u4E24\u4E2A\u68C0\u67E5\u5468\u671F\uFF0C\u8DF3\u8FC7\u672C\u6B21",
         // 占用未超过阈值
         skipBelowThreshold: "\u5360\u7528\u672A\u8D85\u8FC7\u9608\u503C\uFF0C\u672C\u6B21\u53EA\u505A\u8F7B\u91CF\u56DE\u6536",
-        // 有任务正在执行
-        skipRunning: "\u6709\u4EFB\u52A1\u6B63\u5728\u6267\u884C\uFF0C\u672C\u6B21\u4E0D\u91CD\u5EFA",
-        // 输入框里有未发送的草稿
-        skipDraft: "\u8F93\u5165\u6846\u6709\u672A\u53D1\u9001\u7684\u8349\u7A3F\uFF0C\u672C\u6B21\u4E0D\u91CD\u5EFA",
+        // 一次检查正在进行，手动重建需要等它结束
+        busyChecking: "\u6B63\u5728\u6267\u884C\u68C0\u67E5\uFF0C\u8BF7\u7A0D\u540E\u518D\u8BD5",
         // 用户仍在操作
         skipActive: "\u4ECD\u5728\u64CD\u4F5C\u4E2D\uFF0C\u672C\u6B21\u4E0D\u91CD\u5EFA",
         // 用户取消了自动重建
@@ -7201,7 +7165,7 @@ window.__ModuleLoader__.load({
         // Switch title
         title: "Memory guard",
         // Switch description: cadence, two tiers, and the trigger condition
-        description: "Reclaim UI memory on a timer: clear caches while idle, and rebuild the page once usage passes the threshold with no task running.",
+        description: "Reclaim UI memory on a timer: clear caches on every check, and rebuild the page once usage passes the threshold while you are away.",
         // Label of the interval input
         intervalLabel: "Check every",
         // Unit shown after the interval input
@@ -7244,10 +7208,8 @@ window.__ModuleLoader__.load({
         skipCooldown: "Last rebuild is too recent; skipped this round",
         // Usage stayed below the threshold
         skipBelowThreshold: "Usage is below the threshold; only light reclaim ran",
-        // A task is running
-        skipRunning: "A task is running; no rebuild this round",
-        // The composer holds an unsent draft
-        skipDraft: "The composer has an unsent draft; no rebuild this round",
+        // A check is already running; a manual rebuild must wait for it
+        busyChecking: "A check is running; try again in a moment",
         // The user is still interacting
         skipActive: "You are still interacting; no rebuild this round",
         // The user cancelled the automatic rebuild
@@ -7410,7 +7372,7 @@ window.__ModuleLoader__.load({
         setMessage("");
         try {
           const outcome = await guard.rebuildNow();
-          if (!outcome.rebuilt) setMessage(outcome.detail ?? t("skipRunning"));
+          if (!outcome.rebuilt) setMessage(outcome.detail ?? t("busyChecking"));
         } catch (error) {
           console.error("[memory-guard] \u624B\u52A8\u91CD\u5EFA\u5931\u8D25:", error);
           setMessage(t("measureFailed"));

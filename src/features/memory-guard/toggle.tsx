@@ -247,7 +247,7 @@ export function MemoryGuardToggle({ t }: FeatureSwitchProps) {
     }
   }
 
-  /** 手动重建：任务运行时由 guard 直接拒绝并返回原因。 */
+  /** 手动重建：有未提交草稿时由 guard 拒绝并返回原因。 */
   const handleRebuild = async (): Promise<void> => {
     const guard = activeMemoryGuard()
     if (guard === undefined) {
@@ -261,7 +261,7 @@ export function MemoryGuardToggle({ t }: FeatureSwitchProps) {
 
     try {
       const outcome = await guard.rebuildNow()
-      if (!outcome.rebuilt) setMessage(outcome.detail ?? t('skipRunning'))
+      if (!outcome.rebuilt) setMessage(outcome.detail ?? t('busyChecking'))
     } catch (error) {
       console.error('[memory-guard] 手动重建失败:', error)
       setMessage(t('measureFailed'))
