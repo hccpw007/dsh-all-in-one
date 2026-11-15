@@ -192,12 +192,12 @@ export function AllInOnePage({ t }: AllInOnePageProps) {
   // 功能网格根节点，样式作用域限定在 dsh-aio-root
   return (
     <div className="dsh-aio-root">
-      {/* 页面标题与简介 */}
-      <header>
+      {/* 页面标题行：标题与口号同行，不再单独占一行说明 */}
+      <header className="flex items-baseline gap-2">
         {/* 页面主标题 */}
         <h1 className="text-[17px] font-semibold leading-6 text-primary">{t('shell.pageTitle')}</h1>
-        {/* 页面用途说明 */}
-        <p className="mt-1.5 text-[13px] leading-5 text-secondary">{t('shell.pageDescription')}</p>
+        {/* 标题旁的口号：一句话概括插件定位，用次级色避免与标题抢视线 */}
+        <span className="text-[12px] leading-6 text-secondary">{t('shell.pageSlogan')}</span>
       </header>
       {/* 功能网格：没有注册任何 feature 时显示空态 */}
       {registry.list.length === 0 ? (

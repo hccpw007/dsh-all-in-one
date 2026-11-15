@@ -23,8 +23,8 @@ const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
     'shell.navTitle': 'All In One',
     // 页面主标题
     'shell.pageTitle': 'All In One',
-    // 页面说明：区分开关与入口卡片，避免误以为每张卡片都能点进去
-    'shell.pageDescription': '开关即时生效，带「设置」的卡片进入配置页。',
+    // 标题右侧的口号：一句话说明插件定位，与标题同行
+    'shell.pageSlogan': '小工具，一个入口',
     // 分组标题：改变对话阅读与操作行为的功能
     'shell.group.conversation': '对话体验',
     // 分组标题：改变侧边栏、导航等界面结构的功能
@@ -45,8 +45,8 @@ const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
     'shell.navTitle': 'All In One',
     // Page heading
     'shell.pageTitle': 'All In One',
-    // Page description distinguishing switches from cards that open a page
-    'shell.pageDescription': 'Switches apply immediately; cards with Settings open a configuration page.',
+    // Slogan next to the heading: one line stating what the plugin is for
+    'shell.pageSlogan': 'Every tool, one entry',
     // Group heading: features that change how conversations are read and operated
     'shell.group.conversation': 'Conversation',
     // Group heading: features that restructure the sidebar and navigation

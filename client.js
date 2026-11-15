@@ -8742,7 +8742,7 @@ window.__ModuleLoader__.load({
         const ActivePage = activePage.page;
         return /* @__PURE__ */ import_react39.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react39.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react39.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react39.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react39.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react39.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react39.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react39.default.createElement(ActivePage, { t: featureTranslate }))));
       }
-      return /* @__PURE__ */ import_react39.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react39.default.createElement("header", null, /* @__PURE__ */ import_react39.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react39.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("shell.pageDescription"))), registry.list.length === 0 ? (
+      return /* @__PURE__ */ import_react39.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react39.default.createElement("header", { className: "flex items-baseline gap-2" }, /* @__PURE__ */ import_react39.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react39.default.createElement("span", { className: "text-[12px] leading-6 text-secondary" }, t("shell.pageSlogan"))), registry.list.length === 0 ? (
         // 尚未注册功能时的空态提示
         /* @__PURE__ */ import_react39.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
       ) : (
@@ -8873,8 +8873,8 @@ window.__ModuleLoader__.load({
         "shell.navTitle": "All In One",
         // 页面主标题
         "shell.pageTitle": "All In One",
-        // 页面说明：区分开关与入口卡片，避免误以为每张卡片都能点进去
-        "shell.pageDescription": "\u5F00\u5173\u5373\u65F6\u751F\u6548\uFF0C\u5E26\u300C\u8BBE\u7F6E\u300D\u7684\u5361\u7247\u8FDB\u5165\u914D\u7F6E\u9875\u3002",
+        // 标题右侧的口号：一句话说明插件定位，与标题同行
+        "shell.pageSlogan": "\u5C0F\u5DE5\u5177\uFF0C\u4E00\u4E2A\u5165\u53E3",
         // 分组标题：改变对话阅读与操作行为的功能
         "shell.group.conversation": "\u5BF9\u8BDD\u4F53\u9A8C",
         // 分组标题：改变侧边栏、导航等界面结构的功能
@@ -8895,8 +8895,8 @@ window.__ModuleLoader__.load({
         "shell.navTitle": "All In One",
         // Page heading
         "shell.pageTitle": "All In One",
-        // Page description distinguishing switches from cards that open a page
-        "shell.pageDescription": "Switches apply immediately; cards with Settings open a configuration page.",
+        // Slogan next to the heading: one line stating what the plugin is for
+        "shell.pageSlogan": "Every tool, one entry",
         // Group heading: features that change how conversations are read and operated
         "shell.group.conversation": "Conversation",
         // Group heading: features that restructure the sidebar and navigation
