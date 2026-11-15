@@ -19,9 +19,9 @@ const MIN_THRESHOLD_PERCENT = MIN_PERCENT + 1
 /** 百分比允许的最大值。 */
 const MAX_PERCENT = 100
 
-/** 百分比输入框样式，宽度按两位数字预留，紧挨在开关轨道下方。 */
+/** 百分比输入框样式，宽度按两位数字预留，高度与标签行对齐，避免把整卡再撑高一行。 */
 const INPUT_CLASS =
-  'w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] text-primary outline-none focus:border-brand'
+  'h-4 w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] leading-[14px] text-primary outline-none focus:border-brand'
 
 /** 一个百分比输入行：标签、输入框与单位。 */
 interface PercentFieldProps {
@@ -47,7 +47,7 @@ function PercentField({ label, unit, value, onChange, onCommit, min = MIN_PERCEN
   return (
     <label className="flex items-center gap-1">
       {/* 输入行标签 */}
-      <span className="text-[11px] leading-[16px] text-secondary">{label}</span>
+      <span className="text-[11px] leading-[14px] text-secondary">{label}</span>
       <input
         type="number"
         inputMode="numeric"
@@ -64,7 +64,7 @@ function PercentField({ label, unit, value, onChange, onCommit, min = MIN_PERCEN
         className={INPUT_CLASS}
       />
       {/* 输入框单位 */}
-      <span className="text-[11px] leading-[16px] text-secondary">{unit}</span>
+      <span className="text-[11px] leading-[14px] text-secondary">{unit}</span>
     </label>
   )
 }
@@ -211,7 +211,7 @@ export function AutoCompactToggle({ t }: FeatureSwitchProps) {
   return (
     // 卡片容器：文字区不参与交互，开关与阈值输入各自独立，不能互相嵌套；
     // 阈值输入单独占下面一行，避免挤在开关下方把整行卡片撑高
-    <div className="flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1">
+    <div className="flex w-full flex-col gap-0.5 rounded-lg border border-line4 bg-layer1 px-2.5 py-1">
       {/* 上段：文字区与开关横向并列 */}
       <div className="flex w-full items-start gap-2">
         {/* 文字区：只展示标题与说明，点它不会切换开关，交互只留给右侧开关 */}

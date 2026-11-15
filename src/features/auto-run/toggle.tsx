@@ -100,7 +100,7 @@ export function AutoRunButtonToggle({ t }: FeatureSwitchProps) {
   return (
     <div className="flex h-full flex-col">
       {/* 卡片容器：文字区不参与交互，开关与默认值选项各自独立，不能互相嵌套 */}
-      <div className="flex w-full flex-1 flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1">
+      <div className="flex w-full flex-1 flex-col gap-0.5 rounded-lg border border-line4 bg-layer1 px-2.5 py-1">
         {/* 上段：文字区与总开关横向并列 */}
         <div className="flex w-full items-start gap-2">
           {/* 入口图标 */}
@@ -159,7 +159,7 @@ export function AutoRunButtonToggle({ t }: FeatureSwitchProps) {
                   disabled={pending}
                   onClick={() => handleModeChange(option.value)}
                   className={cn(
-                    'shrink-0 whitespace-nowrap rounded-md border px-1 py-0 text-[11px] leading-[16px] transition',
+                    'shrink-0 whitespace-nowrap rounded-md border px-1 py-0 text-[11px] leading-[14px] transition',
                     checked
                       ? 'border-brand bg-base text-brand'
                       : 'border-line4 bg-layer1 text-secondary hover:text-primary',

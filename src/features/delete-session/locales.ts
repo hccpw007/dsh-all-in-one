@@ -10,8 +10,8 @@ export const deleteSessionLocales: FeatureLocales = {
   zh: {
     // 开关标题
     title: '开启新会话',
-    // 开关用途说明：说明两个删除入口、运行中的会话会被跳过，以及删除前需要先在弹窗里确认
-    description: '会话悬停操作新增删除按钮，工作区「更多」可一键删全部会话，运行中的会跳过，确认后清本地记录。',
+    // 开关用途说明：说明两个删除入口与运行中的会话会被跳过，确认步骤留给弹窗，控制在两行以内
+    description: '会话行新增删除按钮，工作区「更多」可一键删全部，运行中跳过。',
     // 开关状态写入失败时的提示
     saveFailed: '保存开关状态失败，请检查浏览器存储权限。',
     // 会话行删除按钮的可访问名称与悬停提示
@@ -48,8 +48,8 @@ export const deleteSessionLocales: FeatureLocales = {
   en: {
     // Switch title
     title: 'Start a new session',
-    // Switch description covering both delete entries, the running-session skip, and the confirmation step
-    description: 'Adds a delete button to session hover actions and a delete-all entry to More; running sessions are skipped; a dialog confirms.',
+    // Switch description covering both delete entries and the running-session skip, kept within two lines
+    description: 'Add row delete buttons and a delete-all entry; running skipped.',
     // Shown when the switch state cannot be persisted
     saveFailed: 'Could not save the switch state. Check browser storage permissions.',
     // Accessible name and hover hint of the row delete button

@@ -443,7 +443,7 @@ window.__ModuleLoader__.load({
         if (next === mode) return;
         save(() => writeExpandProcessMode(next));
       };
-      return /* @__PURE__ */ import_react.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "flex w-full flex-1 flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react.default.createElement(ExpandIcon, null)), /* @__PURE__ */ import_react.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react.default.createElement(
+      return /* @__PURE__ */ import_react.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "flex w-full flex-1 flex-col gap-0.5 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react.default.createElement(ExpandIcon, null)), /* @__PURE__ */ import_react.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react.default.createElement(
         "button",
         {
           type: "button",
@@ -478,7 +478,7 @@ window.__ModuleLoader__.load({
             "aria-checked": checked,
             onClick: () => handleModeChange(option.value),
             className: cn(
-              "rounded-md border px-1.5 py-0 text-[11px] leading-[16px] transition",
+              "rounded-md border px-1.5 py-0 text-[11px] leading-[14px] transition",
               checked ? "border-brand bg-base text-brand" : "border-line4 bg-layer1 text-secondary hover:text-primary",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1"
             )
@@ -1341,8 +1341,8 @@ window.__ModuleLoader__.load({
       zh: {
         // 开关标题：消息里的本地图片是否直接显示预览
         title: "\u56FE\u7247\u76F4\u63A5\u9884\u89C8",
-        // 开关用途说明：解释预览覆盖的图片来源（本地路径与附件库）并点明只读
-        description: "\u4F1A\u8BDD\u91CC\u7684\u672C\u5730\u56FE\u7247\u5730\u5740\u4E0E\u9644\u4EF6\u5E93\u56FE\u7247\u90FD\u5728\u539F\u5904\u663E\u793A\u9884\u89C8\uFF0C\u70B9\u5F00\u53EF\u7F29\u653E\uFF0C\u53EA\u8BFB\u4E0D\u6539\u52A8\u3002",
+        // 开关用途说明：点明预览覆盖的图片来源（本地路径与附件库）与点开可缩放，控制在两行以内
+        description: "\u672C\u5730\u56FE\u7247\u4E0E\u9644\u4EF6\u5E93\u56FE\u7247\u5728\u539F\u5904\u663E\u793A\u9884\u89C8\uFF0C\u70B9\u5F00\u53EF\u7F29\u653E\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 放大层的无障碍名称，读屏软件据此说明当前是图片查看对话框
@@ -1363,8 +1363,8 @@ window.__ModuleLoader__.load({
       en: {
         // Switch title
         title: "Inline image preview",
-        // Switch description naming both image sources (local paths, attachment library) and the read-only promise
-        description: "Show previews under local image paths and attachment-library images; click to zoom. Files are only read.",
+        // Switch description naming both image sources (local paths, attachment library) and click-to-zoom, kept within two lines
+        description: "Show local and attachment images inline; click to zoom.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions.",
         // Accessible name of the zoom layer dialog
@@ -1449,7 +1449,7 @@ window.__ModuleLoader__.load({
     var imagePreviewFeature = {
       id: "image-preview",
       group: "conversation",
-      order: 20,
+      order: 30,
       reloadsPage: true,
       switch: ImagePreviewToggle,
       client: { apply },
@@ -2045,8 +2045,8 @@ window.__ModuleLoader__.load({
       zh: {
         // 开关标题：点击上下文气泡里的系统提示词与工具定义可查看详情
         title: "\u4E0A\u4E0B\u6587\u8BE6\u60C5",
-        // 开关用途说明：说明入口位置与展示内容，并点明只读
-        description: "\u70B9\u51FB\u4E0A\u4E0B\u6587\u6C14\u6CE1\u91CC\u7684\u300C\u7CFB\u7EDF\u63D0\u793A\u8BCD\u300D\u300C\u5DE5\u5177\u5B9A\u4E49\u300D\uFF0C\u6253\u5F00\u7A97\u53E3\u67E5\u770B\u5F53\u524D\u5B9E\u9645\u5185\u5BB9\uFF0C\u53EA\u8BFB\u4E0D\u6539\u52A8\u3002",
+        // 开关用途说明：点明入口位置、展示内容与只读，控制在两行以内
+        description: "\u70B9\u4E0A\u4E0B\u6587\u6C14\u6CE1\u91CC\u7684\u63D0\u793A\u8BCD\u4E0E\u5DE5\u5177\u5B9A\u4E49\u53EF\u67E5\u770B\u5B9E\u9645\u5185\u5BB9\uFF0C\u53EA\u8BFB\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 系统提示词行的悬停提示
@@ -2113,8 +2113,8 @@ window.__ModuleLoader__.load({
       en: {
         // Switch title: clicking the system prompt and tool definition rows opens details
         title: "Context details",
-        // Switch description naming the entry point, the shown content and the read-only promise
-        description: 'Click "System prompt" or "Tool definitions" in the context bubble to inspect the exact current content. Read-only.',
+        // Switch description naming the entry point, the shown content and the read-only promise, kept within two lines
+        description: "Click the prompt or tool rows in the context bubble; read-only.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions.",
         // Hover hint of the system prompt row
@@ -2245,7 +2245,7 @@ window.__ModuleLoader__.load({
     var contextInspectFeature = {
       id: "context-inspect",
       group: "conversation",
-      order: 25,
+      order: 40,
       reloadsPage: true,
       switch: ContextInspectToggle,
       client: { apply: apply2 },
@@ -2865,8 +2865,8 @@ window.__ModuleLoader__.load({
       zh: {
         // 开关标题：卡片只说输入框旁多了入口，动作语义留给下面的按钮文案
         title: "\u65B0\u4F1A\u8BDD\u5165\u53E3",
-        // 开关用途说明：点明入口位置（输入框左下角、加号按钮左侧）与两个可选结果
-        description: "\u8F93\u5165\u6846\u5DE6\u4E0B\u89D2\u65B0\u589E\u5706\u5F62\u6309\u94AE\uFF0C\u786E\u8BA4\u540E\u5728\u540C\u4E00\u5DE5\u4F5C\u533A\u6253\u5F00\u7A7A\u767D\u5BF9\u8BDD\uFF0C\u53EF\u4FDD\u7559\u6216\u5220\u9664\u5F53\u524D\u4F1A\u8BDD\u3002",
+        // 开关用途说明：点明入口位置（输入框左下角、加号按钮左侧）与两个可选结果，控制在两行以内
+        description: "\u8F93\u5165\u6846\u5DE6\u4E0B\u89D2\u65B0\u589E\u6309\u94AE\uFF0C\u786E\u8BA4\u540E\u5F00\u65B0\u5BF9\u8BDD\uFF0C\u53EF\u4FDD\u7559\u6216\u5220\u9664\u5F53\u524D\u4F1A\u8BDD\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 输入框按钮的名称与悬停提示
@@ -2897,8 +2897,8 @@ window.__ModuleLoader__.load({
       en: {
         // Switch title: the card names the added entry; the action stays in the button label
         title: "New session button",
-        // Switch description: entry position and the two possible outcomes
-        description: "Adds a button left of the composer. Confirming opens a blank conversation in the same workspace, keeping or deleting the current one.",
+        // Switch description: entry position and the two possible outcomes, kept within two lines
+        description: "Add a composer button that opens a blank conversation here.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check the browser storage permission.",
         // Composer button label and hover tooltip
@@ -2976,7 +2976,7 @@ window.__ModuleLoader__.load({
     var clearSessionFeature = {
       id: "clear-session",
       group: "conversation",
-      order: 30,
+      order: 60,
       reloadsPage: true,
       switch: ClearSessionToggle,
       client: { apply: apply3 },
@@ -3292,8 +3292,8 @@ window.__ModuleLoader__.load({
       zh: {
         // 开关标题
         title: "\u7F16\u8F91\u6392\u961F\u6D88\u606F",
-        // 开关用途说明：解释点编辑会撤回排队并把内容放回输入框
-        description: "\u6392\u961F\u4E2D\u7684\u6D88\u606F\u70B9\u7F16\u8F91\u5373\u64A4\u56DE\uFF0C\u6587\u5B57\u548C\u56FE\u7247\u56DE\u5230\u8F93\u5165\u6846\uFF0C\u6539\u5B8C\u76F4\u63A5\u91CD\u65B0\u53D1\u9001\u3002",
+        // 开关用途说明：解释点编辑会撤回排队并把内容放回输入框，控制在两行以内
+        description: "\u6392\u961F\u6D88\u606F\u70B9\u7F16\u8F91\u5373\u64A4\u56DE\uFF0C\u6587\u5B57\u4E0E\u56FE\u7247\u56DE\u5230\u8F93\u5165\u6846\uFF0C\u6539\u5B8C\u53EF\u91CD\u53D1\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 排队条上编辑按钮的名称，同时作为悬停提示
@@ -3310,8 +3310,8 @@ window.__ModuleLoader__.load({
       en: {
         // Switch title
         title: "Edit queued messages",
-        // Switch description explaining that editing recalls the queued message into the composer
-        description: "Edit recalls a queued message: its text and images return to the composer so you can resend.",
+        // Switch description explaining that editing recalls the queued message into the composer, kept within two lines
+        description: "Edit recalls a queued message into the composer.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions.",
         // Name and hover hint of the edit button on a queued row
@@ -3391,7 +3391,7 @@ window.__ModuleLoader__.load({
     var queueEditFeature = {
       id: "queue-edit",
       group: "conversation",
-      order: 35,
+      order: 50,
       reloadsPage: true,
       switch: QueueEditToggle,
       client: { apply: apply4 },
@@ -3948,7 +3948,7 @@ window.__ModuleLoader__.load({
           setPending(false);
         });
       };
-      return /* @__PURE__ */ import_react11.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react11.default.createElement("div", { className: "flex w-full flex-1 flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react11.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react11.default.createElement(AutoRunIcon, null)), /* @__PURE__ */ import_react11.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react11.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react11.default.createElement(
+      return /* @__PURE__ */ import_react11.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react11.default.createElement("div", { className: "flex w-full flex-1 flex-col gap-0.5 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react11.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react11.default.createElement(AutoRunIcon, null)), /* @__PURE__ */ import_react11.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react11.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react11.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react11.default.createElement(
         "button",
         {
           type: "button",
@@ -3994,7 +3994,7 @@ window.__ModuleLoader__.load({
                 disabled: pending3,
                 onClick: () => handleModeChange(option.value),
                 className: cn(
-                  "shrink-0 whitespace-nowrap rounded-md border px-1 py-0 text-[11px] leading-[16px] transition",
+                  "shrink-0 whitespace-nowrap rounded-md border px-1 py-0 text-[11px] leading-[14px] transition",
                   checked ? "border-brand bg-base text-brand" : "border-line4 bg-layer1 text-secondary hover:text-primary",
                   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1",
                   pending3 ? "opacity-60" : ""
@@ -4011,7 +4011,7 @@ window.__ModuleLoader__.load({
     var autoRunFeature = {
       id: "auto-run",
       group: "conversation",
-      order: 40,
+      order: 20,
       reloadsPage: true,
       switch: AutoRunButtonToggle,
       client: { apply: apply5 },
@@ -5421,8 +5421,8 @@ window.__ModuleLoader__.load({
       zh: {
         // 开关标题
         title: "\u5F00\u542F\u65B0\u4F1A\u8BDD",
-        // 开关用途说明：说明两个删除入口、运行中的会话会被跳过，以及删除前需要先在弹窗里确认
-        description: "\u4F1A\u8BDD\u60AC\u505C\u64CD\u4F5C\u65B0\u589E\u5220\u9664\u6309\u94AE\uFF0C\u5DE5\u4F5C\u533A\u300C\u66F4\u591A\u300D\u53EF\u4E00\u952E\u5220\u5168\u90E8\u4F1A\u8BDD\uFF0C\u8FD0\u884C\u4E2D\u7684\u4F1A\u8DF3\u8FC7\uFF0C\u786E\u8BA4\u540E\u6E05\u672C\u5730\u8BB0\u5F55\u3002",
+        // 开关用途说明：说明两个删除入口与运行中的会话会被跳过，确认步骤留给弹窗，控制在两行以内
+        description: "\u4F1A\u8BDD\u884C\u65B0\u589E\u5220\u9664\u6309\u94AE\uFF0C\u5DE5\u4F5C\u533A\u300C\u66F4\u591A\u300D\u53EF\u4E00\u952E\u5220\u5168\u90E8\uFF0C\u8FD0\u884C\u4E2D\u8DF3\u8FC7\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 会话行删除按钮的可访问名称与悬停提示
@@ -5457,8 +5457,8 @@ window.__ModuleLoader__.load({
       en: {
         // Switch title
         title: "Start a new session",
-        // Switch description covering both delete entries, the running-session skip, and the confirmation step
-        description: "Adds a delete button to session hover actions and a delete-all entry to More; running sessions are skipped; a dialog confirms.",
+        // Switch description covering both delete entries and the running-session skip, kept within two lines
+        description: "Add row delete buttons and a delete-all entry; running skipped.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions.",
         // Accessible name and hover hint of the row delete button
@@ -7172,9 +7172,9 @@ window.__ModuleLoader__.load({
     var MIN_PERCENT = 1;
     var MIN_THRESHOLD_PERCENT = MIN_PERCENT + 1;
     var MAX_PERCENT = 100;
-    var INPUT_CLASS3 = "w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] text-primary outline-none focus:border-brand";
+    var INPUT_CLASS3 = "h-4 w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] leading-[14px] text-primary outline-none focus:border-brand";
     function PercentField({ label, unit, value, onChange, onCommit, min = MIN_PERCENT }) {
-      return /* @__PURE__ */ import_react29.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react29.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, label), /* @__PURE__ */ import_react29.default.createElement(
+      return /* @__PURE__ */ import_react29.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react29.default.createElement("span", { className: "text-[11px] leading-[14px] text-secondary" }, label), /* @__PURE__ */ import_react29.default.createElement(
         "input",
         {
           type: "number",
@@ -7191,7 +7191,7 @@ window.__ModuleLoader__.load({
           },
           className: INPUT_CLASS3
         }
-      ), /* @__PURE__ */ import_react29.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, unit));
+      ), /* @__PURE__ */ import_react29.default.createElement("span", { className: "text-[11px] leading-[14px] text-secondary" }, unit));
     }
     function CompactIcon() {
       return /* @__PURE__ */ import_react29.default.createElement(
@@ -7281,7 +7281,7 @@ window.__ModuleLoader__.load({
       return (
         // 卡片容器：文字区不参与交互，开关与阈值输入各自独立，不能互相嵌套；
         // 阈值输入单独占下面一行，避免挤在开关下方把整行卡片撑高
-        /* @__PURE__ */ import_react29.default.createElement("div", { className: "flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react29.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react29.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react29.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react29.default.createElement(CompactIcon, null)), /* @__PURE__ */ import_react29.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react29.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react29.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react29.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)), /* @__PURE__ */ import_react29.default.createElement(
+        /* @__PURE__ */ import_react29.default.createElement("div", { className: "flex w-full flex-col gap-0.5 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react29.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react29.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react29.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react29.default.createElement(CompactIcon, null)), /* @__PURE__ */ import_react29.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react29.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react29.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react29.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)), /* @__PURE__ */ import_react29.default.createElement(
           "button",
           {
             type: "button",
@@ -7433,9 +7433,9 @@ window.__ModuleLoader__.load({
     var MIN_THRESHOLD = 1;
     var MAX_THRESHOLD = 100;
     var MIN_RETAIN = 0;
-    var INPUT_CLASS4 = "w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] text-primary outline-none focus:border-brand";
+    var INPUT_CLASS4 = "h-4 w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] leading-[14px] text-primary outline-none focus:border-brand";
     function CountField({ label, unit, value, onChange, onCommit, min = MIN_RETAIN }) {
-      return /* @__PURE__ */ import_react30.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, label), /* @__PURE__ */ import_react30.default.createElement(
+      return /* @__PURE__ */ import_react30.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-[11px] leading-[14px] text-secondary" }, label), /* @__PURE__ */ import_react30.default.createElement(
         "input",
         {
           type: "number",
@@ -7452,7 +7452,7 @@ window.__ModuleLoader__.load({
           },
           className: INPUT_CLASS4
         }
-      ), /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, unit));
+      ), /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-[11px] leading-[14px] text-secondary" }, unit));
     }
     function CookieIcon() {
       return /* @__PURE__ */ import_react30.default.createElement(
@@ -7542,7 +7542,7 @@ window.__ModuleLoader__.load({
       return (
         // 卡片容器：文字区不参与交互，开关与输入框各自独立，不能互相嵌套；
         // 两个输入框单独占下面一行，避免挤在开关下方把整行卡片撑高
-        /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full flex-col gap-1 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react30.default.createElement(CookieIcon, null)), /* @__PURE__ */ import_react30.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)), /* @__PURE__ */ import_react30.default.createElement(
+        /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full flex-col gap-0.5 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react30.default.createElement(CookieIcon, null)), /* @__PURE__ */ import_react30.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)), /* @__PURE__ */ import_react30.default.createElement(
           "button",
           {
             type: "button",
@@ -8626,11 +8626,11 @@ window.__ModuleLoader__.load({
     var featureList = [
       // 对话体验：一条对话内的阅读与操作
       expand_process_default,
+      auto_run_default,
       image_preview_default,
       context_inspect_default,
-      clear_session_default,
       queue_edit_default,
-      auto_run_default,
+      clear_session_default,
       // 界面布局：侧边栏、会话列表与导航结构
       session_history_default,
       sidebar_more_default,

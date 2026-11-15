@@ -5,8 +5,8 @@ export const contextInspectLocales: FeatureLocales = {
   zh: {
     // 开关标题：点击上下文气泡里的系统提示词与工具定义可查看详情
     title: '上下文详情',
-    // 开关用途说明：说明入口位置与展示内容，并点明只读
-    description: '点击上下文气泡里的「系统提示词」「工具定义」，打开窗口查看当前实际内容，只读不改动。',
+    // 开关用途说明：点明入口位置、展示内容与只读，控制在两行以内
+    description: '点上下文气泡里的提示词与工具定义可查看实际内容，只读。',
     // 开关状态写入失败时的提示
     saveFailed: '保存开关状态失败，请检查浏览器存储权限。',
     // 系统提示词行的悬停提示
@@ -73,8 +73,8 @@ export const contextInspectLocales: FeatureLocales = {
   en: {
     // Switch title: clicking the system prompt and tool definition rows opens details
     title: 'Context details',
-    // Switch description naming the entry point, the shown content and the read-only promise
-    description: 'Click "System prompt" or "Tool definitions" in the context bubble to inspect the exact current content. Read-only.',
+    // Switch description naming the entry point, the shown content and the read-only promise, kept within two lines
+    description: 'Click the prompt or tool rows in the context bubble; read-only.',
     // Shown when the switch state cannot be persisted
     saveFailed: 'Could not save the switch state. Check browser storage permissions.',
     // Hover hint of the system prompt row

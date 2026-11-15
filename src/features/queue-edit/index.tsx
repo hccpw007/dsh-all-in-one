@@ -12,7 +12,7 @@ import { QueueEditToggle } from './toggle'
 const queueEditFeature: FeatureDefinition = {
   id: 'queue-edit',
   group: 'conversation',
-  order: 35,
+  order: 50,
   reloadsPage: true,
   switch: QueueEditToggle,
   client: { apply: applyClient },

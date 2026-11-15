@@ -5,8 +5,8 @@ export const queueEditLocales: FeatureLocales = {
   zh: {
     // 开关标题
     title: '编辑排队消息',
-    // 开关用途说明：解释点编辑会撤回排队并把内容放回输入框
-    description: '排队中的消息点编辑即撤回，文字和图片回到输入框，改完直接重新发送。',
+    // 开关用途说明：解释点编辑会撤回排队并把内容放回输入框，控制在两行以内
+    description: '排队消息点编辑即撤回，文字与图片回到输入框，改完可重发。',
     // 开关状态写入失败时的提示
     saveFailed: '保存开关状态失败，请检查浏览器存储权限。',
     // 排队条上编辑按钮的名称，同时作为悬停提示
@@ -23,8 +23,8 @@ export const queueEditLocales: FeatureLocales = {
   en: {
     // Switch title
     title: 'Edit queued messages',
-    // Switch description explaining that editing recalls the queued message into the composer
-    description: 'Edit recalls a queued message: its text and images return to the composer so you can resend.',
+    // Switch description explaining that editing recalls the queued message into the composer, kept within two lines
+    description: 'Edit recalls a queued message into the composer.',
     // Shown when the switch state cannot be persisted
     saveFailed: 'Could not save the switch state. Check browser storage permissions.',
     // Name and hover hint of the edit button on a queued row

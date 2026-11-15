@@ -23,6 +23,11 @@ import memoryGuard from './memory-guard'
  * 每组内按 order 升序，权重相同时保持本数组顺序。注册表同样按 order 排序，
  * 因此调整顺序时两处要一起改，读代码时这里是唯一的全景。
  *
+ * 组内顺序按使用动线排：先看输出（执行过程展开、图片预览、上下文详情），
+ * 再控执行（全自动），最后是输入框上的操作（撤回排队、开新会话）。
+ * 网格在同一分组内各行等高、行高由最高的一张卡决定，因此调整文案或参数行时
+ * 收益按整组算，不必逐卡评估。
+ *
  * 新增页面型功能：
  *   1. 新建 src/features/<id>/，参考 power-pack 的 index、entry、page 与 locales
  *   2. 改其中的 id，并重写 entry、page 与 locales
@@ -34,11 +39,11 @@ import memoryGuard from './memory-guard'
 export const featureList: FeatureDefinition[] = [
   // 对话体验：一条对话内的阅读与操作
   expandProcess,
+  autoRun,
   imagePreview,
   contextInspect,
-  clearSession,
   queueEdit,
-  autoRun,
+  clearSession,
   // 界面布局：侧边栏、会话列表与导航结构
   sessionHistory,
   sidebarMore,
