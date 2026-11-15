@@ -491,7 +491,7 @@ window.__ModuleLoader__.load({
     // src/features/expand-process/index.tsx
     var expandProcessFeature = {
       id: "expand-process",
-      group: "conversation",
+      group: "parameter",
       order: 10,
       reloadsPage: true,
       switch: ExpandProcessToggle,
@@ -1448,8 +1448,8 @@ window.__ModuleLoader__.load({
     // src/features/image-preview/index.tsx
     var imagePreviewFeature = {
       id: "image-preview",
-      group: "conversation",
-      order: 30,
+      group: "toggle",
+      order: 10,
       reloadsPage: true,
       switch: ImagePreviewToggle,
       client: { apply },
@@ -2244,8 +2244,8 @@ window.__ModuleLoader__.load({
     // src/features/context-inspect/index.tsx
     var contextInspectFeature = {
       id: "context-inspect",
-      group: "conversation",
-      order: 40,
+      group: "toggle",
+      order: 20,
       reloadsPage: true,
       switch: ContextInspectToggle,
       client: { apply: apply2 },
@@ -2975,8 +2975,8 @@ window.__ModuleLoader__.load({
     // src/features/clear-session/index.tsx
     var clearSessionFeature = {
       id: "clear-session",
-      group: "composer",
-      order: 30,
+      group: "toggle",
+      order: 40,
       reloadsPage: true,
       switch: ClearSessionToggle,
       client: { apply: apply3 },
@@ -3390,8 +3390,8 @@ window.__ModuleLoader__.load({
     // src/features/queue-edit/index.tsx
     var queueEditFeature = {
       id: "queue-edit",
-      group: "composer",
-      order: 20,
+      group: "toggle",
+      order: 30,
       reloadsPage: true,
       switch: QueueEditToggle,
       client: { apply: apply4 },
@@ -4010,8 +4010,8 @@ window.__ModuleLoader__.load({
     // src/features/auto-run/index.tsx
     var autoRunFeature = {
       id: "auto-run",
-      group: "composer",
-      order: 10,
+      group: "parameter",
+      order: 30,
       reloadsPage: true,
       switch: AutoRunButtonToggle,
       client: { apply: apply5 },
@@ -4223,8 +4223,8 @@ window.__ModuleLoader__.load({
     // src/features/session-history/index.tsx
     var sessionHistoryFeature = {
       id: "session-history",
-      group: "layout",
-      order: 10,
+      group: "toggle",
+      order: 50,
       reloadsPage: true,
       switch: SessionHistoryToggle,
       client: { apply: apply6 },
@@ -4630,8 +4630,8 @@ window.__ModuleLoader__.load({
     // src/features/sidebar-more/index.tsx
     var sidebarMoreFeature = {
       id: "sidebar-more",
-      group: "layout",
-      order: 30,
+      group: "toggle",
+      order: 70,
       reloadsPage: true,
       switch: SidebarMoreToggle,
       client: { apply: apply7 },
@@ -4887,8 +4887,8 @@ window.__ModuleLoader__.load({
     // src/features/workspace-session-count/index.tsx
     var workspaceSessionCountFeature = {
       id: "workspace-session-count",
-      group: "layout",
-      order: 20,
+      group: "toggle",
+      order: 60,
       reloadsPage: true,
       switch: WorkspaceSessionCountToggle,
       client: { apply: apply8 },
@@ -5558,8 +5558,8 @@ window.__ModuleLoader__.load({
     // src/features/delete-session/index.tsx
     var deleteSessionFeature = {
       id: "delete-session",
-      group: "layout",
-      order: 40,
+      group: "toggle",
+      order: 80,
       reloadsPage: true,
       switch: DeleteSessionToggle,
       client: { apply: apply9 },
@@ -6722,7 +6722,7 @@ window.__ModuleLoader__.load({
     // src/features/power-pack/index.tsx
     var powerPackFeature = {
       id: "power-pack",
-      group: "config",
+      group: "page",
       order: 10,
       entry: PowerPackEntry,
       page: PowerPackPage,
@@ -7070,7 +7070,7 @@ window.__ModuleLoader__.load({
     // src/features/project-memory/index.tsx
     var projectMemoryFeature = {
       id: "project-memory",
-      group: "config",
+      group: "page",
       order: 20,
       entry: ProjectMemoryEntry,
       page: ProjectMemoryPage,
@@ -7332,7 +7332,7 @@ window.__ModuleLoader__.load({
     // src/features/auto-compact/index.tsx
     var autoCompactFeature = {
       id: "auto-compact",
-      group: "conversation",
+      group: "parameter",
       order: 20,
       switch: AutoCompactToggle,
       locales: autoCompactLocales
@@ -7593,8 +7593,8 @@ window.__ModuleLoader__.load({
     // src/features/desktop-cookie/index.tsx
     var desktopCookieFeature = {
       id: "desktop-cookie",
-      group: "config",
-      order: 30,
+      group: "parameter",
+      order: 40,
       switch: DesktopCookieToggle,
       locales: desktopCookieLocales
     };
@@ -8613,8 +8613,8 @@ window.__ModuleLoader__.load({
     // src/features/memory-guard/index.tsx
     var memoryGuardFeature = {
       id: "memory-guard",
-      group: "config",
-      order: 40,
+      group: "page",
+      order: 30,
       entry: MemoryGuardEntry,
       page: MemoryGuardPage,
       client: { apply: apply11 },
@@ -8624,34 +8624,28 @@ window.__ModuleLoader__.load({
 
     // src/features/index.ts
     var featureList = [
-      // 对话内容：对话正文里的过程展开、图片预览与上下文
-      expand_process_default,
-      auto_compact_default,
+      // 快捷开关：拨一下即生效，卡片都只有标题、说明与开关
       image_preview_default,
       context_inspect_default,
-      // 输入框：输入框上的按钮与执行开关
-      auto_run_default,
       queue_edit_default,
       clear_session_default,
-      // 界面布局：侧边栏、会话列表与导航结构
       session_history_default,
       workspace_session_count_default,
       sidebar_more_default,
       delete_session_default,
-      // 配置与维护：带参数或配置页、在后台生效的功能
+      // 参数设置：开关之外还要选范围、设默认值或填阈值
+      expand_process_default,
+      auto_compact_default,
+      auto_run_default,
+      desktop_cookie_default,
+      // 配置页面：点卡片进入独立页面配置，卡片右侧另有开关
       power_pack_default,
       project_memory_default,
-      desktop_cookie_default,
       memory_guard_default
     ];
 
     // src/shell/registry.ts
-    var FEATURE_GROUP_ORDER = [
-      "conversation",
-      "composer",
-      "layout",
-      "config"
-    ];
+    var FEATURE_GROUP_ORDER = ["toggle", "parameter", "page"];
     var DEFAULT_FEATURE_ORDER = 100;
     function isFeatureDefinition(value) {
       if (typeof value !== "object" || value === null) return false;
@@ -8882,14 +8876,12 @@ window.__ModuleLoader__.load({
         "shell.pageTitle": "All In One",
         // 标题右侧的口号：一句话说明插件定位，与标题同行
         "shell.pageSlogan": "\u5C0F\u5DE5\u5177\uFF0C\u4E00\u4E2A\u5165\u53E3",
-        // 分组标题：对话正文里的过程展开、图片预览与上下文
-        "shell.group.conversation": "\u5BF9\u8BDD\u5185\u5BB9",
-        // 分组标题：输入框上的按钮与执行开关
-        "shell.group.composer": "\u8F93\u5165\u6846",
-        // 分组标题：改变侧边栏、导航等界面结构的功能
-        "shell.group.layout": "\u754C\u9762\u5E03\u5C40",
-        // 分组标题：需要先配置再使用的功能
-        "shell.group.config": "\u914D\u7F6E\u4E0E\u7EF4\u62A4",
+        // 分组标题：拨一下即生效的纯开关功能
+        "shell.group.toggle": "\u5FEB\u6377\u5F00\u5173",
+        // 分组标题：开关之外还要填数值或选范围的功能
+        "shell.group.parameter": "\u53C2\u6570\u8BBE\u7F6E",
+        // 分组标题：点卡片进入独立页面配置的功能
+        "shell.group.page": "\u914D\u7F6E\u9875\u9762",
         // 分组标题：未声明分组的兜底分组
         "shell.group.other": "\u5176\u4ED6",
         // 分组标题旁的整组提示：该组开关切换后页面会刷新
@@ -8906,14 +8898,12 @@ window.__ModuleLoader__.load({
         "shell.pageTitle": "All In One",
         // Slogan next to the heading: one line stating what the plugin is for
         "shell.pageSlogan": "Every tool, one entry",
-        // Group heading: process expansion, image preview and context inside a conversation
-        "shell.group.conversation": "Conversation",
-        // Group heading: composer buttons and the execution switch
-        "shell.group.composer": "Composer",
-        // Group heading: features that restructure the sidebar and navigation
-        "shell.group.layout": "Layout",
-        // Group heading: features that need configuration before use
-        "shell.group.config": "Configuration & maintenance",
+        // Group heading: plain switches that take effect the moment they are flipped
+        "shell.group.toggle": "Quick toggles",
+        // Group heading: features that also need a value or a range
+        "shell.group.parameter": "Parameters",
+        // Group heading: features configured on their own page
+        "shell.group.page": "Settings pages",
         // Group heading: fallback for features that declare no group
         "shell.group.other": "Other",
         // Group-level hint shown next to a heading when toggling any switch reloads the page

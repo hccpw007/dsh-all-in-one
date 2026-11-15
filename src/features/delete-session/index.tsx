@@ -12,8 +12,8 @@ import { DeleteSessionToggle } from './toggle'
  */
 const deleteSessionFeature: FeatureDefinition = {
   id: 'delete-session',
-  group: 'layout',
-  order: 40,
+  group: 'toggle',
+  order: 80,
   reloadsPage: true,
   switch: DeleteSessionToggle,
   client: { apply: applyClient },

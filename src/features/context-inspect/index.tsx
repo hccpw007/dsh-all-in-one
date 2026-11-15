@@ -11,8 +11,8 @@ import { ContextInspectToggle } from './toggle'
  */
 const contextInspectFeature: FeatureDefinition = {
   id: 'context-inspect',
-  group: 'conversation',
-  order: 40,
+  group: 'toggle',
+  order: 20,
   reloadsPage: true,
   switch: ContextInspectToggle,
   client: { apply: applyClient },

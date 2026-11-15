@@ -44,21 +44,17 @@ export interface FeatureClientExtension {
  * 分组只决定设置页网格里的分块位置，不影响目录结构：功能目录保持平铺，
  * 分类信息由这里的声明承载，调整分组只改一行，不必移动文件。
  */
-export type FeatureGroup = 'conversation' | 'composer' | 'layout' | 'config'
+export type FeatureGroup = 'toggle' | 'parameter' | 'page'
 
 /**
- * 分组在网格中的渲染顺序：按界面位置自上而下（对话内容 → 输入框 → 侧边栏与会话列表），
- * 最后是改一次就长期生效的配置与维护。
+ * 分组按交互形态划分：拨一下即生效的纯开关 → 还要填数值或选范围的参数 → 点卡片进入
+ * 独立页面配置的功能。同一组的卡片高度一致（都带或都不带参数行），排与排之间不会出现
+ * 一高一矮并排。
  *
  * 新增分组时同时补 `entry.tsx` 的 `shell.group.<id>` 文案；不在本列表中的
  * group 值会被外壳归入兜底的「其他」分组，功能不会从网格中消失。
  */
-export const FEATURE_GROUP_ORDER: readonly FeatureGroup[] = [
-  'conversation',
-  'composer',
-  'layout',
-  'config',
-]
+export const FEATURE_GROUP_ORDER: readonly FeatureGroup[] = ['toggle', 'parameter', 'page']
 
 /** 所有 feature 共有的字段。 */
 interface FeatureCommon {

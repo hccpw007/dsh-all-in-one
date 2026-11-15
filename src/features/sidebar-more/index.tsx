@@ -11,8 +11,8 @@ import { SidebarMoreToggle } from './toggle'
  */
 const sidebarMoreFeature: FeatureDefinition = {
   id: 'sidebar-more',
-  group: 'layout',
-  order: 30,
+  group: 'toggle',
+  order: 70,
   reloadsPage: true,
   switch: SidebarMoreToggle,
   client: { apply: applyClient },

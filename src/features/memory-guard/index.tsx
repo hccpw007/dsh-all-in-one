@@ -13,8 +13,8 @@ import { MemoryGuardPage } from './page'
  */
 const memoryGuardFeature: FeatureDefinition = {
   id: 'memory-guard',
-  group: 'config',
-  order: 40,
+  group: 'page',
+  order: 30,
   entry: MemoryGuardEntry,
   page: MemoryGuardPage,
   client: { apply: applyClient },

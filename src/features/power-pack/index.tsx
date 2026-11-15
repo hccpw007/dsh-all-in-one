@@ -12,7 +12,7 @@ import { PowerPackPage } from './page'
  */
 const powerPackFeature: FeatureDefinition = {
   id: 'power-pack',
-  group: 'config',
+  group: 'page',
   order: 10,
   entry: PowerPackEntry,
   page: PowerPackPage,

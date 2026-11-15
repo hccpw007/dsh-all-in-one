@@ -10,8 +10,8 @@ import { DesktopCookieToggle } from './toggle'
  */
 const desktopCookieFeature: FeatureDefinition = {
   id: 'desktop-cookie',
-  group: 'config',
-  order: 30,
+  group: 'parameter',
+  order: 40,
   switch: DesktopCookieToggle,
   locales: desktopCookieLocales,
 }

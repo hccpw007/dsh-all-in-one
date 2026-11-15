@@ -9,7 +9,7 @@ import { ExpandProcessToggle } from './toggle'
  */
 const expandProcessFeature: FeatureDefinition = {
   id: 'expand-process',
-  group: 'conversation',
+  group: 'parameter',
   order: 10,
   reloadsPage: true,
   switch: ExpandProcessToggle,

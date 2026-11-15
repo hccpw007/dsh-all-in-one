@@ -25,14 +25,12 @@ const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
     'shell.pageTitle': 'All In One',
     // 标题右侧的口号：一句话说明插件定位，与标题同行
     'shell.pageSlogan': '小工具，一个入口',
-    // 分组标题：对话正文里的过程展开、图片预览与上下文
-    'shell.group.conversation': '对话内容',
-    // 分组标题：输入框上的按钮与执行开关
-    'shell.group.composer': '输入框',
-    // 分组标题：改变侧边栏、导航等界面结构的功能
-    'shell.group.layout': '界面布局',
-    // 分组标题：需要先配置再使用的功能
-    'shell.group.config': '配置与维护',
+    // 分组标题：拨一下即生效的纯开关功能
+    'shell.group.toggle': '快捷开关',
+    // 分组标题：开关之外还要填数值或选范围的功能
+    'shell.group.parameter': '参数设置',
+    // 分组标题：点卡片进入独立页面配置的功能
+    'shell.group.page': '配置页面',
     // 分组标题：未声明分组的兜底分组
     'shell.group.other': '其他',
     // 分组标题旁的整组提示：该组开关切换后页面会刷新
@@ -49,14 +47,12 @@ const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
     'shell.pageTitle': 'All In One',
     // Slogan next to the heading: one line stating what the plugin is for
     'shell.pageSlogan': 'Every tool, one entry',
-    // Group heading: process expansion, image preview and context inside a conversation
-    'shell.group.conversation': 'Conversation',
-    // Group heading: composer buttons and the execution switch
-    'shell.group.composer': 'Composer',
-    // Group heading: features that restructure the sidebar and navigation
-    'shell.group.layout': 'Layout',
-    // Group heading: features that need configuration before use
-    'shell.group.config': 'Configuration & maintenance',
+    // Group heading: plain switches that take effect the moment they are flipped
+    'shell.group.toggle': 'Quick toggles',
+    // Group heading: features that also need a value or a range
+    'shell.group.parameter': 'Parameters',
+    // Group heading: features configured on their own page
+    'shell.group.page': 'Settings pages',
     // Group heading: fallback for features that declare no group
     'shell.group.other': 'Other',
     // Group-level hint shown next to a heading when toggling any switch reloads the page

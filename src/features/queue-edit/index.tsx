@@ -11,8 +11,8 @@ import { QueueEditToggle } from './toggle'
  */
 const queueEditFeature: FeatureDefinition = {
   id: 'queue-edit',
-  group: 'composer',
-  order: 20,
+  group: 'toggle',
+  order: 30,
   reloadsPage: true,
   switch: QueueEditToggle,
   client: { apply: applyClient },
