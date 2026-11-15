@@ -63,8 +63,9 @@
 
 1. 参考 `src/features/power-pack/`，在 `src/features/<id>/` 下新建 `index.tsx`、`entry.tsx`、`page.tsx` 与 `locales.ts`。
 2. 修改 `index.tsx` 的 `id`（与文件夹名一致）与 `group`（所属分组），并重写入口、页面与文案。
-3. 入口在卡片右下角放一个「设置 ›」入口（`src/components/CardChevron` 提供箭头）：网格里页面型
-   与开关型卡片外观一致，用户只能靠这个入口判断哪些格子点得进去；开关型入口不放该按钮。
+3. 入口在标题行右侧放一个「设置 ›」提示（`src/components/CardChevron` 提供箭头），与标题同行、
+   不额外占一行：网格里页面型与开关型卡片外观一致，用户只能靠这个提示判断哪些格子点得进去；
+   开关型入口不放该提示。提示落在主体按钮内，点击与整卡一样进入页面。
 4. 在 `src/features/index.ts` 的 `featureList` 中追加该文件夹的默认导出。
 5. 执行 `npm run build`，刷新 Harness 页面确认入口与页面正常。
 

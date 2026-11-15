@@ -7,7 +7,7 @@ export const memoryGuardLocales: FeatureLocales = {
     title: '内存守护',
     // 入口描述：说明定时回收与自动重建的作用
     description: '定时回收界面内存，占用超过阈值且无人操作时自动重建页面。',
-    // 卡片右下角的设置入口
+    // 卡片标题行右侧的设置提示
     settingsAction: '设置',
     // 设置页标题
     pageTitle: '内存守护设置',

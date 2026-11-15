@@ -7,7 +7,7 @@ export const powerPackLocales: FeatureLocales = {
     title: '技能包',
     // 网格入口描述
     description: '按任务组合技能、插件与 MCP，新建对话时选用。',
-    // 卡片右下角「设置」入口的文案
+    // 卡片标题行右侧「设置」提示的文案
     settingsAction: '设置',
     // 没有任何技能包时开关被禁用，用它说明为什么打不开
     needPacks: '先创建技能包才能打开',

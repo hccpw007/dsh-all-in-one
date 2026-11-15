@@ -11,7 +11,7 @@ export const projectMemoryLocales: FeatureLocales = {
     loadFailed: '读取设置失败，请检查宿主是否已加载本插件。',
     // 保存开关状态失败时的提示
     saveFailed: '保存失败',
-    // 卡片右下角的设置按钮，点击进入记忆路径页面
+    // 卡片标题行右侧的设置提示，点击与整卡一样进入记忆路径页面
     settingsAction: '设置',
     // 记忆路径页面标题
     pathTitle: '记忆路径',
