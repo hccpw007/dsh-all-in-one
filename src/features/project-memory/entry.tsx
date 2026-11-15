@@ -111,17 +111,9 @@ export function ProjectMemoryEntry({ t, open }: FeatureEntryProps) {
         </span>
         {/* 入口标题与说明 */}
         <span className="min-w-0 flex-1">
-          {/* 标题行：标题与「设置」提示同行，省掉卡片底部单独一行的设置入口 */}
-          <span className="flex items-baseline justify-between gap-2">
-            {/* 入口标题；宽度不足时截断，保证设置提示固定贴在行尾 */}
-            <span className="min-w-0 truncate text-[13px] font-medium leading-[16px] text-primary">
-              {t('title')}
-            </span>
-            {/* 设置提示：整卡点击即进入页面，这里只表示「点进去还有一层设置页」 */}
-            <span className="flex shrink-0 items-center gap-0.5 text-[11px] leading-[16px] text-secondary">
-              {t('settingsAction')}
-              <CardChevron />
-            </span>
+          {/* 入口标题；宽度不足时截断，避免把右侧的设置提示挤出卡片 */}
+          <span className="block truncate text-[13px] font-medium leading-[16px] text-primary">
+            {t('title')}
           </span>
           {/* 入口描述 */}
           <span className="block text-[11px] leading-[14px] text-secondary">
@@ -135,28 +127,43 @@ export function ProjectMemoryEntry({ t, open }: FeatureEntryProps) {
           ) : null}
         </span>
       </button>
-      {/* 启用开关：只有轨道参与交互，避免与进入页面混淆；与标题行顶部对齐 */}
-      <button
-        type="button"
-        role="switch"
-        aria-checked={enabled}
-        aria-label={t('title')}
-        disabled={payload === null || saving}
-        onClick={() => void handleToggle()}
-        className={cn(
-          'flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition',
-          enabled ? 'bg-brand' : 'bg-line2',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2',
-        )}
-      >
-        <span
-          aria-hidden="true"
+      {/* 右侧一列：开关在上、设置提示在下；间距让提示底边与描述第二行底边齐平，且不贴到卡片底部 */}
+      <div className="flex shrink-0 flex-col items-end gap-2 self-start">
+        {/* 启用开关：只有轨道参与交互，避免与进入页面混淆 */}
+        <button
+          type="button"
+          role="switch"
+          aria-checked={enabled}
+          aria-label={t('title')}
+          disabled={payload === null || saving}
+          onClick={() => void handleToggle()}
           className={cn(
-            'h-4 w-4 aio-switch bg-base shadow transition-transform',
-            enabled ? 'translate-x-[18px]' : 'translate-x-0.5',
+            'flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition',
+            enabled ? 'bg-brand' : 'bg-line2',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2',
           )}
-        />
-      </button>
+        >
+          <span
+            aria-hidden="true"
+            className={cn(
+              'h-4 w-4 aio-switch bg-base shadow transition-transform',
+              enabled ? 'translate-x-[18px]' : 'translate-x-0.5',
+            )}
+          />
+        </button>
+        {/* 设置入口：与说明文字同一水平带，点击进入记忆路径页面 */}
+        <button
+          type="button"
+          onClick={open}
+          aria-label={t('pathTitle')}
+          title={t('pathTitle')}
+          className="flex items-center justify-center gap-0.5 rounded-md border-0 bg-transparent p-0 text-[11px] leading-[16px] text-secondary transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        >
+          {t('settingsAction')}
+          {/* 可进入标记：箭头表示点进去还有一层设置页 */}
+          <CardChevron />
+        </button>
+      </div>
     </div>
   )
 }

@@ -110,17 +110,9 @@ export function PowerPackEntry({ t, open }: FeatureEntryProps) {
         </span>
         {/* 入口标题与说明 */}
         <span className="min-w-0 flex-1">
-          {/* 标题行：标题与「设置」提示同行，省掉卡片底部单独一行的设置入口 */}
-          <span className="flex items-baseline justify-between gap-2">
-            {/* 入口标题；宽度不足时截断，保证设置提示固定贴在行尾 */}
-            <span className="min-w-0 truncate text-[13px] font-medium leading-[16px] text-primary">
-              {t('title')}
-            </span>
-            {/* 设置提示：整卡点击即进入页面，这里只表示「点进去还有一层设置页」 */}
-            <span className="flex shrink-0 items-center gap-0.5 text-[11px] leading-[16px] text-secondary">
-              {t('settingsAction')}
-              <CardChevron />
-            </span>
+          {/* 入口标题；宽度不足时截断，避免把右侧的设置提示挤出卡片 */}
+          <span className="block truncate text-[13px] font-medium leading-[16px] text-primary">
+            {t('title')}
           </span>
           {/* 入口描述 */}
           <span className="block text-[11px] leading-[14px] text-secondary">
@@ -134,30 +126,44 @@ export function PowerPackEntry({ t, open }: FeatureEntryProps) {
           ) : null}
         </span>
       </button>
-      {/* 技能包总开关：关闭后新会话界面不再出现技能包选择；与标题行顶部对齐 */}
-      <button
-        type="button"
-        role="switch"
-        aria-checked={enabled}
-        // 没有技能包时说明为什么打不开，避免禁用后无从得知原因
-        aria-label={needPacks ? t('needPacks') : t('title')}
-        title={needPacks ? t('needPacks') : undefined}
-        disabled={toggleDisabled}
-        onClick={() => void handleToggle()}
-        className={cn(
-          'flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition',
-          enabled ? 'bg-brand' : 'bg-line2',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
-        )}
-      >
-        <span
-          aria-hidden="true"
+      {/* 右侧一列：开关在上、设置提示在下；间距让提示底边与描述第二行底边齐平，且不贴到卡片底部 */}
+      <div className="flex shrink-0 flex-col items-end gap-2 self-start">
+        {/* 技能包总开关：关闭后新会话界面不再出现技能包选择 */}
+        <button
+          type="button"
+          role="switch"
+          aria-checked={enabled}
+          // 没有技能包时说明为什么打不开，避免禁用后无从得知原因
+          aria-label={needPacks ? t('needPacks') : t('title')}
+          title={needPacks ? t('needPacks') : undefined}
+          disabled={toggleDisabled}
+          onClick={() => void handleToggle()}
           className={cn(
-            'h-4 w-4 aio-switch bg-base shadow transition-transform',
-            enabled ? 'translate-x-[18px]' : 'translate-x-0.5',
+            'flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition',
+            enabled ? 'bg-brand' : 'bg-line2',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
           )}
-        />
-      </button>
+        >
+          <span
+            aria-hidden="true"
+            className={cn(
+              'h-4 w-4 aio-switch bg-base shadow transition-transform',
+              enabled ? 'translate-x-[18px]' : 'translate-x-0.5',
+            )}
+          />
+        </button>
+        {/* 设置入口：与说明文字同一水平带，点击进入技能包页面 */}
+        <button
+          type="button"
+          onClick={open}
+          aria-label={t('title')}
+          title={t('title')}
+          className="flex items-center justify-center gap-0.5 rounded-md border-0 bg-transparent p-0 text-[11px] leading-[16px] text-secondary transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        >
+          {t('settingsAction')}
+          <CardChevron />
+        </button>
+      </div>
     </div>
   )
 }
