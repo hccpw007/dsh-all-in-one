@@ -206,8 +206,9 @@ export function AllInOnePage({ t }: AllInOnePageProps) {
           {t('shell.empty')}
         </p>
       ) : (
-        // 按分组逐块渲染：组标题说明这一块功能解决什么问题，组内仍是一张网格
-        <div className="mt-4 space-y-4">
+        // 按分组逐块渲染：组标题说明这一块功能解决什么问题，组内仍是一张网格；
+        // 标题行与第一组之间只留半档间距，避免页头下方空出一大块
+        <div className="mt-2 space-y-4">
           {groupFeatures(registry.list).map((section) => (
             <section key={section.group}>
               {/* 分组标题；组内开关都会刷新页面时，在标题右侧统一说明一次 */}

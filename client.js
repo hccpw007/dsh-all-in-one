@@ -8746,8 +8746,9 @@ window.__ModuleLoader__.load({
         // 尚未注册功能时的空态提示
         /* @__PURE__ */ import_react39.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
       ) : (
-        // 按分组逐块渲染：组标题说明这一块功能解决什么问题，组内仍是一张网格
-        /* @__PURE__ */ import_react39.default.createElement("div", { className: "mt-4 space-y-4" }, groupFeatures(registry.list).map((section) => /* @__PURE__ */ import_react39.default.createElement("section", { key: section.group }, /* @__PURE__ */ import_react39.default.createElement("div", { className: "mb-2 flex items-baseline gap-1" }, /* @__PURE__ */ import_react39.default.createElement("h2", { className: "text-[12px] font-medium text-secondary" }, t(`shell.group.${section.group}`)), needsReloadHint(section.features) ? /* @__PURE__ */ import_react39.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, "\xB7 ", t("shell.groupReloadHint")) : null), /* @__PURE__ */ import_react39.default.createElement("div", { className: "aio-card-grid grid auto-rows-fr gap-2.5" }, section.features.map((feature) => /* @__PURE__ */ import_react39.default.createElement(
+        // 按分组逐块渲染：组标题说明这一块功能解决什么问题，组内仍是一张网格；
+        // 标题行与第一组之间只留半档间距，避免页头下方空出一大块
+        /* @__PURE__ */ import_react39.default.createElement("div", { className: "mt-2 space-y-4" }, groupFeatures(registry.list).map((section) => /* @__PURE__ */ import_react39.default.createElement("section", { key: section.group }, /* @__PURE__ */ import_react39.default.createElement("div", { className: "mb-2 flex items-baseline gap-1" }, /* @__PURE__ */ import_react39.default.createElement("h2", { className: "text-[12px] font-medium text-secondary" }, t(`shell.group.${section.group}`)), needsReloadHint(section.features) ? /* @__PURE__ */ import_react39.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, "\xB7 ", t("shell.groupReloadHint")) : null), /* @__PURE__ */ import_react39.default.createElement("div", { className: "aio-card-grid grid auto-rows-fr gap-2.5" }, section.features.map((feature) => /* @__PURE__ */ import_react39.default.createElement(
           FeatureCard,
           {
             key: feature.id,
