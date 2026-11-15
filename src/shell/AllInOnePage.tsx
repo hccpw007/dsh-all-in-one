@@ -196,8 +196,8 @@ export function AllInOnePage({ t }: AllInOnePageProps) {
       <header className="flex items-baseline gap-2">
         {/* 页面主标题 */}
         <h1 className="text-[17px] font-semibold leading-6 text-primary">{t('shell.pageTitle')}</h1>
-        {/* 标题旁的口号：一句话概括插件定位，用次级色避免与标题抢视线 */}
-        <span className="text-[12px] leading-6 text-secondary">{t('shell.pageSlogan')}</span>
+        {/* 标题旁的口号：一句话概括插件定位，用次级色避免与标题抢视线；不换行，避免掉到标题下方 */}
+        <span className="whitespace-nowrap text-[12px] leading-6 text-secondary">{t('shell.pageSlogan')}</span>
       </header>
       {/* 功能网格：没有注册任何 feature 时显示空态 */}
       {registry.list.length === 0 ? (

@@ -8742,7 +8742,7 @@ window.__ModuleLoader__.load({
         const ActivePage = activePage.page;
         return /* @__PURE__ */ import_react39.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react39.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react39.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react39.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react39.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react39.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react39.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react39.default.createElement(ActivePage, { t: featureTranslate }))));
       }
-      return /* @__PURE__ */ import_react39.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react39.default.createElement("header", { className: "flex items-baseline gap-2" }, /* @__PURE__ */ import_react39.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react39.default.createElement("span", { className: "text-[12px] leading-6 text-secondary" }, t("shell.pageSlogan"))), registry.list.length === 0 ? (
+      return /* @__PURE__ */ import_react39.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react39.default.createElement("header", { className: "flex items-baseline gap-2" }, /* @__PURE__ */ import_react39.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react39.default.createElement("span", { className: "whitespace-nowrap text-[12px] leading-6 text-secondary" }, t("shell.pageSlogan"))), registry.list.length === 0 ? (
         // 尚未注册功能时的空态提示
         /* @__PURE__ */ import_react39.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
       ) : (
@@ -8874,8 +8874,8 @@ window.__ModuleLoader__.load({
         "shell.navTitle": "All In One",
         // 页面主标题
         "shell.pageTitle": "All In One",
-        // 标题右侧的口号：一句话说明插件定位，与标题同行
-        "shell.pageSlogan": "\u5C0F\u5DE5\u5177\uFF0C\u4E00\u4E2A\u5165\u53E3",
+        // 标题右侧的口号：一句话说明插件定位（开关集中在这一页，顺手也在这里），与标题同行
+        "shell.pageSlogan": "\u5F00\u5173\u5728\u8FD9\u513F\uFF0C\u987A\u624B\u4E5F\u5728\u8FD9\u513F",
         // 分组标题：拨一下即生效的纯开关功能
         "shell.group.toggle": "\u5FEB\u6377\u5F00\u5173",
         // 分组标题：开关之外还要填数值或选范围的功能
@@ -8897,7 +8897,7 @@ window.__ModuleLoader__.load({
         // Page heading
         "shell.pageTitle": "All In One",
         // Slogan next to the heading: one line stating what the plugin is for
-        "shell.pageSlogan": "Every tool, one entry",
+        "shell.pageSlogan": "Switches here, convenience here too",
         // Group heading: plain switches that take effect the moment they are flipped
         "shell.group.toggle": "Quick toggles",
         // Group heading: features that also need a value or a range

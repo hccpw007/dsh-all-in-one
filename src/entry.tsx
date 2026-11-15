@@ -23,8 +23,8 @@ const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
     'shell.navTitle': 'All In One',
     // 页面主标题
     'shell.pageTitle': 'All In One',
-    // 标题右侧的口号：一句话说明插件定位，与标题同行
-    'shell.pageSlogan': '小工具，一个入口',
+    // 标题右侧的口号：一句话说明插件定位（开关集中在这一页，顺手也在这里），与标题同行
+    'shell.pageSlogan': '开关在这儿，顺手也在这儿',
     // 分组标题：拨一下即生效的纯开关功能
     'shell.group.toggle': '快捷开关',
     // 分组标题：开关之外还要填数值或选范围的功能
@@ -46,7 +46,7 @@ const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
     // Page heading
     'shell.pageTitle': 'All In One',
     // Slogan next to the heading: one line stating what the plugin is for
-    'shell.pageSlogan': 'Every tool, one entry',
+    'shell.pageSlogan': 'Switches here, convenience here too',
     // Group heading: plain switches that take effect the moment they are flipped
     'shell.group.toggle': 'Quick toggles',
     // Group heading: features that also need a value or a range
