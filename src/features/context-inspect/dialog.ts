@@ -199,6 +199,10 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
   let payload: ContextInspectPayload | null = null
   let failed: string | undefined
   let loading = true
+  /** 是否有读取请求在途：自动刷新据此跳过本轮，避免请求堆积。 */
+  let refreshing = false
+  /** 自动刷新定时器；提前声明，保证关闭函数在任何路径上都能安全清理。 */
+  let timer = 0
   let signature = ''
   let copiedTimer = 0
   const controller = new AbortController()
@@ -485,6 +489,11 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
    * @param silent 自动刷新时为 true：失败不覆盖已经展示的内容
    */
   async function refresh(silent = false): Promise<void> {
+    // 慢会话下上一次请求可能还没回来：再发一次只会堆请求、并让旧响应覆盖新响应
+    if (refreshing) return
+
+    refreshing = true
+
     if (!silent) {
       loading = true
       failed = undefined
@@ -527,6 +536,8 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
       failed = error instanceof Error ? error.message : String(error)
       renderBody()
       renderChrome()
+    } finally {
+      refreshing = false
     }
   }
 
@@ -593,6 +604,9 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
   closeButton.addEventListener('click', () => { closeContextInspectDialog() })
   backdrop.addEventListener('click', () => { closeContextInspectDialog() })
 
+  // 先登记关闭入口再挂 DOM：后面的渲染任何一步抛错时，遮罩仍能被 Esc 或点空白关掉
+  activeDispose = dispose
+
   document.addEventListener('keydown', onKeyDown)
   document.body.appendChild(overlay)
   panel.focus()
@@ -601,11 +615,9 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
   void refresh()
 
   // 自动刷新：页面不可见时跳过，避免后台标签页持续读日志
-  const timer = window.setInterval(() => {
+  timer = window.setInterval(() => {
     if (document.hidden) return
 
     void refresh(true)
   }, REFRESH_INTERVAL_MS)
-
-  activeDispose = dispose
 }

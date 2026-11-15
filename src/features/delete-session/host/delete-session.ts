@@ -15,23 +15,36 @@
 import { readdir, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 
+import type { Dirent } from 'node:fs'
+
 import { resolveDshHome } from '../../../common/dsh-home'
 import { logPerf } from '../../../common/perf'
 import { forgetSessionRecords, forgetSessionRecordsBatch } from './session-records'
 
-/** 会话标识语法：宿主一律用 `session-<uuid>` 作为目录名。 */
-const SESSION_ID_PATTERN = /^session-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
+/** 会话标识的长度上限：宿主实际远小于此，限制只用于挡掉超长请求。 */
+const MAX_SESSION_ID_LENGTH = 200
 
 /** 批量删除目录时的并发上限：磁盘删除是 I/O 密集操作，并发过高反而互相拖慢。 */
 const REMOVE_CONCURRENCY = 6
 
 /**
- * 判断会话标识是否合法。
+ * 判断会话标识能否用作单段目录名。
+ *
+ * 宿主把 id 直接当作目录名：主会话是 `session-<uuid>`，子会话只有裸 uuid，
+ * 而 `SessionId` 类型本身并未约束形状。因此这里不枚举具体形状——那样子会话
+ * 永远删不掉——只挡掉能把路径带到别处的写法：路径分隔符、`.`/`..`、控制字符。
  * @param value 请求带来的原始值
- * @returns 只有宿主认可的 id 形状返回 true
+ * @returns 可用作会话目录下的一级目录名时返回 true
  */
 export function isValidSessionId(value: unknown): value is string {
-  return typeof value === 'string' && SESSION_ID_PATTERN.test(value)
+  if (typeof value !== 'string') return false
+  if (value.length === 0 || value.length > MAX_SESSION_ID_LENGTH) return false
+  // `.` 与 `..` 会把 join 的结果指到会话根目录或它的上级
+  if (value === '.' || value === '..') return false
+  // 分隔符与控制字符意味着请求试图逃出会话目录
+  if (/[/\\\u0000-\u001f]/.test(value)) return false
+
+  return true
 }
 
 /**
@@ -88,7 +101,7 @@ async function listSessionDirs(sessionIds: ReadonlySet<string>): Promise<Map<str
   }
 
   await mapWithConcurrency(projects, REMOVE_CONCURRENCY, async (project) => {
-    let entries
+    let entries: Dirent[] = []
 
     try {
       entries = await readdir(project, { withFileTypes: true })
@@ -96,8 +109,8 @@ async function listSessionDirs(sessionIds: ReadonlySet<string>): Promise<Map<str
       // 项目目录可能在 Host 启动后已被移除，ENOENT 属正常情况
       if ((error as NodeJS.ErrnoException).code === 'ENOENT') return
 
-      console.error('[delete-session] 读取项目目录失败:', project, error)
-      throw error
+      // 其余读取失败只影响这一个项目目录：跳过它，别让整批删除跟着失败
+      console.error('[delete-session] 读取项目目录失败，跳过该项目:', project, error)
     }
 
     for (const entry of entries) {

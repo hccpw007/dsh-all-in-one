@@ -26,8 +26,6 @@ export interface ReadCache<T> {
    * @param force 跳过缓存直接重新加载
    */
   read(key: string, load: () => Promise<T>, force?: boolean): Promise<T>
-  /** 让全部条目失效。 */
-  clear(): void
 }
 
 /**
@@ -75,10 +73,5 @@ export function createReadCache<T>(ttlMs: number): ReadCache<T> {
     return task
   }
 
-  return {
-    read,
-    clear: () => {
-      entries.clear()
-    },
-  }
+  return { read }
 }

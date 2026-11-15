@@ -36,8 +36,13 @@ const MARK_GAP = 2
 /** 会话行是 flex 布局，取不到 gap 时的兜底值（实测宿主为 6px）。 */
 const DEFAULT_ROW_GAP = 6
 
-/** 侧边栏树重建后的重定位间隔；容器失联时才真正重新查询选择器。 */
-const RELOCATE_INTERVAL_MS = 1500
+/**
+ * 变更合并窗口。
+ *
+ * 观察的是整个 document，而流式输出每帧都在改消息区；按帧重扫会让全文档查询与
+ * 逐行强制布局也跟着每帧跑一次，这里改成短防抖，滚动与输入仍然跟手。
+ */
+const RESCAN_DEBOUNCE_MS = 100
 
 /**
  * 构造标识节点：内联样式与图形，不依赖宿主的 Tailwind 是否收录本插件的任意值类。
@@ -172,12 +177,33 @@ function shiftStatusDot(row: Element, mark: HTMLElement): void {
 
 /** 清掉标识带来状态点位移，恢复宿主原始位置。 */
 function resetStatusDot(row: Element): void {
-  const slot = row.querySelector(STATUS_SLOT_SELECTOR)
-  if (slot === null) return
-
+  // 属性与变量和状态槽无关：宿主重排导致槽位消失时也要清，
+  // 否则卸载后行上仍留着位移变量，宿主状态点会继续偏着
   const rowEl = row as HTMLElement
   rowEl.removeAttribute(ROW_ATTRIBUTE)
   rowEl.style.removeProperty(DOT_SHIFT_VARIABLE)
+}
+
+/**
+ * 判断一条变更记录是否可能影响会话行。
+ *
+ * 观察范围是整个 document，消息区、状态栏、设置页的每次改动都会进来；不先过滤
+ * 就会因为它们而重扫全部会话行，并触发一批 getBoundingClientRect。
+ * @param record 变更记录
+ * @returns 变动落在会话行内或新增/移除了会话行时返回 true
+ */
+function touchesSessionRows(record: MutationRecord): boolean {
+  const target = record.target
+  if (target instanceof Element && target.closest(ROW_SELECTOR) !== null) return true
+
+  // 侧边栏整块重建时，行是作为新增节点进来的，target 本身并不在行内
+  for (const node of [...record.addedNodes, ...record.removedNodes]) {
+    if (!(node instanceof Element)) continue
+    if (node.matches(ROW_SELECTOR)) return true
+    if (node.firstElementChild !== null && node.querySelector(ROW_SELECTOR) !== null) return true
+  }
+
+  return false
 }
 
 /**
@@ -234,25 +260,32 @@ function decorateAll(): void {
 export function startSessionMarkDecorator(): () => void {
   ensureEnabledSessionsLoaded()
 
-  let frame = 0
+  let timer: number | undefined
   let disposed = false
 
+  /** 把窗口内的多次变更合并成一次扫描。 */
   const schedule = (): void => {
-    if (disposed || frame !== 0) return
-    frame = window.requestAnimationFrame(() => {
-      frame = 0
+    if (disposed || timer !== undefined) return
+    timer = window.setTimeout(() => {
+      timer = undefined
       decorateAll()
-    })
+    }, RESCAN_DEBOUNCE_MS)
   }
 
   // 状态集合变化（开关切换、首次读取完成）不触发 DOM 变更，需要自己重扫一次
   const unsubscribe = subscribe(schedule)
 
-  const observer = new MutationObserver(schedule)
-  observer.observe(document.body, { childList: true, subtree: true })
+  // 只关心会话行相关的改动：消息区每帧都在变，不过滤会带着全文档查询一起空转
+  const observer = new MutationObserver((records) => {
+    for (const record of records) {
+      if (!touchesSessionRows(record)) continue
 
-  // 侧边栏整棵树被重建时旧行已移除，主观察器仍能看到新节点；这里只兜底补扫一次
-  const relocateTimer = window.setInterval(schedule, RELOCATE_INTERVAL_MS)
+      schedule()
+
+      return
+    }
+  })
+  observer.observe(document.body, { childList: true, subtree: true })
 
   schedule()
 
@@ -260,10 +293,12 @@ export function startSessionMarkDecorator(): () => void {
     disposed = true
     observer.disconnect()
     unsubscribe()
-    window.clearInterval(relocateTimer)
-    if (frame !== 0) window.cancelAnimationFrame(frame)
+    if (timer !== undefined) window.clearTimeout(timer)
 
-    // 插件卸载或设置页关掉入口时清掉残留标识，不给宿主留节点
+    // 插件卸载或设置页关掉入口时清掉残留：标识节点、行上的属性与位移变量、
+    // 以及注入的样式表都要撤掉，否则宿主状态点会继续带着位移
+    for (const row of document.querySelectorAll(`[${ROW_ATTRIBUTE}]`)) resetStatusDot(row)
     for (const mark of document.querySelectorAll(`[${MARK_ATTRIBUTE}]`)) mark.remove()
+    document.getElementById(STYLE_ID)?.remove()
   }
 }

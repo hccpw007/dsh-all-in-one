@@ -31,6 +31,16 @@ export function registerHostRenderedImage(key: string, anchor: Element): void {
 }
 
 /**
+ * 清空宿主渲染位置。
+ *
+ * 卸载时调用：登记项指向的节点在宿主界面重渲染后就失效了，留着会让下一次挂载
+ * 继续拿旧锚点做连续性比较。
+ */
+export function resetHostRendered(): void {
+  hostRenderedPaths.clear()
+}
+
+/**
  * 查询宿主渲染某张图片的位置。
  *
  * 渲染位置随虚拟滚动卸载后登记随之失效，下次查询时自动清掉。

@@ -26,6 +26,14 @@ const DEFAULT_SETTINGS: AutoCompactSettings = {
 /** 百分比允许的最小值。 */
 const MIN_PERCENT = 1
 
+/**
+ * 触发阈值允许的最小值。
+ *
+ * 保留比例必须严格小于阈值，而保留比例最小是 1；阈值取 1 会让 `clampRetain`
+ * 把两者都夹到 1，压缩后占用仍在阈值之上，每次检查都会再压一次同一段历史。
+ */
+const MIN_THRESHOLD_PERCENT = MIN_PERCENT + 1
+
 /** 百分比允许的最大值。 */
 const MAX_PERCENT = 100
 
@@ -38,16 +46,17 @@ function autoCompactSettingsFile(): string {
 }
 
 /**
- * 把任意输入收窄成合法百分比：非数字回退 `fallback`，超出范围夹到 1-100。
+ * 把任意输入收窄成合法百分比：非数字回退 `fallback`，超出范围夹到 `[minimum, 100]`。
  * @param value 原始值
  * @param fallback 无法解析时使用的值
+ * @param minimum 允许的最小值，阈值高于保留比例
  * @returns 合法百分比
  */
-function normalizePercent(value: unknown, fallback: number): number {
+function normalizePercent(value: unknown, fallback: number, minimum = MIN_PERCENT): number {
   const parsed = typeof value === 'number' ? value : Number.NaN
   if (!Number.isFinite(parsed)) return fallback
 
-  return Math.min(MAX_PERCENT, Math.max(MIN_PERCENT, Math.round(parsed)))
+  return Math.min(MAX_PERCENT, Math.max(minimum, Math.round(parsed)))
 }
 
 /**
@@ -69,7 +78,11 @@ function normalizeSettings(value: unknown): AutoCompactSettings {
   if (typeof value !== 'object' || value === null) return { ...DEFAULT_SETTINGS }
 
   const candidate = value as { enabled?: unknown; thresholdPercent?: unknown; retainPercent?: unknown }
-  const thresholdPercent = normalizePercent(candidate.thresholdPercent, DEFAULT_SETTINGS.thresholdPercent)
+  const thresholdPercent = normalizePercent(
+    candidate.thresholdPercent,
+    DEFAULT_SETTINGS.thresholdPercent,
+    MIN_THRESHOLD_PERCENT,
+  )
   const retainPercent = normalizePercent(candidate.retainPercent, DEFAULT_SETTINGS.retainPercent)
 
   return {
@@ -92,7 +105,7 @@ function applyPatch(current: AutoCompactSettings, patch: unknown): AutoCompactSe
   const thresholdPercent =
     candidate.thresholdPercent === undefined
       ? current.thresholdPercent
-      : normalizePercent(candidate.thresholdPercent, current.thresholdPercent)
+      : normalizePercent(candidate.thresholdPercent, current.thresholdPercent, MIN_THRESHOLD_PERCENT)
   const retainPercent =
     candidate.retainPercent === undefined
       ? current.retainPercent

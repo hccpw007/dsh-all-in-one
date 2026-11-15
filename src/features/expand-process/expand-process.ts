@@ -221,11 +221,35 @@ function bootExpandProcess(keys: ExpandProcessKeys): void {
     }, REFRESH_DEBOUNCE_MS)
   }
 
-  /** 观察整页变动：新轮次挂载、切换会话都会触发重算。 */
+  /**
+   * 观察整页变动：新轮次挂载、切换会话都会触发重算。
+   *
+   * 流式输出每帧都在往消息区加节点，但「最新轮次」只在新一轮的轮次节点出现时才
+   * 会变；这里先按变更记录过滤，避免无关改动带着全文档查询一起空转。
+   */
   function observe(): void {
     if (observer !== null || document.body === null) return
 
-    observer = new MutationObserver(schedule)
+    observer = new MutationObserver(function (records) {
+      for (const record of records) {
+        for (const node of record.addedNodes) {
+          if (!(node instanceof Element)) continue
+
+          // 轮次节点本身，或包着轮次节点的容器（切换会话时整块重建）
+          if (node.matches('[data-chat-turn]')) {
+            schedule()
+
+            return
+          }
+
+          if (node.firstElementChild !== null && node.querySelector('[data-chat-turn]') !== null) {
+            schedule()
+
+            return
+          }
+        }
+      }
+    })
     observer.observe(document.body, { childList: true, subtree: true })
   }
 

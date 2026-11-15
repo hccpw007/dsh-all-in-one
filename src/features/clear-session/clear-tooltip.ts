@@ -21,6 +21,14 @@ const GAP_PX = 8
 const EDGE_PX = 12
 
 /**
+ * 当前挂着的提示数量。
+ *
+ * 气泡与样式表在模块内共用：宿主的输入框可能同时存在多个，只有全部卸载后才该
+ * 移除样式节点，否则后挂上的提示会没有样式。
+ */
+let activeTooltips = 0
+
+/**
  * 提示样式：数值与宿主 `Tooltip` 的气泡一致（13px 字、3px 7px 内边距、
  * 圆角与配色取自宿主变量），只是选择器换成插件自己的类名。
  */
@@ -117,8 +125,10 @@ function place(element: HTMLSpanElement, anchor: HTMLElement): void {
  */
 export function attachTooltip(anchor: HTMLElement, readLabel: () => string): () => void {
   ensureStyle()
+  activeTooltips += 1
 
   let timer: number | null = null
+  let detached = false
 
   const hide = (): void => {
     // 悬停计时器还在等时离开，必须一并取消，否则离开后才冒出气泡
@@ -156,6 +166,10 @@ export function attachTooltip(anchor: HTMLElement, readLabel: () => string): () 
   anchor.addEventListener('pointerdown', hide)
 
   return () => {
+    // 卸载函数可能被宿主与自身清理同时调用一次，重复执行会让计数减成负数
+    if (detached) return
+    detached = true
+
     hide()
     anchor.removeEventListener('pointerenter', schedule)
     anchor.removeEventListener('pointerleave', hide)
@@ -168,5 +182,9 @@ export function attachTooltip(anchor: HTMLElement, readLabel: () => string): () 
       bubble.remove()
       bubble = null
     }
+
+    // 最后一个提示卸载时把样式表也撤掉：样式是按 id 共用的，留着就成了孤立节点
+    activeTooltips -= 1
+    if (activeTooltips === 0) document.getElementById(STYLE_ID)?.remove()
   }
 }

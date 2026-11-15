@@ -1,12 +1,29 @@
 /**
  * 轮次导航条的左侧化。
  *
- * 宿主把「跳转到第 N 轮」的标记渲染成 `nav[aria-label="轮次导航"]`，绝对定位在
- * 会话右侧。本模块只做布局搬运：给导航条打标记，用插件样式把横向定位从右侧改到
- * 左侧，DOM 结构与点击跳转完全不动。
+ * 宿主把「跳转到第 N 轮」的标记渲染成会话右侧的一条 `nav`，绝对定位。本模块只做
+ * 布局搬运：给导航条打标记，用插件样式把横向定位从右侧改到左侧，DOM 结构与点击
+ * 跳转完全不动。
  */
-/** 宿主轮次导航条的选择器：`aria-label` 是稳定语义，优先于构建期哈希类名。 */
-const NAV_SELECTOR = 'nav[aria-label="轮次导航"]'
+
+/**
+ * 找到宿主的轮次导航条。
+ *
+ * 不能用 `aria-label` 匹配：那是随界面语言变化的文案（宿主内置 8 种语言），
+ * 非中文界面下会完全匹配不到，功能整体失效且不报错。改用结构特征——导航条里
+ * 每个轮次标记都带 `data-index`，而界面中其它导航（侧边栏等）没有这个属性。
+ * @returns 导航条元素；会话视图还没渲染或结构变化时返回 null
+ */
+function findNav(): HTMLElement | null {
+  for (const nav of document.querySelectorAll('nav')) {
+    if (!(nav instanceof HTMLElement)) continue
+    if (nav.querySelector('[data-index]') === null) continue
+
+    return nav
+  }
+
+  return null
+}
 
 /** 导航条被移动到左侧后打的标记属性，插件样式据此生效。 */
 const NAV_ATTRIBUTE = 'data-aio-turn-nav'
@@ -65,6 +82,10 @@ export function installTurnNav(): () => void {
   let handle: HTMLElement | null = null
   let frame = 0
   let resizeObserver: ResizeObserver | undefined
+  /** 曾经成功认领导航条：用来区分「会话还没渲染」与「宿主结构变了」。 */
+  let navSeen = false
+  /** 是否已经提示过导航条消失，避免兜底轮询每 2 秒刷一条日志。 */
+  let warnedMissingNav = false
 
   /**
    * 把导航条贴到左侧宽度手柄的左边。
@@ -105,13 +126,21 @@ export function installTurnNav(): () => void {
   const track = (): void => {
     if (disposed) return
 
-    const nextNav = document.querySelector(NAV_SELECTOR)
-    const nextSlot = nextNav instanceof HTMLElement ? nextNav.parentElement : null
+    const nextNav = findNav()
+
+    // 认得过的导航条现在找不到了：多半是宿主改了结构，留一条日志便于排查
+    if (nextNav === null && navSeen && !warnedMissingNav) {
+      warnedMissingNav = true
+      console.warn('[session-history] 轮次导航条已不可见，宿主结构可能发生变化')
+    }
+    if (nextNav !== null) navSeen = true
+
+    const nextSlot = nextNav === null ? null : nextNav.parentElement
     const nextHandle = document.querySelector(WIDTH_HANDLE_SELECTOR)
 
     if (nextNav !== nav || nextSlot !== slot || nextHandle !== handle) {
-      nav = nextNav instanceof HTMLElement ? nextNav : null
-      slot = nextSlot instanceof HTMLElement ? nextSlot : null
+      nav = nextNav
+      slot = nextSlot
       handle = nextHandle instanceof HTMLElement ? nextHandle : null
 
       if (resizeObserver !== undefined) {

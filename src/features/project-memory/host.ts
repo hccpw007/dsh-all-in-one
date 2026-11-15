@@ -14,15 +14,15 @@ import { installMemoryPrompt } from './host/prompt'
 import { installMemoryRoutes } from './host/routes'
 import { installMemoryTool } from './host/tool'
 
+/** 功能标识，与 feature 目录名一致；装配失败时用于定位。 */
+export const id = 'project-memory'
+
 /**
  * 记忆需要提示词、工具与 Web 服务器三类服务。
  *
  * 宿主的 inject 是全有或全无：任一服务缺失时本扩展整体不执行。三者在 web profile
  * 里同时存在；单独缺失时由宿主报告启动错误，比静默降级更容易排查。
  */
-/** 功能标识，与 feature 目录名一致；装配失败时用于定位。 */
-export const id = 'project-memory'
-
 export const inject = ['systemPrompt', 'tools', 'webServer']
 
 /**

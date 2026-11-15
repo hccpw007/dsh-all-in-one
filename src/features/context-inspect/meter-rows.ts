@@ -16,6 +16,9 @@ const PANEL_SELECTOR = '[role="dialog"]'
 /** 弹层里被接管的行，值为区块名；用于样式与重复接管判定。 */
 const ROW_ATTRIBUTE = 'data-dsh-aio-context-inspect'
 
+/** 弹层里按界面顺序接管的三行；行数在查找阶段已固定为 3。 */
+const CLAIMED_SECTIONS: InspectSection[] = ['system', 'tools', 'messages']
+
 /** 行接管需要的界面文案。 */
 export interface MeterRowLabels {
   /** 系统提示词行的可点击提示 */
@@ -110,9 +113,14 @@ function hintOf(section: InspectSection, labels: MeterRowLabels): string {
  * @param row 行元素
  * @param section 该行对应的区块
  * @param options 安装参数
+ * @returns 撤销绑定的函数；该行已被认领时返回 undefined
  */
-function claimRow(row: Element, section: InspectSection, options: MeterRowOptions): void {
-  if (row.hasAttribute(ROW_ATTRIBUTE)) return
+function claimRow(
+  row: Element,
+  section: InspectSection,
+  options: MeterRowOptions,
+): (() => void) | undefined {
+  if (row.hasAttribute(ROW_ATTRIBUTE)) return undefined
 
   row.setAttribute(ROW_ATTRIBUTE, section)
   row.setAttribute('role', 'button')
@@ -129,27 +137,46 @@ function claimRow(row: Element, section: InspectSection, options: MeterRowOption
     options.open(section)
   }
 
-  row.addEventListener('click', activate)
-  row.addEventListener('keydown', (event) => {
+  /**
+   * 键盘触发：只认回车与空格，与原生按钮一致。
+   * @param event 键盘事件
+   */
+  const onKeydown = (event: Event): void => {
     if (!(event instanceof KeyboardEvent)) return
     if (event.key !== 'Enter' && event.key !== ' ') return
 
     activate(event)
-  })
+  }
+
+  row.addEventListener('click', activate)
+  row.addEventListener('keydown', onKeydown)
+
+  // 属性与监听都是插件加的：宿主弹层还开着时禁用功能，这些行必须立刻恢复原状，
+  // 否则它们仍保持可点击外观，并继续响应点击打开窗口
+  return () => {
+    row.removeAttribute(ROW_ATTRIBUTE)
+    row.removeAttribute('role')
+    row.removeAttribute('tabindex')
+    row.removeAttribute('title')
+    row.removeEventListener('click', activate)
+    row.removeEventListener('keydown', onKeydown)
+  }
 }
 
 /**
  * 扫描当前打开的弹层，接管上下文构成的前两行。
  * @param options 安装参数
+ * @param unbinds 收集各行的撤销函数，供卸载时统一恢复
  */
-function claimPanels(options: MeterRowOptions): void {
+function claimPanels(options: MeterRowOptions, unbinds: Set<() => void>): void {
   for (const panel of document.querySelectorAll(PANEL_SELECTOR)) {
     const rows = findBreakdownRows(panel)
     if (rows === null) continue
 
-    claimRow(rows[0], 'system', options)
-    claimRow(rows[1], 'tools', options)
-    claimRow(rows[2], 'messages', options)
+    for (const [index, section] of CLAIMED_SECTIONS.entries()) {
+      const unbind = claimRow(rows[index], section, options)
+      if (unbind !== undefined) unbinds.add(unbind)
+    }
   }
 }
 
@@ -168,6 +195,8 @@ export function installMeterRows(options: MeterRowOptions): () => void {
 
   let timer = 0
   let disposed = false
+  /** 已认领行的撤销函数：卸载时把宿主行恢复原状。 */
+  const unbinds = new Set<() => void>()
 
   /**
    * 合并同一批 DOM 变化里的扫描，避免每次插入都同步查询整棵文档。
@@ -179,7 +208,7 @@ export function installMeterRows(options: MeterRowOptions): () => void {
       timer = 0
       if (disposed) return
 
-      claimPanels(options)
+      claimPanels(options, unbinds)
     }, 30)
   }
 
@@ -199,7 +228,7 @@ export function installMeterRows(options: MeterRowOptions): () => void {
   observer.observe(document.body, { childList: true })
 
   // 插件加载时弹层可能已经打开（例如热重载），先补一次扫描
-  claimPanels(options)
+  claimPanels(options, unbinds)
 
   return () => {
     disposed = true
@@ -207,7 +236,9 @@ export function installMeterRows(options: MeterRowOptions): () => void {
     observer.disconnect()
     style.remove()
 
-    // 行上的标记与监听器不再清理：宿主弹层关闭时这些节点整体被移除，
-    // 而标记留着还能挡住热重载后的重复绑定（重复绑定会让一次点击打开两个窗口）
+    // 宿主弹层此刻可能还开着：行上的可点击属性与监听必须由我们自己撤掉，
+    // 否则禁用功能后它们仍保持可点击外观并继续打开窗口
+    for (const unbind of unbinds) unbind()
+    unbinds.clear()
   }
 }

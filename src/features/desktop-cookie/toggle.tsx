@@ -30,13 +30,15 @@ interface CountFieldProps {
   onChange: (value: string) => void
   /** 失焦或回车时提交。 */
   onCommit: () => void
+  /** 输入框允许的最小值；保留条数可以为 0，阈值不行。 */
+  min?: number
 }
 
 /**
  * 渲染一个条数输入行。
  * @param props 字段属性
  */
-function CountField({ label, unit, value, onChange, onCommit }: CountFieldProps) {
+function CountField({ label, unit, value, onChange, onCommit, min = MIN_RETAIN }: CountFieldProps) {
   return (
     <label className="flex items-center gap-1">
       {/* 输入行标签 */}
@@ -44,7 +46,7 @@ function CountField({ label, unit, value, onChange, onCommit }: CountFieldProps)
       <input
         type="number"
         inputMode="numeric"
-        min={MIN_RETAIN}
+        min={min}
         max={MAX_THRESHOLD}
         step={1}
         value={value}
@@ -260,6 +262,7 @@ export function DesktopCookieToggle({ t }: FeatureSwitchProps) {
             value={thresholdDraft}
             onChange={setThresholdDraft}
             onCommit={commitThreshold}
+            min={MIN_THRESHOLD}
           />
           <CountField
             label={t('retainLabel')}

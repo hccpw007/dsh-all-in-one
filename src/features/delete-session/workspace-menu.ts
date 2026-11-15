@@ -274,8 +274,28 @@ export function installWorkspaceMenu(
     window.requestAnimationFrame(scan)
   }
 
-  // 只监听节点增删：会话流式输出会频繁触发，但回调里只在点开菜单后做少量查询
-  const observer = new MutationObserver(schedule)
+  // 只监听节点增删：没点开过菜单时直接被 pending 判空挡掉，不做任何查询
+  const observer = new MutationObserver((records) => {
+    if (pending === undefined) return
+
+    for (const record of records) {
+      for (const node of record.addedNodes) {
+        if (!(node instanceof Element)) continue
+        // 菜单本身，或包着菜单的容器（宿主用 portal 整块插入）
+        if (node.matches(MENU_SELECTOR)) {
+          schedule()
+
+          return
+        }
+
+        if (node.firstElementChild !== null && node.querySelector(MENU_SELECTOR) !== null) {
+          schedule()
+
+          return
+        }
+      }
+    }
+  })
   observer.observe(document.body, { childList: true, subtree: true })
   document.addEventListener('click', onClick, true)
 

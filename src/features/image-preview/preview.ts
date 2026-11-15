@@ -9,7 +9,12 @@
  * 采用原生 DOM 而非 React：预览要插进宿主渲染的任意消息块之间，宿主不提供
  * 消息级插槽，用 React 会与宿主的渲染树互相覆盖。
  */
-import { hostRenderedAnchor, isContinuous, registerHostRenderedImage } from './continuity'
+import {
+  hostRenderedAnchor,
+  isContinuous,
+  registerHostRenderedImage,
+  resetHostRendered,
+} from './continuity'
 import { closeImagePreview } from './lightbox'
 
 /** 预览容器的标记属性，扫描时据此跳过自己插入的节点，避免回调自激。 */
@@ -523,6 +528,12 @@ export function isOwnPreviewNode(node: Node): boolean {
 export function disposePreviews(): void {
   closeImagePreview()
   previewOwners.clear()
+
+  // 失败记录与解码告警是跨会话累积的模块级状态：开关关掉再打开时不清理，
+  // 之前失败过的图片会一直被跳过，宽屏器也还指着已经卸载的锚点
+  failedPaths.clear()
+  warnedDecodeFailures.clear()
+  resetHostRendered()
 
   for (const element of document.querySelectorAll(`[${PREVIEW_ATTRIBUTE}]`)) element.remove()
 }

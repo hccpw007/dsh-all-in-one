@@ -14,10 +14,10 @@ import { cleanupAuthCookies } from './host/cleanup'
 import { installDesktopCookieRoutes } from './host/routes'
 import { readDesktopCookieSettings } from './host/settings'
 
-/** 设置接口挂在 Web 服务器上；服务缺失时只跳过路由，启动清理照常执行。 */
 /** 功能标识，与 feature 目录名一致；装配失败时用于定位。 */
 export const id = 'desktop-cookie'
 
+/** 设置接口挂在 Web 服务器上；服务缺失时只跳过路由，启动清理照常执行。 */
 export const inject = ['webServer']
 
 /**

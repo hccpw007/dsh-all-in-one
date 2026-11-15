@@ -48,7 +48,7 @@ const STAGE_PADDING = 32
  * @param zoom 目标倍数
  * @returns 收敛到区间内的倍数；非有限数按 1 处理
  */
-export function clampZoom(zoom: number): number {
+function clampZoom(zoom: number): number {
   if (!Number.isFinite(zoom)) return 1
 
   return Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, zoom))
@@ -96,7 +96,7 @@ export function zoomAt(view: ZoomView, anchor: ZoomAnchor, targetZoom: number): 
  * @param factor 倍数；大于 1 放大，小于 1 缩小
  * @returns 缩放后的视图
  */
-export function zoomBy(view: ZoomView, factor: number): ZoomView {
+function zoomBy(view: ZoomView, factor: number): ZoomView {
   return zoomAt(view, { x: 0, y: 0 }, view.zoom * factor)
 }
 

@@ -277,6 +277,24 @@ function clickNewMenuItem(before: Set<Element>, index: number, attempt: number):
 }
 
 /**
+ * 判断一条变更记录是否可能需要重新注入。
+ *
+ * 宿主只在点开菜单后渲染菜单节点，其余页面变动与本功能无关；不先过滤，流式输出
+ * 期间就会每帧都去查两次选择器。
+ * @param record 变更记录
+ * @returns 新增内容涉及菜单节点时返回 true
+ */
+function touchesMenu(record: MutationRecord): boolean {
+  for (const node of record.addedNodes) {
+    if (!(node instanceof Element)) continue
+    if (node.matches('[role="menu"]')) return true
+    if (node.firstElementChild !== null && node.querySelector('[role="menu"]') !== null) return true
+  }
+
+  return false
+}
+
+/**
  * 把顶部入口搬进当前打开的底部菜单。
  *
  * 宿主只在点开时渲染菜单，因此每次 DOM 变化都检查一次：菜单已存在注入项时直接返回，
@@ -371,8 +389,16 @@ export function installSidebarMore(t: Translate): () => void {
     frame = window.requestAnimationFrame(scan)
   }
 
-  // 只监听节点增删：会话流式输出会频繁触发，但回调里只做几次轻量查询
-  const observer = new MutationObserver(schedule)
+  // 只监听节点增删：会话流式输出会频繁触发，回调先按变更记录过滤到菜单节点
+  const observer = new MutationObserver((records) => {
+    for (const record of records) {
+      if (!touchesMenu(record)) continue
+
+      schedule()
+
+      return
+    }
+  })
   observer.observe(document.body, { childList: true, subtree: true })
   schedule()
 
@@ -387,6 +413,8 @@ export function installSidebarMore(t: Translate): () => void {
     // 卸载后宿主可能整块重建侧边栏，缓存引用随之失效
     cachedTrigger = null
     cachedPanelList = null
+    // 注入的菜单项和宿主节点同级，宿主不会替我们回收，必须自己收走
+    for (const item of document.querySelectorAll(`[${INJECTED_ATTRIBUTE}]`)) item.remove()
     document.getElementById(STYLE_ID)?.remove()
     document.documentElement.removeAttribute(SUPPRESS_ATTRIBUTE)
   }

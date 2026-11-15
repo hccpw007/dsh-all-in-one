@@ -23,6 +23,14 @@ const DEFAULT_SETTINGS: DesktopCookieSettings = {
 /** 阈值允许的最小值。 */
 const MIN_THRESHOLD = 1
 
+/**
+ * 保留条数允许的最小值。
+ *
+ * 0 表示把命中的认证记录全部删掉，界面与 README 都把它当作有效选项提供；
+ * 若在这里抬到 1，用户填 0 保存后会静默回弹，宣称的功能等于不存在。
+ */
+const MIN_RETAIN = 0
+
 /** 阈值允许的最大值；再大也只是让旧的认证记录白占地方。 */
 const MAX_THRESHOLD = 100
 
@@ -35,16 +43,17 @@ function desktopCookieSettingsFile(): string {
 }
 
 /**
- * 把任意输入收窄成合法条数：非数字回退 `fallback`，超出范围夹到 1-100。
+ * 把任意输入收窄成合法条数：非数字回退 `fallback`，超出范围夹到 `[minimum, 100]`。
  * @param value 原始值
  * @param fallback 无法解析时使用的值
+ * @param minimum 允许的最小值；保留条数可以为 0，阈值不行
  * @returns 合法条数
  */
-function normalizeCount(value: unknown, fallback: number): number {
+function normalizeCount(value: unknown, fallback: number, minimum = MIN_THRESHOLD): number {
   const parsed = typeof value === 'number' ? value : Number.NaN
   if (!Number.isFinite(parsed)) return fallback
 
-  return Math.min(MAX_THRESHOLD, Math.max(MIN_THRESHOLD, Math.round(parsed)))
+  return Math.min(MAX_THRESHOLD, Math.max(minimum, Math.round(parsed)))
 }
 
 /**
@@ -66,8 +75,8 @@ function normalizeSettings(value: unknown): DesktopCookieSettings {
   if (typeof value !== 'object' || value === null) return { ...DEFAULT_SETTINGS }
 
   const candidate = value as { enabled?: unknown; threshold?: unknown; retain?: unknown }
-  const threshold = normalizeCount(candidate.threshold, DEFAULT_SETTINGS.threshold)
-  const retain = normalizeCount(candidate.retain, DEFAULT_SETTINGS.retain)
+  const threshold = normalizeCount(candidate.threshold, DEFAULT_SETTINGS.threshold, MIN_THRESHOLD)
+  const retain = normalizeCount(candidate.retain, DEFAULT_SETTINGS.retain, MIN_RETAIN)
 
   return {
     enabled: typeof candidate.enabled === 'boolean' ? candidate.enabled : DEFAULT_SETTINGS.enabled,
@@ -89,9 +98,11 @@ function applyPatch(current: DesktopCookieSettings, patch: unknown): DesktopCook
   const threshold =
     candidate.threshold === undefined
       ? current.threshold
-      : normalizeCount(candidate.threshold, current.threshold)
+      : normalizeCount(candidate.threshold, current.threshold, MIN_THRESHOLD)
   const retain =
-    candidate.retain === undefined ? current.retain : normalizeCount(candidate.retain, current.retain)
+    candidate.retain === undefined
+      ? current.retain
+      : normalizeCount(candidate.retain, current.retain, MIN_RETAIN)
 
   return {
     enabled: typeof candidate.enabled === 'boolean' ? candidate.enabled : current.enabled,

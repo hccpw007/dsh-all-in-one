@@ -5,7 +5,7 @@
  * 不写进 profile 的 patch，避免升级或切换 bundle 时被覆盖。
  */
 import { randomBytes } from 'node:crypto'
-import { mkdir, readFile, rename, writeFile } from 'node:fs/promises'
+import { copyFile, mkdir, readFile, rename, writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 
 import type { PowerPack, PowerPackDocument, ResourceRule, RuleMode } from '../types'
@@ -82,6 +82,26 @@ export function normalizePack(value: unknown): PowerPack | undefined {
 }
 
 /**
+ * 把无法解析的配置文件改名保存。
+ *
+ * 解析失败后调用方会降级成空文档，而紧接着的任何一次保存都会用空文档覆盖原文件。
+ * 不先把原文件挪走，用户的全部技能包就算彻底丢了；改名成带时间戳的隔离文件，
+ * 至少还能由用户手工捞回来。
+ * @param file 配置文件路径
+ * @param cause 解析失败的原因，随日志一起输出便于定位
+ */
+async function quarantineBrokenFile(file: string, cause: unknown): Promise<void> {
+  const backup = `${file}.corrupt-${Date.now()}`
+
+  try {
+    await rename(file, backup)
+    console.error('[power-pack] 技能包配置无法解析，已备份到:', backup, cause)
+  } catch (error) { // 备份失败不能掩盖原始解析错误，两个错误一起记录
+    console.error('[power-pack] 技能包配置无法解析且备份失败:', file, cause, error)
+  }
+}
+
+/**
  * 解析一份技能包文件。
  *
  * 兼容重命名前的字段名与文件名：旧文档把列表放在 `styles` 里。
@@ -110,10 +130,13 @@ async function parsePackFile(file: string): Promise<PowerPackDocument | undefine
     // 开关是后加字段：旧文件没有时按关闭处理，与「默认关」的约定一致
     return { version: 1, packs, defaultPackId, enabled: parsed.enabled === true }
   } catch (error) {
-    // 首次运行时文件不存在是正常情况；其它读取错误留下日志但仍保持可用
-    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
-      console.error('[power-pack] 读取技能包配置失败:', file, error)
-    }
+    // 首次运行时文件不存在是正常情况
+    if ((error as NodeJS.ErrnoException).code === 'ENOENT') return undefined
+
+    // 其它错误（JSON 语法错误、读权限、半份文件）都意味着内容不可用：
+    // 先隔离原文件，再交给调用方降级，避免下一次保存把它覆盖掉
+    await quarantineBrokenFile(file, error)
+
     return undefined
   }
 }
@@ -145,6 +168,23 @@ export async function readPacks(): Promise<PowerPackDocument> {
 }
 
 /**
+ * 覆盖前把现有配置复制为 `.bak`。
+ *
+ * 技能包是用户手工编辑的配置，一旦写坏了只能靠历史副本恢复；配置体积只有几 KB，
+ * 每次写入多一次复制的代价可以忽略。
+ * @param file 配置文件路径
+ */
+async function backupExisting(file: string): Promise<void> {
+  try {
+    await copyFile(file, `${file}.bak`)
+  } catch (error) { // 首次写入时没有现成文件，属正常情况
+    if ((error as NodeJS.ErrnoException).code !== 'ENOENT') {
+      console.error('[power-pack] 备份技能包配置失败:', file, error)
+    }
+  }
+}
+
+/**
  * 原子写入技能包文档：先写临时文件再改名，避免写入中断留下半份配置。
  * @param document 技能包文档
  */
@@ -155,6 +195,7 @@ export async function writePacks(document: PowerPackDocument): Promise<void> {
 
   try {
     await mkdir(dirname(file), { recursive: true })
+    await backupExisting(file)
     await writeFile(temp, `${JSON.stringify(document, null, 2)}\n`, 'utf8')
     await rename(temp, file)
   } catch (error) {

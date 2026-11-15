@@ -213,7 +213,21 @@ window.__ModuleLoader__.load({
       }
       function observe() {
         if (observer !== null || document.body === null) return;
-        observer = new MutationObserver(schedule);
+        observer = new MutationObserver(function(records) {
+          for (const record of records) {
+            for (const node of record.addedNodes) {
+              if (!(node instanceof Element)) continue;
+              if (node.matches("[data-chat-turn]")) {
+                schedule();
+                return;
+              }
+              if (node.firstElementChild !== null && node.querySelector("[data-chat-turn]") !== null) {
+                schedule();
+                return;
+              }
+            }
+          }
+        });
         observer.observe(document.body, { childList: true, subtree: true });
       }
       function unobserve() {
@@ -862,6 +876,9 @@ window.__ModuleLoader__.load({
     function registerHostRenderedImage(key, anchor) {
       hostRenderedPaths.set(key, anchor);
     }
+    function resetHostRendered() {
+      hostRenderedPaths.clear();
+    }
     function hostRenderedAnchor(key) {
       const anchor = hostRenderedPaths.get(key);
       if (anchor === void 0) return void 0;
@@ -1134,6 +1151,9 @@ window.__ModuleLoader__.load({
     function disposePreviews() {
       closeImagePreview();
       previewOwners.clear();
+      failedPaths.clear();
+      warnedDecodeFailures.clear();
+      resetHostRendered();
       for (const element of document.querySelectorAll(`[${PREVIEW_ATTRIBUTE}]`)) element.remove();
     }
 
@@ -1519,6 +1539,8 @@ window.__ModuleLoader__.load({
       let payload = null;
       let failed;
       let loading = true;
+      let refreshing = false;
+      let timer = 0;
       let signature = "";
       let copiedTimer = 0;
       const controller = new AbortController();
@@ -1706,6 +1728,8 @@ window.__ModuleLoader__.load({
         copyButton.className = payload === null ? `${FOOTER_BUTTON_CLASS} cursor-not-allowed opacity-40` : FOOTER_BUTTON_CLASS;
       }
       async function refresh(silent = false) {
+        if (refreshing) return;
+        refreshing = true;
         if (!silent) {
           loading = true;
           failed = void 0;
@@ -1739,6 +1763,8 @@ window.__ModuleLoader__.load({
           failed = error instanceof Error ? error.message : String(error);
           renderBody();
           renderChrome();
+        } finally {
+          refreshing = false;
         }
       }
       function dispose() {
@@ -1794,21 +1820,22 @@ window.__ModuleLoader__.load({
       backdrop.addEventListener("click", () => {
         closeContextInspectDialog();
       });
+      activeDispose2 = dispose;
       document.addEventListener("keydown", onKeyDown);
       document.body.appendChild(overlay);
       panel.focus();
       renderChrome();
       void refresh();
-      const timer = window.setInterval(() => {
+      timer = window.setInterval(() => {
         if (document.hidden) return;
         void refresh(true);
       }, REFRESH_INTERVAL_MS);
-      activeDispose2 = dispose;
     }
 
     // src/features/context-inspect/meter-rows.ts
     var PANEL_SELECTOR = '[role="dialog"]';
     var ROW_ATTRIBUTE = "data-dsh-aio-context-inspect";
+    var CLAIMED_SECTIONS = ["system", "tools", "messages"];
     var ROW_STYLE = [
       `[${ROW_ATTRIBUTE}] {`,
       "  cursor: pointer;",
@@ -1853,7 +1880,7 @@ window.__ModuleLoader__.load({
       }
     }
     function claimRow(row, section, options) {
-      if (row.hasAttribute(ROW_ATTRIBUTE)) return;
+      if (row.hasAttribute(ROW_ATTRIBUTE)) return void 0;
       row.setAttribute(ROW_ATTRIBUTE, section);
       row.setAttribute("role", "button");
       row.setAttribute("tabindex", "0");
@@ -1863,20 +1890,30 @@ window.__ModuleLoader__.load({
         event.stopPropagation();
         options.open(section);
       };
-      row.addEventListener("click", activate);
-      row.addEventListener("keydown", (event) => {
+      const onKeydown = (event) => {
         if (!(event instanceof KeyboardEvent)) return;
         if (event.key !== "Enter" && event.key !== " ") return;
         activate(event);
-      });
+      };
+      row.addEventListener("click", activate);
+      row.addEventListener("keydown", onKeydown);
+      return () => {
+        row.removeAttribute(ROW_ATTRIBUTE);
+        row.removeAttribute("role");
+        row.removeAttribute("tabindex");
+        row.removeAttribute("title");
+        row.removeEventListener("click", activate);
+        row.removeEventListener("keydown", onKeydown);
+      };
     }
-    function claimPanels(options) {
+    function claimPanels(options, unbinds) {
       for (const panel of document.querySelectorAll(PANEL_SELECTOR)) {
         const rows = findBreakdownRows(panel);
         if (rows === null) continue;
-        claimRow(rows[0], "system", options);
-        claimRow(rows[1], "tools", options);
-        claimRow(rows[2], "messages", options);
+        for (const [index, section] of CLAIMED_SECTIONS.entries()) {
+          const unbind = claimRow(rows[index], section, options);
+          if (unbind !== void 0) unbinds.add(unbind);
+        }
       }
     }
     function installMeterRows(options) {
@@ -1887,12 +1924,13 @@ window.__ModuleLoader__.load({
       document.head.appendChild(style);
       let timer = 0;
       let disposed = false;
+      const unbinds = /* @__PURE__ */ new Set();
       const schedule = () => {
         if (timer !== 0) return;
         timer = window.setTimeout(() => {
           timer = 0;
           if (disposed) return;
-          claimPanels(options);
+          claimPanels(options, unbinds);
         }, 30);
       };
       const observer = new MutationObserver((records) => {
@@ -1907,12 +1945,14 @@ window.__ModuleLoader__.load({
         }
       });
       observer.observe(document.body, { childList: true });
-      claimPanels(options);
+      claimPanels(options, unbinds);
       return () => {
         disposed = true;
         window.clearTimeout(timer);
         observer.disconnect();
         style.remove();
+        for (const unbind of unbinds) unbind();
+        unbinds.clear();
       };
     }
 
@@ -2222,6 +2262,7 @@ window.__ModuleLoader__.load({
     var SHOW_DELAY_MS = 500;
     var GAP_PX = 8;
     var EDGE_PX = 12;
+    var activeTooltips = 0;
     var STYLE_TEXT = `
     .${TOOLTIP_CLASS} {
       display: none;
@@ -2280,7 +2321,9 @@ window.__ModuleLoader__.load({
     }
     function attachTooltip(anchor, readLabel) {
       ensureStyle();
+      activeTooltips += 1;
       let timer = null;
+      let detached = false;
       const hide = () => {
         if (timer !== null) {
           window.clearTimeout(timer);
@@ -2307,6 +2350,8 @@ window.__ModuleLoader__.load({
       anchor.addEventListener("blur", hide);
       anchor.addEventListener("pointerdown", hide);
       return () => {
+        if (detached) return;
+        detached = true;
         hide();
         anchor.removeEventListener("pointerenter", schedule);
         anchor.removeEventListener("pointerleave", hide);
@@ -2317,6 +2362,8 @@ window.__ModuleLoader__.load({
           bubble.remove();
           bubble = null;
         }
+        activeTooltips -= 1;
+        if (activeTooltips === 0) document.getElementById(STYLE_ID)?.remove();
       };
     }
 
@@ -2324,6 +2371,8 @@ window.__ModuleLoader__.load({
     var BUTTON_ATTRIBUTE = "data-aio-clear-session";
     var STYLE_ID2 = "aio-clear-session-style";
     var BUTTON_CLASS = "aio-clear-session";
+    var FILE_INPUT_SELECTOR = 'input[type="file"]';
+    var RESCAN_DEBOUNCE_MS = 100;
     var SVG_NAMESPACE = "http://www.w3.org/2000/svg";
     var ICON_PATH = "M2.37 11.25C1.59 9.89 1.32 8.3 1.62 6.76 1.92 5.22 2.76 3.84 4 2.88 5.23 1.91 6.77 1.43 8.34 1.51 9.9 1.59 11.39 2.24 12.51 3.32 13.64 4.41 14.34 5.87 14.48 7.43 14.61 8.99 14.18 10.55 13.26 11.82 12.34 13.09 10.99 13.98 9.46 14.33 8.19 14.63 6.86 14.53 5.65 14.06 5.17 13.87 4.77 13.49 4.27 13.4 3.67 13.28 2.95 13.56 2.04 14.33M8 5V11M5 8H11";
     var STYLE_TEXT2 = `
@@ -2373,7 +2422,7 @@ window.__ModuleLoader__.load({
     }
     function findToolbars() {
       const toolbars = [];
-      for (const input of document.querySelectorAll('input[type="file"]')) {
+      for (const input of document.querySelectorAll(FILE_INPUT_SELECTOR)) {
         const parent = input.parentElement;
         if (parent === null) continue;
         if (parent.querySelector("button") === null) continue;
@@ -2382,12 +2431,20 @@ window.__ModuleLoader__.load({
       }
       return toolbars;
     }
+    function touchesToolbar(record) {
+      for (const node of [...record.addedNodes, ...record.removedNodes]) {
+        if (!(node instanceof Element)) continue;
+        if (node.matches(FILE_INPUT_SELECTOR)) return true;
+        if (node.matches(`[${BUTTON_ATTRIBUTE}]`)) return true;
+        if (node.firstElementChild !== null && node.querySelector(FILE_INPUT_SELECTOR) !== null) return true;
+      }
+      return false;
+    }
     function installClearButton(options) {
       ensureStyle2();
       const buttons = /* @__PURE__ */ new Set();
       const detachers = /* @__PURE__ */ new Map();
-      let frame = 0;
-      let scheduled = false;
+      let timer;
       let disposed = false;
       const pruneButtons = () => {
         for (const button of buttons) {
@@ -2398,8 +2455,7 @@ window.__ModuleLoader__.load({
         }
       };
       const scan = () => {
-        frame = 0;
-        scheduled = false;
+        timer = void 0;
         if (disposed) return;
         pruneButtons();
         for (const toolbar of findToolbars()) {
@@ -2422,17 +2478,22 @@ window.__ModuleLoader__.load({
         }
       };
       const schedule = () => {
-        if (scheduled || disposed) return;
-        scheduled = true;
-        frame = window.requestAnimationFrame(scan);
+        if (timer !== void 0 || disposed) return;
+        timer = window.setTimeout(scan, RESCAN_DEBOUNCE_MS);
       };
-      const observer = new MutationObserver(schedule);
+      const observer = new MutationObserver((records) => {
+        for (const record of records) {
+          if (!touchesToolbar(record)) continue;
+          schedule();
+          return;
+        }
+      });
       observer.observe(document.body, { childList: true, subtree: true });
       schedule();
       return () => {
         disposed = true;
         observer.disconnect();
-        if (frame !== 0) window.cancelAnimationFrame(frame);
+        if (timer !== void 0) window.clearTimeout(timer);
         for (const button of buttons) {
           detachers.get(button)?.();
           button.remove();
@@ -3547,7 +3608,7 @@ window.__ModuleLoader__.load({
     var MARK_HEIGHT = 16;
     var MARK_GAP = 2;
     var DEFAULT_ROW_GAP = 6;
-    var RELOCATE_INTERVAL_MS2 = 1500;
+    var RESCAN_DEBOUNCE_MS2 = 100;
     function createMark(rowGap) {
       const mark = document.createElement("span");
       mark.setAttribute(MARK_ATTRIBUTE, "");
@@ -3610,11 +3671,19 @@ window.__ModuleLoader__.load({
       else rowEl.style.setProperty(DOT_SHIFT_VARIABLE, `${shift}px`);
     }
     function resetStatusDot(row) {
-      const slot = row.querySelector(STATUS_SLOT_SELECTOR);
-      if (slot === null) return;
       const rowEl = row;
       rowEl.removeAttribute(ROW_ATTRIBUTE2);
       rowEl.style.removeProperty(DOT_SHIFT_VARIABLE);
+    }
+    function touchesSessionRows(record) {
+      const target = record.target;
+      if (target instanceof Element && target.closest(ROW_SELECTOR) !== null) return true;
+      for (const node of [...record.addedNodes, ...record.removedNodes]) {
+        if (!(node instanceof Element)) continue;
+        if (node.matches(ROW_SELECTOR)) return true;
+        if (node.firstElementChild !== null && node.querySelector(ROW_SELECTOR) !== null) return true;
+      }
+      return false;
     }
     function decorateRow(row) {
       const sessionId = (row.getAttribute("data-row-key") ?? "").slice("session:".length);
@@ -3643,27 +3712,33 @@ window.__ModuleLoader__.load({
     }
     function startSessionMarkDecorator() {
       ensureEnabledSessionsLoaded();
-      let frame = 0;
+      let timer;
       let disposed = false;
       const schedule = () => {
-        if (disposed || frame !== 0) return;
-        frame = window.requestAnimationFrame(() => {
-          frame = 0;
+        if (disposed || timer !== void 0) return;
+        timer = window.setTimeout(() => {
+          timer = void 0;
           decorateAll();
-        });
+        }, RESCAN_DEBOUNCE_MS2);
       };
       const unsubscribe = subscribe(schedule);
-      const observer = new MutationObserver(schedule);
+      const observer = new MutationObserver((records) => {
+        for (const record of records) {
+          if (!touchesSessionRows(record)) continue;
+          schedule();
+          return;
+        }
+      });
       observer.observe(document.body, { childList: true, subtree: true });
-      const relocateTimer = window.setInterval(schedule, RELOCATE_INTERVAL_MS2);
       schedule();
       return () => {
         disposed = true;
         observer.disconnect();
         unsubscribe();
-        window.clearInterval(relocateTimer);
-        if (frame !== 0) window.cancelAnimationFrame(frame);
+        if (timer !== void 0) window.clearTimeout(timer);
+        for (const row of document.querySelectorAll(`[${ROW_ATTRIBUTE2}]`)) resetStatusDot(row);
         for (const mark of document.querySelectorAll(`[${MARK_ATTRIBUTE}]`)) mark.remove();
+        document.getElementById(STYLE_ID3)?.remove();
       };
     }
 
@@ -3965,7 +4040,14 @@ window.__ModuleLoader__.load({
     }
 
     // src/features/session-history/turn-nav.ts
-    var NAV_SELECTOR = 'nav[aria-label="\u8F6E\u6B21\u5BFC\u822A"]';
+    function findNav() {
+      for (const nav of document.querySelectorAll("nav")) {
+        if (!(nav instanceof HTMLElement)) continue;
+        if (nav.querySelector("[data-index]") === null) continue;
+        return nav;
+      }
+      return null;
+    }
     var NAV_ATTRIBUTE = "data-aio-turn-nav";
     var STYLE_ID4 = "dsh-all-in-one-session-history";
     var WIDTH_HANDLE_SELECTOR = '[data-width-handle="left"]';
@@ -3994,6 +4076,8 @@ window.__ModuleLoader__.load({
       let handle = null;
       let frame = 0;
       let resizeObserver;
+      let navSeen = false;
+      let warnedMissingNav = false;
       const positionNav = () => {
         if (nav === null || slot === null || handle === null) return;
         const left = Math.round(
@@ -4012,12 +4096,17 @@ window.__ModuleLoader__.load({
       };
       const track = () => {
         if (disposed) return;
-        const nextNav = document.querySelector(NAV_SELECTOR);
-        const nextSlot = nextNav instanceof HTMLElement ? nextNav.parentElement : null;
+        const nextNav = findNav();
+        if (nextNav === null && navSeen && !warnedMissingNav) {
+          warnedMissingNav = true;
+          console.warn("[session-history] \u8F6E\u6B21\u5BFC\u822A\u6761\u5DF2\u4E0D\u53EF\u89C1\uFF0C\u5BBF\u4E3B\u7ED3\u6784\u53EF\u80FD\u53D1\u751F\u53D8\u5316");
+        }
+        if (nextNav !== null) navSeen = true;
+        const nextSlot = nextNav === null ? null : nextNav.parentElement;
         const nextHandle = document.querySelector(WIDTH_HANDLE_SELECTOR);
         if (nextNav !== nav || nextSlot !== slot || nextHandle !== handle) {
-          nav = nextNav instanceof HTMLElement ? nextNav : null;
-          slot = nextSlot instanceof HTMLElement ? nextSlot : null;
+          nav = nextNav;
+          slot = nextSlot;
           handle = nextHandle instanceof HTMLElement ? nextHandle : null;
           if (resizeObserver !== void 0) {
             resizeObserver.disconnect();
@@ -4322,6 +4411,14 @@ window.__ModuleLoader__.load({
       console.error("[sidebar-more] \u9876\u90E8\u300C\u66F4\u591A\u300D\u83DC\u5355\u7F3A\u5C11\u7B2C", index + 1, "\u9879");
       document.documentElement.removeAttribute(SUPPRESS_ATTRIBUTE);
     }
+    function touchesMenu(record) {
+      for (const node of record.addedNodes) {
+        if (!(node instanceof Element)) continue;
+        if (node.matches('[role="menu"]')) return true;
+        if (node.firstElementChild !== null && node.querySelector('[role="menu"]') !== null) return true;
+      }
+      return false;
+    }
     function injectFooterItems(t) {
       const trigger = findFooterTrigger();
       if (trigger === null || trigger.getAttribute("aria-expanded") !== "true") return;
@@ -4383,7 +4480,13 @@ window.__ModuleLoader__.load({
         scheduled = true;
         frame = window.requestAnimationFrame(scan);
       };
-      const observer = new MutationObserver(schedule);
+      const observer = new MutationObserver((records) => {
+        for (const record of records) {
+          if (!touchesMenu(record)) continue;
+          schedule();
+          return;
+        }
+      });
       observer.observe(document.body, { childList: true, subtree: true });
       schedule();
       return () => {
@@ -4396,6 +4499,7 @@ window.__ModuleLoader__.load({
         }
         cachedTrigger = null;
         cachedPanelList = null;
+        for (const item of document.querySelectorAll(`[${INJECTED_ATTRIBUTE}]`)) item.remove();
         document.getElementById(STYLE_ID5)?.remove();
         document.documentElement.removeAttribute(SUPPRESS_ATTRIBUTE);
       };
@@ -5161,7 +5265,22 @@ window.__ModuleLoader__.load({
         scheduled = true;
         window.requestAnimationFrame(scan);
       };
-      const observer = new MutationObserver(schedule);
+      const observer = new MutationObserver((records) => {
+        if (pending3 === void 0) return;
+        for (const record of records) {
+          for (const node of record.addedNodes) {
+            if (!(node instanceof Element)) continue;
+            if (node.matches(MENU_SELECTOR)) {
+              schedule();
+              return;
+            }
+            if (node.firstElementChild !== null && node.querySelector(MENU_SELECTOR) !== null) {
+              schedule();
+              return;
+            }
+          }
+        }
+      });
       observer.observe(document.body, { childList: true, subtree: true });
       document.addEventListener("click", onClick, true);
       return () => {
@@ -6295,9 +6414,6 @@ window.__ModuleLoader__.load({
           ) : null), option.description ? (
             // 条目说明
             /* @__PURE__ */ import_react24.default.createElement("span", { className: "mt-0.5 block text-[12px] leading-[18px] text-secondary" }, option.description)
-          ) : null, checked && option.warning ? (
-            // 选中后才提示的风险，避免干扰普通浏览
-            /* @__PURE__ */ import_react24.default.createElement("span", { className: "mt-0.5 block text-[12px] leading-[18px] text-warn" }, option.warning)
           ) : null)
         ));
       }))));
@@ -7054,15 +7170,16 @@ window.__ModuleLoader__.load({
 
     // src/features/auto-compact/toggle.tsx
     var MIN_PERCENT = 1;
+    var MIN_THRESHOLD_PERCENT = MIN_PERCENT + 1;
     var MAX_PERCENT = 100;
     var INPUT_CLASS3 = "w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] text-primary outline-none focus:border-brand";
-    function PercentField({ label, unit, value, onChange, onCommit }) {
+    function PercentField({ label, unit, value, onChange, onCommit, min = MIN_PERCENT }) {
       return /* @__PURE__ */ import_react29.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react29.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, label), /* @__PURE__ */ import_react29.default.createElement(
         "input",
         {
           type: "number",
           inputMode: "numeric",
-          min: MIN_PERCENT,
+          min,
           max: MAX_PERCENT,
           step: 1,
           value,
@@ -7141,7 +7258,7 @@ window.__ModuleLoader__.load({
       const commitThreshold = () => {
         if (settings === null) return;
         const parsed = Number(thresholdDraft.trim());
-        if (!Number.isInteger(parsed) || parsed < MIN_PERCENT || parsed > MAX_PERCENT) {
+        if (!Number.isInteger(parsed) || parsed < MIN_THRESHOLD_PERCENT || parsed > MAX_PERCENT) {
           setError(t("thresholdInvalid"));
           setThresholdDraft(String(settings.thresholdPercent));
           return;
@@ -7196,7 +7313,8 @@ window.__ModuleLoader__.load({
             unit: t("thresholdUnit"),
             value: thresholdDraft,
             onChange: setThresholdDraft,
-            onCommit: commitThreshold
+            onCommit: commitThreshold,
+            min: MIN_THRESHOLD_PERCENT
           }
         ), /* @__PURE__ */ import_react29.default.createElement(
           PercentField,
@@ -7316,13 +7434,13 @@ window.__ModuleLoader__.load({
     var MAX_THRESHOLD = 100;
     var MIN_RETAIN = 0;
     var INPUT_CLASS4 = "w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] text-primary outline-none focus:border-brand";
-    function CountField({ label, unit, value, onChange, onCommit }) {
+    function CountField({ label, unit, value, onChange, onCommit, min = MIN_RETAIN }) {
       return /* @__PURE__ */ import_react30.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, label), /* @__PURE__ */ import_react30.default.createElement(
         "input",
         {
           type: "number",
           inputMode: "numeric",
-          min: MIN_RETAIN,
+          min,
           max: MAX_THRESHOLD,
           step: 1,
           value,
@@ -7456,7 +7574,8 @@ window.__ModuleLoader__.load({
             unit: t("unit"),
             value: thresholdDraft,
             onChange: setThresholdDraft,
-            onCommit: commitThreshold
+            onCommit: commitThreshold,
+            min: MIN_THRESHOLD
           }
         ), /* @__PURE__ */ import_react30.default.createElement(
           CountField,
@@ -7840,7 +7959,11 @@ window.__ModuleLoader__.load({
       };
       const runCheck = async () => {
         timer = void 0;
-        if (busy || disposed) return { rebuilt: false, reason: "busy" };
+        if (disposed) return { rebuilt: false, reason: "busy" };
+        if (busy) {
+          schedule();
+          return { rebuilt: false, reason: "busy" };
+        }
         busy = true;
         try {
           const settings = readMemoryGuardSettings();

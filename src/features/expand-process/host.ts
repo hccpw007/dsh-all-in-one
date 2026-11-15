@@ -7,10 +7,10 @@
 import type { HostPluginContext, IndexInjectTable } from '../../types/host'
 import { EXPAND_PROCESS_SCRIPT } from './expand-process'
 
-/** 需要 Web 服务器的 index.html 注入通道；服务缺失时本扩展不生效。 */
 /** 功能标识，与 feature 目录名一致；装配失败时用于定位。 */
 export const id = 'expand-process'
 
+/** 需要 Web 服务器的 index.html 注入通道；服务缺失时本扩展不生效。 */
 export const inject = ['webServer']
 
 /**

@@ -200,6 +200,37 @@ export function readMemory(dir: string, name: string): MemoryEntry | undefined {
 }
 
 /**
+ * 把自由文本折成一行。
+ *
+ * 索引是「一行一条」的 markdown 列表：摘要里带换行会把一条记忆拆成两行，
+ * 之后按行匹配就再也找不到它，只能被当成新记忆重复追加。
+ * @param value 自由文本
+ * @returns 换行与连续空白折叠成单个空格的结果
+ */
+function singleLine(value: string): string {
+  return value.replace(/\s+/g, ' ').trim()
+}
+
+/**
+ * 把自由文本写成可被 YAML 解析的标量。
+ *
+ * frontmatter 与 Claude Code 共用：摘要里出现 `: `、` #`、引号或以保留字符开头时，
+ * 裸写会让整份 frontmatter 解析失败，等于把对方写的记忆一起写坏。只在确实需要时
+ * 加双引号，让常见情况下的文件形态与 Claude Code 写出的保持一致。
+ * @param value 已 trim 的自由文本
+ * @returns 可直接拼在 `key: ` 之后的标量
+ */
+function yamlScalar(value: string): string {
+  // JSON 的双引号字符串同时是合法的 YAML 双引号标量，其转义规则已覆盖换行与制表符
+  const needsQuote = value === ''
+    || /^[-?:,[\]{}#&*!|>'"%@`\s]/.test(value)
+    || /:\s|:$|\s#/.test(value)
+    || /[\n\r\t]/.test(value)
+
+  return needsQuote ? JSON.stringify(value) : value
+}
+
+/**
  * 索引里指向某个记忆文件的那一行：`- [标题](名字.md) — 摘要`，与 Claude Code 一致。
  * @param title 索引行标题，通常与记忆名相同
  * @param name 记忆名，决定链接目标
@@ -207,7 +238,7 @@ export function readMemory(dir: string, name: string): MemoryEntry | undefined {
  * @returns 单行文本
  */
 function indexLine(title: string, name: string, description: string): string {
-  return `- [${title}](${name}.md) — ${description}`
+  return `- [${title}](${name}.md) — ${singleLine(description)}`
 }
 
 /**
@@ -226,7 +257,9 @@ function upsertIndexLine(index: string, name: string, description: string): stri
 
   if (existing !== null) {
     const title = existing[1] === '' ? name : existing[1]
-    return index.replace(pattern, indexLine(title, name, description))
+    // 用函数形式替换：摘要里的 `$&`、`$1` 会被 String.replace 当作替换模式展开，
+    // 把索引行替换成旧行或捕获组，摘要被静默改写
+    return index.replace(pattern, () => indexLine(title, name, description))
   }
 
   const trimmed = index.replace(/\s+$/, '')
@@ -331,7 +364,7 @@ export function writeMemory(dir: string, input: MemoryInput): string {
   const text = [
     '---',
     `name: ${input.name}`,
-    `description: ${description}`,
+    `description: ${yamlScalar(description)}`,
     ...preserved.before,
     'metadata:',
     `  type: ${type}`,

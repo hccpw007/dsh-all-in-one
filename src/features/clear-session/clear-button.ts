@@ -19,6 +19,18 @@ const STYLE_ID = 'aio-clear-session-style'
 /** 按钮类名，样式与宿主加号按钮完全一致（圆形 selector 底色）。 */
 const BUTTON_CLASS = 'aio-clear-session'
 
+/** 宿主输入框里的隐藏文件选择器：定位工具区的唯一依据。 */
+const FILE_INPUT_SELECTOR = 'input[type="file"]'
+
+/**
+ * 变更合并窗口。
+ *
+ * 观察范围是整个 document，消息区每帧都在变；按帧扫描会让全文档查询也跟着每帧
+ * 跑一次，这里改成短防抖，按钮出现只晚一瞬，用户无感。
+ */
+const RESCAN_DEBOUNCE_MS = 100
+
+/** 清空按钮图标：气泡里一个加号，语义是「在这里开始一条新对话」。 */
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg'
 
 /**
@@ -122,7 +134,7 @@ function ensureStyle(): void {
 function findToolbars(): HTMLElement[] {
   const toolbars: HTMLElement[] = []
 
-  for (const input of document.querySelectorAll('input[type="file"]')) {
+  for (const input of document.querySelectorAll(FILE_INPUT_SELECTOR)) {
     const parent = input.parentElement
     if (parent === null) continue
     if (parent.querySelector('button') === null) continue
@@ -132,6 +144,25 @@ function findToolbars(): HTMLElement[] {
   }
 
   return toolbars
+}
+
+/**
+ * 判断一条变更记录是否需要重新扫描。
+ *
+ * 只关心两类变动：宿主插入或重建输入框（含隐藏文件选择器），以及把我们注入的
+ * 按钮摘掉。流式输出改的是消息区，与工具区无关，不该带着全文档查询一起跑。
+ * @param record 变更记录
+ * @returns 需要重新扫描时返回 true
+ */
+function touchesToolbar(record: MutationRecord): boolean {
+  for (const node of [...record.addedNodes, ...record.removedNodes]) {
+    if (!(node instanceof Element)) continue
+    if (node.matches(FILE_INPUT_SELECTOR)) return true
+    if (node.matches(`[${BUTTON_ATTRIBUTE}]`)) return true
+    if (node.firstElementChild !== null && node.querySelector(FILE_INPUT_SELECTOR) !== null) return true
+  }
+
+  return false
 }
 
 /**
@@ -145,8 +176,7 @@ export function installClearButton(options: ClearButtonOptions): () => void {
   const buttons = new Set<HTMLButtonElement>()
   /** 每个按钮的提示卸载函数：按钮被宿主摘掉时一并解绑。 */
   const detachers = new Map<HTMLButtonElement, () => void>()
-  let frame = 0
-  let scheduled = false
+  let timer: number | undefined
   let disposed = false
 
   /** 宿主整块重建输入框时按钮会被摘掉，这里顺手清理失效引用与事件。 */
@@ -162,8 +192,7 @@ export function installClearButton(options: ClearButtonOptions): () => void {
 
   /** 扫描并注入；节点增删很频繁，回调里只做少量查询。 */
   const scan = (): void => {
-    frame = 0
-    scheduled = false
+    timer = undefined
     if (disposed) return
 
     pruneButtons()
@@ -197,20 +226,27 @@ export function installClearButton(options: ClearButtonOptions): () => void {
   }
 
   const schedule = (): void => {
-    if (scheduled || disposed) return
-    scheduled = true
-    frame = window.requestAnimationFrame(scan)
+    if (timer !== undefined || disposed) return
+    timer = window.setTimeout(scan, RESCAN_DEBOUNCE_MS)
   }
 
-  // 只监听节点增删：流式输出会频繁改动文本节点，回调已是合并到每帧一次
-  const observer = new MutationObserver(schedule)
+  // 只监听节点增删：流式输出会频繁改动文本节点，回调先按变更记录过滤再合并
+  const observer = new MutationObserver((records) => {
+    for (const record of records) {
+      if (!touchesToolbar(record)) continue
+
+      schedule()
+
+      return
+    }
+  })
   observer.observe(document.body, { childList: true, subtree: true })
   schedule()
 
   return () => {
     disposed = true
     observer.disconnect()
-    if (frame !== 0) window.cancelAnimationFrame(frame)
+    if (timer !== undefined) window.clearTimeout(timer)
 
     for (const button of buttons) {
       detachers.get(button)?.()

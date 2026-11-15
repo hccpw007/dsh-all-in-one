@@ -74,7 +74,18 @@ export function installMemoryGuard(t: Translate): MemoryGuardHandle {
   const runCheck = async (): Promise<RebuildOutcome> => {
     timer = undefined
 
-    if (busy || disposed) return { rebuilt: false, reason: 'busy' }
+    // 插件已卸载：不再执行也不再排期
+    if (disposed) return { rebuilt: false, reason: 'busy' }
+
+    // 上一次检查还没结束（手动重建的倒计时期间定时器到期）：先重新排期再退出。
+    // 本次到期已经把 timer 清空，直接 return 会让定时链停在「没人再排期」的状态，
+    // 用户取消倒计时之后就再也不会有下一次检查。
+    if (busy) {
+      schedule()
+
+      return { rebuilt: false, reason: 'busy' }
+    }
+
     busy = true
 
     try {

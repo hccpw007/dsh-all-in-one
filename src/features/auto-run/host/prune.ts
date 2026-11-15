@@ -39,8 +39,10 @@ function isSessionId(name: string): boolean {
 /**
  * 收集现存会话标识。
  *
- * 宿主把会话按工作目录分到 slug 子目录，会话标识是第二层目录名。
- * @returns 会话标识集合；会话根目录读不到时返回 undefined
+ * 宿主把会话按工作目录分到 slug 子目录，会话标识是第二层目录名。任何一个子目录
+ * 读失败都整体放弃本次会话清理：少读一个目录，会把该目录下的会话全判成「已删除」，
+ * 进而删掉用户还需要的设置——宁可留残留，等下次启动再清。
+ * @returns 会话标识集合；任一目录读不到时返回 undefined
  */
 async function listExistingSessionIds(): Promise<Set<string> | undefined> {
   const root = join(resolveDshHome(), 'sessions')
@@ -49,16 +51,11 @@ async function listExistingSessionIds(): Promise<Set<string> | undefined> {
     const groups = await readdir(root, { withFileTypes: true })
     const ids = new Set<string>()
 
-    // 各 slug 目录并发读取；单个目录失败只丢它自己的会话，不影响其余目录
+    // 各 slug 目录并发读取，失败直接冒泡到下面的 catch
     const nested = await Promise.all(groups
       .filter((group) => group.isDirectory())
-      .map((group) =>
-        readdir(join(root, group.name), { withFileTypes: true }).catch((error: unknown) => {
-          console.error('[auto-run] 读取会话目录失败:', group.name, error)
-
-          return []
-        }),
-      ))
+      .map((group) => readdir(join(root, group.name), { withFileTypes: true })),
+    )
 
     for (const group of groups) {
       // 根层直接放会话目录的布局也要认，否则会被判为已删除

@@ -417,7 +417,7 @@ import { dirname as dirname2, join as join4 } from "node:path";
 
 // src/features/power-pack/host/store.ts
 import { randomBytes } from "node:crypto";
-import { mkdir as mkdir2, readFile, rename, writeFile } from "node:fs/promises";
+import { copyFile, mkdir as mkdir2, readFile, rename, writeFile } from "node:fs/promises";
 import { dirname, join as join3 } from "node:path";
 var RULE_MODES = ["all", "include", "exclude"];
 var LEGACY_FILE_NAMES = ["skill-packs.json", "chat-styles.json"];
@@ -454,6 +454,15 @@ function normalizePack(value) {
     mcp: normalizeRule(candidate.mcp)
   };
 }
+async function quarantineBrokenFile(file, cause) {
+  const backup = `${file}.corrupt-${Date.now()}`;
+  try {
+    await rename(file, backup);
+    console.error("[power-pack] \u6280\u80FD\u5305\u914D\u7F6E\u65E0\u6CD5\u89E3\u6790\uFF0C\u5DF2\u5907\u4EFD\u5230:", backup, cause);
+  } catch (error) {
+    console.error("[power-pack] \u6280\u80FD\u5305\u914D\u7F6E\u65E0\u6CD5\u89E3\u6790\u4E14\u5907\u4EFD\u5931\u8D25:", file, cause, error);
+  }
+}
 async function parsePackFile(file) {
   try {
     const raw = await readFile(file, "utf8");
@@ -463,9 +472,8 @@ async function parsePackFile(file) {
     const defaultPackId = typeof parsed.defaultPackId === "string" && packs.some((pack) => pack.id === parsed.defaultPackId) ? parsed.defaultPackId : "";
     return { version: 1, packs, defaultPackId, enabled: parsed.enabled === true };
   } catch (error) {
-    if (error.code !== "ENOENT") {
-      console.error("[power-pack] \u8BFB\u53D6\u6280\u80FD\u5305\u914D\u7F6E\u5931\u8D25:", file, error);
-    }
+    if (error.code === "ENOENT") return void 0;
+    await quarantineBrokenFile(file, error);
     return void 0;
   }
 }
@@ -483,11 +491,21 @@ async function readPacks() {
   legacyProbed = true;
   return { version: 1, packs: [], defaultPackId: "", enabled: false };
 }
+async function backupExisting(file) {
+  try {
+    await copyFile(file, `${file}.bak`);
+  } catch (error) {
+    if (error.code !== "ENOENT") {
+      console.error("[power-pack] \u5907\u4EFD\u6280\u80FD\u5305\u914D\u7F6E\u5931\u8D25:", file, error);
+    }
+  }
+}
 async function writePacks(document2) {
   const file = powerPacksFile();
   const temp = `${file}.${process.pid}.${randomBytes(4).toString("hex")}.tmp`;
   try {
     await mkdir2(dirname(file), { recursive: true });
+    await backupExisting(file);
     await writeFile(temp, `${JSON.stringify(document2, null, 2)}
 `, "utf8");
     await rename(temp, file);
@@ -798,12 +816,7 @@ function createReadCache(ttlMs) {
     inflight2.set(key, task);
     return task;
   };
-  return {
-    read,
-    clear: () => {
-      entries.clear();
-    }
-  };
+  return { read };
 }
 
 // src/features/power-pack/host/catalog.ts
@@ -1810,7 +1823,21 @@ function bootExpandProcess(keys) {
   }
   function observe() {
     if (observer !== null || document.body === null) return;
-    observer = new MutationObserver(schedule);
+    observer = new MutationObserver(function(records) {
+      for (const record of records) {
+        for (const node of record.addedNodes) {
+          if (!(node instanceof Element)) continue;
+          if (node.matches("[data-chat-turn]")) {
+            schedule();
+            return;
+          }
+          if (node.firstElementChild !== null && node.querySelector("[data-chat-turn]") !== null) {
+            schedule();
+            return;
+          }
+        }
+      }
+    });
     observer.observe(document.body, { childList: true, subtree: true });
   }
   function unobserve() {
@@ -2369,7 +2396,7 @@ function extractInspect(events) {
     }
     if (tools === void 0 && event.type === "request/header") {
       const declared = event.data?.header?.tools;
-      if (Array.isArray(declared)) tools = declared.filter(isToolSchema);
+      tools = Array.isArray(declared) ? declared.filter(isToolSchema) : [];
     }
     if (system !== void 0 && tools !== void 0) break;
   }
@@ -2406,13 +2433,23 @@ async function readEvents(persistence, sessionId) {
     }
   }
 }
+function revisionKey(revision) {
+  if (revision === null || revision === void 0) return "";
+  if (typeof revision !== "object") return String(revision);
+  try {
+    return JSON.stringify(revision) ?? "";
+  } catch (error) {
+    console.error("[context-inspect] \u53D8\u5316\u4EE4\u724C\u65E0\u6CD5\u5E8F\u5217\u5316:", error);
+    return "[unserializable]";
+  }
+}
 async function readContextInspect(persistence, sessionId) {
   const pending = inflight.get(sessionId);
   if (pending !== void 0) return pending;
   const task = (async () => {
     const snapshot = await persistence.stat(sessionId);
     if (snapshot === void 0) return null;
-    const revision = String(snapshot.revision);
+    const revision = revisionKey(snapshot.revision);
     const cached = cache.get(sessionId);
     if (cached !== void 0 && cached.revision === revision) {
       return { ...cached.payload, readAt: Date.now() };
@@ -2638,10 +2675,14 @@ async function forgetSessionRecords(dshHome, sessionId) {
 }
 
 // src/features/delete-session/host/delete-session.ts
-var SESSION_ID_PATTERN2 = /^session-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+var MAX_SESSION_ID_LENGTH = 200;
 var REMOVE_CONCURRENCY = 6;
 function isValidSessionId(value) {
-  return typeof value === "string" && SESSION_ID_PATTERN2.test(value);
+  if (typeof value !== "string") return false;
+  if (value.length === 0 || value.length > MAX_SESSION_ID_LENGTH) return false;
+  if (value === "." || value === "..") return false;
+  if (/[/\\\u0000-\u001f]/.test(value)) return false;
+  return true;
 }
 async function mapWithConcurrency(items, limit, worker) {
   const results = new Array(items.length);
@@ -2670,13 +2711,12 @@ async function listSessionDirs(sessionIds) {
     throw error;
   }
   await mapWithConcurrency(projects, REMOVE_CONCURRENCY, async (project) => {
-    let entries;
+    let entries = [];
     try {
       entries = await readdir4(project, { withFileTypes: true });
     } catch (error) {
       if (error.code === "ENOENT") return;
-      console.error("[delete-session] \u8BFB\u53D6\u9879\u76EE\u76EE\u5F55\u5931\u8D25:", project, error);
-      throw error;
+      console.error("[delete-session] \u8BFB\u53D6\u9879\u76EE\u76EE\u5F55\u5931\u8D25\uFF0C\u8DF3\u8FC7\u8BE5\u9879\u76EE:", project, error);
     }
     for (const entry of entries) {
       if (!entry.isDirectory() && !entry.isSymbolicLink()) continue;
@@ -2849,11 +2889,11 @@ __export(host_exports6, {
 // src/features/clear-session/host/routes.ts
 var ROUTE_PATH5 = "/dsh-all-in-one/session/cancel";
 var MAX_BODY_BYTES3 = 8 * 1024;
-var SESSION_ID_PATTERN3 = /^[A-Za-z0-9._:-]{1,200}$/;
+var SESSION_ID_PATTERN2 = /^[A-Za-z0-9._:-]{1,200}$/;
 function readSessionId2(body) {
   if (typeof body !== "object" || body === null) return void 0;
   const candidate = body.sessionId;
-  return typeof candidate === "string" && SESSION_ID_PATTERN3.test(candidate) ? candidate : void 0;
+  return typeof candidate === "string" && SESSION_ID_PATTERN2.test(candidate) ? candidate : void 0;
 }
 function writeCancelResult(response, sessionId, controller) {
   try {
@@ -3143,15 +3183,22 @@ function readMemory(dir, name) {
     return void 0;
   }
 }
+function singleLine(value) {
+  return value.replace(/\s+/g, " ").trim();
+}
+function yamlScalar(value) {
+  const needsQuote = value === "" || /^[-?:,[\]{}#&*!|>'"%@`\s]/.test(value) || /:\s|:$|\s#/.test(value) || /[\n\r\t]/.test(value);
+  return needsQuote ? JSON.stringify(value) : value;
+}
 function indexLine(title, name, description) {
-  return `- [${title}](${name}.md) \u2014 ${description}`;
+  return `- [${title}](${name}.md) \u2014 ${singleLine(description)}`;
 }
 function upsertIndexLine(index, name, description) {
   const pattern = new RegExp(`^- \\[([^\\]]*)\\]\\(${name}\\.md\\).*$`, "m");
   const existing = pattern.exec(index);
   if (existing !== null) {
     const title = existing[1] === "" ? name : existing[1];
-    return index.replace(pattern, indexLine(title, name, description));
+    return index.replace(pattern, () => indexLine(title, name, description));
   }
   const trimmed = index.replace(/\s+$/, "");
   return `${trimmed === "" ? "" : `${trimmed}
@@ -3208,7 +3255,7 @@ function writeMemory(dir, input) {
   const text = [
     "---",
     `name: ${input.name}`,
-    `description: ${description}`,
+    `description: ${yamlScalar(description)}`,
     ...preserved.before,
     "metadata:",
     `  type: ${type}`,
@@ -3638,14 +3685,15 @@ var DEFAULT_SETTINGS2 = {
   retainPercent: 20
 };
 var MIN_PERCENT = 1;
+var MIN_THRESHOLD_PERCENT = MIN_PERCENT + 1;
 var MAX_PERCENT = 100;
 function autoCompactSettingsFile() {
   return join14(resolveDshHome(), "all-in-one", "auto-compact.json");
 }
-function normalizePercent(value, fallback) {
+function normalizePercent(value, fallback, minimum = MIN_PERCENT) {
   const parsed = typeof value === "number" ? value : Number.NaN;
   if (!Number.isFinite(parsed)) return fallback;
-  return Math.min(MAX_PERCENT, Math.max(MIN_PERCENT, Math.round(parsed)));
+  return Math.min(MAX_PERCENT, Math.max(minimum, Math.round(parsed)));
 }
 function clampRetain(retainPercent, thresholdPercent) {
   return Math.min(retainPercent, Math.max(MIN_PERCENT, thresholdPercent - 1));
@@ -3653,7 +3701,11 @@ function clampRetain(retainPercent, thresholdPercent) {
 function normalizeSettings2(value) {
   if (typeof value !== "object" || value === null) return { ...DEFAULT_SETTINGS2 };
   const candidate = value;
-  const thresholdPercent = normalizePercent(candidate.thresholdPercent, DEFAULT_SETTINGS2.thresholdPercent);
+  const thresholdPercent = normalizePercent(
+    candidate.thresholdPercent,
+    DEFAULT_SETTINGS2.thresholdPercent,
+    MIN_THRESHOLD_PERCENT
+  );
   const retainPercent = normalizePercent(candidate.retainPercent, DEFAULT_SETTINGS2.retainPercent);
   return {
     enabled: candidate.enabled === true,
@@ -3664,7 +3716,7 @@ function normalizeSettings2(value) {
 function applyPatch(current, patch) {
   if (typeof patch !== "object" || patch === null) return { ...current };
   const candidate = patch;
-  const thresholdPercent = candidate.thresholdPercent === void 0 ? current.thresholdPercent : normalizePercent(candidate.thresholdPercent, current.thresholdPercent);
+  const thresholdPercent = candidate.thresholdPercent === void 0 ? current.thresholdPercent : normalizePercent(candidate.thresholdPercent, current.thresholdPercent, MIN_THRESHOLD_PERCENT);
   const retainPercent = candidate.retainPercent === void 0 ? current.retainPercent : normalizePercent(candidate.retainPercent, current.retainPercent);
   return {
     enabled: typeof candidate.enabled === "boolean" ? candidate.enabled : current.enabled,
@@ -4071,14 +4123,15 @@ var DEFAULT_SETTINGS3 = {
   retain: 1
 };
 var MIN_THRESHOLD = 1;
+var MIN_RETAIN = 0;
 var MAX_THRESHOLD = 100;
 function desktopCookieSettingsFile() {
   return join16(resolveDshHome(), "all-in-one", "desktop-cookie.json");
 }
-function normalizeCount(value, fallback) {
+function normalizeCount(value, fallback, minimum = MIN_THRESHOLD) {
   const parsed = typeof value === "number" ? value : Number.NaN;
   if (!Number.isFinite(parsed)) return fallback;
-  return Math.min(MAX_THRESHOLD, Math.max(MIN_THRESHOLD, Math.round(parsed)));
+  return Math.min(MAX_THRESHOLD, Math.max(minimum, Math.round(parsed)));
 }
 function clampRetain2(retain, threshold) {
   return Math.min(retain, threshold - 1);
@@ -4086,8 +4139,8 @@ function clampRetain2(retain, threshold) {
 function normalizeSettings3(value) {
   if (typeof value !== "object" || value === null) return { ...DEFAULT_SETTINGS3 };
   const candidate = value;
-  const threshold = normalizeCount(candidate.threshold, DEFAULT_SETTINGS3.threshold);
-  const retain = normalizeCount(candidate.retain, DEFAULT_SETTINGS3.retain);
+  const threshold = normalizeCount(candidate.threshold, DEFAULT_SETTINGS3.threshold, MIN_THRESHOLD);
+  const retain = normalizeCount(candidate.retain, DEFAULT_SETTINGS3.retain, MIN_RETAIN);
   return {
     enabled: typeof candidate.enabled === "boolean" ? candidate.enabled : DEFAULT_SETTINGS3.enabled,
     threshold,
@@ -4097,8 +4150,8 @@ function normalizeSettings3(value) {
 function applyPatch2(current, patch) {
   if (typeof patch !== "object" || patch === null) return { ...current };
   const candidate = patch;
-  const threshold = candidate.threshold === void 0 ? current.threshold : normalizeCount(candidate.threshold, current.threshold);
-  const retain = candidate.retain === void 0 ? current.retain : normalizeCount(candidate.retain, current.retain);
+  const threshold = candidate.threshold === void 0 ? current.threshold : normalizeCount(candidate.threshold, current.threshold, MIN_THRESHOLD);
+  const retain = candidate.retain === void 0 ? current.retain : normalizeCount(candidate.retain, current.retain, MIN_RETAIN);
   return {
     enabled: typeof candidate.enabled === "boolean" ? candidate.enabled : current.enabled,
     threshold,
@@ -4486,12 +4539,9 @@ async function listExistingSessionIds() {
   try {
     const groups = await readdir5(root, { withFileTypes: true });
     const ids = /* @__PURE__ */ new Set();
-    const nested = await Promise.all(groups.filter((group) => group.isDirectory()).map(
-      (group) => readdir5(join18(root, group.name), { withFileTypes: true }).catch((error) => {
-        console.error("[auto-run] \u8BFB\u53D6\u4F1A\u8BDD\u76EE\u5F55\u5931\u8D25:", group.name, error);
-        return [];
-      })
-    ));
+    const nested = await Promise.all(
+      groups.filter((group) => group.isDirectory()).map((group) => readdir5(join18(root, group.name), { withFileTypes: true }))
+    );
     for (const group of groups) {
       if (group.isDirectory() && isSessionId(group.name)) ids.add(group.name);
     }

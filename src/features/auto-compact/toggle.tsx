@@ -8,6 +8,14 @@ import type { AutoCompactSettings } from './types'
 /** 百分比允许的最小值。 */
 const MIN_PERCENT = 1
 
+/**
+ * 触发阈值允许的最小值。
+ *
+ * 保留比例必须严格小于阈值，而保留比例最小是 1；阈值取 1 会让两者都被夹到 1，
+ * 「压缩后必然低于阈值」的前提不成立，压缩会被反复触发。
+ */
+const MIN_THRESHOLD_PERCENT = MIN_PERCENT + 1
+
 /** 百分比允许的最大值。 */
 const MAX_PERCENT = 100
 
@@ -27,13 +35,15 @@ interface PercentFieldProps {
   onChange: (value: string) => void
   /** 失焦或回车时提交。 */
   onCommit: () => void
+  /** 输入框允许的最小值；阈值比保留比例高，默认取百分比下限。 */
+  min?: number
 }
 
 /**
  * 渲染一个百分比输入行。
  * @param props 字段属性
  */
-function PercentField({ label, unit, value, onChange, onCommit }: PercentFieldProps) {
+function PercentField({ label, unit, value, onChange, onCommit, min = MIN_PERCENT }: PercentFieldProps) {
   return (
     <label className="flex items-center gap-1">
       {/* 输入行标签 */}
@@ -41,7 +51,7 @@ function PercentField({ label, unit, value, onChange, onCommit }: PercentFieldPr
       <input
         type="number"
         inputMode="numeric"
-        min={MIN_PERCENT}
+        min={min}
         max={MAX_PERCENT}
         step={1}
         value={value}
@@ -165,7 +175,7 @@ export function AutoCompactToggle({ t }: FeatureSwitchProps) {
     if (settings === null) return
 
     const parsed = Number(thresholdDraft.trim())
-    if (!Number.isInteger(parsed) || parsed < MIN_PERCENT || parsed > MAX_PERCENT) {
+    if (!Number.isInteger(parsed) || parsed < MIN_THRESHOLD_PERCENT || parsed > MAX_PERCENT) {
       setError(t('thresholdInvalid'))
       setThresholdDraft(String(settings.thresholdPercent))
 
@@ -257,6 +267,7 @@ export function AutoCompactToggle({ t }: FeatureSwitchProps) {
             value={thresholdDraft}
             onChange={setThresholdDraft}
             onCommit={commitThreshold}
+            min={MIN_THRESHOLD_PERCENT}
           />
           <PercentField
             label={t('retainLabel')}

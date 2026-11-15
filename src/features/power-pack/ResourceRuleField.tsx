@@ -10,8 +10,6 @@ export interface RuleOption {
   description?: string
   /** 行内标记，如「已安装插件」。 */
   badge?: string
-  /** 风险提示，只在选中时展示。 */
-  warning?: string
 }
 
 interface ResourceRuleFieldProps {
@@ -177,12 +175,6 @@ export function ResourceRuleField({
                           // 条目说明
                           <span className="mt-0.5 block text-[12px] leading-[18px] text-secondary">
                             {option.description}
-                          </span>
-                        ) : null}
-                        {checked && option.warning ? (
-                          // 选中后才提示的风险，避免干扰普通浏览
-                          <span className="mt-0.5 block text-[12px] leading-[18px] text-warn">
-                            {option.warning}
                           </span>
                         ) : null}
                       </span>

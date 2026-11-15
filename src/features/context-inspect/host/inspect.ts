@@ -313,10 +313,11 @@ function extractInspect(events: readonly unknown[]): {
       if (text.trim() !== '') system = text
     }
 
-    // 工具定义：请求头里的 tools 是完整快照，没有该字段表示本次请求不带工具
+    // 工具定义：请求头里的 tools 是完整快照。字段缺失或不是数组都表示本次请求
+    // 不带工具；一旦命中请求头就定稿，继续往前找会拿到更早一次请求的工具集
     if (tools === undefined && event.type === 'request/header') {
       const declared = event.data?.header?.tools
-      if (Array.isArray(declared)) tools = declared.filter(isToolSchema)
+      tools = Array.isArray(declared) ? declared.filter(isToolSchema) : []
     }
 
     if (system !== undefined && tools !== undefined) break
@@ -380,6 +381,27 @@ async function readEvents(
 }
 
 /**
+ * 把宿主的变化令牌转成可比较的键。
+ *
+ * 令牌在类型上是不透明的 `unknown`；直接用 `String()` 转换会让对象退化成
+ * `'[object Object]'`，所有会话共用一个键，缓存将永远命中、详情不再更新。
+ * @param revision 宿主返回的变化令牌
+ * @returns 可用于相等比较的字符串键
+ */
+function revisionKey(revision: unknown): string {
+  if (revision === null || revision === undefined) return ''
+  if (typeof revision !== 'object') return String(revision)
+
+  try {
+    return JSON.stringify(revision) ?? ''
+  } catch (error) { // 令牌不该含循环引用；真出现时退回固定标记，不阻断详情读取
+    console.error('[context-inspect] 变化令牌无法序列化:', error)
+
+    return '[unserializable]'
+  }
+}
+
+/**
  * 读取一条会话的上下文详情。
  *
  * 会话不存在时返回 null；其余错误向上抛出，由路由转成 500 并记录日志。
@@ -398,7 +420,7 @@ export async function readContextInspect(
     const snapshot = await persistence.stat(sessionId)
     if (snapshot === undefined) return null
 
-    const revision = String(snapshot.revision)
+    const revision = revisionKey(snapshot.revision)
     const cached = cache.get(sessionId)
     // 令牌相同即日志未变，直接复用上次结果，不必再解压读取；
     // 读取时间换成此刻，窗口据此显示「这次校验仍然是最新内容」
