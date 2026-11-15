@@ -12,7 +12,7 @@ import { SidebarMoreToggle } from './toggle'
 const sidebarMoreFeature: FeatureDefinition = {
   id: 'sidebar-more',
   group: 'layout',
-  order: 20,
+  order: 30,
   reloadsPage: true,
   switch: SidebarMoreToggle,
   client: { apply: applyClient },

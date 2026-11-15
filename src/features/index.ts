@@ -19,14 +19,14 @@ import memoryGuard from './memory-guard'
 /**
  * 所有已注册的 feature。
  *
- * 数组顺序与设置页网格顺序一致，按「对话体验 → 界面布局 → 配置与维护」三组排列；
- * 每组内按 order 升序，权重相同时保持本数组顺序。注册表同样按 order 排序，
- * 因此调整顺序时两处要一起改，读代码时这里是唯一的全景。
+ * 数组顺序与设置页网格顺序一致，按界面位置分成「对话内容 → 输入框 → 界面布局 →
+ * 配置与维护」四组；每组内按 order 升序，权重相同时保持本数组顺序。注册表同样按
+ * order 排序，因此调整顺序时两处要一起改，读代码时这里是唯一的全景。
  *
- * 组内顺序按使用动线排：先看输出（执行过程展开、图片预览、上下文详情），
- * 再控执行（全自动），最后是输入框上的操作（撤回排队、开新会话）。
- * 网格在同一分组内各行等高、行高由最高的一张卡决定，因此调整文案或参数行时
- * 收益按整组算，不必逐卡评估。
+ * 组内顺序按使用动线排：先看输出（过程展开、图片预览、上下文详情），再管省事
+ * （自动压缩），输入框组按「执行 → 排队 → 开新对话」，布局组按「导航 → 列表 →
+ * 收纳 → 删除」。网格只保证同一行内卡片等高，行与行的高度各自按本行最高的一张算，
+ * 因此把参数行型与纯开关型卡片配对放在同一行，能让矮卡所在的行单独收缩下来。
  *
  * 新增页面型功能：
  *   1. 新建 src/features/<id>/，参考 power-pack 的 index、entry、page 与 locales
@@ -37,22 +37,23 @@ import memoryGuard from './memory-guard'
  * 新增开关型功能：提供 switch 组件即可，网格中直接渲染开关，没有独立页面。
  */
 export const featureList: FeatureDefinition[] = [
-  // 对话体验：一条对话内的阅读与操作
+  // 对话内容：对话正文里的过程展开、图片预览与上下文
   expandProcess,
-  autoRun,
+  autoCompact,
   imagePreview,
   contextInspect,
+  // 输入框：输入框上的按钮与执行开关
+  autoRun,
   queueEdit,
   clearSession,
   // 界面布局：侧边栏、会话列表与导航结构
   sessionHistory,
-  sidebarMore,
   workspaceSessionCount,
+  sidebarMore,
   deleteSession,
   // 配置与维护：带参数或配置页、在后台生效的功能
   powerPack,
   projectMemory,
-  autoCompact,
   desktopCookie,
   memoryGuard,
 ]

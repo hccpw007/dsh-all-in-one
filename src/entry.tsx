@@ -25,8 +25,10 @@ const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
     'shell.pageTitle': 'All In One',
     // 标题右侧的口号：一句话说明插件定位，与标题同行
     'shell.pageSlogan': '小工具，一个入口',
-    // 分组标题：改变对话阅读与操作行为的功能
-    'shell.group.conversation': '对话体验',
+    // 分组标题：对话正文里的过程展开、图片预览与上下文
+    'shell.group.conversation': '对话内容',
+    // 分组标题：输入框上的按钮与执行开关
+    'shell.group.composer': '输入框',
     // 分组标题：改变侧边栏、导航等界面结构的功能
     'shell.group.layout': '界面布局',
     // 分组标题：需要先配置再使用的功能
@@ -47,8 +49,10 @@ const SHELL_DICTIONARIES: Record<string, Record<string, string>> = {
     'shell.pageTitle': 'All In One',
     // Slogan next to the heading: one line stating what the plugin is for
     'shell.pageSlogan': 'Every tool, one entry',
-    // Group heading: features that change how conversations are read and operated
+    // Group heading: process expansion, image preview and context inside a conversation
     'shell.group.conversation': 'Conversation',
+    // Group heading: composer buttons and the execution switch
+    'shell.group.composer': 'Composer',
     // Group heading: features that restructure the sidebar and navigation
     'shell.group.layout': 'Layout',
     // Group heading: features that need configuration before use

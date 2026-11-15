@@ -108,7 +108,7 @@ interface FeatureCardProps {
 /**
  * 渲染单个功能入口：开关型直接渲染开关，页面型渲染可点击的入口卡片。
  *
- * 两种形态都包一层 `min-w-0`，让卡片按网格行高撑到统一高度。
+ * 两种形态都包一层 `min-w-0`，让卡片撑满所在行的行高；行高只由本行最高的卡片决定。
  * @param props 功能定义与外壳注入的翻译、打开动作
  */
 function FeatureCard({ feature, t, open }: FeatureCardProps) {
@@ -225,7 +225,7 @@ export function AllInOnePage({ t }: AllInOnePageProps) {
                 ) : null}
               </div>
               {/* 分组内的功能网格 */}
-              <div className="aio-card-grid grid auto-rows-fr gap-2.5">
+              <div className="aio-card-grid grid gap-2.5">
                 {section.features.map((feature) => (
                   <FeatureCard
                     key={feature.id}
