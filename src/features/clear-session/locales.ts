@@ -21,6 +21,8 @@ export const clearSessionLocales: FeatureLocales = {
     dialogMessage: '将在同一工作区打开一条新的空白对话，并删除当前会话。',
     // 删除范围说明：点明本地记录不可恢复
     deleteHint: '当前会话及其本地记录会被永久删除，无法恢复。',
+    // 弹窗确认按钮：执行删除并开启新会话
+    confirmAction: '确定',
     // 弹窗取消按钮
     cancel: '取消',
     // 删除执行中，按钮显示的进行态文字
@@ -49,6 +51,8 @@ export const clearSessionLocales: FeatureLocales = {
     dialogMessage: 'A new blank conversation opens in the same workspace, and this session is deleted.',
     // What deleting the current session means
     deleteHint: 'This session and its local records are deleted permanently.',
+    // Dialog confirm button: delete and start the new session
+    confirmAction: 'Confirm',
     // Dialog cancel button
     cancel: 'Cancel',
     // Text shown on the pressed button while the action runs

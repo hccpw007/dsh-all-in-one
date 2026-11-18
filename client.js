@@ -2751,7 +2751,7 @@ window.__ModuleLoader__.load({
           closeLabel: t("cancel"),
           title: t("dialogTitle"),
           description: t("dialogMessage"),
-          footer: /* @__PURE__ */ import_react5.default.createElement(import_react5.default.Fragment, null, /* @__PURE__ */ import_react5.default.createElement("div", { className: "flex w-full items-center justify-between" }, /* @__PURE__ */ import_react5.default.createElement(Button, { variant: "outline", disabled: pending3, onClick: close }, t("cancel")), /* @__PURE__ */ import_react5.default.createElement(Button, { variant: "danger", "data-modal-autofocus": "", disabled: pending3, onClick: () => void run() }, pending3 ? t("processing") : t("deleteAction"))))
+          footer: /* @__PURE__ */ import_react5.default.createElement(import_react5.default.Fragment, null, /* @__PURE__ */ import_react5.default.createElement("div", { className: "flex w-full items-center justify-between" }, /* @__PURE__ */ import_react5.default.createElement(Button, { variant: "outline", disabled: pending3, onClick: close }, t("cancel")), /* @__PURE__ */ import_react5.default.createElement(Button, { variant: "danger", "data-modal-autofocus": "", disabled: pending3, onClick: () => void run() }, pending3 ? t("processing") : t("confirmAction"))))
         },
         /* @__PURE__ */ import_react5.default.createElement("p", { className: "mt-3 text-[12px] leading-[18px] text-secondary" }, t("deleteHint")),
         target.running ? /* @__PURE__ */ import_react5.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-warn", role: "alert" }, t("runningHint")) : null,
@@ -2888,6 +2888,8 @@ window.__ModuleLoader__.load({
         dialogMessage: "\u5C06\u5728\u540C\u4E00\u5DE5\u4F5C\u533A\u6253\u5F00\u4E00\u6761\u65B0\u7684\u7A7A\u767D\u5BF9\u8BDD\uFF0C\u5E76\u5220\u9664\u5F53\u524D\u4F1A\u8BDD\u3002",
         // 删除范围说明：点明本地记录不可恢复
         deleteHint: "\u5F53\u524D\u4F1A\u8BDD\u53CA\u5176\u672C\u5730\u8BB0\u5F55\u4F1A\u88AB\u6C38\u4E45\u5220\u9664\uFF0C\u65E0\u6CD5\u6062\u590D\u3002",
+        // 弹窗确认按钮：执行删除并开启新会话
+        confirmAction: "\u786E\u5B9A",
         // 弹窗取消按钮
         cancel: "\u53D6\u6D88",
         // 删除执行中，按钮显示的进行态文字
@@ -2916,6 +2918,8 @@ window.__ModuleLoader__.load({
         dialogMessage: "A new blank conversation opens in the same workspace, and this session is deleted.",
         // What deleting the current session means
         deleteHint: "This session and its local records are deleted permanently.",
+        // Dialog confirm button: delete and start the new session
+        confirmAction: "Confirm",
         // Dialog cancel button
         cancel: "Cancel",
         // Text shown on the pressed button while the action runs

@@ -104,7 +104,7 @@ export function ClearSessionDialog({ t, useTarget, clear, settle }: ClearSession
             </Button>
             {/* 删除并开启新会话：开新对话并删除当前会话的本地记录；默认焦点在这里，回车即确认 */}
             <Button variant="danger" data-modal-autofocus="" disabled={pending} onClick={() => void run()}>
-              {pending ? t('processing') : t('deleteAction')}
+              {pending ? t('processing') : t('confirmAction')}
             </Button>
           </div>
         </>
