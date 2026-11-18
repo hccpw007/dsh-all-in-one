@@ -2488,8 +2488,8 @@ window.__ModuleLoader__.load({
           deleteButton.setAttribute("aria-label", options.deleteLabel);
           detachers.set(newButton, attachTooltip(newButton, () => options.newLabel));
           detachers.set(deleteButton, attachTooltip(deleteButton, () => options.deleteLabel));
-          toolbar.insertBefore(deleteButton, toolbar.firstElementChild);
-          toolbar.insertBefore(newButton, deleteButton);
+          toolbar.insertBefore(newButton, toolbar.firstElementChild);
+          toolbar.insertBefore(deleteButton, newButton);
           buttons.add(newButton);
           buttons.add(deleteButton);
         }

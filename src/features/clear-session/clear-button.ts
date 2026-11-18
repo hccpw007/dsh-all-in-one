@@ -258,9 +258,9 @@ export function installClearButton(options: ClearButtonOptions): () => void {
       detachers.set(newButton, attachTooltip(newButton, () => options.newLabel))
       detachers.set(deleteButton, attachTooltip(deleteButton, () => options.deleteLabel))
 
-      // 先插减号再把加号插到它前面，工具区最左侧的顺序固定为「+ -」
-      toolbar.insertBefore(deleteButton, toolbar.firstElementChild)
-      toolbar.insertBefore(newButton, deleteButton)
+      // 先插加号再把减号插到它前面，工具区最左侧的顺序固定为「- +」
+      toolbar.insertBefore(newButton, toolbar.firstElementChild)
+      toolbar.insertBefore(deleteButton, newButton)
       buttons.add(newButton)
       buttons.add(deleteButton)
     }
