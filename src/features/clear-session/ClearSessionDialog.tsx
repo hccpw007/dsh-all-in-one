@@ -1,18 +1,17 @@
 /**
- * 清空会话的确认弹窗。
+ * 删除当前会话并开启新会话的确认弹窗。
  *
- * 输入框旁的按钮只发起请求，弹窗挂在宿主的 `shell.overlay` 插槽里渲染。
- * 宿主没有「清空同一条会话历史」的能力，所以两个动作都是先开一条新对话，
- * 区别只在于对当前会话的处理：直接开启（当前会话原样留在列表里）或删除（连同本地记录一起删掉）。
- * 当前会话还在执行任务时不必让用户先手动停止：直接开启完全不碰它，让它继续跑完；
- * 删除本次会话会自动先中断那一轮，再清理记录。
+ * 减号按钮只发起请求，弹窗挂在宿主的 `shell.overlay` 插槽里渲染。
+ * 宿主没有「清空同一条会话历史」的能力，所以动作是：先开一条新的空白对话，
+ * 再删除当前会话的本地记录。
+ * 当前会话还在执行任务时不必让用户先手动停止：确认后会先中断那一轮，再清理记录。
  */
 import { Modal } from '@deepseek-ai/dsh-client-ui-primitives'
 import React, { useEffect, useState } from 'react'
 
 import { Button } from '../../components/Button'
 import type { Translate } from '../../types/plugin'
-import type { ClearSessionAction, ClearSessionTarget } from './types'
+import type { ClearSessionTarget } from './types'
 
 /** 宿主插槽注入的快照 hook：按选择器读取待确认目标。 */
 export type ClearTargetSelector = <T>(
@@ -26,8 +25,8 @@ export interface ClearSessionDialogProps {
   t: Translate
   /** 由客户端扩展注入：读取当前待确认目标。 */
   useTarget?: ClearTargetSelector
-  /** 由客户端扩展注入：按所选动作开新对话并处理原对话。 */
-  clear?: (target: ClearSessionTarget, action: ClearSessionAction) => Promise<unknown>
+  /** 由客户端扩展注入：开新对话并删除原对话。 */
+  clear?: (target: ClearSessionTarget) => Promise<unknown>
   /** 由客户端扩展注入：清空待确认目标。 */
   settle?: () => void
 }
@@ -43,9 +42,9 @@ const useNoTarget = (() => null) as unknown as ClearTargetSelector
  * @param props 插槽注入的目标读取与动作入口
  */
 export function ClearSessionDialog({ t, useTarget, clear, settle }: ClearSessionDialogProps) {
-  // 正在执行的动作；非空时三个按钮都禁用，避免重复提交
-  const [pending, setPending] = useState<ClearSessionAction | null>(null)
-  // 失败原因留在弹窗里，用户可换一个动作或取消
+  // 删除是否正在执行；执行期间两个按钮都禁用，避免重复提交
+  const [pending, setPending] = useState(false)
+  // 失败原因留在弹窗里，用户可重试或取消
   const [error, setError] = useState<string | null>(null)
 
   const readTarget = useTarget ?? useNoTarget
@@ -59,31 +58,29 @@ export function ClearSessionDialog({ t, useTarget, clear, settle }: ClearSession
 
   if (target === null) return null
 
-  const busy = pending !== null
-
   const close = () => {
-    if (busy) return
+    if (pending) return
 
     setError(null)
     settle?.()
   }
 
-  const run = async (action: ClearSessionAction) => {
-    if (busy) return
+  const run = async () => {
+    if (pending) return
 
-    setPending(action)
+    setPending(true)
     setError(null)
 
     try {
-      await clear?.(target, action)
+      await clear?.(target)
     } catch (failure) {
-      console.error('[clear-session] 处理失败:', action, failure)
-      setPending(null)
+      console.error('[clear-session] 删除会话失败:', failure)
+      setPending(false)
       setError(`${t('failed')}：${failure instanceof Error ? failure.message : String(failure)}`)
       return
     }
 
-    setPending(null)
+    setPending(false)
     settle?.()
   }
 
@@ -98,42 +95,25 @@ export function ClearSessionDialog({ t, useTarget, clear, settle }: ClearSession
         <>
           {/*
             footer 内部是宿主的一行按钮容器（右对齐），这里撑满整行再分两端：
-            取消留在左下角，两个真正执行的动作收在右下角，避免误点
+            取消留在左下角，删除收在右下角，避免误点
           */}
           <div className="flex w-full items-center justify-between">
             {/* 取消：关闭弹窗，不做任何改动 */}
-            <Button variant="outline" disabled={busy} onClick={close}>
+            <Button variant="outline" disabled={pending} onClick={close}>
               {t('cancel')}
             </Button>
-            {/* 右下角：开启新会话的两个动作 */}
-            <div className="flex items-center gap-2">
-              {/* 直接开启：开新对话，当前会话原样不动；作为默认焦点，回车不会误删 */}
-              <Button
-                variant="outline"
-                data-modal-autofocus=""
-                disabled={busy}
-                onClick={() => void run('keep')}
-              >
-                {pending === 'keep' ? t('processing') : t('keepAction')}
-              </Button>
-              {/* 删除本次会话：开新对话，并删除当前会话的本地记录 */}
-              <Button
-                variant="danger"
-                disabled={busy}
-                onClick={() => void run('delete')}
-              >
-                {pending === 'delete' ? t('processing') : t('deleteAction')}
-              </Button>
-            </div>
+            {/* 删除并开启新会话：开新对话并删除当前会话的本地记录；默认焦点在这里，回车即确认 */}
+            <Button variant="danger" data-modal-autofocus="" disabled={pending} onClick={() => void run()}>
+              {pending ? t('processing') : t('deleteAction')}
+            </Button>
           </div>
         </>
       }
     >
-      {/* 两个动作的结果差异：直接开启不动当前会话，删除则不可恢复 */}
-      <p className="mt-3 text-[12px] leading-[18px] text-secondary">{t('keepHint')}</p>
-      <p className="mt-1 text-[12px] leading-[18px] text-secondary">{t('deleteHint')}</p>
+      {/* 删除范围说明：点明记录不可恢复 */}
+      <p className="mt-3 text-[12px] leading-[18px] text-secondary">{t('deleteHint')}</p>
 
-      {/* 当前会话仍在执行任务：说明直接开启不影响它，只有删除会先中断那一轮 */}
+      {/* 当前会话仍在执行任务：说明确认后会先中断那一轮再删除 */}
       {target.running ? (
         <p className="mt-2 text-[12px] leading-[18px] text-warn" role="alert">
           {t('runningHint')}

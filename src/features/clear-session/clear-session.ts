@@ -1,16 +1,14 @@
 /**
- * 「清空会话」的执行层。
+ * 「删除并开新会话」的执行层。
  *
  * 宿主没有「把一条会话的历史清零后继续用」的能力，会话日志是只追加的，
- * 因此清空等于换一条新对话：先准备一条空白会话并切过去，
- * 再按用户所选动作决定原对话的去向（保留不动，或删除本地记录）。
+ * 因此清空等于换一条新对话：先准备一条空白会话并切过去，再删除原对话的本地记录。
  *
- * 两个动作对「原对话正在执行任务」的处理不同：保留不动原对话，它可以在后台
- * 继续跑完；删除则必须先中断那一轮，否则会撞上仍被写句柄持有的记录。
+ * 原对话正在执行任务时必须先中断那一轮，否则删除会撞上仍被写句柄持有的记录。
  */
 import type { SessionsApi, UiWorkspaceApi } from '../../types/plugin'
 import { requestCancelSession, requestDeleteSession } from './api'
-import type { ClearSessionAction, ClearSessionTarget } from './types'
+import type { ClearSessionTarget } from './types'
 
 /** 读取当前对话所需的最小依赖。 */
 export interface ClearSessionLookup {
@@ -20,7 +18,7 @@ export interface ClearSessionLookup {
   uiWorkspace: UiWorkspaceApi | undefined
 }
 
-/** 清空执行所需的宿主客户端服务。 */
+/** 删除执行所需的宿主客户端服务。 */
 export interface ClearSessionDeps extends ClearSessionLookup {
   /** 任务没能在超时内停下时的提示，由调用方按当前语言提供。 */
   stopTimeoutMessage: string
@@ -41,7 +39,7 @@ const STOP_POLL_MS = 100
 /**
  * 找到用户正在浏览的那条对话。
  * @param deps 宿主客户端服务
- * @returns 清空目标；没有正在浏览的对话时返回 undefined
+ * @returns 删除目标；没有正在浏览的对话时返回 undefined
  */
 export function findCurrentSession(deps: ClearSessionLookup): ClearSessionTarget | undefined {
   const state = deps.sessions.list.getSnapshot()
@@ -63,12 +61,12 @@ export function findCurrentSession(deps: ClearSessionLookup): ClearSessionTarget
 }
 
 /**
- * 准备一条空白会话作为清空后的落点。
+ * 准备一条空白会话作为删除后的落点。
  *
  * 工作区的 `connectWorkspace` 会复用已有的空白会话；若复用到的正是当前对话，
  * 换过去等于没换，这种情况改为显式新建。
  * @param deps 宿主客户端服务
- * @param target 要清空的会话
+ * @param target 要删除的会话
  * @returns 新会话标识；宿主两个创建入口都不可用时返回 undefined
  */
 async function prepareBlank(
@@ -88,7 +86,7 @@ async function prepareBlank(
     }
   }
 
-  // 优先复用工作区里已有的空白会话，避免每清空一次就多留一条空壳
+  // 优先复用工作区里已有的空白会话，避免每删除一次就多留一条空壳
   if (target.workspaceId !== undefined && typeof deps.uiWorkspace?.connectWorkspace === 'function') {
     try {
       const reused = await deps.uiWorkspace.connectWorkspace(target.workspaceId)
@@ -161,7 +159,7 @@ async function waitStopped(
  * 停止请求失败不代表任务还在跑（例如宿主侧已没有这条会话的 Agent），
  * 因此无论请求结果如何都以运行标记为准，只有确实没停下才报错。
  * @param deps 宿主客户端服务
- * @param target 要清空的会话
+ * @param target 要删除的会话
  */
 async function stopRunningTurn(deps: ClearSessionDeps, target: ClearSessionTarget): Promise<void> {
   try {
@@ -174,29 +172,24 @@ async function stopRunningTurn(deps: ClearSessionDeps, target: ClearSessionTarge
 }
 
 /**
- * 开一条新对话；删除动作还要清掉原对话的本地记录。
+ * 开一条新对话，并清掉原对话的本地记录。
  * @param deps 宿主客户端服务
  * @param target 当前对话
- * @param action 保留原对话，或删除它
  * @returns 新对话的标识；宿主没有创建入口时为 undefined
  */
 export async function clearSession(
   deps: ClearSessionDeps,
   target: ClearSessionTarget,
-  action: ClearSessionAction,
 ): Promise<string | undefined> {
-  // 只有删除需要先中断：保留动作不碰原对话，让它在后台继续跑完即可
-  if (action === 'delete' && target.running) await stopRunningTurn(deps, target)
+  // 先中断仍在执行的轮次：停止只是把取消交给 Agent，收尾期间记录仍在写入
+  if (target.running) await stopRunningTurn(deps, target)
 
   const nextId = await prepareBlank(deps, target)
 
   // 先把主视图切到新对话：删除要求原对话不再被主视图持有，
-  // 否则宿主会按内存中的状态把它重新落盘；保留动作同样要落到新对话上
+  // 否则宿主会按内存中的状态把它重新落盘
   if (nextId !== undefined) deps.uiWorkspace?.openSession?.(nextId)
   else deps.uiWorkspace?.startSession?.(target.workspaceId)
-
-  // 保留动作到这里就结束了：原对话原样留在列表里，不做归档也不做删除
-  if (action === 'keep') return nextId
 
   await waitDetached(deps.sessions, target.sessionId)
   await requestDeleteSession(target.sessionId)

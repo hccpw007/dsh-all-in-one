@@ -5,29 +5,25 @@ export const clearSessionLocales: FeatureLocales = {
   zh: {
     // 开关标题：卡片只说输入框旁多了入口，动作语义留给下面的按钮文案
     title: '新会话入口',
-    // 开关用途说明：点明入口位置（输入框左下角、加号按钮左侧）与两个可选结果，控制在两行以内
-    description: '输入框左下角新增按钮，确认后开新对话，可保留或删除当前会话。',
+    // 开关用途说明：点明入口位置（输入框左下角、加号按钮左侧）与两个按钮的分工，控制在两行以内
+    description: '输入框左下角新增 + / - 按钮：直接开新会话，或删除当前会话再开。',
     // 开关状态写入失败时的提示
     saveFailed: '保存开关状态失败，请检查浏览器存储权限。',
-    // 输入框按钮的名称与悬停提示
-    action: '开启新会话',
-    // 当前对话正在执行任务时的提示：按钮悬停与弹窗内都会显示，点明保留不停、删除先停
-    runningHint: '当前会话正在执行任务：「直接开启」让它继续在后台运行，「删除本次会话」会先停止它。',
+    // 加号按钮的名称与悬停提示：开新对话并保留当前会话
+    newAction: '开启新会话',
+    // 减号按钮的名称与悬停提示：删除当前会话后开新对话
+    deleteAction: '删除当前会话并开启新会话',
+    // 当前对话正在执行任务时的提示：确认删除会先停止这一轮
+    runningHint: '当前会话正在执行任务：确认后会先停止它，再删除并开启新会话。',
     // 确认弹窗标题
-    dialogTitle: '开启新会话',
-    // 确认弹窗说明：点明动作结果是换一条新对话
-    dialogMessage: '将在同一工作区打开一条新的空白对话。',
-    // 「直接开启」按钮：开新对话，当前会话原样不动
-    keepAction: '直接开启',
-    // 「直接开启」的含义说明
-    keepHint: '当前会话保持不变，仍留在会话列表里。',
-    // 「删除本次会话」按钮：开新对话，并删掉当前会话
-    deleteAction: '删除本次会话',
-    // 「删除本次会话」的含义说明
+    dialogTitle: '删除当前会话并开启新会话',
+    // 确认弹窗说明：点明动作结果是换一条新对话并删除旧记录
+    dialogMessage: '将在同一工作区打开一条新的空白对话，并删除当前会话。',
+    // 删除范围说明：点明本地记录不可恢复
     deleteHint: '当前会话及其本地记录会被永久删除，无法恢复。',
     // 弹窗取消按钮
     cancel: '取消',
-    // 任一动作执行中，按钮显示的进行态文字
+    // 删除执行中，按钮显示的进行态文字
     processing: '处理中…',
     // 停止任务超时（等不到运行标记落下）时的提示
     stopTimeout: '任务未能及时停止，请稍后重试。',
@@ -35,29 +31,24 @@ export const clearSessionLocales: FeatureLocales = {
     failed: '操作失败',
   },
   en: {
-    // Switch title: the card names the added entry; the action stays in the button label
-    title: 'New session button',
-    // Switch description: entry position and the two possible outcomes, kept within two lines
-    description: 'Add a composer button that opens a blank conversation here.',
+    // Switch title: the card names the added entry; the action stays in the button labels
+    title: 'New session buttons',
+    // Switch description: entry position and the two buttons, kept within two lines
+    description: 'Add + / - composer buttons: start a new session, or delete this one first.',
     // Shown when the switch state cannot be persisted
     saveFailed: 'Could not save the switch state. Check the browser storage permission.',
-    // Composer button label and hover tooltip
-    action: 'Start a new session',
-    // Shown both as the button tooltip and inside the dialog while the conversation works:
-    // start-now leaves the turn running, delete-this-session stops it first
-    runningHint: 'This session is still working: "Start now" leaves it running in the background, "Delete this session" stops it first.',
+    // Plus button label and hover tooltip: open a new conversation and keep the current one
+    newAction: 'Start a new session',
+    // Minus button label and hover tooltip: delete this session, then open a new one
+    deleteAction: 'Delete this session and start a new one',
+    // Shown inside the dialog while the conversation works: confirming stops the turn first
+    runningHint: 'This session is still working: confirming stops it before deleting and starting a new one.',
     // Dialog title
-    dialogTitle: 'Start a new session',
-    // Dialog message: the action opens another conversation
-    dialogMessage: 'A new blank conversation opens in the same workspace.',
-    // Start button: open a new conversation without touching the current one
-    keepAction: 'Start now',
-    // What starting without deleting means
-    keepHint: 'The current session stays unchanged and remains in the session list.',
-    // Delete button: open a new conversation and remove the current session
-    deleteAction: 'Delete this session',
+    dialogTitle: 'Delete this session and start a new one',
+    // Dialog message: the action opens another conversation and removes the current one
+    dialogMessage: 'A new blank conversation opens in the same workspace, and this session is deleted.',
     // What deleting the current session means
-    deleteHint: 'The current session and its local records are deleted permanently.',
+    deleteHint: 'This session and its local records are deleted permanently.',
     // Dialog cancel button
     cancel: 'Cancel',
     // Text shown on the pressed button while the action runs

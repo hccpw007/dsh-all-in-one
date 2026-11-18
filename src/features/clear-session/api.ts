@@ -1,5 +1,5 @@
 /**
- * 「清空会话」与宿主路由之间的 HTTP 客户端。
+ * 「删除并开新会话」与宿主路由之间的 HTTP 客户端。
  *
  * 两件事都必须由宿主做，浏览器做不到：
  *   - 删除旧对话的本地记录：会话文件在宿主进程的磁盘上；这里复用「删除会话」
@@ -40,9 +40,9 @@ export async function requestDeleteSession(sessionId: string): Promise<void> {
     })
 
     if (!response.ok) {
-      // 404 表示这条会话在磁盘上已经不存在：清空的目标本就是让它消失，按已完成处理
+      // 404 表示这条会话在磁盘上已经不存在：删除的目标本就是让它消失，按已完成处理
       if (response.status === 404) {
-        console.info('[clear-session] 旧会话已不存在，按已清空处理:', sessionId)
+        console.info('[clear-session] 旧会话已不存在，按已删除处理:', sessionId)
         return
       }
 

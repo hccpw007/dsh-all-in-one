@@ -2374,7 +2374,9 @@ window.__ModuleLoader__.load({
     var FILE_INPUT_SELECTOR = 'input[type="file"]';
     var RESCAN_DEBOUNCE_MS = 100;
     var SVG_NAMESPACE = "http://www.w3.org/2000/svg";
-    var ICON_PATH = "M2.37 11.25C1.59 9.89 1.32 8.3 1.62 6.76 1.92 5.22 2.76 3.84 4 2.88 5.23 1.91 6.77 1.43 8.34 1.51 9.9 1.59 11.39 2.24 12.51 3.32 13.64 4.41 14.34 5.87 14.48 7.43 14.61 8.99 14.18 10.55 13.26 11.82 12.34 13.09 10.99 13.98 9.46 14.33 8.19 14.63 6.86 14.53 5.65 14.06 5.17 13.87 4.77 13.49 4.27 13.4 3.67 13.28 2.95 13.56 2.04 14.33M8 5V11M5 8H11";
+    var BUBBLE_PATH = "M2.37 11.25C1.59 9.89 1.32 8.3 1.62 6.76 1.92 5.22 2.76 3.84 4 2.88 5.23 1.91 6.77 1.43 8.34 1.51 9.9 1.59 11.39 2.24 12.51 3.32 13.64 4.41 14.34 5.87 14.48 7.43 14.61 8.99 14.18 10.55 13.26 11.82 12.34 13.09 10.99 13.98 9.46 14.33 8.19 14.63 6.86 14.53 5.65 14.06 5.17 13.87 4.77 13.49 4.27 13.4 3.67 13.28 2.95 13.56 2.04 14.33";
+    var PLUS_PATH = "M8 5V11M5 8H11";
+    var MINUS_PATH = "M5 8H11";
     var STYLE_TEXT2 = `
     .${BUTTON_CLASS} {
       display: grid;
@@ -2399,7 +2401,7 @@ window.__ModuleLoader__.load({
       display: block;
     }
     `;
-    function createClearIcon() {
+    function createIcon(kind) {
       const svg = document.createElementNS(SVG_NAMESPACE, "svg");
       svg.setAttribute("width", "14");
       svg.setAttribute("height", "14");
@@ -2408,9 +2410,11 @@ window.__ModuleLoader__.load({
       svg.setAttribute("stroke", "currentColor");
       svg.setAttribute("stroke-width", "1.3");
       svg.setAttribute("aria-hidden", "true");
-      const path = document.createElementNS(SVG_NAMESPACE, "path");
-      path.setAttribute("d", ICON_PATH);
-      svg.appendChild(path);
+      const bubble2 = document.createElementNS(SVG_NAMESPACE, "path");
+      bubble2.setAttribute("d", BUBBLE_PATH);
+      const mark = document.createElementNS(SVG_NAMESPACE, "path");
+      mark.setAttribute("d", kind === "new" ? PLUS_PATH : MINUS_PATH);
+      svg.append(bubble2, mark);
       return svg;
     }
     function ensureStyle2() {
@@ -2419,6 +2423,25 @@ window.__ModuleLoader__.load({
       style.id = STYLE_ID2;
       style.textContent = STYLE_TEXT2;
       document.head.appendChild(style);
+    }
+    function createButton2(options, kind) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = BUTTON_CLASS;
+      button.setAttribute(BUTTON_ATTRIBUTE, kind);
+      button.appendChild(createIcon(kind));
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const target = options.readTarget();
+        if (kind === "new") {
+          options.onNew(target);
+          return;
+        }
+        if (target === void 0) return;
+        options.onDelete(target);
+      });
+      return button;
     }
     function findToolbars() {
       const toolbars = [];
@@ -2459,22 +2482,16 @@ window.__ModuleLoader__.load({
         if (disposed) return;
         pruneButtons();
         for (const toolbar of findToolbars()) {
-          const button = document.createElement("button");
-          button.type = "button";
-          button.className = BUTTON_CLASS;
-          button.setAttribute(BUTTON_ATTRIBUTE, "");
-          button.appendChild(createClearIcon());
-          button.addEventListener("click", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            const target = options.readTarget();
-            if (target === void 0) return;
-            options.onRequest(target);
-          });
-          button.setAttribute("aria-label", options.label);
-          detachers.set(button, attachTooltip(button, () => options.label));
-          toolbar.insertBefore(button, toolbar.firstElementChild);
-          buttons.add(button);
+          const newButton = createButton2(options, "new");
+          const deleteButton = createButton2(options, "delete");
+          newButton.setAttribute("aria-label", options.newLabel);
+          deleteButton.setAttribute("aria-label", options.deleteLabel);
+          detachers.set(newButton, attachTooltip(newButton, () => options.newLabel));
+          detachers.set(deleteButton, attachTooltip(deleteButton, () => options.deleteLabel));
+          toolbar.insertBefore(deleteButton, toolbar.firstElementChild);
+          toolbar.insertBefore(newButton, deleteButton);
+          buttons.add(newButton);
+          buttons.add(deleteButton);
         }
       };
       const schedule = () => {
@@ -2523,7 +2540,7 @@ window.__ModuleLoader__.load({
         });
         if (!response.ok) {
           if (response.status === 404) {
-            console.info("[clear-session] \u65E7\u4F1A\u8BDD\u5DF2\u4E0D\u5B58\u5728\uFF0C\u6309\u5DF2\u6E05\u7A7A\u5904\u7406:", sessionId);
+            console.info("[clear-session] \u65E7\u4F1A\u8BDD\u5DF2\u4E0D\u5B58\u5728\uFF0C\u6309\u5DF2\u5220\u9664\u5904\u7406:", sessionId);
             return;
           }
           const text = await response.text();
@@ -2653,12 +2670,11 @@ window.__ModuleLoader__.load({
       }
       await waitStopped(deps.sessions, target.sessionId, deps.stopTimeoutMessage);
     }
-    async function clearSession(deps, target, action) {
-      if (action === "delete" && target.running) await stopRunningTurn(deps, target);
+    async function clearSession(deps, target) {
+      if (target.running) await stopRunningTurn(deps, target);
       const nextId = await prepareBlank(deps, target);
       if (nextId !== void 0) deps.uiWorkspace?.openSession?.(nextId);
       else deps.uiWorkspace?.startSession?.(target.workspaceId);
-      if (action === "keep") return nextId;
       await waitDetached(deps.sessions, target.sessionId);
       await requestDeleteSession(target.sessionId);
       deps.sessions.handleSessionRemoved?.(target.sessionId);
@@ -2698,7 +2714,7 @@ window.__ModuleLoader__.load({
     // src/features/clear-session/ClearSessionDialog.tsx
     var useNoTarget = (() => null);
     function ClearSessionDialog({ t, useTarget, clear, settle }) {
-      const [pending3, setPending] = (0, import_react5.useState)(null);
+      const [pending3, setPending] = (0, import_react5.useState)(false);
       const [error, setError] = (0, import_react5.useState)(null);
       const readTarget = useTarget ?? useNoTarget;
       const target = readTarget((value) => value);
@@ -2707,25 +2723,24 @@ window.__ModuleLoader__.load({
         setError(null);
       }, [targetKey]);
       if (target === null) return null;
-      const busy = pending3 !== null;
       const close = () => {
-        if (busy) return;
+        if (pending3) return;
         setError(null);
         settle?.();
       };
-      const run = async (action) => {
-        if (busy) return;
-        setPending(action);
+      const run = async () => {
+        if (pending3) return;
+        setPending(true);
         setError(null);
         try {
-          await clear?.(target, action);
+          await clear?.(target);
         } catch (failure) {
-          console.error("[clear-session] \u5904\u7406\u5931\u8D25:", action, failure);
-          setPending(null);
+          console.error("[clear-session] \u5220\u9664\u4F1A\u8BDD\u5931\u8D25:", failure);
+          setPending(false);
           setError(`${t("failed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
           return;
         }
-        setPending(null);
+        setPending(false);
         settle?.();
       };
       return /* @__PURE__ */ import_react5.default.createElement(
@@ -2736,27 +2751,9 @@ window.__ModuleLoader__.load({
           closeLabel: t("cancel"),
           title: t("dialogTitle"),
           description: t("dialogMessage"),
-          footer: /* @__PURE__ */ import_react5.default.createElement(import_react5.default.Fragment, null, /* @__PURE__ */ import_react5.default.createElement("div", { className: "flex w-full items-center justify-between" }, /* @__PURE__ */ import_react5.default.createElement(Button, { variant: "outline", disabled: busy, onClick: close }, t("cancel")), /* @__PURE__ */ import_react5.default.createElement("div", { className: "flex items-center gap-2" }, /* @__PURE__ */ import_react5.default.createElement(
-            Button,
-            {
-              variant: "outline",
-              "data-modal-autofocus": "",
-              disabled: busy,
-              onClick: () => void run("keep")
-            },
-            pending3 === "keep" ? t("processing") : t("keepAction")
-          ), /* @__PURE__ */ import_react5.default.createElement(
-            Button,
-            {
-              variant: "danger",
-              disabled: busy,
-              onClick: () => void run("delete")
-            },
-            pending3 === "delete" ? t("processing") : t("deleteAction")
-          ))))
+          footer: /* @__PURE__ */ import_react5.default.createElement(import_react5.default.Fragment, null, /* @__PURE__ */ import_react5.default.createElement("div", { className: "flex w-full items-center justify-between" }, /* @__PURE__ */ import_react5.default.createElement(Button, { variant: "outline", disabled: pending3, onClick: close }, t("cancel")), /* @__PURE__ */ import_react5.default.createElement(Button, { variant: "danger", "data-modal-autofocus": "", disabled: pending3, onClick: () => void run() }, pending3 ? t("processing") : t("deleteAction"))))
         },
-        /* @__PURE__ */ import_react5.default.createElement("p", { className: "mt-3 text-[12px] leading-[18px] text-secondary" }, t("keepHint")),
-        /* @__PURE__ */ import_react5.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("deleteHint")),
+        /* @__PURE__ */ import_react5.default.createElement("p", { className: "mt-3 text-[12px] leading-[18px] text-secondary" }, t("deleteHint")),
         target.running ? /* @__PURE__ */ import_react5.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-warn", role: "alert" }, t("runningHint")) : null,
         error !== null ? /* @__PURE__ */ import_react5.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null
       );
@@ -2826,7 +2823,7 @@ window.__ModuleLoader__.load({
             uiWorkspace = void 0;
           };
         });
-        const runClear = async (target, action) => clearSession({ sessions, uiWorkspace, stopTimeoutMessage: t("stopTimeout") }, target, action);
+        const runClear = async (target) => clearSession({ sessions, uiWorkspace, stopTimeoutMessage: t("stopTimeout") }, target);
         ctx.slots.inject(
           OVERLAY_SLOT,
           () => ctx.slots.register(
@@ -2848,14 +2845,24 @@ window.__ModuleLoader__.load({
             )
           )
         );
+        const startNew = (target) => {
+          const workspace = uiWorkspace;
+          if (workspace?.startSession === void 0) {
+            console.error("[clear-session] \u5BBF\u4E3B\u672A\u63D0\u4F9B startSession\uFF0C\u65E0\u6CD5\u5F00\u542F\u65B0\u4F1A\u8BDD");
+            return;
+          }
+          workspace.startSession(target?.workspaceId);
+        };
         if (!readClearSessionEnabled()) return;
         ctx.effect(
           () => installClearButton({
-            label: t("action"),
+            newLabel: t("newAction"),
+            deleteLabel: t("deleteAction"),
             readTarget: () => findCurrentSession({ sessions, uiWorkspace }),
-            onRequest: (target) => clearSessionStore.request(target)
+            onNew: startNew,
+            onDelete: (target) => clearSessionStore.request(target)
           }),
-          "clear-session: input button"
+          "clear-session: input buttons"
         );
       });
     }
@@ -2865,29 +2872,25 @@ window.__ModuleLoader__.load({
       zh: {
         // 开关标题：卡片只说输入框旁多了入口，动作语义留给下面的按钮文案
         title: "\u65B0\u4F1A\u8BDD\u5165\u53E3",
-        // 开关用途说明：点明入口位置（输入框左下角、加号按钮左侧）与两个可选结果，控制在两行以内
-        description: "\u8F93\u5165\u6846\u5DE6\u4E0B\u89D2\u65B0\u589E\u6309\u94AE\uFF0C\u786E\u8BA4\u540E\u5F00\u65B0\u5BF9\u8BDD\uFF0C\u53EF\u4FDD\u7559\u6216\u5220\u9664\u5F53\u524D\u4F1A\u8BDD\u3002",
+        // 开关用途说明：点明入口位置（输入框左下角、加号按钮左侧）与两个按钮的分工，控制在两行以内
+        description: "\u8F93\u5165\u6846\u5DE6\u4E0B\u89D2\u65B0\u589E + / - \u6309\u94AE\uFF1A\u76F4\u63A5\u5F00\u65B0\u4F1A\u8BDD\uFF0C\u6216\u5220\u9664\u5F53\u524D\u4F1A\u8BDD\u518D\u5F00\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
-        // 输入框按钮的名称与悬停提示
-        action: "\u5F00\u542F\u65B0\u4F1A\u8BDD",
-        // 当前对话正在执行任务时的提示：按钮悬停与弹窗内都会显示，点明保留不停、删除先停
-        runningHint: "\u5F53\u524D\u4F1A\u8BDD\u6B63\u5728\u6267\u884C\u4EFB\u52A1\uFF1A\u300C\u76F4\u63A5\u5F00\u542F\u300D\u8BA9\u5B83\u7EE7\u7EED\u5728\u540E\u53F0\u8FD0\u884C\uFF0C\u300C\u5220\u9664\u672C\u6B21\u4F1A\u8BDD\u300D\u4F1A\u5148\u505C\u6B62\u5B83\u3002",
+        // 加号按钮的名称与悬停提示：开新对话并保留当前会话
+        newAction: "\u5F00\u542F\u65B0\u4F1A\u8BDD",
+        // 减号按钮的名称与悬停提示：删除当前会话后开新对话
+        deleteAction: "\u5220\u9664\u5F53\u524D\u4F1A\u8BDD\u5E76\u5F00\u542F\u65B0\u4F1A\u8BDD",
+        // 当前对话正在执行任务时的提示：确认删除会先停止这一轮
+        runningHint: "\u5F53\u524D\u4F1A\u8BDD\u6B63\u5728\u6267\u884C\u4EFB\u52A1\uFF1A\u786E\u8BA4\u540E\u4F1A\u5148\u505C\u6B62\u5B83\uFF0C\u518D\u5220\u9664\u5E76\u5F00\u542F\u65B0\u4F1A\u8BDD\u3002",
         // 确认弹窗标题
-        dialogTitle: "\u5F00\u542F\u65B0\u4F1A\u8BDD",
-        // 确认弹窗说明：点明动作结果是换一条新对话
-        dialogMessage: "\u5C06\u5728\u540C\u4E00\u5DE5\u4F5C\u533A\u6253\u5F00\u4E00\u6761\u65B0\u7684\u7A7A\u767D\u5BF9\u8BDD\u3002",
-        // 「直接开启」按钮：开新对话，当前会话原样不动
-        keepAction: "\u76F4\u63A5\u5F00\u542F",
-        // 「直接开启」的含义说明
-        keepHint: "\u5F53\u524D\u4F1A\u8BDD\u4FDD\u6301\u4E0D\u53D8\uFF0C\u4ECD\u7559\u5728\u4F1A\u8BDD\u5217\u8868\u91CC\u3002",
-        // 「删除本次会话」按钮：开新对话，并删掉当前会话
-        deleteAction: "\u5220\u9664\u672C\u6B21\u4F1A\u8BDD",
-        // 「删除本次会话」的含义说明
+        dialogTitle: "\u5220\u9664\u5F53\u524D\u4F1A\u8BDD\u5E76\u5F00\u542F\u65B0\u4F1A\u8BDD",
+        // 确认弹窗说明：点明动作结果是换一条新对话并删除旧记录
+        dialogMessage: "\u5C06\u5728\u540C\u4E00\u5DE5\u4F5C\u533A\u6253\u5F00\u4E00\u6761\u65B0\u7684\u7A7A\u767D\u5BF9\u8BDD\uFF0C\u5E76\u5220\u9664\u5F53\u524D\u4F1A\u8BDD\u3002",
+        // 删除范围说明：点明本地记录不可恢复
         deleteHint: "\u5F53\u524D\u4F1A\u8BDD\u53CA\u5176\u672C\u5730\u8BB0\u5F55\u4F1A\u88AB\u6C38\u4E45\u5220\u9664\uFF0C\u65E0\u6CD5\u6062\u590D\u3002",
         // 弹窗取消按钮
         cancel: "\u53D6\u6D88",
-        // 任一动作执行中，按钮显示的进行态文字
+        // 删除执行中，按钮显示的进行态文字
         processing: "\u5904\u7406\u4E2D\u2026",
         // 停止任务超时（等不到运行标记落下）时的提示
         stopTimeout: "\u4EFB\u52A1\u672A\u80FD\u53CA\u65F6\u505C\u6B62\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002",
@@ -2895,29 +2898,24 @@ window.__ModuleLoader__.load({
         failed: "\u64CD\u4F5C\u5931\u8D25"
       },
       en: {
-        // Switch title: the card names the added entry; the action stays in the button label
-        title: "New session button",
-        // Switch description: entry position and the two possible outcomes, kept within two lines
-        description: "Add a composer button that opens a blank conversation here.",
+        // Switch title: the card names the added entry; the action stays in the button labels
+        title: "New session buttons",
+        // Switch description: entry position and the two buttons, kept within two lines
+        description: "Add + / - composer buttons: start a new session, or delete this one first.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check the browser storage permission.",
-        // Composer button label and hover tooltip
-        action: "Start a new session",
-        // Shown both as the button tooltip and inside the dialog while the conversation works:
-        // start-now leaves the turn running, delete-this-session stops it first
-        runningHint: 'This session is still working: "Start now" leaves it running in the background, "Delete this session" stops it first.',
+        // Plus button label and hover tooltip: open a new conversation and keep the current one
+        newAction: "Start a new session",
+        // Minus button label and hover tooltip: delete this session, then open a new one
+        deleteAction: "Delete this session and start a new one",
+        // Shown inside the dialog while the conversation works: confirming stops the turn first
+        runningHint: "This session is still working: confirming stops it before deleting and starting a new one.",
         // Dialog title
-        dialogTitle: "Start a new session",
-        // Dialog message: the action opens another conversation
-        dialogMessage: "A new blank conversation opens in the same workspace.",
-        // Start button: open a new conversation without touching the current one
-        keepAction: "Start now",
-        // What starting without deleting means
-        keepHint: "The current session stays unchanged and remains in the session list.",
-        // Delete button: open a new conversation and remove the current session
-        deleteAction: "Delete this session",
+        dialogTitle: "Delete this session and start a new one",
+        // Dialog message: the action opens another conversation and removes the current one
+        dialogMessage: "A new blank conversation opens in the same workspace, and this session is deleted.",
         // What deleting the current session means
-        deleteHint: "The current session and its local records are deleted permanently.",
+        deleteHint: "This session and its local records are deleted permanently.",
         // Dialog cancel button
         cancel: "Cancel",
         // Text shown on the pressed button while the action runs
@@ -3000,7 +2998,7 @@ window.__ModuleLoader__.load({
     function visibleRows(dock) {
       return [...dock.querySelectorAll("li")].filter((row) => !row.hasAttribute(PENDING_ROW_ATTRIBUTE));
     }
-    function createButton2(hostEdit, label) {
+    function createButton3(hostEdit, label) {
       const button = document.createElement("button");
       button.type = "button";
       button.className = hostEdit.className;
@@ -3035,7 +3033,7 @@ window.__ModuleLoader__.load({
         if (hostButtons.length < HOST_ACTION_COUNT) return;
         const hostEdit = hostButtons[0];
         if (hostEdit === void 0) return;
-        const button = createButton2(hostEdit, options.label);
+        const button = createButton3(hostEdit, options.label);
         button.addEventListener("click", (event) => {
           event.preventDefault();
           event.stopPropagation();
