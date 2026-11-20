@@ -100,15 +100,20 @@ const PANEL_CLASS =
 /** 标题栏：标题与副标题靠左，关闭按钮靠右。 */
 const HEADER_CLASS = 'box-border flex items-start gap-3 border-0 border-b border-solid border-line1 px-4 py-3'
 
-/** 页签容器。 */
-const TABS_CLASS = 'box-border flex shrink-0 items-center gap-1 border-0 border-b border-solid border-line1 px-3 py-1.5'
+/**
+ * 页签容器：只留底部一条分隔线，选中页签的指示线正好压在这条线上。
+ * 上下留白交给按钮自己，容器再加内边距会让指示线悬在分隔线上方一段距离。
+ */
+const TABS_CLASS = 'box-border flex shrink-0 items-center gap-1 border-0 border-b border-solid border-line1 px-3'
 
-/** 页签按钮：未选中时只显示次要色，选中时用品牌色描边。 */
+/**
+ * 页签按钮：与宿主页签同款——次要色文字，悬停提亮，选中时业务蓝文字加底部指示线。
+ *
+ * 选中态不写在这里：指示线是绝对定位的伪元素，要压在容器分隔线上，改由
+ * `DIALOG_STYLE` 按 aria-selected 绘制；切换页签只改属性，不动 className。
+ */
 const TAB_CLASS =
-  'box-border cursor-pointer rounded-md border-0 bg-transparent px-2.5 py-1 text-[12.5px] leading-[18px] text-secondary transition-colors duration-150 hover:bg-interactive'
-
-/** 选中页签的附加样式。 */
-const TAB_ACTIVE_CLASS = 'bg-interactive text-primary'
+  'aio-context-tab relative box-border cursor-pointer border-0 bg-transparent px-2.5 pt-2 pb-2 text-[12.5px] font-medium leading-[18px] text-secondary transition-colors duration-150 hover:text-primary'
 
 /** 正文容器：唯一滚动区。 */
 const BODY_CLASS = 'box-border min-h-[220px] flex-1 overflow-auto px-4 py-3'
@@ -149,10 +154,31 @@ const MESSAGE_TEXT_CLASS =
 /** 当前打开的窗口；同一时刻只允许一个。 */
 let activeDispose: (() => void) | undefined
 
-/** 窗口自带的样式：宿主在 :root 上设了超椭圆圆角，弹窗要恢复标准圆角。 */
+/**
+ * 窗口自带的样式。
+ *
+ * 页签选中态照抄宿主页签的做法：业务蓝文字 + 2px 圆角指示线，指示线下压 1px 压住
+ * 页签栏分隔线，切换时按钮尺寸不变。不要用 `--dsw-alias-brand-primary` 当选中色：
+ * 它在当前令牌表里解析成近黑色，与正文混在一起看不出选中的是哪个页签。
+ */
 const DIALOG_STYLE = [
   '.aio-context-dialog { --dsw-corner-shape: initial; corner-shape: round; }',
   '.aio-context-dialog summary::-webkit-details-marker { display: none; }',
+  [
+    ".aio-context-dialog .aio-context-tab[aria-selected='true'] {",
+    '  color: var(--dsw-alias-state-business-primary);',
+    '}',
+    ".aio-context-dialog .aio-context-tab[aria-selected='true']::after {",
+    "  content: '';",
+    '  position: absolute;',
+    '  right: 0;',
+    '  bottom: -1px;',
+    '  left: 0;',
+    '  height: 2px;',
+    '  border-radius: 2px;',
+    '  background: var(--dsw-alias-state-business-primary);',
+    '}',
+  ].join('\n'),
 ].join('\n')
 
 /**
@@ -451,11 +477,9 @@ export function openContextInspectDialog(options: ContextDialogOptions): void {
    * 重画页签选中状态与页脚统计。
    */
   function renderChrome(): void {
-    // 三个页签统一设置选中状态：选中的用品牌底色，其余保持次要色
+    // 三个页签统一同步选中状态；选中态样式由 DIALOG_STYLE 按 aria-selected 绘制
     for (const [key, tab] of [['system', systemTab], ['tools', toolsTab], ['messages', messagesTab]] as const) {
-      const selected = section === key
-      tab.className = selected ? `${TAB_CLASS} ${TAB_ACTIVE_CLASS}` : TAB_CLASS
-      tab.setAttribute('aria-selected', selected ? 'true' : 'false')
+      tab.setAttribute('aria-selected', section === key ? 'true' : 'false')
     }
 
     // 每个页签给出自己的规模：字符数、工具数量或消息条数；三者都带更新时间
