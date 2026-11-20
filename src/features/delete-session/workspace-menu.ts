@@ -1,19 +1,28 @@
 /**
- * 工作区「更多」菜单里的「删除所有会话」入口。
+ * 工作区「删除所有会话」入口。
  *
  * 宿主当前版本的工作区菜单没有对外扩展点，这里按菜单的 DOM 结构注入：
- * 记录用户点开的是哪个工作区的「更多」，菜单渲染后在「删除工作区」之前插入
- * 一条同样式的菜单项；点击后关闭菜单并写入批量删除的待确认请求，由确认弹窗
- * 执行删除。
+ * 记录用户点开的是哪个工作区的菜单（行上的「更多」按钮或右键都能打开同一个菜单），
+ * 菜单渲染后在「删除工作区」之前插入一条同样式的菜单项；点击后关闭菜单并写入
+ * 批量删除的待确认请求，由确认弹窗执行删除。
+ *
+ * 两种打开方式记录到 body 属性上，供 hide-workspace-delete 区分：
+ * 右键菜单收起「删除工作区」，「更多」按钮打开的菜单保留它。
  *
  * 宿主改动菜单结构时，最坏情况是菜单项不再出现，不影响会话行删除与其它功能。
  */
 import type { SessionsApi, Translate, UiWorkspaceApi } from '../../types/plugin'
 import { deleteConfirmStore } from './confirm-store'
 import { readDeleteSessionEnabled } from './delete-session'
+import {
+  MENU_SOURCE_ATTRIBUTE, MENU_SOURCE_BUTTON, MENU_SOURCE_CONTEXT,
+} from './hide-workspace-delete'
 
 /** 工作区行：宿主用 `data-row-key="workspace:<id>"` 标记。 */
 const WORKSPACE_ROW_SELECTOR = '[data-row-key^="workspace:"]'
+
+/** 行节点：右键与「更多」都先取最近的行，再确认它是工作区行。 */
+const ROW_SELECTOR = '[data-row-key]'
 
 /** 菜单容器。 */
 const MENU_SELECTOR = '[role="menu"]'
@@ -68,6 +77,22 @@ const INJECTED_ATTRIBUTE = 'data-aio-delete-all-sessions'
 interface MenuTarget {
   workspaceId: string
   title: string
+}
+
+/**
+ * 取出事件所在的工作区行。
+ *
+ * 会话行可能嵌在工作区行内部，因此取最近的行节点再确认它是工作区行，
+ * 避免在会话行上右键或点按钮时误当成工作区。
+ * @param target 事件目标
+ * @returns 工作区行元素；事件不在工作区行内时返回 undefined
+ */
+function findWorkspaceRow(target: EventTarget | null): HTMLElement | undefined {
+  if (!(target instanceof Element)) return undefined
+
+  const row = target.closest(ROW_SELECTOR)
+
+  return row instanceof HTMLElement && row.matches(WORKSPACE_ROW_SELECTOR) ? row : undefined
 }
 
 /**
@@ -239,17 +264,29 @@ export function installWorkspaceMenu(
    * 第二个才是新建会话。
    */
   const onClick = (event: MouseEvent): void => {
+    const row = findWorkspaceRow(event.target)
+    if (row === undefined) return
+
     const node = event.target
     if (!(node instanceof Element)) return
-
-    const row = node.closest(WORKSPACE_ROW_SELECTOR)
-    if (!(row instanceof HTMLElement)) return
 
     const button = node.closest('button')
     if (button === null || row.querySelector('button') !== button) return
 
     // 重新点开菜单时先清掉上一次的目标，避免菜单未渲染时残留
     pending = readWorkspaceRow(row)
+    // 「更多」按钮打开的菜单保留宿主的「删除工作区」，只做标记供样式区分
+    document.body.setAttribute(MENU_SOURCE_ATTRIBUTE, MENU_SOURCE_BUTTON)
+  }
+
+  /** 右键打开的是同一个菜单：不需要按钮判断，记录工作区即可。 */
+  const onContextMenu = (event: MouseEvent): void => {
+    const row = findWorkspaceRow(event.target)
+    if (row === undefined) return
+
+    pending = readWorkspaceRow(row)
+    // 右键菜单收起「删除工作区」（见 hide-workspace-delete）
+    document.body.setAttribute(MENU_SOURCE_ATTRIBUTE, MENU_SOURCE_CONTEXT)
   }
 
   /** 菜单渲染后插入入口；只处理找到菜单的那一次，避免反复扫描。 */
@@ -298,10 +335,12 @@ export function installWorkspaceMenu(
   })
   observer.observe(document.body, { childList: true, subtree: true })
   document.addEventListener('click', onClick, true)
+  document.addEventListener('contextmenu', onContextMenu, true)
 
   return () => {
     disposed = true
     observer.disconnect()
     document.removeEventListener('click', onClick, true)
+    document.removeEventListener('contextmenu', onContextMenu, true)
   }
 }

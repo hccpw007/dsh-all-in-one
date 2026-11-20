@@ -4,8 +4,8 @@
  * 三类入口配合完成删除：
  *   - 会话行悬停操作区（`sidebar.workspaces.session.row.action`）里的删除按钮，
  *     点击只写入单条会话的待确认请求；
- *   - 工作区「更多」菜单里的「删除所有会话」（由 workspace-menu 注入），点击
- *     写入该工作区所有非运行中会话的待确认请求；
+ *   - 工作区菜单里的「删除所有会话」（由 workspace-menu 注入）：行上的「更多」
+ *     按钮与右键打开的是同一个菜单，点击写入该工作区所有非运行中会话的待确认请求；
  *   - 宿主浮层（`shell.overlay`）里的确认弹窗，用户确认后才请求宿主删除磁盘
  *     上的会话记录，并让客户端列表立刻丢掉这些行。
  *
@@ -13,8 +13,9 @@
  * 其次是第一条对话，一条都不剩时打开新建对话页面，界面不会停在一条已经不存在
  * 的会话上。
  *
- * 开关开启时还会收起宿主的归档入口（见 hide-archive）：归档只把会话藏起来，
- * 与本功能「直接删除」的定位冲突。
+ * 开关开启时还会收起宿主的归档入口（见 hide-archive）与工作区删除入口
+ * （见 hide-workspace-delete）：两者都会让会话记录从别处消失，与本功能
+ * 「明确删除会话」的定位冲突。
  */
 import React from 'react'
 
@@ -31,6 +32,7 @@ import { readDeleteSessionEnabled } from './delete-session'
 import { DeleteSessionButton, type DeleteSessionButtonProps } from './DeleteSessionButton'
 import { DeleteSessionDialog, type DeleteSessionDialogProps } from './DeleteSessionDialog'
 import { installArchiveHiding } from './hide-archive'
+import { installWorkspaceDeleteHiding } from './hide-workspace-delete'
 import type { DeleteSessionsResponse, SessionDeletableState } from './types'
 import { installWorkspaceMenu } from './workspace-menu'
 
@@ -119,6 +121,8 @@ export function apply(ctx: PluginContext, t: Translate): void {
   // 与「删除会话」的定位冲突。开关变更会整页刷新，安装期读取一次即可
   if (readDeleteSessionEnabled()) {
     ctx.effect(() => installArchiveHiding(), 'delete-session: hide archive')
+    // 工作区的删除入口一并收起：删掉工作区会让它下面的会话一起消失
+    ctx.effect(() => installWorkspaceDeleteHiding(), 'delete-session: hide workspace delete')
   }
 
   // 会话列表服务缺失时只跳过删除入口，设置页的开关仍可正常使用

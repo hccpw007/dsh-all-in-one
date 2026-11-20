@@ -5169,10 +5169,34 @@ window.__ModuleLoader__.load({
       };
     }
 
+    // src/features/delete-session/hide-workspace-delete.ts
+    var MENU_ITEM_SELECTOR2 = '[class*="_itemWrap"]';
+    var DELETE_WORKSPACE_ICON_SELECTOR = 'svg[data-icon="dsw-icon-trash-outline-regular"]';
+    var MENU_SOURCE_ATTRIBUTE = "data-aio-menu-source";
+    var MENU_SOURCE_CONTEXT = "context";
+    var MENU_SOURCE_BUTTON = "button";
+    var STYLE_ID7 = "aio-hide-workspace-delete";
+    var STYLE_TEXT6 = `body[${MENU_SOURCE_ATTRIBUTE}="${MENU_SOURCE_CONTEXT}"] [role="menu"] ${MENU_ITEM_SELECTOR2}:has(${DELETE_WORKSPACE_ICON_SELECTOR}) { display: none !important; }`;
+    function ensureStyle6() {
+      if (document.getElementById(STYLE_ID7) !== null) return;
+      const style = document.createElement("style");
+      style.id = STYLE_ID7;
+      style.textContent = STYLE_TEXT6;
+      document.head.appendChild(style);
+    }
+    function installWorkspaceDeleteHiding() {
+      ensureStyle6();
+      return () => {
+        document.getElementById(STYLE_ID7)?.remove();
+        document.body.removeAttribute(MENU_SOURCE_ATTRIBUTE);
+      };
+    }
+
     // src/features/delete-session/workspace-menu.ts
     var WORKSPACE_ROW_SELECTOR2 = '[data-row-key^="workspace:"]';
+    var ROW_SELECTOR2 = "[data-row-key]";
     var MENU_SELECTOR2 = '[role="menu"]';
-    var MENU_ITEM_SELECTOR2 = '[class*="_itemWrap"]';
+    var MENU_ITEM_SELECTOR3 = '[class*="_itemWrap"]';
     var MENU_LABEL_SELECTOR2 = '[class*="_itemLabel"]';
     var MENU_ICON_SELECTOR2 = '[class*="_itemIcon"]';
     var SVG_NAMESPACE3 = "http://www.w3.org/2000/svg";
@@ -5199,6 +5223,11 @@ window.__ModuleLoader__.load({
     ];
     var DELETE_WORKSPACE_LABELS = ["\u5220\u9664\u5DE5\u4F5C\u533A", "Delete workspace"];
     var INJECTED_ATTRIBUTE2 = "data-aio-delete-all-sessions";
+    function findWorkspaceRow(target) {
+      if (!(target instanceof Element)) return void 0;
+      const row = target.closest(ROW_SELECTOR2);
+      return row instanceof HTMLElement && row.matches(WORKSPACE_ROW_SELECTOR2) ? row : void 0;
+    }
     function readWorkspaceRow(row) {
       const key = row.getAttribute("data-row-key") ?? "";
       const workspaceId = key.slice("workspace:".length);
@@ -5256,7 +5285,7 @@ window.__ModuleLoader__.load({
     }
     function injectMenuItem(menu, target, sessions, uiWorkspace, t) {
       if (menu.querySelector(`[${INJECTED_ATTRIBUTE2}]`) !== null) return;
-      const items = Array.from(menu.querySelectorAll(MENU_ITEM_SELECTOR2));
+      const items = Array.from(menu.querySelectorAll(MENU_ITEM_SELECTOR3));
       const deleteWorkspace = items.find(
         (item2) => DELETE_WORKSPACE_LABELS.includes((item2.textContent ?? "").trim())
       );
@@ -5281,13 +5310,20 @@ window.__ModuleLoader__.load({
       let scheduled = false;
       let disposed = false;
       const onClick = (event) => {
+        const row = findWorkspaceRow(event.target);
+        if (row === void 0) return;
         const node = event.target;
         if (!(node instanceof Element)) return;
-        const row = node.closest(WORKSPACE_ROW_SELECTOR2);
-        if (!(row instanceof HTMLElement)) return;
         const button = node.closest("button");
         if (button === null || row.querySelector("button") !== button) return;
         pending3 = readWorkspaceRow(row);
+        document.body.setAttribute(MENU_SOURCE_ATTRIBUTE, MENU_SOURCE_BUTTON);
+      };
+      const onContextMenu = (event) => {
+        const row = findWorkspaceRow(event.target);
+        if (row === void 0) return;
+        pending3 = readWorkspaceRow(row);
+        document.body.setAttribute(MENU_SOURCE_ATTRIBUTE, MENU_SOURCE_CONTEXT);
       };
       const scan = () => {
         scheduled = false;
@@ -5322,10 +5358,12 @@ window.__ModuleLoader__.load({
       });
       observer.observe(document.body, { childList: true, subtree: true });
       document.addEventListener("click", onClick, true);
+      document.addEventListener("contextmenu", onContextMenu, true);
       return () => {
         disposed = true;
         observer.disconnect();
         document.removeEventListener("click", onClick, true);
+        document.removeEventListener("contextmenu", onContextMenu, true);
       };
     }
 
@@ -5366,6 +5404,7 @@ window.__ModuleLoader__.load({
     function apply9(ctx, t) {
       if (readDeleteSessionEnabled()) {
         ctx.effect(() => installArchiveHiding(), "delete-session: hide archive");
+        ctx.effect(() => installWorkspaceDeleteHiding(), "delete-session: hide workspace delete");
       }
       ctx.inject(["sessions"], (scoped) => {
         const sessions = scoped.sessions;
@@ -5463,8 +5502,8 @@ window.__ModuleLoader__.load({
       zh: {
         // 开关标题
         title: "\u5220\u9664\u4F1A\u8BDD",
-        // 开关用途说明：说明两个删除入口、运行中的会话会被跳过、归档入口同时收起，控制在两行以内
-        description: "\u4F1A\u8BDD\u884C\u52A0\u5220\u9664\u6309\u94AE\uFF0C\u5DE5\u4F5C\u533A\u300C\u66F4\u591A\u300D\u4E00\u952E\u5220\u5168\u90E8\uFF1B\u8FD0\u884C\u4E2D\u8DF3\u8FC7\uFF0C\u5F52\u6863\u5165\u53E3\u9690\u85CF\u3002",
+        // 开关用途说明：说明两个删除入口、运行中的会话会被跳过、归档与右键菜单里的删除工作区同时收起
+        description: "\u4F1A\u8BDD\u884C\u52A0\u5220\u9664\u6309\u94AE\uFF0C\u5DE5\u4F5C\u533A\u83DC\u5355\u4E00\u952E\u5220\u5168\u90E8\uFF1B\u8DF3\u8FC7\u8FD0\u884C\u4E2D\uFF0C\u5F52\u6863\u4E0E\u53F3\u952E\u7684\u5220\u9664\u5DE5\u4F5C\u533A\u9690\u85CF\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 会话行删除按钮的可访问名称与悬停提示
@@ -5499,8 +5538,8 @@ window.__ModuleLoader__.load({
       en: {
         // Switch title
         title: "Delete session",
-        // Switch description covering both delete entries, the running-session skip, and hidden archive entries
-        description: "Row delete buttons, delete-all in More; running skipped; archive hidden.",
+        // Switch description covering both delete entries, the running-session skip, hidden archive entries and the right-click workspace delete
+        description: "Row delete buttons, workspace delete-all; running skipped; archive & right-click delete hidden.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions.",
         // Accessible name and hover hint of the row delete button

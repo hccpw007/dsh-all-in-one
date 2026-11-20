@@ -197,8 +197,10 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 │           ├── index.tsx    # 注册定义：switch 入口 + client 扩展
 │           ├── toggle.tsx   # 网格中的开关入口
 │           ├── delete-session.ts # 开关状态读写（localStorage），本功能专属
-│           ├── client.tsx   # 客户端扩展：注册会话行删除按钮、工作区「删除所有会话」入口与确认弹窗
-│           ├── workspace-menu.ts # 工作区「更多」菜单的「删除所有会话」注入（宿主菜单无扩展点）
+│           ├── client.tsx   # 客户端扩展：注册会话行删除按钮、工作区菜单入口与确认弹窗，开关开启时收起归档与工作区删除入口
+│           ├── workspace-menu.ts # 工作区「更多」按钮与右键菜单的「删除所有会话」注入（宿主菜单无扩展点）
+│           ├── hide-archive.ts # 开关开启时用样式与快捷键拦截收起宿主的归档入口
+│           ├── hide-workspace-delete.ts # 开关开启时收起右键菜单里的「删除工作区」（「更多」按钮打开时保留）
 │           ├── DeleteSessionButton.tsx # 会话行上的删除图标按钮（只发起确认）
 │           ├── DeleteSessionDialog.tsx # shell.overlay 里的确认弹窗（单条会话与工作区批量共用）
 │           ├── confirm-store.ts        # 删除入口与弹窗之间的待确认请求快照存储
