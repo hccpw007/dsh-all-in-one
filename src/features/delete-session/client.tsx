@@ -12,6 +12,9 @@
  * 当前正在浏览的会话也能删除；删掉它之后优先切到工作空间里还在执行的任务，
  * 其次是第一条对话，一条都不剩时打开新建对话页面，界面不会停在一条已经不存在
  * 的会话上。
+ *
+ * 开关开启时还会收起宿主的归档入口（见 hide-archive）：归档只把会话藏起来，
+ * 与本功能「直接删除」的定位冲突。
  */
 import React from 'react'
 
@@ -27,6 +30,7 @@ import { deleteConfirmStore } from './confirm-store'
 import { readDeleteSessionEnabled } from './delete-session'
 import { DeleteSessionButton, type DeleteSessionButtonProps } from './DeleteSessionButton'
 import { DeleteSessionDialog, type DeleteSessionDialogProps } from './DeleteSessionDialog'
+import { installArchiveHiding } from './hide-archive'
 import type { DeleteSessionsResponse, SessionDeletableState } from './types'
 import { installWorkspaceMenu } from './workspace-menu'
 
@@ -111,6 +115,12 @@ function pickNextSession(
  * @param t 已绑定本 feature 前缀的翻译函数
  */
 export function apply(ctx: PluginContext, t: Translate): void {
+  // 开关开启时收起宿主的归档入口：归档只把会话藏起来，记录仍留在磁盘上，
+  // 与「删除会话」的定位冲突。开关变更会整页刷新，安装期读取一次即可
+  if (readDeleteSessionEnabled()) {
+    ctx.effect(() => installArchiveHiding(), 'delete-session: hide archive')
+  }
+
   // 会话列表服务缺失时只跳过删除入口，设置页的开关仍可正常使用
   ctx.inject(['sessions'], (scoped) => {
     const sessions = scoped.sessions

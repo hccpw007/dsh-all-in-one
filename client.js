@@ -5132,10 +5132,47 @@ window.__ModuleLoader__.load({
       );
     }
 
-    // src/features/delete-session/workspace-menu.ts
-    var WORKSPACE_ROW_SELECTOR2 = '[data-row-key^="workspace:"]';
+    // src/features/delete-session/hide-archive.ts
+    var SESSION_ROW_SELECTOR = '[data-row-key^="session:"]';
     var MENU_SELECTOR = '[role="menu"]';
     var MENU_ITEM_SELECTOR = '[class*="_itemWrap"]';
+    var MENU_SEPARATOR_SELECTOR = `${MENU_SELECTOR} [class*="_separator"]`;
+    var ARCHIVE_ICON_SELECTOR = 'use[href="#dsw-icon-archive-outline-regular"]';
+    var STYLE_ID6 = "aio-hide-archive";
+    var ARCHIVE_SEPARATOR_SELECTOR = `${MENU_SEPARATOR_SELECTOR}:has(+ ${MENU_ITEM_SELECTOR} ${ARCHIVE_ICON_SELECTOR})`;
+    var STYLE_TEXT5 = [
+      `${SESSION_ROW_SELECTOR} button:has(${ARCHIVE_ICON_SELECTOR})`,
+      `${MENU_SELECTOR} ${MENU_ITEM_SELECTOR}:has(${ARCHIVE_ICON_SELECTOR})`,
+      ARCHIVE_SEPARATOR_SELECTOR
+    ].join(",\n") + " { display: none !important; }";
+    function ensureStyle5() {
+      if (document.getElementById(STYLE_ID6) !== null) return;
+      const style = document.createElement("style");
+      style.id = STYLE_ID6;
+      style.textContent = STYLE_TEXT5;
+      document.head.appendChild(style);
+    }
+    function isArchiveShortcut(event) {
+      return event.code === "KeyA" && event.altKey && (event.metaKey || event.ctrlKey);
+    }
+    function installArchiveHiding() {
+      ensureStyle5();
+      const onKeyDown = (event) => {
+        if (!isArchiveShortcut(event)) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      };
+      window.addEventListener("keydown", onKeyDown, true);
+      return () => {
+        window.removeEventListener("keydown", onKeyDown, true);
+        document.getElementById(STYLE_ID6)?.remove();
+      };
+    }
+
+    // src/features/delete-session/workspace-menu.ts
+    var WORKSPACE_ROW_SELECTOR2 = '[data-row-key^="workspace:"]';
+    var MENU_SELECTOR2 = '[role="menu"]';
+    var MENU_ITEM_SELECTOR2 = '[class*="_itemWrap"]';
     var MENU_LABEL_SELECTOR2 = '[class*="_itemLabel"]';
     var MENU_ICON_SELECTOR2 = '[class*="_itemIcon"]';
     var SVG_NAMESPACE3 = "http://www.w3.org/2000/svg";
@@ -5219,7 +5256,7 @@ window.__ModuleLoader__.load({
     }
     function injectMenuItem(menu, target, sessions, uiWorkspace, t) {
       if (menu.querySelector(`[${INJECTED_ATTRIBUTE2}]`) !== null) return;
-      const items = Array.from(menu.querySelectorAll(MENU_ITEM_SELECTOR));
+      const items = Array.from(menu.querySelectorAll(MENU_ITEM_SELECTOR2));
       const deleteWorkspace = items.find(
         (item2) => DELETE_WORKSPACE_LABELS.includes((item2.textContent ?? "").trim())
       );
@@ -5255,7 +5292,7 @@ window.__ModuleLoader__.load({
       const scan = () => {
         scheduled = false;
         if (disposed || pending3 === void 0) return;
-        const menu = document.querySelector(MENU_SELECTOR);
+        const menu = document.querySelector(MENU_SELECTOR2);
         if (!(menu instanceof HTMLElement)) return;
         if (readDeleteSessionEnabled()) {
           injectMenuItem(menu, pending3, sessions, readUiWorkspace(), t);
@@ -5272,11 +5309,11 @@ window.__ModuleLoader__.load({
         for (const record of records) {
           for (const node of record.addedNodes) {
             if (!(node instanceof Element)) continue;
-            if (node.matches(MENU_SELECTOR)) {
+            if (node.matches(MENU_SELECTOR2)) {
               schedule();
               return;
             }
-            if (node.firstElementChild !== null && node.querySelector(MENU_SELECTOR) !== null) {
+            if (node.firstElementChild !== null && node.querySelector(MENU_SELECTOR2) !== null) {
               schedule();
               return;
             }
@@ -5327,6 +5364,9 @@ window.__ModuleLoader__.load({
       return newest?.id;
     }
     function apply9(ctx, t) {
+      if (readDeleteSessionEnabled()) {
+        ctx.effect(() => installArchiveHiding(), "delete-session: hide archive");
+      }
       ctx.inject(["sessions"], (scoped) => {
         const sessions = scoped.sessions;
         if (sessions === void 0) return;
@@ -5422,9 +5462,9 @@ window.__ModuleLoader__.load({
     var deleteSessionLocales = {
       zh: {
         // 开关标题
-        title: "\u5F00\u542F\u65B0\u4F1A\u8BDD",
-        // 开关用途说明：说明两个删除入口与运行中的会话会被跳过，确认步骤留给弹窗，控制在两行以内
-        description: "\u4F1A\u8BDD\u884C\u65B0\u589E\u5220\u9664\u6309\u94AE\uFF0C\u5DE5\u4F5C\u533A\u300C\u66F4\u591A\u300D\u53EF\u4E00\u952E\u5220\u5168\u90E8\uFF0C\u8FD0\u884C\u4E2D\u8DF3\u8FC7\u3002",
+        title: "\u5220\u9664\u4F1A\u8BDD",
+        // 开关用途说明：说明两个删除入口、运行中的会话会被跳过、归档入口同时收起，控制在两行以内
+        description: "\u4F1A\u8BDD\u884C\u52A0\u5220\u9664\u6309\u94AE\uFF0C\u5DE5\u4F5C\u533A\u300C\u66F4\u591A\u300D\u4E00\u952E\u5220\u5168\u90E8\uFF1B\u8FD0\u884C\u4E2D\u8DF3\u8FC7\uFF0C\u5F52\u6863\u5165\u53E3\u9690\u85CF\u3002",
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 会话行删除按钮的可访问名称与悬停提示
@@ -5458,9 +5498,9 @@ window.__ModuleLoader__.load({
       },
       en: {
         // Switch title
-        title: "Start a new session",
-        // Switch description covering both delete entries and the running-session skip, kept within two lines
-        description: "Add row delete buttons and a delete-all entry; running skipped.",
+        title: "Delete session",
+        // Switch description covering both delete entries, the running-session skip, and hidden archive entries
+        description: "Row delete buttons, delete-all in More; running skipped; archive hidden.",
         // Shown when the switch state cannot be persisted
         saveFailed: "Could not save the switch state. Check browser storage permissions.",
         // Accessible name and hover hint of the row delete button
