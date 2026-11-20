@@ -29,6 +29,7 @@ function MemoryIcon() {
 /** 设置接口不可用时的空负载：卡片按关闭显示，打开页面后仍可重试。 */
 const EMPTY_PAYLOAD: MemorySettingsPayload = {
   enabled: false,
+  askBeforeSave: true,
   root: '',
   effectiveRoot: '',
   defaultRoot: '',

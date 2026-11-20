@@ -13,8 +13,8 @@ import { createJsonSettingsStore } from '../../../common/json-settings'
 import { resolveDshHome } from '../../../common/dsh-home'
 import type { MemorySettings } from '../types'
 
-/** 设置文件的默认内容：默认关闭，根目录使用插件默认目录。 */
-const DEFAULT_SETTINGS: MemorySettings = { enabled: false, root: '' }
+/** 设置文件的默认内容：默认关闭，写入前确认默认开启，根目录使用插件默认目录。 */
+const DEFAULT_SETTINGS: MemorySettings = { enabled: false, askBeforeSave: true, root: '' }
 
 /**
  * 设置文件路径。
@@ -32,10 +32,12 @@ export function memorySettingsFile(): string {
 function normalizeSettings(value: unknown): MemorySettings {
   if (typeof value !== 'object' || value === null) return { ...DEFAULT_SETTINGS }
 
-  const candidate = value as { enabled?: unknown; root?: unknown }
+  const candidate = value as { enabled?: unknown; askBeforeSave?: unknown; root?: unknown }
 
   return {
     enabled: candidate.enabled === true,
+    // 只有明确写入 false 才关闭：旧设置文件没有该字段时按默认值（开启）处理
+    askBeforeSave: candidate.askBeforeSave !== false,
     root: typeof candidate.root === 'string' ? candidate.root : '',
   }
 }

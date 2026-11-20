@@ -43,12 +43,17 @@ function buildPayload(): MemorySettingsPayload {
 function readRequest(body: unknown): MemorySettingsRequest | undefined {
   if (typeof body !== 'object' || body === null) return undefined
 
-  const candidate = body as { enabled?: unknown; root?: unknown }
+  const candidate = body as { enabled?: unknown; askBeforeSave?: unknown; root?: unknown }
   const request: MemorySettingsRequest = {}
 
   if (candidate.enabled !== undefined) {
     if (typeof candidate.enabled !== 'boolean') return undefined
     request.enabled = candidate.enabled
+  }
+
+  if (candidate.askBeforeSave !== undefined) {
+    if (typeof candidate.askBeforeSave !== 'boolean') return undefined
+    request.askBeforeSave = candidate.askBeforeSave
   }
 
   if (candidate.root !== undefined) {
@@ -100,6 +105,7 @@ export function installMemoryRoutes(webServer: WebServerApi): () => void {
           const current = readMemorySettings()
           writeMemorySettings({
             enabled: update.enabled ?? current.enabled,
+            askBeforeSave: update.askBeforeSave ?? current.askBeforeSave,
             root: update.root ?? current.root,
           })
           sendJson(response, 200, buildPayload())

@@ -9,6 +9,8 @@
 export interface MemorySettings {
   /** 是否启用项目记忆。 */
   enabled: boolean
+  /** 助手自行发现关键信息时，是否先询问用户再写入记忆。 */
+  askBeforeSave: boolean
   /** 记忆根目录；空字符串表示使用插件默认目录。 */
   root: string
 }
@@ -26,5 +28,6 @@ export interface MemorySettingsPayload extends MemorySettings {
 /** 设置页的写入请求：只提交发生变化的字段。 */
 export interface MemorySettingsRequest {
   enabled?: boolean
+  askBeforeSave?: boolean
   root?: string
 }

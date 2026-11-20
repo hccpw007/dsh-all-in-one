@@ -2958,6 +2958,14 @@ __export(host_exports7, {
   inject: () => inject7
 });
 
+// src/features/project-memory/host/session-dir.ts
+import { isAbsolute as isAbsolute2 } from "node:path";
+function resolveSessionDirectory(agent) {
+  const session = agent?.session;
+  const recorded = session?.header?.cwd;
+  return typeof recorded === "string" && isAbsolute2(recorded) ? recorded : void 0;
+}
+
 // src/features/project-memory/host/settings.ts
 import { join as join11 } from "node:path";
 
@@ -3029,7 +3037,7 @@ function createJsonSettingsStore(options) {
 }
 
 // src/features/project-memory/host/settings.ts
-var DEFAULT_SETTINGS = { enabled: false, root: "" };
+var DEFAULT_SETTINGS = { enabled: false, askBeforeSave: true, root: "" };
 function memorySettingsFile() {
   return join11(resolveDshHome(), "all-in-one", "project-memory.json");
 }
@@ -3038,6 +3046,8 @@ function normalizeSettings(value) {
   const candidate = value;
   return {
     enabled: candidate.enabled === true,
+    // 只有明确写入 false 才关闭：旧设置文件没有该字段时按默认值（开启）处理
+    askBeforeSave: candidate.askBeforeSave !== false,
     root: typeof candidate.root === "string" ? candidate.root : ""
   };
 }
@@ -3056,7 +3066,7 @@ function writeMemorySettings(next) {
 
 // src/features/project-memory/host/paths.ts
 import { homedir as homedir4 } from "node:os";
-import { isAbsolute as isAbsolute2, join as join12, resolve as resolve2 } from "node:path";
+import { isAbsolute as isAbsolute3, join as join12, resolve as resolve2 } from "node:path";
 var MEMORY_INDEX_FILE = "MEMORY.md";
 function defaultMemoryRoot() {
   return join12(resolveDshHome(), "all-in-one", "projects");
@@ -3065,7 +3075,7 @@ function resolveMemoryRoot(root) {
   const trimmed = root.trim();
   if (trimmed === "") return defaultMemoryRoot();
   const expanded = trimmed === "~" ? homedir4() : trimmed.startsWith("~/") ? join12(homedir4(), trimmed.slice(2)) : trimmed;
-  return isAbsolute2(expanded) ? resolve2(expanded) : void 0;
+  return isAbsolute3(expanded) ? resolve2(expanded) : void 0;
 }
 function projectSlug(directory) {
   return resolve2(directory).replace(/[^A-Za-z0-9]/g, "-");
@@ -3084,14 +3094,6 @@ function memoryDirForSession(projectDirectory) {
   const root = activeMemoryRoot();
   if (root === void 0) return void 0;
   return projectMemoryDir(root, projectDirectory);
-}
-
-// src/features/project-memory/host/session-dir.ts
-import { isAbsolute as isAbsolute3 } from "node:path";
-function resolveSessionDirectory(agent) {
-  const session = agent?.session;
-  const recorded = session?.header?.cwd;
-  return typeof recorded === "string" && isAbsolute3(recorded) ? recorded : void 0;
 }
 
 // src/features/project-memory/host/store.ts
@@ -3337,6 +3339,18 @@ function memoryIndexFingerprint(dir) {
 // src/features/project-memory/host/prompt.ts
 var SECTION_NAME = "project-memory:index";
 var SECTION_ORDER = 9500;
+var ASK_BEFORE_SAVE_POLICY = [
+  "",
+  "## \u5199\u5165\u8BB0\u5FC6\u524D\u5148\u786E\u8BA4",
+  "\u9ED8\u8BA4\u4E0D\u95EE\u4E5F\u4E0D\u5199\uFF1A\u53EA\u6709\u672C\u8F6E\u786E\u5B9E\u4EA7\u751F\u4E86\u300C\u8DE8\u4F1A\u8BDD\u4ECD\u7136\u6709\u7528\u300D\u7684\u4E8B\u5B9E\u65F6\uFF0C\u624D\u5728\u5B8C\u6210\u672C\u8F6E\u5DE5\u4F5C\u3001\u7ED3\u675F\u56DE\u590D\u524D\u7528 ask_user_question \u8BE2\u95EE\u4E00\u6B21\u3002",
+  "\u53EA\u5BF9\u56DB\u7C7B\u4FE1\u606F\u5F00\u53E3\uFF1A\u7528\u6237\u7684\u957F\u671F\u504F\u597D\u4E0E\u8981\u6C42\u3001\u5BF9\u4F60\u505A\u6CD5\u7684\u660E\u786E\u7EA0\u6B63\u6216\u786E\u8BA4\u3001\u4E0D\u6613\u4ECE\u4EE3\u7801\u6216 README \u770B\u51FA\u7684\u9879\u76EE\u7EA6\u5B9A\u4E0E\u51B3\u7B56\u80CC\u666F\u3001\u4EE5\u540E\u4F1A\u53CD\u590D\u7528\u5230\u7684\u5916\u90E8\u8D44\u6E90\u6307\u9488\u3002",
+  "\u4EE5\u4E0B\u4E00\u5F8B\u4E0D\u95EE\uFF1A\u4E00\u6B21\u6027\u4EFB\u52A1\u4E0A\u4E0B\u6587\uFF08\u4E34\u65F6\u8DEF\u5F84\u3001\u4E2D\u95F4\u7ED3\u8BBA\u3001\u8C03\u8BD5\u8FC7\u7A0B\uFF09\u3001\u80FD\u4ECE\u4ED3\u5E93\u76F4\u63A5\u67E5\u5230\u7684\u4E8B\u5B9E\u3001\u8BB0\u5FC6\u7D22\u5F15\u91CC\u5DF2\u6709\u7684\u7B49\u4EF7\u6761\u76EE\u3001\u4EE4\u724C\u4E0E\u5BC6\u7801\u7B49\u654F\u611F\u4FE1\u606F\u3002",
+  "\u8BE2\u95EE\u524D\u5148\u81EA\u95EE\uFF1A\u8FD9\u6761\u4FE1\u606F\u5728\u4E0B\u4E00\u4E2A\u4F1A\u8BDD\u91CC\u8FD8\u6709\u7528\u5417\uFF1F\u4ED3\u5E93\u91CC\u67E5\u5F97\u5230\u5417\uFF1F\u7528\u6237\u4F1A\u5E0C\u671B\u5B83\u88AB\u8BB0\u4F4F\u5417\uFF1F\u4E09\u95EE\u90FD\u901A\u8FC7\u624D\u95EE\u3002",
+  "\u4E00\u8F6E\u6700\u591A\u8BE2\u95EE\u4E00\u6B21\uFF0C\u591A\u6761\u5408\u5E76\uFF0C\u9644\u4E0A\u6BCF\u6761\u62DF\u5199\u5165\u7684\u8BB0\u5FC6\u6458\u8981\u4E0E\u6B63\u6587\u9884\u89C8\uFF1B\u7528\u6237\u540C\u610F\u540E\u7528 memory \u5DE5\u5177 action=save \u5199\u5165\uFF0C\u62D2\u7EDD\u540E\u4E0D\u518D\u8FFD\u95EE\u540C\u4E00\u6761\u3002",
+  "- \u7528\u6237\u660E\u786E\u8981\u6C42\u300C\u8BB0\u4F4F\u2026\u2026\u300D\u65F6\u76F4\u63A5\u5199\u5165\uFF0C\u4E0D\u518D\u8BE2\u95EE\u3002",
+  "- \u63D0\u95EE\u5DE5\u5177\u4E0D\u53EF\u7528\uFF08\u4F8B\u5982\u5168\u81EA\u52A8\u6267\u884C\u6A21\u5F0F\uFF09\u65F6\u4E0D\u8981\u731C\u6D4B\u7528\u6237\u610F\u613F\u5199\u5165\uFF0C\u4E5F\u4E0D\u8981\u5728\u56DE\u590D\u91CC\u58F0\u79F0\u5DF2\u8BB0\u4F4F\u3002",
+  "- \u62FF\u4E0D\u51C6\u662F\u5426\u591F\u683C\u65F6\u9009\u62E9\u4E0D\u95EE\uFF1A\u9519\u8FC7\u4E00\u6B21\u8BB0\u5FC6\u6BD4\u53CD\u590D\u6253\u6270\u4EE3\u4EF7\u5C0F\u3002"
+].join("\n");
 var MAX_RENDER_CACHES = 32;
 var caches = /* @__PURE__ */ new Map();
 function memoryText(dir) {
@@ -3365,7 +3379,9 @@ function textForAssembly(context) {
     if (directory === void 0) return "";
     const dir = memoryDirForSession(directory);
     if (dir === void 0) return "";
-    return memoryText(dir);
+    const text = memoryText(dir);
+    return readMemorySettings().askBeforeSave ? `${text}
+${ASK_BEFORE_SAVE_POLICY}` : text;
   } catch (error) {
     console.error("[project-memory] \u6E32\u67D3\u8BB0\u5FC6\u5931\u8D25:", error);
     return "";
@@ -3412,6 +3428,10 @@ function readRequest(body) {
     if (typeof candidate.enabled !== "boolean") return void 0;
     request.enabled = candidate.enabled;
   }
+  if (candidate.askBeforeSave !== void 0) {
+    if (typeof candidate.askBeforeSave !== "boolean") return void 0;
+    request.askBeforeSave = candidate.askBeforeSave;
+  }
   if (candidate.root !== void 0) {
     if (typeof candidate.root !== "string") return void 0;
     if (candidate.root.trim() !== "" && resolveMemoryRoot(candidate.root) === void 0) {
@@ -3449,6 +3469,7 @@ function installMemoryRoutes(webServer) {
           const current = readMemorySettings();
           writeMemorySettings({
             enabled: update.enabled ?? current.enabled,
+            askBeforeSave: update.askBeforeSave ?? current.askBeforeSave,
             root: update.root ?? current.root
           });
           sendJson(response, 200, buildPayload2());
@@ -3473,6 +3494,7 @@ var TOOL_DESCRIPTION = [
   "\u7CFB\u7EDF\u63D0\u793A\u8BCD\u91CC\u5DF2\u5E26\u4E0A MEMORY.md \u7D22\u5F15\uFF08\u6BCF\u6761\u4E00\u884C\uFF09\u3002\u8981\u4E86\u89E3\u67D0\u6761\u8BB0\u5FC6\u7684\u5168\u6587\uFF0C\u7528 action=read \u6309\u540D\u8BFB\u53D6\uFF1B",
   "\u53EA\u5728\u7D22\u5F15\u6307\u51FA\u4E86\u76F8\u5173\u5185\u5BB9\u65F6\u624D\u8BFB\uFF0C\u4E0D\u8981\u4E00\u6B21\u6027\u628A\u6240\u6709\u8BB0\u5FC6\u8BFB\u8FDB\u6765\u3002",
   "\u5F53\u7528\u6237\u8981\u6C42\u300C\u8BB0\u4F4F\u300D\u67D0\u4E8B\u3001\u7EA0\u6B63\u4F60\u7684\u505A\u6CD5\u3001\u63D0\u51FA\u957F\u671F\u504F\u597D\uFF0C\u6216\u9879\u76EE\u4E2D\u5F62\u6210\u4E0D\u6613\u4ECE\u4EE3\u7801\u770B\u51FA\u7684\u7EA6\u5B9A\u4E0E\u51B3\u5B9A\u65F6\uFF0C\u7528 action=save \u5199\u5165\u4E00\u6761\u8BB0\u5FC6\u3002",
+  "\u81EA\u884C\u53D1\u73B0\u7684\u4FE1\u606F\u662F\u5426\u9700\u8981\u5148\u5F81\u5F97\u7528\u6237\u540C\u610F\u518D\u4FDD\u5B58\uFF0C\u4EE5\u7CFB\u7EDF\u63D0\u793A\u8BCD\u300C\u9879\u76EE\u8BB0\u5FC6\u300D\u4E00\u8282\u7684\u8BF4\u660E\u4E3A\u51C6\u3002",
   "\u5199\u5165\u524D\u5148\u770B\u7D22\u5F15\uFF08\u9700\u8981\u65F6\u7528 action=list\uFF09\uFF1A\u540C\u4E00\u4E3B\u9898\u5E94\u66F4\u65B0\u539F\u6761\u76EE\uFF08\u540C\u540D\u5199\u5165\u5373\u8986\u76D6\uFF09\uFF0C\u4E0D\u8981\u91CD\u590D\u65B0\u5EFA\uFF1B\u6709\u8BEF\u6216\u5DF2\u8FC7\u671F\u7684\u6761\u76EE\u7528 action=delete \u5220\u9664\u3002"
 ].join("");
 var PARAMETERS = {

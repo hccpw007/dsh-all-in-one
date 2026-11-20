@@ -1,12 +1,14 @@
 /**
  * 「项目记忆」功能页面。
  *
- * 网格里的卡片负责开关，这个页面只配置记忆的落位：根目录决定记忆文件放在哪里，
- * 指向 `~/.claude/projects` 即可与 Claude Code 共用同一套记忆。页面同时展示
- * 「当前实际使用的目录」，避免用户填了路径却不知道生效的是哪一个（填错会回退默认）。
+ * 网格里的卡片负责开关，这个页面配置记忆的落位与写入行为：根目录决定记忆文件放在哪里，
+ * 指向 `~/.claude/projects` 即可与 Claude Code 共用同一套记忆；「写入前先确认」决定助手
+ * 自行发现关键信息时是否先征询用户。页面同时展示「当前实际使用的目录」，避免用户
+ * 填了路径却不知道生效的是哪一个（填错会回退默认）。
  */
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
+import { cn } from '../../common/cn'
 import { Button } from '../../components/Button'
 import { PageActionsContext } from '../../shell/page-actions'
 import type { FeaturePageProps } from '../../shell/registry'
@@ -29,7 +31,7 @@ function isValidRoot(value: string): boolean {
 }
 
 /**
- * 「项目记忆」页面：编辑记忆根目录并保存。
+ * 「项目记忆」页面：编辑记忆根目录并保存，切换「写入前先确认」开关。
  * @param props t 已绑定本 feature 的 key 前缀
  */
 export function ProjectMemoryPage({ t }: FeaturePageProps) {
@@ -39,6 +41,10 @@ export function ProjectMemoryPage({ t }: FeaturePageProps) {
   const [draft, setDraft] = useState('')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  // 「写入前先确认」的请求进行中；与路径保存互不阻塞
+  const [savingAsk, setSavingAsk] = useState(false)
+  // 开关切换失败的原因；成功后清掉，避免旧错误留在页面上
+  const [askError, setAskError] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   // 保存成功提示；再次编辑时清掉，避免旧的成功状态误导
   const [saved, setSaved] = useState(false)
@@ -112,6 +118,24 @@ export function ProjectMemoryPage({ t }: FeaturePageProps) {
     }
   }, [t])
 
+  /** 切换「写入前先确认」：点击立即写回宿主，下一次提示词装配即按新状态注入。 */
+  const handleAskToggle = useCallback(async (): Promise<void> => {
+    if (payload === null || savingAsk) return
+
+    setSavingAsk(true)
+    setAskError(null)
+
+    try {
+      const updated = await saveMemorySettings({ askBeforeSave: !payload.askBeforeSave })
+      setPayload(updated)
+    } catch (failure) {
+      console.error('[project-memory] 保存写入前确认开关失败:', failure)
+      setAskError(`${t('saveFailed')}：${failure instanceof Error ? failure.message : String(failure)}`)
+    } finally {
+      setSavingAsk(false)
+    }
+  }, [payload, savingAsk, t])
+
   /** 外壳头部右上角的保存按钮；表单里不再重复放置。 */
   const saveAction = useMemo(
     () => (
@@ -131,6 +155,9 @@ export function ProjectMemoryPage({ t }: FeaturePageProps) {
 
     return () => setPageActions(null)
   }, [saveAction, setPageActions])
+
+  // 开关的当前状态：设置未读到之前按关闭显示，避免短暂显示成开启又跳回
+  const askEnabled = payload?.askBeforeSave === true
 
   return (
     <div>
@@ -192,6 +219,46 @@ export function ProjectMemoryPage({ t }: FeaturePageProps) {
         {error !== null ? (
           <p className="mt-2 text-[12px] leading-[18px] text-danger" role="alert">
             {error}
+          </p>
+        ) : null}
+      </section>
+      {/* 写入行为区：控制助手自行发现关键信息时是否先询问 */}
+      <section className="mt-4 rounded-xl border border-line4 bg-layer1 p-4">
+        <div className="flex items-start gap-3">
+          {/* 开关标题与用途说明 */}
+          <div className="min-w-0 flex-1">
+            {/* 开关标题 */}
+            <p className="text-[12px] font-semibold leading-[18px] text-primary">{t('askLabel')}</p>
+            {/* 开关用途说明：何时先询问、何时直接写入 */}
+            <p className="mt-1 text-[12px] leading-[18px] text-secondary">{t('askHint')}</p>
+          </div>
+          {/* 切换开关：点击立即写回宿主设置，下一次对话按新状态注入 */}
+          <button
+            type="button"
+            role="switch"
+            aria-checked={askEnabled}
+            aria-label={t('askLabel')}
+            disabled={loading || savingAsk || payload === null}
+            onClick={() => void handleAskToggle()}
+            className={cn(
+              'flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition disabled:opacity-50',
+              askEnabled ? 'bg-brand' : 'bg-line2',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2',
+            )}
+          >
+            <span
+              aria-hidden="true"
+              className={cn(
+                'h-4 w-4 aio-switch bg-base shadow transition-transform',
+                askEnabled ? 'translate-x-[18px]' : 'translate-x-0.5',
+              )}
+            />
+          </button>
+        </div>
+        {/* 切换失败提示：说明开关状态没有保存 */}
+        {askError !== null ? (
+          <p className="mt-2 text-[12px] leading-[18px] text-danger" role="alert">
+            {askError}
           </p>
         ) : null}
       </section>

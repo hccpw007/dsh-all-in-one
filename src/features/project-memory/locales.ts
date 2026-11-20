@@ -32,6 +32,10 @@ export const projectMemoryLocales: FeatureLocales = {
     pathInvalid: '路径需要是绝对路径，或以 ~/ 开头。',
     // 装饰性说明：记忆文件名规则
     namingHint: '记忆名只允许小写字母、数字与连字符，例如 dsh-plugin-project。',
+    // 「写入前先确认」开关标题
+    askLabel: '写入前先确认',
+    // 「写入前先确认」开关说明：只对跨会话有用的重要信息先征询用户
+    askHint: '只对以后仍有用的重要信息，先询问你是否总结写入记忆；你明确说「记住」时直接写入。',
     // 页面里的保存按钮
     save: '保存',
     // 保存进行中的按钮文字
@@ -71,6 +75,10 @@ export const projectMemoryLocales: FeatureLocales = {
     pathInvalid: 'The path must be absolute or start with ~/.',
     // Naming rule for memory files
     namingHint: 'Memory names allow lowercase letters, digits and hyphens, e.g. dsh-plugin-project.',
+    // Title of the "confirm before saving" switch
+    askLabel: 'Confirm before saving',
+    // Explains when the assistant asks before saving, and when it writes directly
+    askHint: 'Asks before saving only important facts worth keeping across chats. An explicit "remember this" is saved directly.',
     // Save button on the page
     save: 'Save',
     // Button text while saving

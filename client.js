@@ -6800,6 +6800,7 @@ window.__ModuleLoader__.load({
     }
     var EMPTY_PAYLOAD = {
       enabled: false,
+      askBeforeSave: true,
       root: "",
       effectiveRoot: "",
       defaultRoot: "",
@@ -6922,6 +6923,10 @@ window.__ModuleLoader__.load({
         pathInvalid: "\u8DEF\u5F84\u9700\u8981\u662F\u7EDD\u5BF9\u8DEF\u5F84\uFF0C\u6216\u4EE5 ~/ \u5F00\u5934\u3002",
         // 装饰性说明：记忆文件名规则
         namingHint: "\u8BB0\u5FC6\u540D\u53EA\u5141\u8BB8\u5C0F\u5199\u5B57\u6BCD\u3001\u6570\u5B57\u4E0E\u8FDE\u5B57\u7B26\uFF0C\u4F8B\u5982 dsh-plugin-project\u3002",
+        // 「写入前先确认」开关标题
+        askLabel: "\u5199\u5165\u524D\u5148\u786E\u8BA4",
+        // 「写入前先确认」开关说明：只对跨会话有用的重要信息先征询用户
+        askHint: "\u53EA\u5BF9\u4EE5\u540E\u4ECD\u6709\u7528\u7684\u91CD\u8981\u4FE1\u606F\uFF0C\u5148\u8BE2\u95EE\u4F60\u662F\u5426\u603B\u7ED3\u5199\u5165\u8BB0\u5FC6\uFF1B\u4F60\u660E\u786E\u8BF4\u300C\u8BB0\u4F4F\u300D\u65F6\u76F4\u63A5\u5199\u5165\u3002",
         // 页面里的保存按钮
         save: "\u4FDD\u5B58",
         // 保存进行中的按钮文字
@@ -6960,6 +6965,10 @@ window.__ModuleLoader__.load({
         pathInvalid: "The path must be absolute or start with ~/.",
         // Naming rule for memory files
         namingHint: "Memory names allow lowercase letters, digits and hyphens, e.g. dsh-plugin-project.",
+        // Title of the "confirm before saving" switch
+        askLabel: "Confirm before saving",
+        // Explains when the assistant asks before saving, and when it writes directly
+        askHint: 'Asks before saving only important facts worth keeping across chats. An explicit "remember this" is saved directly.',
         // Save button on the page
         save: "Save",
         // Button text while saving
@@ -6983,6 +6992,8 @@ window.__ModuleLoader__.load({
       const [draft, setDraft] = (0, import_react28.useState)("");
       const [loading, setLoading] = (0, import_react28.useState)(true);
       const [saving, setSaving] = (0, import_react28.useState)(false);
+      const [savingAsk, setSavingAsk] = (0, import_react28.useState)(false);
+      const [askError, setAskError] = (0, import_react28.useState)(null);
       const [error, setError] = (0, import_react28.useState)(null);
       const [saved, setSaved] = (0, import_react28.useState)(false);
       const setPageActions = (0, import_react28.useContext)(PageActionsContext);
@@ -7034,6 +7045,20 @@ window.__ModuleLoader__.load({
           setSaving(false);
         }
       }, [t]);
+      const handleAskToggle = (0, import_react28.useCallback)(async () => {
+        if (payload === null || savingAsk) return;
+        setSavingAsk(true);
+        setAskError(null);
+        try {
+          const updated = await saveMemorySettings({ askBeforeSave: !payload.askBeforeSave });
+          setPayload(updated);
+        } catch (failure) {
+          console.error("[project-memory] \u4FDD\u5B58\u5199\u5165\u524D\u786E\u8BA4\u5F00\u5173\u5931\u8D25:", failure);
+          setAskError(`${t("saveFailed")}\uFF1A${failure instanceof Error ? failure.message : String(failure)}`);
+        } finally {
+          setSavingAsk(false);
+        }
+      }, [payload, savingAsk, t]);
       const saveAction = (0, import_react28.useMemo)(
         () => /* @__PURE__ */ import_react28.default.createElement(Button, { variant: "outline", disabled: loading || saving, onClick: () => void handleSave() }, saving ? t("saving") : t("save")),
         [handleSave, loading, saving, t]
@@ -7043,6 +7068,7 @@ window.__ModuleLoader__.load({
         setPageActions(saveAction);
         return () => setPageActions(null);
       }, [saveAction, setPageActions]);
+      const askEnabled = payload?.askBeforeSave === true;
       return /* @__PURE__ */ import_react28.default.createElement("div", null, /* @__PURE__ */ import_react28.default.createElement("h2", { className: "text-[15px] font-semibold leading-6 text-primary" }, t("pathTitle")), /* @__PURE__ */ import_react28.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-secondary" }, t("pathHint")), /* @__PURE__ */ import_react28.default.createElement("section", { className: "mt-4 rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react28.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react28.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("pathLabel")), /* @__PURE__ */ import_react28.default.createElement(
         "input",
         {
@@ -7066,7 +7092,32 @@ window.__ModuleLoader__.load({
           }
         },
         t("reset")
-      ), saved ? /* @__PURE__ */ import_react28.default.createElement("span", { className: "text-[12px] leading-[18px] text-secondary" }, t("saved")) : null), /* @__PURE__ */ import_react28.default.createElement("dl", { className: "mt-3 space-y-1 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react28.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react28.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("effectivePath")), /* @__PURE__ */ import_react28.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.effectiveRoot || "\u2014")), /* @__PURE__ */ import_react28.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react28.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("defaultPath")), /* @__PURE__ */ import_react28.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.defaultRoot || "\u2014")), /* @__PURE__ */ import_react28.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react28.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("settingsFile")), /* @__PURE__ */ import_react28.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.settingsPath || "\u2014"))), /* @__PURE__ */ import_react28.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-secondary" }, t("namingHint")), error !== null ? /* @__PURE__ */ import_react28.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null));
+      ), saved ? /* @__PURE__ */ import_react28.default.createElement("span", { className: "text-[12px] leading-[18px] text-secondary" }, t("saved")) : null), /* @__PURE__ */ import_react28.default.createElement("dl", { className: "mt-3 space-y-1 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react28.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react28.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("effectivePath")), /* @__PURE__ */ import_react28.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.effectiveRoot || "\u2014")), /* @__PURE__ */ import_react28.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react28.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("defaultPath")), /* @__PURE__ */ import_react28.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.defaultRoot || "\u2014")), /* @__PURE__ */ import_react28.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react28.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("settingsFile")), /* @__PURE__ */ import_react28.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.settingsPath || "\u2014"))), /* @__PURE__ */ import_react28.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-secondary" }, t("namingHint")), error !== null ? /* @__PURE__ */ import_react28.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null), /* @__PURE__ */ import_react28.default.createElement("section", { className: "mt-4 rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react28.default.createElement("div", { className: "flex items-start gap-3" }, /* @__PURE__ */ import_react28.default.createElement("div", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react28.default.createElement("p", { className: "text-[12px] font-semibold leading-[18px] text-primary" }, t("askLabel")), /* @__PURE__ */ import_react28.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("askHint"))), /* @__PURE__ */ import_react28.default.createElement(
+        "button",
+        {
+          type: "button",
+          role: "switch",
+          "aria-checked": askEnabled,
+          "aria-label": t("askLabel"),
+          disabled: loading || savingAsk || payload === null,
+          onClick: () => void handleAskToggle(),
+          className: cn(
+            "flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition disabled:opacity-50",
+            askEnabled ? "bg-brand" : "bg-line2",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+          )
+        },
+        /* @__PURE__ */ import_react28.default.createElement(
+          "span",
+          {
+            "aria-hidden": "true",
+            className: cn(
+              "h-4 w-4 aio-switch bg-base shadow transition-transform",
+              askEnabled ? "translate-x-[18px]" : "translate-x-0.5"
+            )
+          }
+        )
+      )), askError !== null ? /* @__PURE__ */ import_react28.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, askError) : null));
     }
 
     // src/features/project-memory/index.tsx
