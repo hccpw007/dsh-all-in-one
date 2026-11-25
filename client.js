@@ -4089,10 +4089,10 @@ window.__ModuleLoader__.load({
     var BUSY_ICON = `<svg viewBox="0 0 16 16" width="${ICON_SIZE}" height="${ICON_SIZE}" aria-hidden="true" class="animate-spin"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.6" opacity="0.25"/><path d="M8 2a6 6 0 0 1 6 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
     var BUTTON_CLASS2 = [
       "flex h-[34px] w-[34px] shrink-0 -translate-y-0.5 items-center justify-center rounded-lg p-0",
-      // line1 只有 4% 不透明，白底上等于没有；line4 是宿主设置卡的描边档，浅色 16%、深色 20%。
-      // bg-transparent 不能省：原生 button 的默认底色是写死的浅灰，深色主题下会突兀。
-      "border border-solid border-line4 bg-transparent text-primary transition-colors",
-      "hover:bg-interactive",
+      // border-0 与 bg-transparent 都不能省：原生 button 自带 2px 边框与写死的浅灰底色，
+      // 深色主题下会露出一圈灰框。
+      "border-0 bg-transparent text-secondary transition-colors",
+      "hover:bg-interactive hover:text-primary",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
     ].join(" ");
     function findPrimary() {
@@ -4107,9 +4107,9 @@ window.__ModuleLoader__.load({
       button.innerHTML = IDLE_ICON;
       return button;
     }
-    function placeAfter(button, primary) {
-      if (button.previousElementSibling === primary) return true;
-      primary.insertAdjacentElement("afterend", button);
+    function placeBefore(button, primary) {
+      if (button.nextElementSibling === primary) return true;
+      primary.insertAdjacentElement("beforebegin", button);
       return false;
     }
     function mountDockButton() {
@@ -4124,7 +4124,7 @@ window.__ModuleLoader__.load({
         return void 0;
       }
       const button = createButton4();
-      placeAfter(button, primary);
+      placeBefore(button, primary);
       let view;
       const onMouseDown = (event) => {
         event.preventDefault();
@@ -4138,8 +4138,8 @@ window.__ModuleLoader__.load({
       const observer = new MutationObserver(() => {
         const current = findPrimary();
         if (current === void 0) return;
-        if (!button.isConnected) current.insertAdjacentElement("afterend", button);
-        else placeAfter(button, current);
+        if (!button.isConnected) current.insertAdjacentElement("beforebegin", button);
+        else placeBefore(button, current);
       });
       observer.observe(trailing, { childList: true });
       return {
