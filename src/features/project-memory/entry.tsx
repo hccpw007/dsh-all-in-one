@@ -117,7 +117,7 @@ export function ProjectMemoryEntry({ t, open }: FeatureEntryProps) {
             {t('title')}
           </span>
           {/* 入口描述 */}
-          <span className="block text-[11px] leading-[14px] text-secondary">
+          <span className="line-clamp-2 block text-[11px] leading-[14px] text-secondary">
             {t('description')}
           </span>
           {/* 读写失败提示：说明当前状态未能保存 */}

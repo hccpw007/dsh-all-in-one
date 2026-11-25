@@ -112,7 +112,7 @@ export function AutoRunButtonToggle({ t }: FeatureSwitchProps) {
             {/* 开关标题 */}
             <span className="block text-[13px] font-medium leading-[16px] text-primary">{t('title')}</span>
             {/* 开关用途说明：入口位置、会话级语义与下方默认值 */}
-            <span className="block text-[11px] leading-[14px] text-secondary">
+            <span className="line-clamp-2 block text-[11px] leading-[14px] text-secondary">
               {t('description')}
             </span>
           </span>

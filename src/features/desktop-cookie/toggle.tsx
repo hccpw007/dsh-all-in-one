@@ -220,7 +220,7 @@ export function DesktopCookieToggle({ t }: FeatureSwitchProps) {
             {/* 开关标题 */}
             <span className="block text-[13px] font-medium leading-[16px] text-primary">{t('title')}</span>
             {/* 开关用途说明 */}
-            <span className="block text-[11px] leading-[14px] text-secondary">
+            <span className="line-clamp-2 block text-[11px] leading-[14px] text-secondary">
               {t('description')}
             </span>
             {/* 读取或保存失败提示：说明当前状态未能保存 */}

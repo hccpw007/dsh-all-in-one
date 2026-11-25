@@ -47,7 +47,7 @@ export function MemoryGuardEntry({ t, open }: FeatureEntryProps) {
             {t('title')}
           </span>
           {/* 入口描述：说明定时回收与自动重建的作用 */}
-          <span className="block text-[11px] leading-[14px] text-secondary">
+          <span className="line-clamp-2 block text-[11px] leading-[14px] text-secondary">
             {t('description')}
           </span>
         </span>
