@@ -19,6 +19,18 @@ const PRIMARY_SELECTOR = '[class*="_primary"]'
 /** 本按钮的标记属性，用于幂等地找出已插入的节点。 */
 const MARK_ATTRIBUTE = 'data-dsh-prompt-optimize'
 
+/** 悬停提示的显示延迟：鼠标只是划过时不至于甩出一串气泡。 */
+const TOOLTIP_DELAY_MS = 300
+
+/** 提示气泡与按钮之间的间距（px）。 */
+const TOOLTIP_GAP = 8
+
+/** 气泡离视口边缘的最小留白（px），避免贴边或被裁掉。 */
+const TOOLTIP_MARGIN = 12
+
+/** 气泡 id 的递增序号：同一页面可能同时挂多个输入行，id 必须唯一。 */
+let bubbleSequence = 0
+
 /** 按钮的可见状态，由 React 侧按草稿与提交阶段算出后同步过来。 */
 export interface DockView {
   /** 悬停提示与可访问名称。 */
@@ -100,6 +112,47 @@ function createButton(): HTMLButtonElement {
 }
 
 /**
+ * 创建悬停提示气泡。
+ *
+ * 视觉规格对齐宿主自带的 Tooltip（3px/7px 内边距、8px 圆角、13px 字号、深色底白字）。
+ * 用 fixed 定位并挂到 body：输入行有溢出裁剪与层叠上下文，放在按钮内部会被切掉。
+ * @returns 尚未放入文档、初始隐藏的气泡节点
+ */
+function createBubble(): HTMLDivElement {
+  const bubble = document.createElement('div')
+  bubble.setAttribute('role', 'tooltip')
+  bubble.className = [
+    'pointer-events-none fixed z-[100] max-w-[240px] rounded-[8px] px-[7px] py-[3px]',
+    'bg-tooltip text-[13px] leading-[20px] text-tooltipLabel',
+    'transition-opacity duration-150',
+  ].join(' ')
+  // 用 visibility 而非 display 隐藏：保持可测量，定位时才能读到真实宽度
+  bubble.style.visibility = 'hidden'
+  bubble.style.opacity = '0'
+
+  return bubble
+}
+
+/**
+ * 把气泡摆在按钮正上方并夹在视口内。
+ *
+ * 先测量再定位：按钮贴近右侧时，居中的气泡会溢出视口，这里把它往回收。
+ * @param bubble 提示气泡
+ * @param anchor 按钮
+ */
+function placeBubble(bubble: HTMLDivElement, anchor: HTMLElement): void {
+  const rect = anchor.getBoundingClientRect()
+  const half = bubble.offsetWidth / 2
+  const center = rect.left + rect.width / 2
+  const minLeft = TOOLTIP_MARGIN + half
+  const maxLeft = window.innerWidth - TOOLTIP_MARGIN - half
+
+  bubble.style.left = `${Math.max(minLeft, Math.min(center, maxLeft))}px`
+  bubble.style.top = `${rect.top - TOOLTIP_GAP}px`
+  bubble.style.transform = 'translate(-50%, -100%)'
+}
+
+/**
  * 把按钮放到发送按钮之前。
  *
  * 已经就位时不动节点，避免每帧重建导致悬停与焦点状态丢失。
@@ -137,8 +190,61 @@ export function mountDockButton(): DockButton | undefined {
   const button = createButton()
   placeBefore(button, primary)
 
+  const bubble = createBubble()
+  bubbleSequence += 1
+  bubble.id = `dsh-prompt-optimize-tip-${bubbleSequence}`
+  button.setAttribute('aria-describedby', bubble.id)
+  document.body.append(bubble)
+
   /** 最近一次同步过来的状态，用于事件回调里读当前值。 */
   let view: DockView | undefined
+
+  /** 延迟显示气泡的计时器；移出、点击、卸载时都要撤掉。 */
+  let showTimer: number | undefined
+
+  /**
+   * 显示气泡。
+   *
+   * 按钮处于 disabled 时，浏览器不派发鼠标事件，所以提示只能挂在外面这层容器上；
+   * 这里用 pointerenter 检查鼠标是否落在按钮矩形内，从而在禁用态也能给出原因。
+   */
+  const showBubble = (): void => {
+    if (view === undefined || bubble.textContent === '') return
+
+    placeBubble(bubble, button)
+    bubble.style.visibility = 'visible'
+    bubble.style.opacity = '1'
+  }
+
+  /** 立即隐藏气泡并取消待显示的计时器。 */
+  const hideBubble = (): void => {
+    if (showTimer !== undefined) {
+      window.clearTimeout(showTimer)
+      showTimer = undefined
+    }
+    bubble.style.opacity = '0'
+    bubble.style.visibility = 'hidden'
+  }
+
+  // 鼠标进入按钮矩形后延时显示：先摆好位置再淡入，避免在旧位置闪一下
+  const onPointerMove = (event: PointerEvent): void => {
+    const rect = button.getBoundingClientRect()
+    const inside = event.clientX >= rect.left && event.clientX <= rect.right
+      && event.clientY >= rect.top && event.clientY <= rect.bottom
+
+    if (!inside) {
+      hideBubble()
+
+      return
+    }
+
+    if (showTimer !== undefined || bubble.style.visibility === 'visible') return
+
+    showTimer = window.setTimeout(() => {
+      showTimer = undefined
+      showBubble()
+    }, TOOLTIP_DELAY_MS)
+  }
 
   // 按下时不抢走输入框焦点：与宿主发送按钮的 keepFocus 一致，草稿与光标位置不动
   const onMouseDown = (event: MouseEvent): void => {
@@ -146,13 +252,27 @@ export function mountDockButton(): DockButton | undefined {
   }
 
   const onClick = (): void => {
+    hideBubble()
     if (view === undefined || view.disabled) return
 
     view.onActivate()
   }
 
+  // 键盘用户拿到同一份提示：聚焦显示、失焦隐藏
+  const onFocus = (): void => {
+    showBubble()
+  }
+
   button.addEventListener('mousedown', onMouseDown)
   button.addEventListener('click', onClick)
+  button.addEventListener('focus', onFocus)
+  button.addEventListener('blur', hideBubble)
+  button.addEventListener('mouseleave', hideBubble)
+  // 挂在 trailing 上而不是按钮上：disabled 的按钮收不到鼠标事件
+  trailing.addEventListener('pointermove', onPointerMove)
+  trailing.addEventListener('pointerleave', hideBubble)
+  // 输入行会随页面滚动移动；气泡是 fixed 定位，滚动时必须跟着重算或直接收起
+  window.addEventListener('scroll', hideBubble, true)
 
   /**
    * 守护按钮位置。
@@ -175,7 +295,9 @@ export function mountDockButton(): DockButton | undefined {
     sync(next: DockView): void {
       view = next
       button.setAttribute('aria-label', next.label)
-      button.setAttribute('title', next.label)
+      // 文案变化时同步气泡内容；内容为空说明状态还没算出来，直接收起
+      if (bubble.textContent !== next.label) bubble.textContent = next.label
+      if (next.label === '') hideBubble()
       button.setAttribute('aria-busy', String(next.pending))
       button.disabled = next.disabled
       button.style.cursor = next.pending ? 'progress' : next.disabled ? 'default' : 'pointer'
@@ -190,8 +312,16 @@ export function mountDockButton(): DockButton | undefined {
     },
     dispose(): void {
       observer.disconnect()
+      hideBubble()
       button.removeEventListener('mousedown', onMouseDown)
       button.removeEventListener('click', onClick)
+      button.removeEventListener('focus', onFocus)
+      button.removeEventListener('blur', hideBubble)
+      button.removeEventListener('mouseleave', hideBubble)
+      trailing.removeEventListener('pointermove', onPointerMove)
+      trailing.removeEventListener('pointerleave', hideBubble)
+      window.removeEventListener('scroll', hideBubble, true)
+      bubble.remove()
       button.remove()
     },
   }

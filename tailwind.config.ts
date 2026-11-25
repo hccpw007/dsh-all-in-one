@@ -29,6 +29,9 @@ const config: Config = {
         tertiary: 'var(--dsw-alias-label-tertiary)',
         // 交互元素的悬停底色，宿主统计控件与菜单项共用
         interactive: 'var(--dsw-alias-interactive-bg-hover)',
+        // 悬停提示的深色气泡：宿主 tooltip 在浅色与深色主题下都用这一对令牌
+        tooltip: 'var(--dsw-alias-tooltip-bg)',
+        tooltipLabel: 'var(--dsw-alias-tooltip-label)',
         danger: 'var(--dsw-alias-state-error-primary)',
         success: 'var(--dsw-alias-state-success-primary)',
         warn: 'var(--dsw-alias-state-warn-primary)',
