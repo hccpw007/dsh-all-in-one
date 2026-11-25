@@ -4382,7 +4382,7 @@ window.__ModuleLoader__.load({
         // 开关状态写入失败时的提示
         saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
         // 按钮名称与悬停提示：说明点击后发生什么
-        action: "\u4F18\u5316\u8FD9\u6BB5\u63D0\u793A\u8BCD",
+        action: "\u4F18\u5316\u63D0\u793A\u8BCD",
         // 请求进行中的悬停提示
         working: "\u6B63\u5728\u4F18\u5316\u2026",
         // 草稿为空时的悬停提示
@@ -4402,7 +4402,7 @@ window.__ModuleLoader__.load({
         // Shown when the switch state cannot be stored
         saveFailed: "Could not save the switch state. Check browser storage permissions.",
         // Button label and hover hint
-        action: "Polish this prompt",
+        action: "Polish prompt",
         // Hover hint while the request runs
         working: "Polishing\u2026",
         // Hover hint on an empty draft

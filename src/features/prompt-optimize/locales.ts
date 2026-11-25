@@ -10,7 +10,7 @@ export const promptOptimizeLocales: FeatureLocales = {
     // 开关状态写入失败时的提示
     saveFailed: '保存开关状态失败，请检查浏览器存储权限。',
     // 按钮名称与悬停提示：说明点击后发生什么
-    action: '优化这段提示词',
+    action: '优化提示词',
     // 请求进行中的悬停提示
     working: '正在优化…',
     // 草稿为空时的悬停提示
@@ -30,7 +30,7 @@ export const promptOptimizeLocales: FeatureLocales = {
     // Shown when the switch state cannot be stored
     saveFailed: 'Could not save the switch state. Check browser storage permissions.',
     // Button label and hover hint
-    action: 'Polish this prompt',
+    action: 'Polish prompt',
     // Hover hint while the request runs
     working: 'Polishing…',
     // Hover hint on an empty draft
