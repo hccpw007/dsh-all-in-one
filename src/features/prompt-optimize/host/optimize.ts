@@ -10,6 +10,7 @@ import type {
   ConfigureCallLike,
   HostPluginContext,
   LlmApi,
+  LlmModelInfoLike,
   LlmStreamChunkLike,
   SessionProjectionsApi,
   SessionStoreApi,
@@ -17,10 +18,10 @@ import type {
 import { MAX_OUTPUT_CHARS } from '../types'
 import { optimizeSystemPrompt } from './prompt'
 
-/** 单次优化的端到端超时；改写是交互动作，用户不会等太久。 */
-const TIMEOUT_MS = 60000
+/** 单次优化的端到端超时；关闭思考后通常一两秒返回，超时说明上游异常。 */
+const TIMEOUT_MS = 30000
 
-/** 输出 token 上限：足够写完多方案需求，同时防止模型 runaway。 */
+/** 输出 token 上限：改写输出本就短，给足余量只为防止模型 runaway。 */
 const MAX_OUTPUT_TOKENS = 4096
 
 /** 本次请求的用途标记，宿主据此把辅助请求与对话请求区分开。 */
@@ -159,17 +160,51 @@ function resolveRoute(ctx: HostPluginContext, sessionId: string | undefined): Ro
   }
 }
 
+/** 关闭思考的档位 id；宿主声明的基础档位里 `off` 即此项。 */
+const OFF_EFFORT = 'off'
+
+/**
+ * 显式要求「尽量少思考」的档位 id。
+ *
+ * 某些渠道（pi-ai 路径）把 `off` 翻译成「不发送 reasoning 参数」，模型于是走自己的
+ * 默认档继续思考——实测传了 `off` 仍收到推理块，响应要 3~10 秒。`minimal` 与之不同：
+ * 它是真实下发的低档位，能真正压住思考。所以这里优先 `minimal`，再退 `off`。
+ */
+const MINIMAL_EFFORT = 'minimal'
+
+/**
+ * 选一个最不费思考的推理档位。
+ *
+ * 优先 `minimal`（真实下发、能压住思考），其次 `off`（不思考即省略参数，但上游可能
+ * 仍按默认档思考），最后退回模型自己最低的一档。宿主会校验档位必须在该模型声明的
+ * efforts 里，所以只能用模型声明过的 id。
+ * @param model 模型元数据
+ * @returns 档位 id；模型不提供推理档位时返回 undefined
+ */
+function quietEffort(model: Readonly<LlmModelInfoLike>): string | undefined {
+  const efforts = model.reasoning?.efforts
+  if (efforts === undefined) return undefined
+
+  // 按偏好顺序显式查找：各适配器声明顺序不一致，不能靠下标
+  for (const preferred of [MINIMAL_EFFORT, OFF_EFFORT]) {
+    const match = efforts.find((effort) => effort.id === preferred)
+    if (match !== undefined) return match.id
+  }
+
+  return efforts[0]?.id
+}
+
 /**
  * 在解析出的模型元数据上选择控制项。
  *
- * 推理档位取最低一档：改写提示词不需要深度思考，用户的等待时间更重要；
+ * 推理档位取「不思考」：本功能只是把一句话补成几条要求，思考只会拖慢返回；
  * 输出上限固定，避免模型被推理 token 挤占正文预算。
  * @param controls 宿主给出的初始控制项
  * @param model 模型元数据
  * @returns 收窄后的控制项
  */
 const configure: ConfigureCallLike = (controls, model) => {
-  const effort = model.reasoning?.efforts[0]?.id
+  const effort = quietEffort(model)
 
   return {
     ...controls,
