@@ -39,10 +39,10 @@ window.__ModuleLoader__.load({
       default: () => entry_default
     });
     module.exports = __toCommonJS(entry_exports);
-    var import_react40 = __toESM(require("react"), 1);
+    var import_react43 = __toESM(require("react"), 1);
 
     // .build/styles.css
-    var styles_default = '*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-2{right:.5rem}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-2{top:.5rem}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[1200\\]{z-index:1200}.z-\\[200\\]{z-index:200}.order-last{order:9999}.m-0{margin:0}.mx-1{margin-left:.25rem;margin-right:.25rem}.mx-auto{margin-left:auto;margin-right:auto}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.inline{display:inline}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-6{height:1.5rem}.h-7{height:1.75rem}.h-8{height:2rem}.h-\\[18px\\]{height:18px}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.max-h-\\[84vh\\]{max-height:84vh}.max-h-full{max-height:100%}.min-h-0{min-height:0}.min-h-\\[220px\\]{min-height:220px}.\\!w-\\[560px\\]{width:560px!important}.w-11{width:2.75rem}.w-12{width:3rem}.w-16{width:4rem}.w-20{width:5rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-6{width:1.5rem}.w-7{width:1.75rem}.w-9{width:2.25rem}.w-\\[min\\(1080px\\2c 94vw\\)\\]{width:min(1080px,94vw)}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.translate-x-\\[18px\\],.translate-x-\\[20px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[20px\\]{--tw-translate-x:20px}.translate-x-\\[2px\\]{--tw-translate-x:2px}.transform,.translate-x-\\[2px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes spin{to{transform:rotate(1turn)}}.animate-spin{animation:spin 1s linear infinite}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-not-allowed{cursor:not-allowed}.cursor-pointer{cursor:pointer}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.list-none{list-style-type:none}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-1\\.5>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.375rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.375rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.self-start{align-self:flex-start}.overflow-auto{overflow:auto}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis}.truncate,.whitespace-nowrap{white-space:nowrap}.whitespace-pre-wrap{white-space:pre-wrap}.break-words{overflow-wrap:break-word}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line1{border-color:var(--dsw-alias-border-l1)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-2{padding:.5rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-0{padding-top:0;padding-bottom:0}.py-0\\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-10{padding-top:2.5rem;padding-bottom:2.5rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-2{padding-bottom:.5rem}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-2{padding-top:.5rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.font-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace}.text-\\[10px\\]{font-size:10px}.text-\\[11\\.5px\\]{font-size:11.5px}.text-\\[11px\\]{font-size:11px}.text-\\[12\\.5px\\]{font-size:12.5px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[14px\\]{font-size:14px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.tabular-nums{--tw-numeric-spacing:tabular-nums;font-variant-numeric:var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction)}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-\\[20px\\]{line-height:20px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-tertiary{color:var(--dsw-alias-label-tertiary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-60{opacity:.6}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{--tw-shadow:0 1px 2px rgba(0,0,0,.2);--tw-shadow-colored:0 1px 2px var(--tw-shadow-color)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.ring-1{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.ring-black\\/5{--tw-ring-color:rgba(0,0,0,.05)}.blur{--tw-blur:blur(8px)}.blur,.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.duration-200{transition-duration:.2s}.ease-out{transition-timing-function:cubic-bezier(0,0,.2,1)}.\\[all-in-one\\:perf\\]{all-in-one:perf}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.aio-workspace-count:after{content:"\uFF08" attr(data-aio-workspace-count) "\uFF09";color:var(--dsw-alias-label-tertiary);font-size:12px;font-weight:400;margin-inline-start:1px}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-interactive:hover{background-color:var(--dsw-alias-interactive-bg-hover)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.hover\\:text-secondary:hover{color:var(--dsw-alias-label-secondary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}';
+    var styles_default = '*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }.\\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.static{position:static}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.bottom-5{bottom:1.25rem}.left-1\\/2{left:50%}.right-2{right:.5rem}.right-5{right:1.25rem}.top-0{top:0}.top-1\\/2{top:50%}.top-2{top:.5rem}.top-5{top:1.25rem}.isolate{isolation:isolate}.z-10{z-index:10}.z-20{z-index:20}.z-\\[1200\\]{z-index:1200}.z-\\[200\\]{z-index:200}.order-last{order:9999}.m-0{margin:0}.mx-1{margin-left:.25rem;margin-right:.25rem}.mx-auto{margin-left:auto;margin-right:auto}.-ml-px{margin-left:-1px}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.ml-2{margin-left:.5rem}.ml-auto{margin-left:auto}.mt-0\\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.box-border{box-sizing:border-box}.block{display:block}.inline{display:inline}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-11{height:2.75rem}.h-3\\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-6{height:1.5rem}.h-7{height:1.75rem}.h-8{height:2rem}.h-\\[18px\\]{height:18px}.h-full{height:100%}.max-h-72{max-height:18rem}.max-h-\\[320px\\]{max-height:320px}.max-h-\\[84vh\\]{max-height:84vh}.max-h-full{max-height:100%}.min-h-0{min-height:0}.min-h-\\[220px\\]{min-height:220px}.\\!w-\\[560px\\]{width:560px!important}.w-11{width:2.75rem}.w-12{width:3rem}.w-16{width:4rem}.w-20{width:5rem}.w-3\\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-6{width:1.5rem}.w-7{width:1.75rem}.w-9{width:2.25rem}.w-\\[min\\(1080px\\2c 94vw\\)\\]{width:min(1080px,94vw)}.w-full{width:100%}.w-px{width:1px}.min-w-0{min-width:0}.min-w-\\[32px\\]{min-width:32px}.min-w-\\[56px\\]{min-width:56px}.max-w-\\[70\\%\\]{max-width:70%}.max-w-full{max-width:100%}.max-w-none{max-width:none}.flex-1{flex:1 1 0%}.flex-none{flex:none}.shrink-0{flex-shrink:0}.-translate-x-1\\/2{--tw-translate-x:-50%}.-translate-x-1\\/2,.translate-x-0\\.5{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-0\\.5{--tw-translate-x:0.125rem}.translate-x-\\[18px\\]{--tw-translate-x:18px}.translate-x-\\[18px\\],.translate-x-\\[20px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-x-\\[20px\\]{--tw-translate-x:20px}.translate-x-\\[2px\\]{--tw-translate-x:2px}.transform,.translate-x-\\[2px\\]{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes spin{to{transform:rotate(1turn)}}.animate-spin{animation:spin 1s linear infinite}.cursor-default{cursor:default}.cursor-grab{cursor:grab}.cursor-grabbing{cursor:grabbing}.cursor-not-allowed{cursor:not-allowed}.cursor-pointer{cursor:pointer}.cursor-progress{cursor:progress}.cursor-zoom-in{cursor:zoom-in}.select-none{-webkit-user-select:none;-moz-user-select:none;user-select:none}.resize{resize:both}.list-none{list-style-type:none}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.items-baseline{align-items:baseline}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-0\\.5{gap:.125rem}.gap-1{gap:.25rem}.gap-1\\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-1\\.5>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.375rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.375rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.self-start{align-self:flex-start}.overflow-auto{overflow:auto}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis}.truncate,.whitespace-nowrap{white-space:nowrap}.whitespace-pre-wrap{white-space:pre-wrap}.break-words{overflow-wrap:break-word}.break-all{word-break:break-all}.rounded{border-radius:.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-md{border-radius:.375rem}.rounded-xl{border-radius:.75rem}.rounded-l-lg{border-top-left-radius:.5rem;border-bottom-left-radius:.5rem}.rounded-r-lg{border-top-right-radius:.5rem;border-bottom-right-radius:.5rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-solid{border-style:solid}.border-dashed{border-style:dashed}.border-brand{border-color:var(--dsw-alias-brand-primary)}.border-danger{border-color:var(--dsw-alias-state-error-primary)}.border-line1{border-color:var(--dsw-alias-border-l1)}.border-line4{border-color:var(--dsw-alias-border-l4)}.border-primary{border-color:var(--dsw-alias-label-primary)}.border-success{border-color:var(--dsw-alias-state-success-primary)}.bg-base{background-color:var(--dsw-alias-bg-base)}.bg-brand{background-color:var(--dsw-alias-brand-primary)}.bg-layer1{background-color:var(--dsw-alias-bg-layer-1)}.bg-layer2{background-color:var(--dsw-alias-bg-layer-2)}.bg-line2{background-color:var(--dsw-alias-border-l2)}.bg-line4{background-color:var(--dsw-alias-border-l4)}.bg-overlay{background-color:var(--dsw-alias-bg-overlay)}.bg-primary{background-color:var(--dsw-alias-label-primary)}.bg-transparent{background-color:transparent}.object-contain{-o-object-fit:contain;object-fit:contain}.p-0{padding:0}.p-2{padding:.5rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-1\\.5{padding-left:.375rem;padding-right:.375rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-2\\.5{padding-left:.625rem;padding-right:.625rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-0{padding-top:0;padding-bottom:0}.py-0\\.5{padding-top:.125rem;padding-bottom:.125rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\\.5{padding-top:.375rem;padding-bottom:.375rem}.py-10{padding-top:2.5rem;padding-bottom:2.5rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-6{padding-top:1.5rem;padding-bottom:1.5rem}.py-px{padding-top:1px;padding-bottom:1px}.pb-2{padding-bottom:.5rem}.pb-3{padding-bottom:.75rem}.pl-7{padding-left:1.75rem}.pt-2{padding-top:.5rem}.pt-4{padding-top:1rem}.text-left{text-align:left}.text-center{text-align:center}.font-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace}.text-\\[10px\\]{font-size:10px}.text-\\[11\\.5px\\]{font-size:11.5px}.text-\\[11px\\]{font-size:11px}.text-\\[12\\.5px\\]{font-size:12.5px}.text-\\[12px\\]{font-size:12px}.text-\\[13px\\]{font-size:13px}.text-\\[14px\\]{font-size:14px}.text-\\[15px\\]{font-size:15px}.text-\\[17px\\]{font-size:17px}.font-medium{font-weight:500}.font-semibold{font-weight:600}.lowercase{text-transform:lowercase}.tabular-nums{--tw-numeric-spacing:tabular-nums;font-variant-numeric:var(--tw-ordinal) var(--tw-slashed-zero) var(--tw-numeric-figure) var(--tw-numeric-spacing) var(--tw-numeric-fraction)}.leading-4{line-height:1rem}.leading-5{line-height:1.25rem}.leading-6{line-height:1.5rem}.leading-\\[14px\\]{line-height:14px}.leading-\\[16px\\]{line-height:16px}.leading-\\[18px\\]{line-height:18px}.leading-\\[20px\\]{line-height:20px}.leading-none{line-height:1}.text-\\[color\\:var\\(--dsw-alias-bg-base\\)\\]{color:var(--dsw-alias-bg-base)}.text-brand{color:var(--dsw-alias-brand-primary)}.text-danger{color:var(--dsw-alias-state-error-primary)}.text-primary{color:var(--dsw-alias-label-primary)}.text-secondary{color:var(--dsw-alias-label-secondary)}.text-success{color:var(--dsw-alias-state-success-primary)}.text-tertiary{color:var(--dsw-alias-label-tertiary)}.text-warn{color:var(--dsw-alias-state-warn-primary)}.underline{text-decoration-line:underline}.accent-brand{accent-color:var(--dsw-alias-brand-primary)}.opacity-40{opacity:.4}.opacity-50{opacity:.5}.opacity-60{opacity:.6}.opacity-90{opacity:.9}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-\\[0_1px_2px_rgba\\(0\\2c 0\\2c 0\\2c 0\\.2\\)\\]{--tw-shadow:0 1px 2px rgba(0,0,0,.2);--tw-shadow-colored:0 1px 2px var(--tw-shadow-color)}.shadow-xl{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.outline{outline-style:solid}.ring-1{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.ring-black\\/5{--tw-ring-color:rgba(0,0,0,.05)}.blur{--tw-blur:blur(8px)}.blur,.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-colors{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1)}.duration-150,.transition-transform{transition-duration:.15s}.duration-200{transition-duration:.2s}.ease-out{transition-timing-function:cubic-bezier(0,0,.2,1)}.\\[all-in-one\\:perf\\]{all-in-one:perf}.dsh-aio-root{color:var(--dsw-alias-label-primary);font-size:13px;line-height:1.5}:where(.dsh-aio-root) :where(*,:before,:after){box-sizing:border-box;border-style:solid;border-width:0}:where(.dsh-aio-root) :where(h1,h2,h3,h4,h5,h6,p,ul,ol){margin:0;padding:0}:where(.dsh-aio-root) :where(ul,ol){list-style:none}:where(.dsh-aio-root) :where(textarea){resize:vertical}.aio-card-grid>*>*{height:100%}.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(1,minmax(0,1fr))}@media (min-width:640px){.dsh-aio-root .aio-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}.dsh-aio-root .aio-switch{border-radius:9999px!important}.aio-card-grid,.aio-card-grid *{--dsw-corner-shape:initial;corner-shape:round}.aio-workspace-count:after{content:"\uFF08" attr(data-aio-workspace-count) "\uFF09";color:var(--dsw-alias-label-tertiary);font-size:12px;font-weight:400;margin-inline-start:1px}.placeholder\\:text-secondary::-moz-placeholder{color:var(--dsw-alias-label-secondary)}.placeholder\\:text-secondary::placeholder{color:var(--dsw-alias-label-secondary)}.hover\\:bg-interactive:hover{background-color:var(--dsw-alias-interactive-bg-hover)}.hover\\:bg-layer2:hover{background-color:var(--dsw-alias-bg-layer-2)}.hover\\:text-danger:hover{color:var(--dsw-alias-state-error-primary)}.hover\\:text-primary:hover{color:var(--dsw-alias-label-primary)}.hover\\:text-secondary:hover{color:var(--dsw-alias-label-secondary)}.focus\\:border-brand:focus{border-color:var(--dsw-alias-brand-primary)}.focus-visible\\:outline-none:focus-visible{outline:2px solid transparent;outline-offset:2px}.focus-visible\\:outline:focus-visible{outline-style:solid}.focus-visible\\:outline-2:focus-visible{outline-width:2px}.focus-visible\\:outline-offset-2:focus-visible{outline-offset:2px}.focus-visible\\:outline-brand:focus-visible{outline-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-2:focus-visible{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus-visible\\:ring-brand:focus-visible{--tw-ring-color:var(--dsw-alias-brand-primary)}.focus-visible\\:ring-offset-1:focus-visible{--tw-ring-offset-width:1px}.focus-visible\\:ring-offset-2:focus-visible{--tw-ring-offset-width:2px}.disabled\\:cursor-default:disabled{cursor:default}.disabled\\:cursor-not-allowed:disabled{cursor:not-allowed}.disabled\\:opacity-50:disabled{opacity:.5}';
 
     // icon.svg
     var icon_default = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">\n  <rect width="64" height="64" rx="14" fill="#0F172A" />\n  <rect x="13" y="13" width="16" height="16" rx="4.5" fill="#38BDF8" />\n  <rect x="35" y="13" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="13" y="35" width="16" height="16" rx="4.5" fill="#7DD3FC" opacity="0.55" />\n  <rect x="35" y="35" width="16" height="16" rx="4.5" fill="#38BDF8" opacity="0.85" />\n</svg>\n';
@@ -430,8 +430,8 @@ window.__ModuleLoader__.load({
       const [enabled] = (0, import_react.useState)(readExpandProcessEnabled);
       const [mode] = (0, import_react.useState)(readExpandProcessMode);
       const [saveFailed, setSaveFailed] = (0, import_react.useState)(false);
-      const save = (apply12) => {
-        if (!apply12()) {
+      const save = (apply13) => {
+        if (!apply13()) {
           setSaveFailed(true);
           return;
         }
@@ -4033,6 +4033,327 @@ window.__ModuleLoader__.load({
     };
     var auto_run_default = autoRunFeature;
 
+    // src/features/prompt-optimize/client.tsx
+    var import_react13 = __toESM(require("react"), 1);
+
+    // src/features/prompt-optimize/PromptOptimizeButton.tsx
+    var import_react12 = __toESM(require("react"), 1);
+
+    // src/features/prompt-optimize/api.ts
+    var ENDPOINT4 = "/dsh-all-in-one/prompt-optimize";
+    var REQUEST_TIMEOUT_MS4 = 75e3;
+    async function requestOptimize(text, sessionId) {
+      const controller = new AbortController();
+      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS4);
+      try {
+        const response = await fetch(new URL(ENDPOINT4, window.location.origin).toString(), {
+          method: "POST",
+          credentials: "same-origin",
+          cache: "no-store",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ text, sessionId }),
+          signal: controller.signal
+        });
+        if (!response.ok) {
+          const payload2 = await readPayload(response);
+          throw new Error(payload2.error ?? `HTTP ${response.status}`);
+        }
+        const payload = await readPayload(response);
+        if (payload.optimized === void 0 || payload.optimized === "") {
+          throw new Error(payload.error ?? "\u4F18\u5316\u7ED3\u679C\u4E3A\u7A7A");
+        }
+        return payload.optimized;
+      } catch (error) {
+        console.error("[prompt-optimize] \u8BF7\u6C42\u4F18\u5316\u5931\u8D25:", error);
+        throw error;
+      } finally {
+        window.clearTimeout(timer);
+      }
+    }
+    async function readPayload(response) {
+      const text = await response.text();
+      try {
+        return JSON.parse(text);
+      } catch (error) {
+        console.error("[prompt-optimize] \u89E3\u6790\u54CD\u5E94\u5931\u8D25:", error);
+        return { error: text === "" ? `HTTP ${response.status}` : text };
+      }
+    }
+
+    // src/features/prompt-optimize/PromptOptimizeButton.tsx
+    function OptimizeIcon() {
+      return /* @__PURE__ */ import_react12.default.createElement(
+        "svg",
+        {
+          viewBox: "0 0 16 16",
+          width: "14",
+          height: "14",
+          "aria-hidden": "true",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: "1.3",
+          strokeLinecap: "round",
+          strokeLinejoin: "round"
+        },
+        /* @__PURE__ */ import_react12.default.createElement("path", { d: "M2.5 4.5h7M2.5 8h5M2.5 11.5h3.5" }),
+        /* @__PURE__ */ import_react12.default.createElement("path", { d: "M11.8 3.2l.55 1.45L13.8 5.2l-1.45.55L11.8 7.2l-.55-1.45L9.8 5.2l1.45-.55z" }),
+        /* @__PURE__ */ import_react12.default.createElement("path", { d: "M12.6 9.6l.4 1.05 1.05.4-1.05.4-.4 1.05-.4-1.05-1.05-.4 1.05-.4z" })
+      );
+    }
+    function Shell({ label, disabled, pending: pending3, onClick, children }) {
+      return /* @__PURE__ */ import_react12.default.createElement(
+        "button",
+        {
+          type: "button",
+          "aria-label": label,
+          "aria-busy": pending3,
+          title: label,
+          disabled,
+          onMouseDown: (event) => event.preventDefault(),
+          onClick,
+          className: cn(
+            "flex h-7 w-7 shrink-0 items-center justify-center rounded-md border-0 bg-transparent p-0",
+            "text-secondary transition-colors",
+            disabled ? "opacity-50" : "hover:bg-interactive hover:text-primary",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand",
+            pending3 ? "cursor-progress" : disabled ? "cursor-default" : "cursor-pointer"
+          )
+        },
+        children
+      );
+    }
+    function PromptOptimizeButton(props) {
+      const { useInput, inputActions, t } = props;
+      if (useInput === void 0 || inputActions === void 0) {
+        return /* @__PURE__ */ import_react12.default.createElement(Shell, { label: t("unavailable"), disabled: true, pending: false }, /* @__PURE__ */ import_react12.default.createElement(OptimizeIcon, null));
+      }
+      return /* @__PURE__ */ import_react12.default.createElement(LiveButton, { ...props, useInput, inputActions });
+    }
+    function LiveButton({
+      sessionId,
+      useInput,
+      inputActions,
+      t,
+      notify: notify4
+    }) {
+      const draft = useInput((state) => state.draft);
+      const phase = useInput((state) => state.phase);
+      const [pending3, setPending] = (0, import_react12.useState)(false);
+      const empty = draft.trim() === "";
+      const disabled = pending3 || sessionId === void 0 || phase !== "plain" || empty;
+      const label = (() => {
+        if (pending3) return t("working");
+        if (sessionId === void 0) return t("unavailable");
+        if (phase !== "plain") return t("busy");
+        if (empty) return t("empty");
+        return t("action");
+      })();
+      const optimize = () => {
+        if (disabled) return;
+        setPending(true);
+        void requestOptimize(draft, sessionId).then((optimized) => {
+          inputActions.setDraft(optimized);
+          inputActions.persistDraft();
+        }).catch((error) => {
+          const reason = error instanceof Error ? error.message : String(error);
+          console.error("[prompt-optimize] \u4F18\u5316\u5931\u8D25:", error);
+          notify4?.("error", `${t("failed")}\uFF1A${reason}`);
+        }).finally(() => {
+          setPending(false);
+        });
+      };
+      return /* @__PURE__ */ import_react12.default.createElement(Shell, { label, disabled, pending: pending3, onClick: optimize }, pending3 ? /* @__PURE__ */ import_react12.default.createElement("svg", { viewBox: "0 0 16 16", width: "14", height: "14", "aria-hidden": "true", className: "animate-spin" }, /* @__PURE__ */ import_react12.default.createElement("circle", { cx: "8", cy: "8", r: "6", fill: "none", stroke: "currentColor", strokeWidth: "1.6", opacity: "0.25" }), /* @__PURE__ */ import_react12.default.createElement("path", { d: "M8 2a6 6 0 0 1 6 6", fill: "none", stroke: "currentColor", strokeWidth: "1.6", strokeLinecap: "round" })) : /* @__PURE__ */ import_react12.default.createElement(OptimizeIcon, null));
+    }
+
+    // src/features/prompt-optimize/storage.ts
+    var STORAGE_KEY = "dsh-all-in-one:prompt-optimize";
+    var DEFAULT_ENABLED2 = true;
+    function readPromptOptimizeEnabled() {
+      try {
+        const stored = window.localStorage.getItem(STORAGE_KEY);
+        if (stored === null) return DEFAULT_ENABLED2;
+        return stored === "1";
+      } catch (error) {
+        console.error("[prompt-optimize] \u8BFB\u53D6\u5F00\u5173\u72B6\u6001\u5931\u8D25:", error);
+        return DEFAULT_ENABLED2;
+      }
+    }
+    function writePromptOptimizeEnabled(enabled) {
+      try {
+        window.localStorage.setItem(STORAGE_KEY, enabled ? "1" : "0");
+        return true;
+      } catch (error) {
+        console.error("[prompt-optimize] \u5199\u5165\u5F00\u5173\u72B6\u6001\u5931\u8D25:", error);
+        return false;
+      }
+    }
+
+    // src/features/prompt-optimize/client.tsx
+    var INPUT_RIGHT_SLOT2 = "conversation.input.right";
+    function apply6(ctx, t) {
+      if (!readPromptOptimizeEnabled()) return;
+      let notify4;
+      ctx.inject(["sessions", "conversation"], (scoped) => {
+        const sessions = scoped.sessions;
+        const conversation = scoped.conversation;
+        if (sessions === void 0 || conversation === void 0) return;
+        notify4 = (sessionId, level, text) => {
+          const binding = sessions.binding?.(sessionId);
+          if (binding === void 0) return;
+          try {
+            conversation.input.for(binding.ctx).notify(level, text);
+          } catch (error) {
+            console.error("[prompt-optimize] \u5199\u5165\u8F93\u5165\u6846\u63D0\u793A\u5931\u8D25:", error);
+          }
+        };
+      });
+      const notifyOf = (sessionId) => {
+        return (level, text) => notify4?.(sessionId, level, text);
+      };
+      ctx.slots.inject(
+        INPUT_RIGHT_SLOT2,
+        () => ctx.slots.register(
+          {
+            name: INPUT_RIGHT_SLOT2,
+            id: "prompt-optimize-button",
+            // 排在模型选择器之前、与「全自动」同侧；具体位置由同排控件的 order 相对决定
+            order: -50
+          },
+          // sessionId、useInput 与 inputActions 都由宿主的 standardProps 逐次渲染传入：
+          // 切换对话时插槽会重新渲染，组件随之读到新会话的草稿与输入框操作面
+          (props) => {
+            const scoped = props;
+            const sessionId = scoped.sessionId;
+            return /* @__PURE__ */ import_react13.default.createElement(
+              PromptOptimizeButton,
+              {
+                ...scoped,
+                t,
+                notify: sessionId === void 0 ? void 0 : notifyOf(sessionId)
+              }
+            );
+          }
+        )
+      );
+    }
+
+    // src/features/prompt-optimize/locales.ts
+    var promptOptimizeLocales = {
+      zh: {
+        // 开关标题：卡片只说输入框旁多了一枚按钮，具体效果留给说明行
+        title: "\u63D0\u793A\u8BCD\u4F18\u5316",
+        // 开关用途说明：点明入口位置与「先改写、不直接发送」这一关键行为
+        description: "\u53D1\u9001\u6309\u94AE\u65C1\u65B0\u589E\u4E00\u679A\u56FE\u6807\uFF1A\u70B9\u51FB\u628A\u5F53\u524D\u8F93\u5165\u8865\u6210\u5B8C\u6574\u9700\u6C42\uFF0C\u56DE\u5199\u5230\u8F93\u5165\u6846\u7531\u4F60\u518D\u6539\u3002",
+        // 开关状态写入失败时的提示
+        saveFailed: "\u4FDD\u5B58\u5F00\u5173\u72B6\u6001\u5931\u8D25\uFF0C\u8BF7\u68C0\u67E5\u6D4F\u89C8\u5668\u5B58\u50A8\u6743\u9650\u3002",
+        // 按钮名称与悬停提示：说明点击后发生什么
+        action: "\u4F18\u5316\u8FD9\u6BB5\u63D0\u793A\u8BCD",
+        // 请求进行中的悬停提示
+        working: "\u6B63\u5728\u4F18\u5316\u2026",
+        // 草稿为空时的悬停提示
+        empty: "\u5148\u5728\u8F93\u5165\u6846\u91CC\u5199\u70B9\u5185\u5BB9",
+        // 输入框正在发送或执行命令时的悬停提示
+        busy: "\u8F93\u5165\u6846\u6B63\u5728\u63D0\u4EA4\uFF0C\u7A0D\u540E\u518D\u8BD5",
+        // 新会话页面还没有会话标识时的悬停提示
+        unavailable: "\u5F53\u524D\u5BF9\u8BDD\u8FD8\u6CA1\u5C31\u7EEA",
+        // 优化失败时写在输入框上方的提示前缀
+        failed: "\u4F18\u5316\u5931\u8D25"
+      },
+      en: {
+        // Switch title
+        title: "Prompt polish",
+        // Switch description: entry position and the rewrite-then-edit behaviour
+        description: "Adds an icon next to send: rewrite the current draft into a complete request, then edit it yourself.",
+        // Shown when the switch state cannot be stored
+        saveFailed: "Could not save the switch state. Check browser storage permissions.",
+        // Button label and hover hint
+        action: "Polish this prompt",
+        // Hover hint while the request runs
+        working: "Polishing\u2026",
+        // Hover hint on an empty draft
+        empty: "Type something in the composer first",
+        // Hover hint while the composer is submitting
+        busy: "The composer is submitting; try again shortly",
+        // Hover hint when the session is not ready yet
+        unavailable: "This conversation is not ready yet",
+        // Prefix of the composer notice shown on failure
+        failed: "Polish failed"
+      }
+    };
+
+    // src/features/prompt-optimize/toggle.tsx
+    var import_react14 = __toESM(require("react"), 1);
+    function OptimizeIcon2() {
+      return /* @__PURE__ */ import_react14.default.createElement(
+        "svg",
+        {
+          viewBox: "0 0 24 24",
+          width: "14",
+          height: "14",
+          "aria-hidden": "true",
+          fill: "none",
+          stroke: "currentColor",
+          strokeWidth: "1.8",
+          strokeLinecap: "round",
+          strokeLinejoin: "round"
+        },
+        /* @__PURE__ */ import_react14.default.createElement("path", { d: "M4 7h10M4 12h7M4 17h5" }),
+        /* @__PURE__ */ import_react14.default.createElement("path", { d: "M17.6 4.8l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z" })
+      );
+    }
+    function PromptOptimizeToggle({ t }) {
+      const [enabled, setEnabled] = (0, import_react14.useState)(readPromptOptimizeEnabled);
+      const [saveFailed, setSaveFailed] = (0, import_react14.useState)(false);
+      const handleToggle = () => {
+        const next = !enabled;
+        if (!writePromptOptimizeEnabled(next)) {
+          setSaveFailed(true);
+          return;
+        }
+        setSaveFailed(false);
+        setEnabled(next);
+        window.location.reload();
+      };
+      return /* @__PURE__ */ import_react14.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react14.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react14.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react14.default.createElement(OptimizeIcon2, null)), /* @__PURE__ */ import_react14.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react14.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react14.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react14.default.createElement(
+        "button",
+        {
+          type: "button",
+          role: "switch",
+          "aria-checked": enabled,
+          "aria-label": t("title"),
+          onClick: handleToggle,
+          className: cn(
+            "flex h-5 w-9 shrink-0 items-center aio-switch border-0 p-0 transition",
+            enabled ? "bg-brand" : "bg-line2",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+          )
+        },
+        /* @__PURE__ */ import_react14.default.createElement(
+          "span",
+          {
+            "aria-hidden": "true",
+            className: cn(
+              "h-4 w-4 aio-switch bg-base shadow transition-transform",
+              enabled ? "translate-x-[18px]" : "translate-x-0.5"
+            )
+          }
+        )
+      )), saveFailed ? /* @__PURE__ */ import_react14.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
+    }
+
+    // src/features/prompt-optimize/index.tsx
+    var promptOptimizeFeature = {
+      id: "prompt-optimize",
+      group: "toggle",
+      // 排在「编辑排队消息」「新会话入口」之后：三者的入口都在输入框那一排
+      order: 45,
+      reloadsPage: true,
+      switch: PromptOptimizeToggle,
+      client: { apply: apply6 },
+      locales: promptOptimizeLocales
+    };
+    var prompt_optimize_default = promptOptimizeFeature;
+
     // src/features/session-history/storage.ts
     var SESSION_HISTORY_STORAGE_KEY = "dsh-all-in-one:session-history";
     function readSessionHistoryEnabled() {
@@ -4153,7 +4474,7 @@ window.__ModuleLoader__.load({
     }
 
     // src/features/session-history/client.tsx
-    function apply6(ctx) {
+    function apply7(ctx) {
       if (!readSessionHistoryEnabled()) return;
       ctx.effect(() => installTurnNav(), "session-history: turn-nav");
     }
@@ -4175,9 +4496,9 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/session-history/toggle.tsx
-    var import_react12 = __toESM(require("react"), 1);
+    var import_react15 = __toESM(require("react"), 1);
     function LayoutLeftIcon() {
-      return /* @__PURE__ */ import_react12.default.createElement(
+      return /* @__PURE__ */ import_react15.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -4190,13 +4511,13 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react12.default.createElement("rect", { x: "3", y: "4", width: "18", height: "16", rx: "2" }),
-        /* @__PURE__ */ import_react12.default.createElement("path", { d: "M9 4v16" })
+        /* @__PURE__ */ import_react15.default.createElement("rect", { x: "3", y: "4", width: "18", height: "16", rx: "2" }),
+        /* @__PURE__ */ import_react15.default.createElement("path", { d: "M9 4v16" })
       );
     }
     function SessionHistoryToggle({ t }) {
-      const [enabled, setEnabled] = (0, import_react12.useState)(readSessionHistoryEnabled);
-      const [saveFailed, setSaveFailed] = (0, import_react12.useState)(false);
+      const [enabled, setEnabled] = (0, import_react15.useState)(readSessionHistoryEnabled);
+      const [saveFailed, setSaveFailed] = (0, import_react15.useState)(false);
       const handleToggle = () => {
         const next = !enabled;
         if (!writeSessionHistoryEnabled(next)) {
@@ -4207,7 +4528,7 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react12.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react12.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react12.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react12.default.createElement(LayoutLeftIcon, null)), /* @__PURE__ */ import_react12.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react12.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react12.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react12.default.createElement(
+      return /* @__PURE__ */ import_react15.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react15.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react15.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react15.default.createElement(LayoutLeftIcon, null)), /* @__PURE__ */ import_react15.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react15.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react15.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react15.default.createElement(
         "button",
         {
           type: "button",
@@ -4221,7 +4542,7 @@ window.__ModuleLoader__.load({
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           )
         },
-        /* @__PURE__ */ import_react12.default.createElement(
+        /* @__PURE__ */ import_react15.default.createElement(
           "span",
           {
             "aria-hidden": "true",
@@ -4231,7 +4552,7 @@ window.__ModuleLoader__.load({
             )
           }
         )
-      )), saveFailed ? /* @__PURE__ */ import_react12.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
+      )), saveFailed ? /* @__PURE__ */ import_react15.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
     }
 
     // src/features/session-history/index.tsx
@@ -4241,7 +4562,7 @@ window.__ModuleLoader__.load({
       order: 50,
       reloadsPage: true,
       switch: SessionHistoryToggle,
-      client: { apply: apply6 },
+      client: { apply: apply7 },
       locales: sessionHistoryLocales
     };
     var session_history_default = sessionHistoryFeature;
@@ -4540,7 +4861,7 @@ window.__ModuleLoader__.load({
     }
 
     // src/features/sidebar-more/client.tsx
-    function apply7(ctx, t) {
+    function apply8(ctx, t) {
       if (!readSidebarMoreEnabled()) return;
       ctx.effect(() => installSidebarMore(t), "sidebar-more: footer menu");
     }
@@ -4578,9 +4899,9 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/sidebar-more/toggle.tsx
-    var import_react13 = __toESM(require("react"), 1);
+    var import_react16 = __toESM(require("react"), 1);
     function TuckMenuIcon() {
-      return /* @__PURE__ */ import_react13.default.createElement(
+      return /* @__PURE__ */ import_react16.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -4593,17 +4914,17 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react13.default.createElement("path", { d: "M4 6h12" }),
-        /* @__PURE__ */ import_react13.default.createElement("path", { d: "M4 11h12" }),
-        /* @__PURE__ */ import_react13.default.createElement("path", { d: "M4 17h6" }),
-        /* @__PURE__ */ import_react13.default.createElement("circle", { cx: "17", cy: "17", r: "1", fill: "currentColor", stroke: "none" }),
-        /* @__PURE__ */ import_react13.default.createElement("circle", { cx: "20", cy: "17", r: "1", fill: "currentColor", stroke: "none" }),
-        /* @__PURE__ */ import_react13.default.createElement("circle", { cx: "14", cy: "17", r: "1", fill: "currentColor", stroke: "none" })
+        /* @__PURE__ */ import_react16.default.createElement("path", { d: "M4 6h12" }),
+        /* @__PURE__ */ import_react16.default.createElement("path", { d: "M4 11h12" }),
+        /* @__PURE__ */ import_react16.default.createElement("path", { d: "M4 17h6" }),
+        /* @__PURE__ */ import_react16.default.createElement("circle", { cx: "17", cy: "17", r: "1", fill: "currentColor", stroke: "none" }),
+        /* @__PURE__ */ import_react16.default.createElement("circle", { cx: "20", cy: "17", r: "1", fill: "currentColor", stroke: "none" }),
+        /* @__PURE__ */ import_react16.default.createElement("circle", { cx: "14", cy: "17", r: "1", fill: "currentColor", stroke: "none" })
       );
     }
     function SidebarMoreToggle({ t }) {
-      const [enabled, setEnabled] = (0, import_react13.useState)(readSidebarMoreEnabled);
-      const [saveFailed, setSaveFailed] = (0, import_react13.useState)(false);
+      const [enabled, setEnabled] = (0, import_react16.useState)(readSidebarMoreEnabled);
+      const [saveFailed, setSaveFailed] = (0, import_react16.useState)(false);
       const handleToggle = () => {
         const next = !enabled;
         if (!writeSidebarMoreEnabled(next)) {
@@ -4614,7 +4935,7 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react13.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react13.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react13.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react13.default.createElement(TuckMenuIcon, null)), /* @__PURE__ */ import_react13.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react13.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react13.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react13.default.createElement(
+      return /* @__PURE__ */ import_react16.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react16.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react16.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react16.default.createElement(TuckMenuIcon, null)), /* @__PURE__ */ import_react16.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react16.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react16.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react16.default.createElement(
         "button",
         {
           type: "button",
@@ -4628,7 +4949,7 @@ window.__ModuleLoader__.load({
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           )
         },
-        /* @__PURE__ */ import_react13.default.createElement(
+        /* @__PURE__ */ import_react16.default.createElement(
           "span",
           {
             "aria-hidden": "true",
@@ -4638,7 +4959,7 @@ window.__ModuleLoader__.load({
             )
           }
         )
-      )), saveFailed ? /* @__PURE__ */ import_react13.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
+      )), saveFailed ? /* @__PURE__ */ import_react16.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
     }
 
     // src/features/sidebar-more/index.tsx
@@ -4648,7 +4969,7 @@ window.__ModuleLoader__.load({
       order: 70,
       reloadsPage: true,
       switch: SidebarMoreToggle,
-      client: { apply: apply7 },
+      client: { apply: apply8 },
       locales: sidebarMoreLocales
     };
     var sidebar_more_default = sidebarMoreFeature;
@@ -4803,7 +5124,7 @@ window.__ModuleLoader__.load({
     }
 
     // src/features/workspace-session-count/client.tsx
-    function apply8(ctx, _t) {
+    function apply9(ctx, _t) {
       if (!readWorkspaceSessionCountEnabled()) return;
       ctx.inject(["sessions", "uiWorkspace"], (scoped) => {
         const sessions = scoped.sessions;
@@ -4837,9 +5158,9 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/workspace-session-count/toggle.tsx
-    var import_react14 = __toESM(require("react"), 1);
+    var import_react17 = __toESM(require("react"), 1);
     function FolderCountIcon() {
-      return /* @__PURE__ */ import_react14.default.createElement(
+      return /* @__PURE__ */ import_react17.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -4852,15 +5173,15 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react14.default.createElement("path", { d: "M3 7h6l2 2h10v11H3Z" }),
-        /* @__PURE__ */ import_react14.default.createElement("circle", { cx: "16", cy: "16", r: "1", fill: "currentColor", stroke: "none" }),
-        /* @__PURE__ */ import_react14.default.createElement("circle", { cx: "19", cy: "16", r: "1", fill: "currentColor", stroke: "none" }),
-        /* @__PURE__ */ import_react14.default.createElement("circle", { cx: "13", cy: "16", r: "1", fill: "currentColor", stroke: "none" })
+        /* @__PURE__ */ import_react17.default.createElement("path", { d: "M3 7h6l2 2h10v11H3Z" }),
+        /* @__PURE__ */ import_react17.default.createElement("circle", { cx: "16", cy: "16", r: "1", fill: "currentColor", stroke: "none" }),
+        /* @__PURE__ */ import_react17.default.createElement("circle", { cx: "19", cy: "16", r: "1", fill: "currentColor", stroke: "none" }),
+        /* @__PURE__ */ import_react17.default.createElement("circle", { cx: "13", cy: "16", r: "1", fill: "currentColor", stroke: "none" })
       );
     }
     function WorkspaceSessionCountToggle({ t }) {
-      const [enabled, setEnabled] = (0, import_react14.useState)(readWorkspaceSessionCountEnabled);
-      const [saveFailed, setSaveFailed] = (0, import_react14.useState)(false);
+      const [enabled, setEnabled] = (0, import_react17.useState)(readWorkspaceSessionCountEnabled);
+      const [saveFailed, setSaveFailed] = (0, import_react17.useState)(false);
       const handleToggle = () => {
         const next = !enabled;
         if (!writeWorkspaceSessionCountEnabled(next)) {
@@ -4871,7 +5192,7 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react14.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react14.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react14.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react14.default.createElement(FolderCountIcon, null)), /* @__PURE__ */ import_react14.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react14.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react14.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react14.default.createElement(
+      return /* @__PURE__ */ import_react17.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react17.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react17.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react17.default.createElement(FolderCountIcon, null)), /* @__PURE__ */ import_react17.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react17.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react17.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react17.default.createElement(
         "button",
         {
           type: "button",
@@ -4885,7 +5206,7 @@ window.__ModuleLoader__.load({
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           )
         },
-        /* @__PURE__ */ import_react14.default.createElement(
+        /* @__PURE__ */ import_react17.default.createElement(
           "span",
           {
             "aria-hidden": "true",
@@ -4895,7 +5216,7 @@ window.__ModuleLoader__.load({
             )
           }
         )
-      )), saveFailed ? /* @__PURE__ */ import_react14.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
+      )), saveFailed ? /* @__PURE__ */ import_react17.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
     }
 
     // src/features/workspace-session-count/index.tsx
@@ -4905,18 +5226,18 @@ window.__ModuleLoader__.load({
       order: 60,
       reloadsPage: true,
       switch: WorkspaceSessionCountToggle,
-      client: { apply: apply8 },
+      client: { apply: apply9 },
       locales: workspaceSessionCountLocales
     };
     var workspace_session_count_default = workspaceSessionCountFeature;
 
     // src/features/delete-session/client.tsx
-    var import_react17 = __toESM(require("react"), 1);
+    var import_react20 = __toESM(require("react"), 1);
 
     // src/features/delete-session/api.ts
-    var ENDPOINT4 = "/dsh-all-in-one/sessions";
+    var ENDPOINT5 = "/dsh-all-in-one/sessions";
     var BATCH_ENDPOINT = "/dsh-all-in-one/sessions/batch";
-    var REQUEST_TIMEOUT_MS4 = 15e3;
+    var REQUEST_TIMEOUT_MS5 = 15e3;
     var BATCH_TIMEOUT_MS = 12e4;
     async function postJson(path, body, timeoutMs) {
       const controller = new AbortController();
@@ -4952,7 +5273,7 @@ window.__ModuleLoader__.load({
     }
     async function requestDeleteSession2(sessionId) {
       const body = { sessionId };
-      const payload = await postJson(ENDPOINT4, body, REQUEST_TIMEOUT_MS4);
+      const payload = await postJson(ENDPOINT5, body, REQUEST_TIMEOUT_MS5);
       if (payload.deleted !== true) throw new Error("\u5BBF\u4E3B\u672A\u786E\u8BA4\u5220\u9664");
     }
     async function requestDeleteSessions(sessionIds) {
@@ -5017,10 +5338,10 @@ window.__ModuleLoader__.load({
     }
 
     // src/features/delete-session/DeleteSessionButton.tsx
-    var import_react15 = __toESM(require("react"), 1);
+    var import_react18 = __toESM(require("react"), 1);
     var ENABLED_AT_INSTALL = readDeleteSessionEnabled();
     function TrashGlyph() {
-      return /* @__PURE__ */ import_react15.default.createElement(
+      return /* @__PURE__ */ import_react18.default.createElement(
         "svg",
         {
           viewBox: "0 0 16 16",
@@ -5033,11 +5354,11 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react15.default.createElement("path", { d: "M2.5 4.5h11" }),
-        /* @__PURE__ */ import_react15.default.createElement("path", { d: "M6.5 2.75h3" }),
-        /* @__PURE__ */ import_react15.default.createElement("path", { d: "M4 4.5 4.6 13h6.8L12 4.5" }),
-        /* @__PURE__ */ import_react15.default.createElement("path", { d: "M6.6 6.8v3.6" }),
-        /* @__PURE__ */ import_react15.default.createElement("path", { d: "M9.4 6.8v3.6" })
+        /* @__PURE__ */ import_react18.default.createElement("path", { d: "M2.5 4.5h11" }),
+        /* @__PURE__ */ import_react18.default.createElement("path", { d: "M6.5 2.75h3" }),
+        /* @__PURE__ */ import_react18.default.createElement("path", { d: "M4 4.5 4.6 13h6.8L12 4.5" }),
+        /* @__PURE__ */ import_react18.default.createElement("path", { d: "M6.6 6.8v3.6" }),
+        /* @__PURE__ */ import_react18.default.createElement("path", { d: "M9.4 6.8v3.6" })
       );
     }
     function DeleteSessionButton({
@@ -5055,7 +5376,7 @@ window.__ModuleLoader__.load({
         event.stopPropagation();
         requestConfirm({ kind: "session", sessionId, title: displayTitle ?? sessionId });
       };
-      return /* @__PURE__ */ import_react15.default.createElement(
+      return /* @__PURE__ */ import_react18.default.createElement(
         "button",
         {
           type: "button",
@@ -5064,13 +5385,13 @@ window.__ModuleLoader__.load({
           onClick: handleClick,
           className: "inline-flex h-4 w-4 flex-none cursor-pointer items-center justify-center rounded border-0 bg-transparent p-0 text-secondary transition hover:text-danger focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         },
-        /* @__PURE__ */ import_react15.default.createElement(TrashGlyph, null)
+        /* @__PURE__ */ import_react18.default.createElement(TrashGlyph, null)
       );
     }
 
     // src/features/delete-session/DeleteSessionDialog.tsx
     var import_dsh_client_ui_primitives3 = require("@deepseek-ai/dsh-client-ui-primitives");
-    var import_react16 = __toESM(require("react"), 1);
+    var import_react19 = __toESM(require("react"), 1);
     var useNoRequest = (() => null);
     function DeleteSessionDialog({
       t,
@@ -5079,12 +5400,12 @@ window.__ModuleLoader__.load({
       deleteWorkspaceSessions,
       settle
     }) {
-      const [pending3, setPending] = (0, import_react16.useState)(false);
-      const [error, setError] = (0, import_react16.useState)(null);
+      const [pending3, setPending] = (0, import_react19.useState)(false);
+      const [error, setError] = (0, import_react19.useState)(null);
       const readRequest = useRequest ?? useNoRequest;
       const request5 = readRequest((value) => value);
       const requestKey = request5 === null ? "" : request5.kind === "session" ? request5.sessionId : request5.workspaceId;
-      (0, import_react16.useEffect)(() => {
+      (0, import_react19.useEffect)(() => {
         setError(null);
       }, [requestKey]);
       if (request5 === null) return null;
@@ -5118,7 +5439,7 @@ window.__ModuleLoader__.load({
         setPending(false);
         settle?.();
       };
-      return /* @__PURE__ */ import_react16.default.createElement(
+      return /* @__PURE__ */ import_react19.default.createElement(
         import_dsh_client_ui_primitives3.Modal,
         {
           open: true,
@@ -5126,7 +5447,7 @@ window.__ModuleLoader__.load({
           closeLabel: t("confirmCancel"),
           title: isWorkspace ? t("confirmAllTitle") : t("confirmTitle"),
           description: isWorkspace ? t("confirmAllTarget") : t("confirmTarget"),
-          footer: /* @__PURE__ */ import_react16.default.createElement(import_react16.default.Fragment, null, /* @__PURE__ */ import_react16.default.createElement(Button, { variant: "outline", disabled: pending3, onClick: close }, t("confirmCancel")), /* @__PURE__ */ import_react16.default.createElement(
+          footer: /* @__PURE__ */ import_react19.default.createElement(import_react19.default.Fragment, null, /* @__PURE__ */ import_react19.default.createElement(Button, { variant: "outline", disabled: pending3, onClick: close }, t("confirmCancel")), /* @__PURE__ */ import_react19.default.createElement(
             Button,
             {
               variant: "danger",
@@ -5137,10 +5458,10 @@ window.__ModuleLoader__.load({
             pending3 ? t("deleting") : t("confirmDelete")
           ))
         },
-        /* @__PURE__ */ import_react16.default.createElement("p", { className: "mt-1 text-[13px] font-medium leading-5 text-primary" }, request5.title),
-        request5.kind === "workspace" ? /* @__PURE__ */ import_react16.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("confirmAllCount").replace("{count}", String(request5.sessionIds.length))) : null,
-        /* @__PURE__ */ import_react16.default.createElement("p", { className: "mt-3 text-[12px] leading-[18px] text-secondary" }, isWorkspace ? t("confirmAllMessage") : t("confirmMessage")),
-        error !== null ? /* @__PURE__ */ import_react16.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null
+        /* @__PURE__ */ import_react19.default.createElement("p", { className: "mt-1 text-[13px] font-medium leading-5 text-primary" }, request5.title),
+        request5.kind === "workspace" ? /* @__PURE__ */ import_react19.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("confirmAllCount").replace("{count}", String(request5.sessionIds.length))) : null,
+        /* @__PURE__ */ import_react19.default.createElement("p", { className: "mt-3 text-[12px] leading-[18px] text-secondary" }, isWorkspace ? t("confirmAllMessage") : t("confirmMessage")),
+        error !== null ? /* @__PURE__ */ import_react19.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null
       );
     }
 
@@ -5413,7 +5734,7 @@ window.__ModuleLoader__.load({
       }
       return newest?.id;
     }
-    function apply9(ctx, t) {
+    function apply10(ctx, t) {
       if (readDeleteSessionEnabled()) {
         ctx.effect(() => installArchiveHiding(), "delete-session: hide archive");
         ctx.effect(() => installWorkspaceDeleteHiding(), "delete-session: hide workspace delete");
@@ -5469,7 +5790,7 @@ window.__ModuleLoader__.load({
                 requestConfirm: deleteConfirmStore.request
               })
             },
-            (props) => /* @__PURE__ */ import_react17.default.createElement(
+            (props) => /* @__PURE__ */ import_react20.default.createElement(
               DeleteSessionButton,
               {
                 ...props,
@@ -5491,7 +5812,7 @@ window.__ModuleLoader__.load({
                 settle: deleteConfirmStore.settle
               })
             },
-            (props) => /* @__PURE__ */ import_react17.default.createElement(
+            (props) => /* @__PURE__ */ import_react20.default.createElement(
               DeleteSessionDialog,
               {
                 ...props,
@@ -5586,9 +5907,9 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/delete-session/toggle.tsx
-    var import_react18 = __toESM(require("react"), 1);
+    var import_react21 = __toESM(require("react"), 1);
     function TrashIcon() {
-      return /* @__PURE__ */ import_react18.default.createElement(
+      return /* @__PURE__ */ import_react21.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -5601,16 +5922,16 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react18.default.createElement("path", { d: "M4 7h16" }),
-        /* @__PURE__ */ import_react18.default.createElement("path", { d: "M10 4h4" }),
-        /* @__PURE__ */ import_react18.default.createElement("path", { d: "M9 7v11" }),
-        /* @__PURE__ */ import_react18.default.createElement("path", { d: "M15 7v11" }),
-        /* @__PURE__ */ import_react18.default.createElement("path", { d: "M6 7h12l-1 13H7L6 7Z" })
+        /* @__PURE__ */ import_react21.default.createElement("path", { d: "M4 7h16" }),
+        /* @__PURE__ */ import_react21.default.createElement("path", { d: "M10 4h4" }),
+        /* @__PURE__ */ import_react21.default.createElement("path", { d: "M9 7v11" }),
+        /* @__PURE__ */ import_react21.default.createElement("path", { d: "M15 7v11" }),
+        /* @__PURE__ */ import_react21.default.createElement("path", { d: "M6 7h12l-1 13H7L6 7Z" })
       );
     }
     function DeleteSessionToggle({ t }) {
-      const [enabled, setEnabled] = (0, import_react18.useState)(readDeleteSessionEnabled);
-      const [saveFailed, setSaveFailed] = (0, import_react18.useState)(false);
+      const [enabled, setEnabled] = (0, import_react21.useState)(readDeleteSessionEnabled);
+      const [saveFailed, setSaveFailed] = (0, import_react21.useState)(false);
       const handleToggle = () => {
         const next = !enabled;
         if (!writeDeleteSessionEnabled(next)) {
@@ -5621,7 +5942,7 @@ window.__ModuleLoader__.load({
         setEnabled(next);
         window.location.reload();
       };
-      return /* @__PURE__ */ import_react18.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react18.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react18.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react18.default.createElement(TrashIcon, null)), /* @__PURE__ */ import_react18.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react18.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react18.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react18.default.createElement(
+      return /* @__PURE__ */ import_react21.default.createElement("div", { className: "flex h-full flex-col" }, /* @__PURE__ */ import_react21.default.createElement("div", { className: "flex w-full flex-1 items-center gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react21.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react21.default.createElement(TrashIcon, null)), /* @__PURE__ */ import_react21.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react21.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react21.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description"))), /* @__PURE__ */ import_react21.default.createElement(
         "button",
         {
           type: "button",
@@ -5635,7 +5956,7 @@ window.__ModuleLoader__.load({
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           )
         },
-        /* @__PURE__ */ import_react18.default.createElement(
+        /* @__PURE__ */ import_react21.default.createElement(
           "span",
           {
             "aria-hidden": "true",
@@ -5645,7 +5966,7 @@ window.__ModuleLoader__.load({
             )
           }
         )
-      )), saveFailed ? /* @__PURE__ */ import_react18.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
+      )), saveFailed ? /* @__PURE__ */ import_react21.default.createElement("p", { className: "mt-0.5 text-[12px] leading-[16px] text-danger" }, t("saveFailed")) : null);
     }
 
     // src/features/delete-session/index.tsx
@@ -5655,7 +5976,7 @@ window.__ModuleLoader__.load({
       order: 80,
       reloadsPage: true,
       switch: DeleteSessionToggle,
-      client: { apply: apply9 },
+      client: { apply: apply10 },
       locales: deleteSessionLocales
     };
     var delete_session_default = deleteSessionFeature;
@@ -5663,12 +5984,12 @@ window.__ModuleLoader__.load({
     // src/features/power-pack/client.tsx
     var client_exports = {};
     __export(client_exports, {
-      apply: () => apply10
+      apply: () => apply11
     });
-    var import_react20 = __toESM(require("react"), 1);
+    var import_react23 = __toESM(require("react"), 1);
 
     // src/features/power-pack/seat.tsx
-    var import_react19 = __toESM(require("react"), 1);
+    var import_react22 = __toESM(require("react"), 1);
     var import_dsh_client_ui_primitives4 = require("@deepseek-ai/dsh-client-ui-primitives");
     var BUILTIN_NAME_KEYS = {
       standard: "presetStandardName",
@@ -5693,17 +6014,17 @@ window.__ModuleLoader__.load({
       return key === void 0 ? void 0 : t(key);
     }
     function PresetDropdown({ current, options, placeholder, disabled, onPick }) {
-      const [open, setOpen] = (0, import_react19.useState)(false);
+      const [open, setOpen] = (0, import_react22.useState)(false);
       const selected = options.find((option) => option.id === current);
       const canOpen = !disabled && options.length > 0;
       const items = options.map((option) => ({
         id: option.id,
-        label: /* @__PURE__ */ import_react19.default.createElement("span", { className: "ufIuna_item" }, /* @__PURE__ */ import_react19.default.createElement("span", { className: "ufIuna_itemName" }, option.name), option.description ? (
+        label: /* @__PURE__ */ import_react22.default.createElement("span", { className: "ufIuna_item" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "ufIuna_itemName" }, option.name), option.description ? (
           // 选项说明
-          /* @__PURE__ */ import_react19.default.createElement("span", { className: "ufIuna_itemDesc" }, option.description)
+          /* @__PURE__ */ import_react22.default.createElement("span", { className: "ufIuna_itemDesc" }, option.description)
         ) : null)
       }));
-      return /* @__PURE__ */ import_react19.default.createElement(
+      return /* @__PURE__ */ import_react22.default.createElement(
         import_dsh_client_ui_primitives4.Menu,
         {
           open: open && canOpen,
@@ -5719,7 +6040,7 @@ window.__ModuleLoader__.load({
           className: "ufIuna_menuAnchor",
           anchor: (
             // 触发按钮的结构与类名同宿主预设选择器
-            /* @__PURE__ */ import_react19.default.createElement(
+            /* @__PURE__ */ import_react22.default.createElement(
               "button",
               {
                 type: "button",
@@ -5729,9 +6050,9 @@ window.__ModuleLoader__.load({
                 disabled: !canOpen,
                 onClick: () => setOpen((value) => !value)
               },
-              /* @__PURE__ */ import_react19.default.createElement(import_dsh_client_ui_primitives4.IconAgentPresetOutlineRegular, { className: "ufIuna_seatIcon" }),
-              /* @__PURE__ */ import_react19.default.createElement("span", { className: "ufIuna_seatLabel" }, selected === void 0 ? placeholder : selected.name),
-              /* @__PURE__ */ import_react19.default.createElement(import_dsh_client_ui_primitives4.IconChevronDownOutlineRegular, { className: "ufIuna_chevron" })
+              /* @__PURE__ */ import_react22.default.createElement(import_dsh_client_ui_primitives4.IconAgentPresetOutlineRegular, { className: "ufIuna_seatIcon" }),
+              /* @__PURE__ */ import_react22.default.createElement("span", { className: "ufIuna_seatLabel" }, selected === void 0 ? placeholder : selected.name),
+              /* @__PURE__ */ import_react22.default.createElement(import_dsh_client_ui_primitives4.IconChevronDownOutlineRegular, { className: "ufIuna_chevron" })
             )
           )
         }
@@ -5747,9 +6068,9 @@ window.__ModuleLoader__.load({
       t
     }) {
       const snapshot = usePowerPackSeat((state) => state);
-      const actionsRef = (0, import_react19.useRef)({ load, applyStaged });
+      const actionsRef = (0, import_react22.useRef)({ load, applyStaged });
       actionsRef.current = { load, applyStaged };
-      (0, import_react19.useEffect)(() => {
+      (0, import_react22.useEffect)(() => {
         void actionsRef.current.load();
         if (sessionId !== void 0) void actionsRef.current.applyStaged();
       }, [sessionId]);
@@ -5759,7 +6080,7 @@ window.__ModuleLoader__.load({
         description: presetDescription(preset, t)
       }));
       const disabled = snapshot.status === "loading";
-      return /* @__PURE__ */ import_react19.default.createElement("div", null, /* @__PURE__ */ import_react19.default.createElement("div", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react19.default.createElement(
+      return /* @__PURE__ */ import_react22.default.createElement("div", null, /* @__PURE__ */ import_react22.default.createElement("div", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react22.default.createElement(
         PresetDropdown,
         {
           current: snapshot.mode,
@@ -5768,7 +6089,7 @@ window.__ModuleLoader__.load({
           disabled,
           onPick: (id) => void selectMode(id)
         }
-      ), snapshot.packsEnabled ? /* @__PURE__ */ import_react19.default.createElement(
+      ), snapshot.packsEnabled ? /* @__PURE__ */ import_react22.default.createElement(
         PresetDropdown,
         {
           current: snapshot.pack,
@@ -5777,17 +6098,17 @@ window.__ModuleLoader__.load({
           disabled,
           onPick: (id) => void selectPack(id)
         }
-      ) : null), snapshot.error ? /* @__PURE__ */ import_react19.default.createElement("p", { className: "mt-1 text-[12px] leading-4 text-danger", role: "alert" }, snapshot.error === "session already started" ? t("seatSessionStarted") : `${t("seatSelectFailed")}\uFF1A${snapshot.error}`) : null);
+      ) : null), snapshot.error ? /* @__PURE__ */ import_react22.default.createElement("p", { className: "mt-1 text-[12px] leading-4 text-danger", role: "alert" }, snapshot.error === "session already started" ? t("seatSessionStarted") : `${t("seatSelectFailed")}\uFF1A${snapshot.error}`) : null);
     }
 
     // src/features/power-pack/api.ts
-    var ENDPOINT5 = "/dsh-all-in-one/power-packs";
-    var REQUEST_TIMEOUT_MS5 = 2e4;
+    var ENDPOINT6 = "/dsh-all-in-one/power-packs";
+    var REQUEST_TIMEOUT_MS6 = 2e4;
     async function request(init = {}) {
       const controller = new AbortController();
-      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS5);
+      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS6);
       try {
-        const response = await fetch(new URL(ENDPOINT5, window.location.origin).toString(), {
+        const response = await fetch(new URL(ENDPOINT6, window.location.origin).toString(), {
           credentials: "same-origin",
           cache: "no-store",
           ...init,
@@ -6019,7 +6340,7 @@ window.__ModuleLoader__.load({
     }
 
     // src/features/power-pack/client.tsx
-    function apply10(ctx, t) {
+    function apply11(ctx, t) {
       ctx.inject(["sessions", "remote", "remote.agentPresets"], (scoped) => {
         const controller = createSeatController(scoped);
         ctx.slots.inject(
@@ -6039,20 +6360,20 @@ window.__ModuleLoader__.load({
                 }
               })
             },
-            (props) => /* @__PURE__ */ import_react20.default.createElement(PowerPackSeat, { ...props, t })
+            (props) => /* @__PURE__ */ import_react23.default.createElement(PowerPackSeat, { ...props, t })
           )
         );
       });
     }
 
     // src/features/power-pack/entry.tsx
-    var import_react22 = __toESM(require("react"), 1);
+    var import_react25 = __toESM(require("react"), 1);
 
     // src/components/CardChevron.tsx
-    var import_react21 = __toESM(require("react"), 1);
+    var import_react24 = __toESM(require("react"), 1);
     var CHEVRON_SIZE = 14;
     function CardChevron() {
-      return /* @__PURE__ */ import_react21.default.createElement(
+      return /* @__PURE__ */ import_react24.default.createElement(
         "svg",
         {
           viewBox: "0 0 16 16",
@@ -6066,13 +6387,13 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react21.default.createElement("path", { d: "M6 3.5 10.5 8 6 12.5" })
+        /* @__PURE__ */ import_react24.default.createElement("path", { d: "M6 3.5 10.5 8 6 12.5" })
       );
     }
 
     // src/features/power-pack/entry.tsx
     function PowerPackIcon() {
-      return /* @__PURE__ */ import_react22.default.createElement(
+      return /* @__PURE__ */ import_react25.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -6085,19 +6406,19 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react22.default.createElement("path", { d: "M20 12a7 7 0 0 1-7 7H8l-4 3v-5.5A7 7 0 0 1 11 5h2a7 7 0 0 1 7 7Z" }),
-        /* @__PURE__ */ import_react22.default.createElement("circle", { cx: "10", cy: "12", r: "1" }),
-        /* @__PURE__ */ import_react22.default.createElement("circle", { cx: "14", cy: "12", r: "1" }),
-        /* @__PURE__ */ import_react22.default.createElement("circle", { cx: "18", cy: "12", r: "1" })
+        /* @__PURE__ */ import_react25.default.createElement("path", { d: "M20 12a7 7 0 0 1-7 7H8l-4 3v-5.5A7 7 0 0 1 11 5h2a7 7 0 0 1 7 7Z" }),
+        /* @__PURE__ */ import_react25.default.createElement("circle", { cx: "10", cy: "12", r: "1" }),
+        /* @__PURE__ */ import_react25.default.createElement("circle", { cx: "14", cy: "12", r: "1" }),
+        /* @__PURE__ */ import_react25.default.createElement("circle", { cx: "18", cy: "12", r: "1" })
       );
     }
     function PowerPackEntry({ t, open }) {
-      const [payload, setPayload] = (0, import_react22.useState)(null);
-      const [error, setError] = (0, import_react22.useState)(null);
-      const [saving, setSaving] = (0, import_react22.useState)(false);
-      const translate = (0, import_react22.useRef)(t);
+      const [payload, setPayload] = (0, import_react25.useState)(null);
+      const [error, setError] = (0, import_react25.useState)(null);
+      const [saving, setSaving] = (0, import_react25.useState)(false);
+      const translate = (0, import_react25.useRef)(t);
       translate.current = t;
-      (0, import_react22.useEffect)(() => {
+      (0, import_react25.useEffect)(() => {
         let active2 = true;
         void loadPowerPacks().then((next) => {
           if (active2) setPayload(next);
@@ -6131,16 +6452,16 @@ window.__ModuleLoader__.load({
       };
       return (
         // 卡片容器：主体按钮与开关是并列的交互区，设置提示随标题行落在主体按钮内，不能互相嵌套
-        /* @__PURE__ */ import_react22.default.createElement("div", { className: "flex w-full items-start gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 transition hover:bg-layer2" }, /* @__PURE__ */ import_react22.default.createElement(
+        /* @__PURE__ */ import_react25.default.createElement("div", { className: "flex w-full items-start gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 transition hover:bg-layer2" }, /* @__PURE__ */ import_react25.default.createElement(
           "button",
           {
             type: "button",
             onClick: open,
             className: "flex min-w-0 flex-1 items-start gap-2 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           },
-          /* @__PURE__ */ import_react22.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react22.default.createElement(PowerPackIcon, null)),
-          /* @__PURE__ */ import_react22.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react22.default.createElement("span", { className: "block truncate text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react22.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react22.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)
-        ), /* @__PURE__ */ import_react22.default.createElement("div", { className: "flex shrink-0 flex-col items-end gap-2 self-start" }, /* @__PURE__ */ import_react22.default.createElement(
+          /* @__PURE__ */ import_react25.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react25.default.createElement(PowerPackIcon, null)),
+          /* @__PURE__ */ import_react25.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react25.default.createElement("span", { className: "block truncate text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react25.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react25.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)
+        ), /* @__PURE__ */ import_react25.default.createElement("div", { className: "flex shrink-0 flex-col items-end gap-2 self-start" }, /* @__PURE__ */ import_react25.default.createElement(
           "button",
           {
             type: "button",
@@ -6156,7 +6477,7 @@ window.__ModuleLoader__.load({
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             )
           },
-          /* @__PURE__ */ import_react22.default.createElement(
+          /* @__PURE__ */ import_react25.default.createElement(
             "span",
             {
               "aria-hidden": "true",
@@ -6166,7 +6487,7 @@ window.__ModuleLoader__.load({
               )
             }
           )
-        ), /* @__PURE__ */ import_react22.default.createElement(
+        ), /* @__PURE__ */ import_react25.default.createElement(
           "button",
           {
             type: "button",
@@ -6176,7 +6497,7 @@ window.__ModuleLoader__.load({
             className: "flex items-center justify-center gap-0.5 rounded-md border-0 bg-transparent p-0 text-[11px] leading-[16px] text-secondary transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           },
           t("settingsAction"),
-          /* @__PURE__ */ import_react22.default.createElement(CardChevron, null)
+          /* @__PURE__ */ import_react25.default.createElement(CardChevron, null)
         )))
       );
     }
@@ -6406,17 +6727,17 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/power-pack/page.tsx
-    var import_react26 = __toESM(require("react"), 1);
+    var import_react29 = __toESM(require("react"), 1);
 
     // src/features/power-pack/PackEditor.tsx
-    var import_react25 = __toESM(require("react"), 1);
+    var import_react28 = __toESM(require("react"), 1);
 
     // src/shell/page-actions.ts
-    var import_react23 = require("react");
-    var PageActionsContext = (0, import_react23.createContext)(null);
+    var import_react26 = require("react");
+    var PageActionsContext = (0, import_react26.createContext)(null);
 
     // src/features/power-pack/ResourceRuleField.tsx
-    var import_react24 = __toESM(require("react"), 1);
+    var import_react27 = __toESM(require("react"), 1);
     var MODE_ORDER = ["all", "include", "exclude"];
     var SEARCH_CLASS = "w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand";
     function ResourceRuleField({
@@ -6428,9 +6749,9 @@ window.__ModuleLoader__.load({
       searchPlaceholder,
       onChange
     }) {
-      const [query, setQuery] = (0, import_react24.useState)("");
-      const selected = (0, import_react24.useMemo)(() => new Set(rule.items), [rule.items]);
-      const visibleOptions = (0, import_react24.useMemo)(() => {
+      const [query, setQuery] = (0, import_react27.useState)("");
+      const selected = (0, import_react27.useMemo)(() => new Set(rule.items), [rule.items]);
+      const visibleOptions = (0, import_react27.useMemo)(() => {
         const keyword = query.trim().toLowerCase();
         if (keyword === "") return options;
         return options.filter(
@@ -6445,12 +6766,12 @@ window.__ModuleLoader__.load({
         const unknown = [...next].filter((item) => !options.some((option) => option.id === item));
         onChange({ mode: rule.mode, items: [...ordered, ...unknown] });
       };
-      return /* @__PURE__ */ import_react24.default.createElement("div", { className: "flex flex-col gap-2" }, /* @__PURE__ */ import_react24.default.createElement("div", { className: "flex flex-wrap items-center gap-3" }, title ? (
+      return /* @__PURE__ */ import_react27.default.createElement("div", { className: "flex flex-col gap-2" }, /* @__PURE__ */ import_react27.default.createElement("div", { className: "flex flex-wrap items-center gap-3" }, title ? (
         // 分组标签
-        /* @__PURE__ */ import_react24.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, title)
-      ) : null, /* @__PURE__ */ import_react24.default.createElement("div", { className: "ml-auto flex items-center gap-2" }, /* @__PURE__ */ import_react24.default.createElement("div", { className: "inline-flex", role: "group" }, MODE_ORDER.map((mode, index) => {
+        /* @__PURE__ */ import_react27.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, title)
+      ) : null, /* @__PURE__ */ import_react27.default.createElement("div", { className: "ml-auto flex items-center gap-2" }, /* @__PURE__ */ import_react27.default.createElement("div", { className: "inline-flex", role: "group" }, MODE_ORDER.map((mode, index) => {
         const active2 = rule.mode === mode;
-        return /* @__PURE__ */ import_react24.default.createElement(
+        return /* @__PURE__ */ import_react27.default.createElement(
           "button",
           {
             key: mode,
@@ -6470,7 +6791,7 @@ window.__ModuleLoader__.load({
           },
           modeLabels[mode]
         );
-      })), selected.size > 0 ? /* @__PURE__ */ import_react24.default.createElement("span", { className: "text-[11px] text-secondary" }, selected.size) : null)), rule.mode === "all" ? null : /* @__PURE__ */ import_react24.default.createElement("div", { className: "flex flex-col gap-2" }, searchPlaceholder ? /* @__PURE__ */ import_react24.default.createElement(
+      })), selected.size > 0 ? /* @__PURE__ */ import_react27.default.createElement("span", { className: "text-[11px] text-secondary" }, selected.size) : null)), rule.mode === "all" ? null : /* @__PURE__ */ import_react27.default.createElement("div", { className: "flex flex-col gap-2" }, searchPlaceholder ? /* @__PURE__ */ import_react27.default.createElement(
         "input",
         {
           type: "search",
@@ -6481,10 +6802,10 @@ window.__ModuleLoader__.load({
         }
       ) : null, visibleOptions.length === 0 ? (
         // 没有可选项或搜索无结果时的提示
-        /* @__PURE__ */ import_react24.default.createElement("p", { className: "py-2 text-[12px] text-secondary" }, emptyText)
-      ) : /* @__PURE__ */ import_react24.default.createElement("ul", { className: "max-h-72 overflow-y-auto" }, visibleOptions.map((option) => {
+        /* @__PURE__ */ import_react27.default.createElement("p", { className: "py-2 text-[12px] text-secondary" }, emptyText)
+      ) : /* @__PURE__ */ import_react27.default.createElement("ul", { className: "max-h-72 overflow-y-auto" }, visibleOptions.map((option) => {
         const checked = selected.has(option.id);
-        return /* @__PURE__ */ import_react24.default.createElement("li", { key: option.id }, /* @__PURE__ */ import_react24.default.createElement(
+        return /* @__PURE__ */ import_react27.default.createElement("li", { key: option.id }, /* @__PURE__ */ import_react27.default.createElement(
           "label",
           {
             className: cn(
@@ -6492,7 +6813,7 @@ window.__ModuleLoader__.load({
               checked ? "bg-layer2" : "hover:bg-layer2"
             )
           },
-          /* @__PURE__ */ import_react24.default.createElement(
+          /* @__PURE__ */ import_react27.default.createElement(
             "input",
             {
               type: "checkbox",
@@ -6501,12 +6822,12 @@ window.__ModuleLoader__.load({
               className: "mt-0.5 h-3.5 w-3.5 shrink-0 accent-brand"
             }
           ),
-          /* @__PURE__ */ import_react24.default.createElement("span", { className: "min-w-0" }, /* @__PURE__ */ import_react24.default.createElement("span", { className: "flex flex-wrap items-center gap-1.5" }, /* @__PURE__ */ import_react24.default.createElement("span", { className: "text-[12px] font-medium text-primary" }, option.label), option.badge ? (
+          /* @__PURE__ */ import_react27.default.createElement("span", { className: "min-w-0" }, /* @__PURE__ */ import_react27.default.createElement("span", { className: "flex flex-wrap items-center gap-1.5" }, /* @__PURE__ */ import_react27.default.createElement("span", { className: "text-[12px] font-medium text-primary" }, option.label), option.badge ? (
             // 条目来源标记，如「已安装插件」
-            /* @__PURE__ */ import_react24.default.createElement("span", { className: "rounded border border-line4 px-1 py-px text-[10px] text-secondary" }, option.badge)
+            /* @__PURE__ */ import_react27.default.createElement("span", { className: "rounded border border-line4 px-1 py-px text-[10px] text-secondary" }, option.badge)
           ) : null), option.description ? (
             // 条目说明
-            /* @__PURE__ */ import_react24.default.createElement("span", { className: "mt-0.5 block text-[12px] leading-[18px] text-secondary" }, option.description)
+            /* @__PURE__ */ import_react27.default.createElement("span", { className: "mt-0.5 block text-[12px] leading-[18px] text-secondary" }, option.description)
           ) : null)
         ));
       }))));
@@ -6516,9 +6837,9 @@ window.__ModuleLoader__.load({
     var INPUT_CLASS = "w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand";
     var GROUP_CLASS = "border-t border-line4 pt-4";
     function PackEditor({ initial, catalog, saving, error, onSave, t }) {
-      const [draft, setDraft] = (0, import_react25.useState)(initial);
-      const [localError, setLocalError] = (0, import_react25.useState)(null);
-      const setPageActions = (0, import_react25.useContext)(PageActionsContext);
+      const [draft, setDraft] = (0, import_react28.useState)(initial);
+      const [localError, setLocalError] = (0, import_react28.useState)(null);
+      const setPageActions = (0, import_react28.useContext)(PageActionsContext);
       const patch = (change) => {
         setDraft((current) => ({ ...current, ...change }));
       };
@@ -6547,11 +6868,11 @@ window.__ModuleLoader__.load({
         include: t("modeInclude"),
         exclude: t("modeExclude")
       };
-      const validate = (0, import_react25.useCallback)(() => {
+      const validate = (0, import_react28.useCallback)(() => {
         if (draft.name.trim() === "") return t("nameRequired");
         return void 0;
       }, [draft, t]);
-      const handleSave = (0, import_react25.useCallback)(() => {
+      const handleSave = (0, import_react28.useCallback)(() => {
         const message = validate();
         if (message) {
           setLocalError(message);
@@ -6560,16 +6881,16 @@ window.__ModuleLoader__.load({
         setLocalError(null);
         onSave({ ...draft, name: draft.name.trim(), description: draft.description.trim() });
       }, [draft, onSave, validate]);
-      const saveAction = (0, import_react25.useMemo)(
-        () => /* @__PURE__ */ import_react25.default.createElement(Button, { variant: "outline", disabled: saving, onClick: handleSave }, saving ? t("saving") : t("save")),
+      const saveAction = (0, import_react28.useMemo)(
+        () => /* @__PURE__ */ import_react28.default.createElement(Button, { variant: "outline", disabled: saving, onClick: handleSave }, saving ? t("saving") : t("save")),
         [handleSave, saving, t]
       );
-      (0, import_react25.useEffect)(() => {
+      (0, import_react28.useEffect)(() => {
         if (!setPageActions) return;
         setPageActions(saveAction);
         return () => setPageActions(null);
       }, [saveAction, setPageActions]);
-      return /* @__PURE__ */ import_react25.default.createElement("div", { className: "rounded-xl border border-line4 bg-layer1" }, /* @__PURE__ */ import_react25.default.createElement("div", { className: "flex flex-col gap-4 p-4" }, /* @__PURE__ */ import_react25.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react25.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("nameLabel")), /* @__PURE__ */ import_react25.default.createElement(
+      return /* @__PURE__ */ import_react28.default.createElement("div", { className: "rounded-xl border border-line4 bg-layer1" }, /* @__PURE__ */ import_react28.default.createElement("div", { className: "flex flex-col gap-4 p-4" }, /* @__PURE__ */ import_react28.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react28.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("nameLabel")), /* @__PURE__ */ import_react28.default.createElement(
         "input",
         {
           value: draft.name,
@@ -6577,7 +6898,7 @@ window.__ModuleLoader__.load({
           onChange: (event) => patch({ name: event.target.value }),
           className: INPUT_CLASS
         }
-      )), /* @__PURE__ */ import_react25.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react25.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("descriptionLabel")), /* @__PURE__ */ import_react25.default.createElement(
+      )), /* @__PURE__ */ import_react28.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react28.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("descriptionLabel")), /* @__PURE__ */ import_react28.default.createElement(
         "input",
         {
           value: draft.description,
@@ -6585,7 +6906,7 @@ window.__ModuleLoader__.load({
           onChange: (event) => patch({ description: event.target.value }),
           className: INPUT_CLASS
         }
-      )), /* @__PURE__ */ import_react25.default.createElement("div", { className: GROUP_CLASS }, /* @__PURE__ */ import_react25.default.createElement(
+      )), /* @__PURE__ */ import_react28.default.createElement("div", { className: GROUP_CLASS }, /* @__PURE__ */ import_react28.default.createElement(
         ResourceRuleField,
         {
           title: t("skillsTitle"),
@@ -6596,7 +6917,7 @@ window.__ModuleLoader__.load({
           searchPlaceholder: t("searchSkills"),
           onChange: (rule) => patchRule("skills", rule)
         }
-      )), /* @__PURE__ */ import_react25.default.createElement("div", { className: GROUP_CLASS }, /* @__PURE__ */ import_react25.default.createElement(
+      )), /* @__PURE__ */ import_react28.default.createElement("div", { className: GROUP_CLASS }, /* @__PURE__ */ import_react28.default.createElement(
         ResourceRuleField,
         {
           title: t("pluginsTitle"),
@@ -6606,7 +6927,7 @@ window.__ModuleLoader__.load({
           emptyText: t("noSkills"),
           onChange: (rule) => patchRule("plugins", rule)
         }
-      ), /* @__PURE__ */ import_react25.default.createElement("p", { className: "text-[12px] leading-[18px] text-secondary" }, t("pluginsGlobalHint"))), /* @__PURE__ */ import_react25.default.createElement("div", { className: `flex flex-col gap-3 ${GROUP_CLASS}` }, /* @__PURE__ */ import_react25.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, t("mcpTitle")), /* @__PURE__ */ import_react25.default.createElement(
+      ), /* @__PURE__ */ import_react28.default.createElement("p", { className: "text-[12px] leading-[18px] text-secondary" }, t("pluginsGlobalHint"))), /* @__PURE__ */ import_react28.default.createElement("div", { className: `flex flex-col gap-3 ${GROUP_CLASS}` }, /* @__PURE__ */ import_react28.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, t("mcpTitle")), /* @__PURE__ */ import_react28.default.createElement(
         ResourceRuleField,
         {
           rule: draft.mcp,
@@ -6615,7 +6936,7 @@ window.__ModuleLoader__.load({
           emptyText: t("mcpEmpty"),
           onChange: (rule) => patchRule("mcp", rule)
         }
-      ), /* @__PURE__ */ import_react25.default.createElement("p", { className: "text-[12px] leading-[18px] text-secondary" }, t("mcpGlobalHint"))), /* @__PURE__ */ import_react25.default.createElement("label", { className: `block ${GROUP_CLASS}` }, /* @__PURE__ */ import_react25.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("systemPromptLabel")), /* @__PURE__ */ import_react25.default.createElement(
+      ), /* @__PURE__ */ import_react28.default.createElement("p", { className: "text-[12px] leading-[18px] text-secondary" }, t("mcpGlobalHint"))), /* @__PURE__ */ import_react28.default.createElement("label", { className: `block ${GROUP_CLASS}` }, /* @__PURE__ */ import_react28.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("systemPromptLabel")), /* @__PURE__ */ import_react28.default.createElement(
         "textarea",
         {
           value: draft.systemPrompt,
@@ -6624,7 +6945,7 @@ window.__ModuleLoader__.load({
           rows: 15,
           className: INPUT_CLASS
         }
-      )), localError ?? error ? /* @__PURE__ */ import_react25.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, localError ?? error) : null));
+      )), localError ?? error ? /* @__PURE__ */ import_react28.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, localError ?? error) : null));
     }
 
     // src/features/power-pack/page.tsx
@@ -6645,12 +6966,12 @@ window.__ModuleLoader__.load({
       };
     }
     function PowerPackPage({ t }) {
-      const [payload, setPayload] = (0, import_react26.useState)(null);
-      const [editing, setEditing] = (0, import_react26.useState)(null);
-      const [loading, setLoading] = (0, import_react26.useState)(true);
-      const [saving, setSaving] = (0, import_react26.useState)(false);
-      const [defaulting, setDefaulting] = (0, import_react26.useState)(false);
-      const [error, setError] = (0, import_react26.useState)(null);
+      const [payload, setPayload] = (0, import_react29.useState)(null);
+      const [editing, setEditing] = (0, import_react29.useState)(null);
+      const [loading, setLoading] = (0, import_react29.useState)(true);
+      const [saving, setSaving] = (0, import_react29.useState)(false);
+      const [defaulting, setDefaulting] = (0, import_react29.useState)(false);
+      const [error, setError] = (0, import_react29.useState)(null);
       const reload = async () => {
         try {
           setPayload(await loadPowerPacks());
@@ -6662,7 +6983,7 @@ window.__ModuleLoader__.load({
           setLoading(false);
         }
       };
-      (0, import_react26.useEffect)(() => {
+      (0, import_react29.useEffect)(() => {
         let active2 = true;
         void (async () => {
           try {
@@ -6684,7 +7005,7 @@ window.__ModuleLoader__.load({
           active2 = false;
         };
       }, [t]);
-      const handleSave = (0, import_react26.useCallback)(async (pack) => {
+      const handleSave = (0, import_react29.useCallback)(async (pack) => {
         setSaving(true);
         try {
           setPayload(await savePowerPack(pack));
@@ -6697,7 +7018,7 @@ window.__ModuleLoader__.load({
           setSaving(false);
         }
       }, [t]);
-      const submitDraft = (0, import_react26.useCallback)((pack) => {
+      const submitDraft = (0, import_react29.useCallback)((pack) => {
         void handleSave(pack);
       }, [handleSave]);
       const handleDelete = async (id) => {
@@ -6727,7 +7048,7 @@ window.__ModuleLoader__.load({
         }
       };
       if (editing && payload) {
-        return /* @__PURE__ */ import_react26.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react26.default.createElement("header", null, /* @__PURE__ */ import_react26.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react26.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("pageDescription"))), /* @__PURE__ */ import_react26.default.createElement(
+        return /* @__PURE__ */ import_react29.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react29.default.createElement("header", null, /* @__PURE__ */ import_react29.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react29.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("pageDescription"))), /* @__PURE__ */ import_react29.default.createElement(
           PackEditor,
           {
             initial: editing,
@@ -6739,7 +7060,7 @@ window.__ModuleLoader__.load({
           }
         ));
       }
-      return /* @__PURE__ */ import_react26.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react26.default.createElement("header", { className: "flex flex-wrap items-start justify-between gap-3" }, /* @__PURE__ */ import_react26.default.createElement("div", null, /* @__PURE__ */ import_react26.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react26.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("pageDescription"))), /* @__PURE__ */ import_react26.default.createElement(
+      return /* @__PURE__ */ import_react29.default.createElement("div", { className: "flex flex-col gap-4" }, /* @__PURE__ */ import_react29.default.createElement("header", { className: "flex flex-wrap items-start justify-between gap-3" }, /* @__PURE__ */ import_react29.default.createElement("div", null, /* @__PURE__ */ import_react29.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react29.default.createElement("p", { className: "mt-1.5 text-[13px] leading-5 text-secondary" }, t("pageDescription"))), /* @__PURE__ */ import_react29.default.createElement(
         Button,
         {
           variant: "outline",
@@ -6750,7 +7071,7 @@ window.__ModuleLoader__.load({
           }
         },
         t("newPack")
-      )), error ? /* @__PURE__ */ import_react26.default.createElement("p", { className: "rounded-lg border border-line4 bg-layer1 px-3 py-2 text-[12px] text-danger", role: "alert" }, error, /* @__PURE__ */ import_react26.default.createElement(
+      )), error ? /* @__PURE__ */ import_react29.default.createElement("p", { className: "rounded-lg border border-line4 bg-layer1 px-3 py-2 text-[12px] text-danger", role: "alert" }, error, /* @__PURE__ */ import_react29.default.createElement(
         "button",
         {
           type: "button",
@@ -6760,19 +7081,19 @@ window.__ModuleLoader__.load({
         t("retry")
       )) : null, loading ? (
         // 首次加载中的占位
-        /* @__PURE__ */ import_react26.default.createElement("p", { className: "text-[12px] text-secondary" }, "\u2026")
+        /* @__PURE__ */ import_react29.default.createElement("p", { className: "text-[12px] text-secondary" }, "\u2026")
       ) : (payload?.packs.length ?? 0) === 0 ? (
         // 尚未创建技能包时的空态
-        /* @__PURE__ */ import_react26.default.createElement("p", { className: "rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("empty"))
-      ) : /* @__PURE__ */ import_react26.default.createElement("ul", { className: "flex flex-col gap-3" }, payload?.packs.map((pack) => /* @__PURE__ */ import_react26.default.createElement(
+        /* @__PURE__ */ import_react29.default.createElement("p", { className: "rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("empty"))
+      ) : /* @__PURE__ */ import_react29.default.createElement("ul", { className: "flex flex-col gap-3" }, payload?.packs.map((pack) => /* @__PURE__ */ import_react29.default.createElement(
         "li",
         {
           key: pack.id,
           className: "rounded-xl border border-line4 bg-layer1 px-4 py-3"
         },
-        /* @__PURE__ */ import_react26.default.createElement("div", { className: "flex flex-wrap items-start justify-between gap-2" }, /* @__PURE__ */ import_react26.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react26.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, pack.name), pack.description ? /* @__PURE__ */ import_react26.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, pack.description) : null, /* @__PURE__ */ import_react26.default.createElement("p", { className: "mt-1 text-[12px] text-secondary" }, t("skillsTitle"), ": ", modeLabel(pack.skills.mode, t), " \xB7 ", t("pluginsTitle"), ":", " ", modeLabel(pack.plugins.mode, t), " \xB7 ", t("mcpTitle"), ":", " ", modeLabel(pack.mcp.mode, t))), /* @__PURE__ */ import_react26.default.createElement("div", { className: "flex shrink-0 items-center gap-2" }, payload?.defaultPackId === pack.id ? (
+        /* @__PURE__ */ import_react29.default.createElement("div", { className: "flex flex-wrap items-start justify-between gap-2" }, /* @__PURE__ */ import_react29.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react29.default.createElement("h3", { className: "text-[13px] font-medium text-primary" }, pack.name), pack.description ? /* @__PURE__ */ import_react29.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, pack.description) : null, /* @__PURE__ */ import_react29.default.createElement("p", { className: "mt-1 text-[12px] text-secondary" }, t("skillsTitle"), ": ", modeLabel(pack.skills.mode, t), " \xB7 ", t("pluginsTitle"), ":", " ", modeLabel(pack.plugins.mode, t), " \xB7 ", t("mcpTitle"), ":", " ", modeLabel(pack.mcp.mode, t))), /* @__PURE__ */ import_react29.default.createElement("div", { className: "flex shrink-0 items-center gap-2" }, payload?.defaultPackId === pack.id ? (
           // 默认技能包标识：绿色描边与打钩，和可点击的「设为默认」按钮区分开
-          /* @__PURE__ */ import_react26.default.createElement("span", { className: "inline-flex items-center gap-1 rounded-lg border border-success px-3 py-1.5 text-[12px] text-success" }, /* @__PURE__ */ import_react26.default.createElement(
+          /* @__PURE__ */ import_react29.default.createElement("span", { className: "inline-flex items-center gap-1 rounded-lg border border-success px-3 py-1.5 text-[12px] text-success" }, /* @__PURE__ */ import_react29.default.createElement(
             "svg",
             {
               viewBox: "0 0 24 24",
@@ -6785,11 +7106,11 @@ window.__ModuleLoader__.load({
               strokeLinecap: "round",
               strokeLinejoin: "round"
             },
-            /* @__PURE__ */ import_react26.default.createElement("path", { d: "M20 6 9 17l-5-5" })
+            /* @__PURE__ */ import_react29.default.createElement("path", { d: "M20 6 9 17l-5-5" })
           ), t("defaultBadge"))
         ) : (
           // 设为默认按钮：新建会话时自动预选该技能包
-          /* @__PURE__ */ import_react26.default.createElement(
+          /* @__PURE__ */ import_react29.default.createElement(
             Button,
             {
               variant: "outline",
@@ -6798,7 +7119,7 @@ window.__ModuleLoader__.load({
             },
             t("setDefault")
           )
-        ), /* @__PURE__ */ import_react26.default.createElement(
+        ), /* @__PURE__ */ import_react29.default.createElement(
           Button,
           {
             variant: "outline",
@@ -6808,8 +7129,8 @@ window.__ModuleLoader__.load({
             }
           },
           t("edit")
-        ), /* @__PURE__ */ import_react26.default.createElement(Button, { variant: "danger", onClick: () => void handleDelete(pack.id) }, t("delete"))))
-      ))), payload ? /* @__PURE__ */ import_react26.default.createElement("p", { className: "text-[12px] text-secondary" }, t("storageHint"), ": ", /* @__PURE__ */ import_react26.default.createElement("code", { className: "break-all" }, payload.storagePath)) : null);
+        ), /* @__PURE__ */ import_react29.default.createElement(Button, { variant: "danger", onClick: () => void handleDelete(pack.id) }, t("delete"))))
+      ))), payload ? /* @__PURE__ */ import_react29.default.createElement("p", { className: "text-[12px] text-secondary" }, t("storageHint"), ": ", /* @__PURE__ */ import_react29.default.createElement("code", { className: "break-all" }, payload.storagePath)) : null);
     }
 
     // src/features/power-pack/index.tsx
@@ -6825,16 +7146,16 @@ window.__ModuleLoader__.load({
     var power_pack_default = powerPackFeature;
 
     // src/features/project-memory/entry.tsx
-    var import_react27 = __toESM(require("react"), 1);
+    var import_react30 = __toESM(require("react"), 1);
 
     // src/features/project-memory/api.ts
-    var ENDPOINT6 = "/dsh-all-in-one/memory";
-    var REQUEST_TIMEOUT_MS6 = 1e4;
+    var ENDPOINT7 = "/dsh-all-in-one/memory";
+    var REQUEST_TIMEOUT_MS7 = 1e4;
     async function request2(init = {}) {
       const controller = new AbortController();
-      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS6);
+      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS7);
       try {
-        const response = await fetch(new URL(ENDPOINT6, window.location.origin).toString(), {
+        const response = await fetch(new URL(ENDPOINT7, window.location.origin).toString(), {
           credentials: "same-origin",
           cache: "no-store",
           ...init,
@@ -6872,7 +7193,7 @@ window.__ModuleLoader__.load({
 
     // src/features/project-memory/entry.tsx
     function MemoryIcon() {
-      return /* @__PURE__ */ import_react27.default.createElement(
+      return /* @__PURE__ */ import_react30.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -6885,8 +7206,8 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react27.default.createElement("path", { d: "M6 4h12v17l-6-4-6 4V4Z" }),
-        /* @__PURE__ */ import_react27.default.createElement("path", { d: "M9.5 9h5" })
+        /* @__PURE__ */ import_react30.default.createElement("path", { d: "M6 4h12v17l-6-4-6 4V4Z" }),
+        /* @__PURE__ */ import_react30.default.createElement("path", { d: "M9.5 9h5" })
       );
     }
     var EMPTY_PAYLOAD = {
@@ -6898,12 +7219,12 @@ window.__ModuleLoader__.load({
       settingsPath: ""
     };
     function ProjectMemoryEntry({ t, open }) {
-      const [payload, setPayload] = (0, import_react27.useState)(null);
-      const [error, setError] = (0, import_react27.useState)(null);
-      const [saving, setSaving] = (0, import_react27.useState)(false);
-      const translate = (0, import_react27.useRef)(t);
+      const [payload, setPayload] = (0, import_react30.useState)(null);
+      const [error, setError] = (0, import_react30.useState)(null);
+      const [saving, setSaving] = (0, import_react30.useState)(false);
+      const translate = (0, import_react30.useRef)(t);
       translate.current = t;
-      (0, import_react27.useEffect)(() => {
+      (0, import_react30.useEffect)(() => {
         let active2 = true;
         void loadMemorySettings().then((next) => {
           if (active2) setPayload(next);
@@ -6934,16 +7255,16 @@ window.__ModuleLoader__.load({
       };
       return (
         // 卡片容器：主体按钮与开关是并列的交互区，设置提示随标题行落在主体按钮内，不能互相嵌套
-        /* @__PURE__ */ import_react27.default.createElement("div", { className: "flex w-full items-start gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 transition hover:bg-layer2" }, /* @__PURE__ */ import_react27.default.createElement(
+        /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full items-start gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 transition hover:bg-layer2" }, /* @__PURE__ */ import_react30.default.createElement(
           "button",
           {
             type: "button",
             onClick: open,
             className: "flex min-w-0 flex-1 items-start gap-2 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           },
-          /* @__PURE__ */ import_react27.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react27.default.createElement(MemoryIcon, null)),
-          /* @__PURE__ */ import_react27.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react27.default.createElement("span", { className: "block truncate text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react27.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react27.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)
-        ), /* @__PURE__ */ import_react27.default.createElement("div", { className: "flex shrink-0 flex-col items-end gap-2 self-start" }, /* @__PURE__ */ import_react27.default.createElement(
+          /* @__PURE__ */ import_react30.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react30.default.createElement(MemoryIcon, null)),
+          /* @__PURE__ */ import_react30.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "block truncate text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)
+        ), /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex shrink-0 flex-col items-end gap-2 self-start" }, /* @__PURE__ */ import_react30.default.createElement(
           "button",
           {
             type: "button",
@@ -6958,7 +7279,7 @@ window.__ModuleLoader__.load({
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
             )
           },
-          /* @__PURE__ */ import_react27.default.createElement(
+          /* @__PURE__ */ import_react30.default.createElement(
             "span",
             {
               "aria-hidden": "true",
@@ -6968,7 +7289,7 @@ window.__ModuleLoader__.load({
               )
             }
           )
-        ), /* @__PURE__ */ import_react27.default.createElement(
+        ), /* @__PURE__ */ import_react30.default.createElement(
           "button",
           {
             type: "button",
@@ -6978,7 +7299,7 @@ window.__ModuleLoader__.load({
             className: "flex items-center justify-center gap-0.5 rounded-md border-0 bg-transparent p-0 text-[11px] leading-[16px] text-secondary transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           },
           t("settingsAction"),
-          /* @__PURE__ */ import_react27.default.createElement(CardChevron, null)
+          /* @__PURE__ */ import_react30.default.createElement(CardChevron, null)
         )))
       );
     }
@@ -7072,31 +7393,31 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/project-memory/page.tsx
-    var import_react28 = __toESM(require("react"), 1);
+    var import_react31 = __toESM(require("react"), 1);
     var INPUT_CLASS2 = "w-full rounded-lg border border-line4 bg-base px-3 py-1.5 text-[12px] text-primary outline-none placeholder:text-secondary focus:border-brand";
     function isValidRoot(value) {
       const trimmed = value.trim();
       return trimmed === "" || trimmed === "~" || trimmed.startsWith("/") || trimmed.startsWith("~/");
     }
     function ProjectMemoryPage({ t }) {
-      const [payload, setPayload] = (0, import_react28.useState)(null);
-      const [draft, setDraft] = (0, import_react28.useState)("");
-      const [loading, setLoading] = (0, import_react28.useState)(true);
-      const [saving, setSaving] = (0, import_react28.useState)(false);
-      const [savingAsk, setSavingAsk] = (0, import_react28.useState)(false);
-      const [askError, setAskError] = (0, import_react28.useState)(null);
-      const [error, setError] = (0, import_react28.useState)(null);
-      const [saved, setSaved] = (0, import_react28.useState)(false);
-      const setPageActions = (0, import_react28.useContext)(PageActionsContext);
-      const draftRef = (0, import_react28.useRef)(draft);
-      const savingRef = (0, import_react28.useRef)(saving);
-      (0, import_react28.useEffect)(() => {
+      const [payload, setPayload] = (0, import_react31.useState)(null);
+      const [draft, setDraft] = (0, import_react31.useState)("");
+      const [loading, setLoading] = (0, import_react31.useState)(true);
+      const [saving, setSaving] = (0, import_react31.useState)(false);
+      const [savingAsk, setSavingAsk] = (0, import_react31.useState)(false);
+      const [askError, setAskError] = (0, import_react31.useState)(null);
+      const [error, setError] = (0, import_react31.useState)(null);
+      const [saved, setSaved] = (0, import_react31.useState)(false);
+      const setPageActions = (0, import_react31.useContext)(PageActionsContext);
+      const draftRef = (0, import_react31.useRef)(draft);
+      const savingRef = (0, import_react31.useRef)(saving);
+      (0, import_react31.useEffect)(() => {
         draftRef.current = draft;
       }, [draft]);
-      (0, import_react28.useEffect)(() => {
+      (0, import_react31.useEffect)(() => {
         savingRef.current = saving;
       }, [saving]);
-      (0, import_react28.useEffect)(() => {
+      (0, import_react31.useEffect)(() => {
         let active2 = true;
         void loadMemorySettings().then((next) => {
           if (!active2) return;
@@ -7113,7 +7434,7 @@ window.__ModuleLoader__.load({
           active2 = false;
         };
       }, [t]);
-      const handleSave = (0, import_react28.useCallback)(async () => {
+      const handleSave = (0, import_react31.useCallback)(async () => {
         if (savingRef.current) return;
         const trimmed = draftRef.current.trim();
         if (!isValidRoot(trimmed)) {
@@ -7136,7 +7457,7 @@ window.__ModuleLoader__.load({
           setSaving(false);
         }
       }, [t]);
-      const handleAskToggle = (0, import_react28.useCallback)(async () => {
+      const handleAskToggle = (0, import_react31.useCallback)(async () => {
         if (payload === null || savingAsk) return;
         setSavingAsk(true);
         setAskError(null);
@@ -7150,17 +7471,17 @@ window.__ModuleLoader__.load({
           setSavingAsk(false);
         }
       }, [payload, savingAsk, t]);
-      const saveAction = (0, import_react28.useMemo)(
-        () => /* @__PURE__ */ import_react28.default.createElement(Button, { variant: "outline", disabled: loading || saving, onClick: () => void handleSave() }, saving ? t("saving") : t("save")),
+      const saveAction = (0, import_react31.useMemo)(
+        () => /* @__PURE__ */ import_react31.default.createElement(Button, { variant: "outline", disabled: loading || saving, onClick: () => void handleSave() }, saving ? t("saving") : t("save")),
         [handleSave, loading, saving, t]
       );
-      (0, import_react28.useEffect)(() => {
+      (0, import_react31.useEffect)(() => {
         if (!setPageActions) return;
         setPageActions(saveAction);
         return () => setPageActions(null);
       }, [saveAction, setPageActions]);
       const askEnabled = payload?.askBeforeSave === true;
-      return /* @__PURE__ */ import_react28.default.createElement("div", null, /* @__PURE__ */ import_react28.default.createElement("h2", { className: "text-[15px] font-semibold leading-6 text-primary" }, t("pathTitle")), /* @__PURE__ */ import_react28.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-secondary" }, t("pathHint")), /* @__PURE__ */ import_react28.default.createElement("section", { className: "mt-4 rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react28.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react28.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("pathLabel")), /* @__PURE__ */ import_react28.default.createElement(
+      return /* @__PURE__ */ import_react31.default.createElement("div", null, /* @__PURE__ */ import_react31.default.createElement("h2", { className: "text-[15px] font-semibold leading-6 text-primary" }, t("pathTitle")), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-secondary" }, t("pathHint")), /* @__PURE__ */ import_react31.default.createElement("section", { className: "mt-4 rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react31.default.createElement("label", { className: "block" }, /* @__PURE__ */ import_react31.default.createElement("span", { className: "mb-1 block text-[12px] font-semibold text-primary" }, t("pathLabel")), /* @__PURE__ */ import_react31.default.createElement(
         "input",
         {
           value: draft,
@@ -7172,7 +7493,7 @@ window.__ModuleLoader__.load({
           },
           className: INPUT_CLASS2
         }
-      )), /* @__PURE__ */ import_react28.default.createElement("div", { className: "mt-2 flex items-center gap-2" }, /* @__PURE__ */ import_react28.default.createElement(
+      )), /* @__PURE__ */ import_react31.default.createElement("div", { className: "mt-2 flex items-center gap-2" }, /* @__PURE__ */ import_react31.default.createElement(
         Button,
         {
           variant: "ghost",
@@ -7183,7 +7504,7 @@ window.__ModuleLoader__.load({
           }
         },
         t("reset")
-      ), saved ? /* @__PURE__ */ import_react28.default.createElement("span", { className: "text-[12px] leading-[18px] text-secondary" }, t("saved")) : null), /* @__PURE__ */ import_react28.default.createElement("dl", { className: "mt-3 space-y-1 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react28.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react28.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("effectivePath")), /* @__PURE__ */ import_react28.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.effectiveRoot || "\u2014")), /* @__PURE__ */ import_react28.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react28.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("defaultPath")), /* @__PURE__ */ import_react28.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.defaultRoot || "\u2014")), /* @__PURE__ */ import_react28.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react28.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("settingsFile")), /* @__PURE__ */ import_react28.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.settingsPath || "\u2014"))), /* @__PURE__ */ import_react28.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-secondary" }, t("namingHint")), error !== null ? /* @__PURE__ */ import_react28.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null), /* @__PURE__ */ import_react28.default.createElement("section", { className: "mt-4 rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react28.default.createElement("div", { className: "flex items-start gap-3" }, /* @__PURE__ */ import_react28.default.createElement("div", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react28.default.createElement("p", { className: "text-[12px] font-semibold leading-[18px] text-primary" }, t("askLabel")), /* @__PURE__ */ import_react28.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("askHint"))), /* @__PURE__ */ import_react28.default.createElement(
+      ), saved ? /* @__PURE__ */ import_react31.default.createElement("span", { className: "text-[12px] leading-[18px] text-secondary" }, t("saved")) : null), /* @__PURE__ */ import_react31.default.createElement("dl", { className: "mt-3 space-y-1 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("effectivePath")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.effectiveRoot || "\u2014")), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("defaultPath")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.defaultRoot || "\u2014")), /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react31.default.createElement("dt", { className: "shrink-0 text-secondary" }, t("settingsFile")), /* @__PURE__ */ import_react31.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, payload?.settingsPath || "\u2014"))), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-secondary" }, t("namingHint")), error !== null ? /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, error) : null), /* @__PURE__ */ import_react31.default.createElement("section", { className: "mt-4 rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react31.default.createElement("div", { className: "flex items-start gap-3" }, /* @__PURE__ */ import_react31.default.createElement("div", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react31.default.createElement("p", { className: "text-[12px] font-semibold leading-[18px] text-primary" }, t("askLabel")), /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-1 text-[12px] leading-[18px] text-secondary" }, t("askHint"))), /* @__PURE__ */ import_react31.default.createElement(
         "button",
         {
           type: "button",
@@ -7198,7 +7519,7 @@ window.__ModuleLoader__.load({
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           )
         },
-        /* @__PURE__ */ import_react28.default.createElement(
+        /* @__PURE__ */ import_react31.default.createElement(
           "span",
           {
             "aria-hidden": "true",
@@ -7208,7 +7529,7 @@ window.__ModuleLoader__.load({
             )
           }
         )
-      )), askError !== null ? /* @__PURE__ */ import_react28.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, askError) : null));
+      )), askError !== null ? /* @__PURE__ */ import_react31.default.createElement("p", { className: "mt-2 text-[12px] leading-[18px] text-danger", role: "alert" }, askError) : null));
     }
 
     // src/features/project-memory/index.tsx
@@ -7267,16 +7588,16 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/auto-compact/toggle.tsx
-    var import_react29 = __toESM(require("react"), 1);
+    var import_react32 = __toESM(require("react"), 1);
 
     // src/features/auto-compact/api.ts
-    var ENDPOINT7 = "/dsh-all-in-one/auto-compact";
-    var REQUEST_TIMEOUT_MS7 = 1e4;
+    var ENDPOINT8 = "/dsh-all-in-one/auto-compact";
+    var REQUEST_TIMEOUT_MS8 = 1e4;
     async function request3(init = {}) {
       const controller = new AbortController();
-      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS7);
+      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS8);
       try {
-        const response = await fetch(new URL(ENDPOINT7, window.location.origin).toString(), {
+        const response = await fetch(new URL(ENDPOINT8, window.location.origin).toString(), {
           credentials: "same-origin",
           cache: "no-store",
           ...init,
@@ -7318,7 +7639,7 @@ window.__ModuleLoader__.load({
     var MAX_PERCENT = 100;
     var INPUT_CLASS3 = "h-4 w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] leading-[14px] text-primary outline-none focus:border-brand";
     function PercentField({ label, unit, value, onChange, onCommit, min = MIN_PERCENT }) {
-      return /* @__PURE__ */ import_react29.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react29.default.createElement("span", { className: "text-[11px] leading-[14px] text-secondary" }, label), /* @__PURE__ */ import_react29.default.createElement(
+      return /* @__PURE__ */ import_react32.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react32.default.createElement("span", { className: "text-[11px] leading-[14px] text-secondary" }, label), /* @__PURE__ */ import_react32.default.createElement(
         "input",
         {
           type: "number",
@@ -7335,10 +7656,10 @@ window.__ModuleLoader__.load({
           },
           className: INPUT_CLASS3
         }
-      ), /* @__PURE__ */ import_react29.default.createElement("span", { className: "text-[11px] leading-[14px] text-secondary" }, unit));
+      ), /* @__PURE__ */ import_react32.default.createElement("span", { className: "text-[11px] leading-[14px] text-secondary" }, unit));
     }
     function CompactIcon() {
-      return /* @__PURE__ */ import_react29.default.createElement(
+      return /* @__PURE__ */ import_react32.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -7351,19 +7672,19 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react29.default.createElement("path", { d: "M4 9a8 8 0 0 1 13.7-4.3L20 7" }),
-        /* @__PURE__ */ import_react29.default.createElement("path", { d: "M20 4v3.5h-3.5" }),
-        /* @__PURE__ */ import_react29.default.createElement("path", { d: "M20 15a8 8 0 0 1-13.7 4.3L4 17" }),
-        /* @__PURE__ */ import_react29.default.createElement("path", { d: "M4 20v-3.5h3.5" })
+        /* @__PURE__ */ import_react32.default.createElement("path", { d: "M4 9a8 8 0 0 1 13.7-4.3L20 7" }),
+        /* @__PURE__ */ import_react32.default.createElement("path", { d: "M20 4v3.5h-3.5" }),
+        /* @__PURE__ */ import_react32.default.createElement("path", { d: "M20 15a8 8 0 0 1-13.7 4.3L4 17" }),
+        /* @__PURE__ */ import_react32.default.createElement("path", { d: "M4 20v-3.5h3.5" })
       );
     }
     function AutoCompactToggle({ t }) {
-      const [settings, setSettings] = (0, import_react29.useState)(null);
-      const [thresholdDraft, setThresholdDraft] = (0, import_react29.useState)("");
-      const [retainDraft, setRetainDraft] = (0, import_react29.useState)("");
-      const [error, setError] = (0, import_react29.useState)(null);
-      const latestRequest = (0, import_react29.useRef)(0);
-      (0, import_react29.useEffect)(() => {
+      const [settings, setSettings] = (0, import_react32.useState)(null);
+      const [thresholdDraft, setThresholdDraft] = (0, import_react32.useState)("");
+      const [retainDraft, setRetainDraft] = (0, import_react32.useState)("");
+      const [error, setError] = (0, import_react32.useState)(null);
+      const latestRequest = (0, import_react32.useRef)(0);
+      (0, import_react32.useEffect)(() => {
         let active2 = true;
         void loadAutoCompactSettings().then((next) => {
           if (!active2) return;
@@ -7425,7 +7746,7 @@ window.__ModuleLoader__.load({
       return (
         // 卡片容器：文字区不参与交互，开关与阈值输入各自独立，不能互相嵌套；
         // 阈值输入单独占下面一行，避免挤在开关下方把整行卡片撑高
-        /* @__PURE__ */ import_react29.default.createElement("div", { className: "flex w-full flex-col gap-0.5 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react29.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react29.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react29.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react29.default.createElement(CompactIcon, null)), /* @__PURE__ */ import_react29.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react29.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react29.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react29.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)), /* @__PURE__ */ import_react29.default.createElement(
+        /* @__PURE__ */ import_react32.default.createElement("div", { className: "flex w-full flex-col gap-0.5 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react32.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react32.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react32.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react32.default.createElement(CompactIcon, null)), /* @__PURE__ */ import_react32.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react32.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react32.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react32.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)), /* @__PURE__ */ import_react32.default.createElement(
           "button",
           {
             type: "button",
@@ -7440,7 +7761,7 @@ window.__ModuleLoader__.load({
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-default"
             )
           },
-          /* @__PURE__ */ import_react29.default.createElement(
+          /* @__PURE__ */ import_react32.default.createElement(
             "span",
             {
               "aria-hidden": "true",
@@ -7450,7 +7771,7 @@ window.__ModuleLoader__.load({
               )
             }
           )
-        )), enabled ? /* @__PURE__ */ import_react29.default.createElement("div", { className: "flex items-center gap-3 pl-7" }, /* @__PURE__ */ import_react29.default.createElement(
+        )), enabled ? /* @__PURE__ */ import_react32.default.createElement("div", { className: "flex items-center gap-3 pl-7" }, /* @__PURE__ */ import_react32.default.createElement(
           PercentField,
           {
             label: t("thresholdLabel"),
@@ -7460,7 +7781,7 @@ window.__ModuleLoader__.load({
             onCommit: commitThreshold,
             min: MIN_THRESHOLD_PERCENT
           }
-        ), /* @__PURE__ */ import_react29.default.createElement(
+        ), /* @__PURE__ */ import_react32.default.createElement(
           PercentField,
           {
             label: t("retainLabel"),
@@ -7528,16 +7849,16 @@ window.__ModuleLoader__.load({
     };
 
     // src/features/desktop-cookie/toggle.tsx
-    var import_react30 = __toESM(require("react"), 1);
+    var import_react33 = __toESM(require("react"), 1);
 
     // src/features/desktop-cookie/api.ts
-    var ENDPOINT8 = "/dsh-all-in-one/desktop-cookie";
-    var REQUEST_TIMEOUT_MS8 = 1e4;
+    var ENDPOINT9 = "/dsh-all-in-one/desktop-cookie";
+    var REQUEST_TIMEOUT_MS9 = 1e4;
     async function request4(init = {}) {
       const controller = new AbortController();
-      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS8);
+      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS9);
       try {
-        const response = await fetch(new URL(ENDPOINT8, window.location.origin).toString(), {
+        const response = await fetch(new URL(ENDPOINT9, window.location.origin).toString(), {
           credentials: "same-origin",
           cache: "no-store",
           ...init,
@@ -7579,7 +7900,7 @@ window.__ModuleLoader__.load({
     var MIN_RETAIN = 0;
     var INPUT_CLASS4 = "h-4 w-12 rounded-md border border-line4 bg-base px-1 py-0 text-[11px] leading-[14px] text-primary outline-none focus:border-brand";
     function CountField({ label, unit, value, onChange, onCommit, min = MIN_RETAIN }) {
-      return /* @__PURE__ */ import_react30.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-[11px] leading-[14px] text-secondary" }, label), /* @__PURE__ */ import_react30.default.createElement(
+      return /* @__PURE__ */ import_react33.default.createElement("label", { className: "flex items-center gap-1" }, /* @__PURE__ */ import_react33.default.createElement("span", { className: "text-[11px] leading-[14px] text-secondary" }, label), /* @__PURE__ */ import_react33.default.createElement(
         "input",
         {
           type: "number",
@@ -7596,10 +7917,10 @@ window.__ModuleLoader__.load({
           },
           className: INPUT_CLASS4
         }
-      ), /* @__PURE__ */ import_react30.default.createElement("span", { className: "text-[11px] leading-[14px] text-secondary" }, unit));
+      ), /* @__PURE__ */ import_react33.default.createElement("span", { className: "text-[11px] leading-[14px] text-secondary" }, unit));
     }
     function CookieIcon() {
-      return /* @__PURE__ */ import_react30.default.createElement(
+      return /* @__PURE__ */ import_react33.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -7612,19 +7933,19 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react30.default.createElement("path", { d: "M20.5 12.5A8.5 8.5 0 1 1 11.5 3.5a3.5 3.5 0 0 0 4 4 3.5 3.5 0 0 0 5 5Z" }),
-        /* @__PURE__ */ import_react30.default.createElement("circle", { cx: "9", cy: "10", r: "0.9", fill: "currentColor", stroke: "none" }),
-        /* @__PURE__ */ import_react30.default.createElement("circle", { cx: "12", cy: "15", r: "0.9", fill: "currentColor", stroke: "none" }),
-        /* @__PURE__ */ import_react30.default.createElement("circle", { cx: "7", cy: "15.5", r: "0.9", fill: "currentColor", stroke: "none" })
+        /* @__PURE__ */ import_react33.default.createElement("path", { d: "M20.5 12.5A8.5 8.5 0 1 1 11.5 3.5a3.5 3.5 0 0 0 4 4 3.5 3.5 0 0 0 5 5Z" }),
+        /* @__PURE__ */ import_react33.default.createElement("circle", { cx: "9", cy: "10", r: "0.9", fill: "currentColor", stroke: "none" }),
+        /* @__PURE__ */ import_react33.default.createElement("circle", { cx: "12", cy: "15", r: "0.9", fill: "currentColor", stroke: "none" }),
+        /* @__PURE__ */ import_react33.default.createElement("circle", { cx: "7", cy: "15.5", r: "0.9", fill: "currentColor", stroke: "none" })
       );
     }
     function DesktopCookieToggle({ t }) {
-      const [settings, setSettings] = (0, import_react30.useState)(null);
-      const [thresholdDraft, setThresholdDraft] = (0, import_react30.useState)("");
-      const [retainDraft, setRetainDraft] = (0, import_react30.useState)("");
-      const [error, setError] = (0, import_react30.useState)(null);
-      const latestRequest = (0, import_react30.useRef)(0);
-      (0, import_react30.useEffect)(() => {
+      const [settings, setSettings] = (0, import_react33.useState)(null);
+      const [thresholdDraft, setThresholdDraft] = (0, import_react33.useState)("");
+      const [retainDraft, setRetainDraft] = (0, import_react33.useState)("");
+      const [error, setError] = (0, import_react33.useState)(null);
+      const latestRequest = (0, import_react33.useRef)(0);
+      (0, import_react33.useEffect)(() => {
         let active2 = true;
         void loadDesktopCookieSettings().then((next) => {
           if (!active2) return;
@@ -7686,7 +8007,7 @@ window.__ModuleLoader__.load({
       return (
         // 卡片容器：文字区不参与交互，开关与输入框各自独立，不能互相嵌套；
         // 两个输入框单独占下面一行，避免挤在开关下方把整行卡片撑高
-        /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full flex-col gap-0.5 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react30.default.createElement(CookieIcon, null)), /* @__PURE__ */ import_react30.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react30.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)), /* @__PURE__ */ import_react30.default.createElement(
+        /* @__PURE__ */ import_react33.default.createElement("div", { className: "flex w-full flex-col gap-0.5 rounded-lg border border-line4 bg-layer1 px-2.5 py-1" }, /* @__PURE__ */ import_react33.default.createElement("div", { className: "flex w-full items-start gap-2" }, /* @__PURE__ */ import_react33.default.createElement("div", { className: "flex min-w-0 flex-1 items-start gap-2" }, /* @__PURE__ */ import_react33.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react33.default.createElement(CookieIcon, null)), /* @__PURE__ */ import_react33.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react33.default.createElement("span", { className: "block text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react33.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")), error !== null ? /* @__PURE__ */ import_react33.default.createElement("span", { className: "block text-[12px] leading-[16px] text-danger", role: "alert" }, error) : null)), /* @__PURE__ */ import_react33.default.createElement(
           "button",
           {
             type: "button",
@@ -7701,7 +8022,7 @@ window.__ModuleLoader__.load({
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-default"
             )
           },
-          /* @__PURE__ */ import_react30.default.createElement(
+          /* @__PURE__ */ import_react33.default.createElement(
             "span",
             {
               "aria-hidden": "true",
@@ -7711,7 +8032,7 @@ window.__ModuleLoader__.load({
               )
             }
           )
-        )), enabled ? /* @__PURE__ */ import_react30.default.createElement("div", { className: "flex items-center gap-3 pl-7" }, /* @__PURE__ */ import_react30.default.createElement(
+        )), enabled ? /* @__PURE__ */ import_react33.default.createElement("div", { className: "flex items-center gap-3 pl-7" }, /* @__PURE__ */ import_react33.default.createElement(
           CountField,
           {
             label: t("thresholdLabel"),
@@ -7721,7 +8042,7 @@ window.__ModuleLoader__.load({
             onCommit: commitThreshold,
             min: MIN_THRESHOLD
           }
-        ), /* @__PURE__ */ import_react30.default.createElement(
+        ), /* @__PURE__ */ import_react33.default.createElement(
           CountField,
           {
             label: t("retainLabel"),
@@ -7745,13 +8066,13 @@ window.__ModuleLoader__.load({
     var desktop_cookie_default = desktopCookieFeature;
 
     // src/features/memory-guard/client.tsx
-    var import_react37 = __toESM(require("react"), 1);
+    var import_react40 = __toESM(require("react"), 1);
 
     // src/features/memory-guard/dock.tsx
-    var import_react35 = __toESM(require("react"), 1);
+    var import_react38 = __toESM(require("react"), 1);
 
     // src/features/memory-guard/enabled.ts
-    var import_react31 = require("react");
+    var import_react34 = require("react");
 
     // src/features/memory-guard/storage.ts
     var SETTINGS_KEY = "dsh-all-in-one:memory-guard";
@@ -7861,18 +8182,18 @@ window.__ModuleLoader__.load({
       return readMemoryGuardSettings().enabled;
     }
     function useMemoryGuardEnabled() {
-      return (0, import_react31.useSyncExternalStore)(subscribeMemoryGuardSettings, readEnabled);
+      return (0, import_react34.useSyncExternalStore)(subscribeMemoryGuardSettings, readEnabled);
     }
 
     // src/features/memory-guard/api.ts
-    var ENDPOINT9 = "/dsh-all-in-one/memory-guard";
-    var REQUEST_TIMEOUT_MS9 = 2500;
+    var ENDPOINT10 = "/dsh-all-in-one/memory-guard";
+    var REQUEST_TIMEOUT_MS10 = 2500;
     var failureReported = false;
     async function fetchHostMemory() {
       const controller = new AbortController();
-      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS9);
+      const timer = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS10);
       try {
-        const response = await fetch(new URL(ENDPOINT9, window.location.origin).toString(), {
+        const response = await fetch(new URL(ENDPOINT10, window.location.origin).toString(), {
           credentials: "same-origin",
           cache: "no-store",
           signal: controller.signal
@@ -7920,9 +8241,9 @@ window.__ModuleLoader__.load({
     }
 
     // src/features/memory-guard/memory-icon.tsx
-    var import_react32 = __toESM(require("react"), 1);
+    var import_react35 = __toESM(require("react"), 1);
     function MemoryIcon2({ size = 14 }) {
-      return /* @__PURE__ */ import_react32.default.createElement(
+      return /* @__PURE__ */ import_react35.default.createElement(
         "svg",
         {
           viewBox: "0 0 24 24",
@@ -7935,21 +8256,21 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react32.default.createElement("rect", { x: "3.6", y: "6.6", width: "16.8", height: "11.2", rx: "3.6" }),
-        /* @__PURE__ */ import_react32.default.createElement("path", { d: "M6.4 4.2v2.4M9.2 4.2v2.4M12 4.2v2.4M14.8 4.2v2.4M17.6 4.2v2.4" }),
-        /* @__PURE__ */ import_react32.default.createElement("path", { d: "M6.4 17.8v2.4M9.2 17.8v2.4M12 17.8v2.4M14.8 17.8v2.4M17.6 17.8v2.4" }),
-        /* @__PURE__ */ import_react32.default.createElement("path", { d: "M6.9 15V9h1.4a1.5 1.5 0 0 1 0 3H6.9M8.4 12l1.2 3" }),
-        /* @__PURE__ */ import_react32.default.createElement("path", { d: "M10.2 15l1.5-6 1.5 6M10.7 12.7h2" }),
-        /* @__PURE__ */ import_react32.default.createElement("path", { d: "M13.8 15V9l1.45 3.1L16.7 9v6" })
+        /* @__PURE__ */ import_react35.default.createElement("rect", { x: "3.6", y: "6.6", width: "16.8", height: "11.2", rx: "3.6" }),
+        /* @__PURE__ */ import_react35.default.createElement("path", { d: "M6.4 4.2v2.4M9.2 4.2v2.4M12 4.2v2.4M14.8 4.2v2.4M17.6 4.2v2.4" }),
+        /* @__PURE__ */ import_react35.default.createElement("path", { d: "M6.4 17.8v2.4M9.2 17.8v2.4M12 17.8v2.4M14.8 17.8v2.4M17.6 17.8v2.4" }),
+        /* @__PURE__ */ import_react35.default.createElement("path", { d: "M6.9 15V9h1.4a1.5 1.5 0 0 1 0 3H6.9M8.4 12l1.2 3" }),
+        /* @__PURE__ */ import_react35.default.createElement("path", { d: "M10.2 15l1.5-6 1.5 6M10.7 12.7h2" }),
+        /* @__PURE__ */ import_react35.default.createElement("path", { d: "M13.8 15V9l1.45 3.1L16.7 9v6" })
       );
     }
 
     // src/features/memory-guard/settings-dialog.tsx
-    var import_react34 = __toESM(require("react"), 1);
+    var import_react37 = __toESM(require("react"), 1);
     var import_dsh_client_ui_primitives5 = require("@deepseek-ai/dsh-client-ui-primitives");
 
     // src/features/memory-guard/page.tsx
-    var import_react33 = __toESM(require("react"), 1);
+    var import_react36 = __toESM(require("react"), 1);
 
     // src/features/memory-guard/notice.ts
     var COUNTDOWN_SECONDS = 5;
@@ -8199,7 +8520,7 @@ window.__ModuleLoader__.load({
     var INPUT_CLASS5 = "w-16 rounded-lg border border-line4 bg-base px-2 py-1 text-[12px] text-primary outline-none focus:border-brand";
     var LABEL_CLASS = "w-20 shrink-0 text-secondary";
     function NumberField({ label, unit, value, min, max, onChange, onCommit }) {
-      return /* @__PURE__ */ import_react33.default.createElement("label", { className: "flex items-center gap-2" }, /* @__PURE__ */ import_react33.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, label), /* @__PURE__ */ import_react33.default.createElement(
+      return /* @__PURE__ */ import_react36.default.createElement("label", { className: "flex items-center gap-2" }, /* @__PURE__ */ import_react36.default.createElement("span", { className: "text-[12px] font-semibold text-primary" }, label), /* @__PURE__ */ import_react36.default.createElement(
         "input",
         {
           type: "number",
@@ -8216,7 +8537,7 @@ window.__ModuleLoader__.load({
           },
           className: INPUT_CLASS5
         }
-      ), /* @__PURE__ */ import_react33.default.createElement("span", { className: "text-[12px] leading-[18px] text-secondary" }, unit));
+      ), /* @__PURE__ */ import_react36.default.createElement("span", { className: "text-[12px] leading-[18px] text-secondary" }, unit));
     }
     function formatTime(timestamp, neverLabel) {
       if (timestamp <= 0) return neverLabel;
@@ -8228,18 +8549,18 @@ window.__ModuleLoader__.load({
       return t("sourceNone");
     }
     function MemoryGuardPage({ t }) {
-      const [settings, setSettings] = (0, import_react33.useState)(() => readMemoryGuardSettings());
-      const [runtime, setRuntime] = (0, import_react33.useState)(() => readMemoryGuardState());
-      const [reading, setReading] = (0, import_react33.useState)(null);
-      const [intervalDraft, setIntervalDraft] = (0, import_react33.useState)(
+      const [settings, setSettings] = (0, import_react36.useState)(() => readMemoryGuardSettings());
+      const [runtime, setRuntime] = (0, import_react36.useState)(() => readMemoryGuardState());
+      const [reading, setReading] = (0, import_react36.useState)(null);
+      const [intervalDraft, setIntervalDraft] = (0, import_react36.useState)(
         () => String(readMemoryGuardSettings().intervalMinutes)
       );
-      const [thresholdDraft, setThresholdDraft] = (0, import_react33.useState)(
+      const [thresholdDraft, setThresholdDraft] = (0, import_react36.useState)(
         () => String(readMemoryGuardSettings().thresholdMB)
       );
-      const [working, setWorking] = (0, import_react33.useState)(null);
-      const [message, setMessage] = (0, import_react33.useState)("");
-      (0, import_react33.useEffect)(() => {
+      const [working, setWorking] = (0, import_react36.useState)(null);
+      const [message, setMessage] = (0, import_react36.useState)("");
+      (0, import_react36.useEffect)(() => {
         let active2 = true;
         const refresh = () => {
           void readMemory().then((next) => {
@@ -8322,7 +8643,7 @@ window.__ModuleLoader__.load({
           setWorking(null);
         }
       };
-      return /* @__PURE__ */ import_react33.default.createElement("div", { className: "space-y-4" }, /* @__PURE__ */ import_react33.default.createElement("div", null, /* @__PURE__ */ import_react33.default.createElement("h2", { className: "text-[15px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react33.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-secondary" }, t("pageHint"))), /* @__PURE__ */ import_react33.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react33.default.createElement(
+      return /* @__PURE__ */ import_react36.default.createElement("div", { className: "space-y-4" }, /* @__PURE__ */ import_react36.default.createElement("div", null, /* @__PURE__ */ import_react36.default.createElement("h2", { className: "text-[15px] font-semibold leading-6 text-primary" }, t("pageTitle")), /* @__PURE__ */ import_react36.default.createElement("p", { className: "mt-1.5 text-[12px] leading-[18px] text-secondary" }, t("pageHint"))), /* @__PURE__ */ import_react36.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react36.default.createElement(
         NumberField,
         {
           label: t("intervalLabel"),
@@ -8333,7 +8654,7 @@ window.__ModuleLoader__.load({
           onChange: setIntervalDraft,
           onCommit: commitInterval
         }
-      ), /* @__PURE__ */ import_react33.default.createElement("p", { className: "mt-1 text-[11px] leading-4 text-secondary" }, t("intervalHint")), /* @__PURE__ */ import_react33.default.createElement("div", { className: "mt-3" }, /* @__PURE__ */ import_react33.default.createElement(
+      ), /* @__PURE__ */ import_react36.default.createElement("p", { className: "mt-1 text-[11px] leading-4 text-secondary" }, t("intervalHint")), /* @__PURE__ */ import_react36.default.createElement("div", { className: "mt-3" }, /* @__PURE__ */ import_react36.default.createElement(
         NumberField,
         {
           label: t("thresholdLabel"),
@@ -8344,12 +8665,12 @@ window.__ModuleLoader__.load({
           onChange: setThresholdDraft,
           onCommit: commitThreshold
         }
-      )), /* @__PURE__ */ import_react33.default.createElement("p", { className: "mt-1 text-[11px] leading-4 text-secondary" }, t("thresholdHint")), /* @__PURE__ */ import_react33.default.createElement("p", { className: "mt-3 text-[11px] leading-4 text-secondary" }, t("autoSaveHint"))), /* @__PURE__ */ import_react33.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react33.default.createElement("dl", { className: "space-y-1.5 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react33.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react33.default.createElement("dt", { className: LABEL_CLASS }, t("memoryUsage")), /* @__PURE__ */ import_react33.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, reading === null ? t("readingPending") : reading.totalMB !== null ? `${reading.totalMB} MB \xB7 ${t("sourceAll")}` : `${reading.megabytes} MB \xB7 ${sourceLabel(reading.source, t)}`)), reading !== null && reading.rendererMB !== null ? /* @__PURE__ */ import_react33.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react33.default.createElement("dt", { className: LABEL_CLASS }, t("rendererUsage")), /* @__PURE__ */ import_react33.default.createElement("dd", { className: "min-w-0 text-primary" }, `${reading.rendererMB} MB`)) : null, /* @__PURE__ */ import_react33.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react33.default.createElement("dt", { className: LABEL_CLASS }, t("domNodeCount")), /* @__PURE__ */ import_react33.default.createElement("dd", { className: "min-w-0 text-primary" }, reading === null ? t("readingPending") : reading.domNodes)), /* @__PURE__ */ import_react33.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react33.default.createElement("dt", { className: LABEL_CLASS }, t("lastReclaim")), /* @__PURE__ */ import_react33.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastReclaimAt, t("never")), runtime.lastReclaimFreedMB > 0 ? `\uFF08${t("freedAmount").replace("{amount}", String(runtime.lastReclaimFreedMB))}\uFF09` : "")), /* @__PURE__ */ import_react33.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react33.default.createElement("dt", { className: LABEL_CLASS }, t("lastRebuild")), /* @__PURE__ */ import_react33.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastRebuildAt, t("never"))))), reading?.source === "process" ? /* @__PURE__ */ import_react33.default.createElement("p", { className: "mt-2 text-[11px] leading-4 text-secondary" }, t("readingHint")) : null, /* @__PURE__ */ import_react33.default.createElement("div", { className: "mt-3 flex flex-wrap items-center gap-2" }, /* @__PURE__ */ import_react33.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleReclaim() }, working === "reclaim" ? t("reclaiming") : t("reclaimNow")), /* @__PURE__ */ import_react33.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleRebuild() }, t("rebuildNow")))), message !== "" ? /* @__PURE__ */ import_react33.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, message) : null);
+      )), /* @__PURE__ */ import_react36.default.createElement("p", { className: "mt-1 text-[11px] leading-4 text-secondary" }, t("thresholdHint")), /* @__PURE__ */ import_react36.default.createElement("p", { className: "mt-3 text-[11px] leading-4 text-secondary" }, t("autoSaveHint"))), /* @__PURE__ */ import_react36.default.createElement("section", { className: "rounded-xl border border-line4 bg-layer1 p-4" }, /* @__PURE__ */ import_react36.default.createElement("dl", { className: "space-y-1.5 text-[12px] leading-[18px]" }, /* @__PURE__ */ import_react36.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react36.default.createElement("dt", { className: LABEL_CLASS }, t("memoryUsage")), /* @__PURE__ */ import_react36.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, reading === null ? t("readingPending") : reading.totalMB !== null ? `${reading.totalMB} MB \xB7 ${t("sourceAll")}` : `${reading.megabytes} MB \xB7 ${sourceLabel(reading.source, t)}`)), reading !== null && reading.rendererMB !== null ? /* @__PURE__ */ import_react36.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react36.default.createElement("dt", { className: LABEL_CLASS }, t("rendererUsage")), /* @__PURE__ */ import_react36.default.createElement("dd", { className: "min-w-0 text-primary" }, `${reading.rendererMB} MB`)) : null, /* @__PURE__ */ import_react36.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react36.default.createElement("dt", { className: LABEL_CLASS }, t("domNodeCount")), /* @__PURE__ */ import_react36.default.createElement("dd", { className: "min-w-0 text-primary" }, reading === null ? t("readingPending") : reading.domNodes)), /* @__PURE__ */ import_react36.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react36.default.createElement("dt", { className: LABEL_CLASS }, t("lastReclaim")), /* @__PURE__ */ import_react36.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastReclaimAt, t("never")), runtime.lastReclaimFreedMB > 0 ? `\uFF08${t("freedAmount").replace("{amount}", String(runtime.lastReclaimFreedMB))}\uFF09` : "")), /* @__PURE__ */ import_react36.default.createElement("div", { className: "flex gap-2" }, /* @__PURE__ */ import_react36.default.createElement("dt", { className: LABEL_CLASS }, t("lastRebuild")), /* @__PURE__ */ import_react36.default.createElement("dd", { className: "min-w-0 break-all text-primary" }, formatTime(runtime.lastRebuildAt, t("never"))))), reading?.source === "process" ? /* @__PURE__ */ import_react36.default.createElement("p", { className: "mt-2 text-[11px] leading-4 text-secondary" }, t("readingHint")) : null, /* @__PURE__ */ import_react36.default.createElement("div", { className: "mt-3 flex flex-wrap items-center gap-2" }, /* @__PURE__ */ import_react36.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleReclaim() }, working === "reclaim" ? t("reclaiming") : t("reclaimNow")), /* @__PURE__ */ import_react36.default.createElement(Button, { variant: "outline", disabled: working !== null, onClick: () => void handleRebuild() }, t("rebuildNow")))), message !== "" ? /* @__PURE__ */ import_react36.default.createElement("p", { className: "text-[12px] leading-[18px] text-danger", role: "alert" }, message) : null);
     }
 
     // src/features/memory-guard/settings-dialog.tsx
     function CloseIcon() {
-      return /* @__PURE__ */ import_react34.default.createElement(
+      return /* @__PURE__ */ import_react37.default.createElement(
         "svg",
         {
           viewBox: "0 0 16 16",
@@ -8362,11 +8683,11 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react34.default.createElement("path", { d: "M3.5 3.5l9 9M12.5 3.5l-9 9" })
+        /* @__PURE__ */ import_react37.default.createElement("path", { d: "M3.5 3.5l9 9M12.5 3.5l-9 9" })
       );
     }
     function MemoryGuardSettingsDialog({ t, onClose }) {
-      return /* @__PURE__ */ import_react34.default.createElement(
+      return /* @__PURE__ */ import_react37.default.createElement(
         import_dsh_client_ui_primitives5.Modal,
         {
           open: true,
@@ -8375,7 +8696,7 @@ window.__ModuleLoader__.load({
           title: t("pageTitle"),
           className: "dsh-aio-root !w-[560px] max-h-full"
         },
-        /* @__PURE__ */ import_react34.default.createElement("div", { className: "relative min-h-0 w-full flex-1 overflow-y-auto px-5 py-4" }, /* @__PURE__ */ import_react34.default.createElement(
+        /* @__PURE__ */ import_react37.default.createElement("div", { className: "relative min-h-0 w-full flex-1 overflow-y-auto px-5 py-4" }, /* @__PURE__ */ import_react37.default.createElement(
           "button",
           {
             type: "button",
@@ -8384,8 +8705,8 @@ window.__ModuleLoader__.load({
             onClick: onClose,
             className: "absolute right-2 top-2 z-10 flex h-7 w-7 items-center justify-center rounded-lg border-0 bg-transparent p-0 text-secondary transition hover:bg-interactive hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           },
-          /* @__PURE__ */ import_react34.default.createElement(CloseIcon, null)
-        ), /* @__PURE__ */ import_react34.default.createElement(MemoryGuardPage, { t }))
+          /* @__PURE__ */ import_react37.default.createElement(CloseIcon, null)
+        ), /* @__PURE__ */ import_react37.default.createElement(MemoryGuardPage, { t }))
       );
     }
 
@@ -8393,9 +8714,9 @@ window.__ModuleLoader__.load({
     var REFRESH_MS = 3e4;
     function MemoryUsagePill({ t }) {
       const enabled = useMemoryGuardEnabled();
-      const [reading, setReading] = (0, import_react35.useState)(null);
-      const [settingsOpen, setSettingsOpen] = (0, import_react35.useState)(false);
-      (0, import_react35.useEffect)(() => {
+      const [reading, setReading] = (0, import_react38.useState)(null);
+      const [settingsOpen, setSettingsOpen] = (0, import_react38.useState)(false);
+      (0, import_react38.useEffect)(() => {
         if (!enabled) {
           setReading(null);
           return;
@@ -8417,7 +8738,7 @@ window.__ModuleLoader__.load({
       }, [enabled]);
       if (!enabled || reading === null) return null;
       const megabytes = reading.totalMB ?? reading.megabytes;
-      return /* @__PURE__ */ import_react35.default.createElement(import_react35.default.Fragment, null, /* @__PURE__ */ import_react35.default.createElement(
+      return /* @__PURE__ */ import_react38.default.createElement(import_react38.default.Fragment, null, /* @__PURE__ */ import_react38.default.createElement(
         "button",
         {
           type: "button",
@@ -8428,15 +8749,15 @@ window.__ModuleLoader__.load({
           onClick: () => setSettingsOpen(true),
           className: "order-last inline-flex items-center gap-1 rounded-md border-0 bg-transparent px-2 py-0.5 text-[12px] leading-5 text-tertiary transition hover:bg-interactive hover:text-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
         },
-        /* @__PURE__ */ import_react35.default.createElement(MemoryIcon2, null),
-        /* @__PURE__ */ import_react35.default.createElement("span", { className: "tabular-nums" }, `${megabytes} MB`)
-      ), settingsOpen ? /* @__PURE__ */ import_react35.default.createElement(MemoryGuardSettingsDialog, { t, onClose: () => setSettingsOpen(false) }) : null);
+        /* @__PURE__ */ import_react38.default.createElement(MemoryIcon2, null),
+        /* @__PURE__ */ import_react38.default.createElement("span", { className: "tabular-nums" }, `${megabytes} MB`)
+      ), settingsOpen ? /* @__PURE__ */ import_react38.default.createElement(MemoryGuardSettingsDialog, { t, onClose: () => setSettingsOpen(false) }) : null);
     }
 
     // src/features/memory-guard/header-action.tsx
-    var import_react36 = __toESM(require("react"), 1);
+    var import_react39 = __toESM(require("react"), 1);
     function RefreshIcon({ spinning }) {
-      return /* @__PURE__ */ import_react36.default.createElement(
+      return /* @__PURE__ */ import_react39.default.createElement(
         "svg",
         {
           viewBox: "0 0 16 16",
@@ -8450,13 +8771,13 @@ window.__ModuleLoader__.load({
           strokeLinejoin: "round",
           className: spinning ? "animate-spin" : void 0
         },
-        /* @__PURE__ */ import_react36.default.createElement("path", { d: "M13 8a5 5 0 1 1-1.6-3.7" }),
-        /* @__PURE__ */ import_react36.default.createElement("path", { d: "M13 2.5V5h-2.5" })
+        /* @__PURE__ */ import_react39.default.createElement("path", { d: "M13 8a5 5 0 1 1-1.6-3.7" }),
+        /* @__PURE__ */ import_react39.default.createElement("path", { d: "M13 2.5V5h-2.5" })
       );
     }
     function MemoryGuardAction({ t }) {
       const enabled = useMemoryGuardEnabled();
-      const [working, setWorking] = (0, import_react36.useState)(false);
+      const [working, setWorking] = (0, import_react39.useState)(false);
       const handleClick = async () => {
         const guard = activeMemoryGuard();
         if (guard === void 0) {
@@ -8477,7 +8798,7 @@ window.__ModuleLoader__.load({
         }
       };
       if (!enabled) return null;
-      return /* @__PURE__ */ import_react36.default.createElement(
+      return /* @__PURE__ */ import_react39.default.createElement(
         "button",
         {
           type: "button",
@@ -8487,14 +8808,14 @@ window.__ModuleLoader__.load({
           onClick: () => void handleClick(),
           className: "flex h-6 w-6 items-center justify-center rounded-md border-0 bg-transparent p-0 text-secondary transition hover:bg-layer2 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand disabled:cursor-default disabled:opacity-50"
         },
-        /* @__PURE__ */ import_react36.default.createElement(RefreshIcon, { spinning: working })
+        /* @__PURE__ */ import_react39.default.createElement(RefreshIcon, { spinning: working })
       );
     }
 
     // src/features/memory-guard/client.tsx
     var DOCK_SLOT = "conversation.composer.dock";
     var HEADER_UTILITIES_SLOT = "conversation.session.header.utilities";
-    function apply11(ctx, t) {
+    function apply12(ctx, t) {
       ctx.effect(() => {
         const handle = installMemoryGuard(t);
         return () => handle.dispose();
@@ -8503,22 +8824,22 @@ window.__ModuleLoader__.load({
         DOCK_SLOT,
         () => ctx.slots.register(
           { name: DOCK_SLOT, id: "memory-guard", order: 1e3 },
-          () => /* @__PURE__ */ import_react37.default.createElement(MemoryUsagePill, { t })
+          () => /* @__PURE__ */ import_react40.default.createElement(MemoryUsagePill, { t })
         )
       );
       ctx.slots.inject(
         HEADER_UTILITIES_SLOT,
         () => ctx.slots.register(
           { name: HEADER_UTILITIES_SLOT, id: "memory-guard-rebuild", order: 100 },
-          () => /* @__PURE__ */ import_react37.default.createElement(MemoryGuardAction, { t })
+          () => /* @__PURE__ */ import_react40.default.createElement(MemoryGuardAction, { t })
         )
       );
     }
 
     // src/features/memory-guard/entry.tsx
-    var import_react38 = __toESM(require("react"), 1);
+    var import_react41 = __toESM(require("react"), 1);
     function MemoryGuardEntry({ t, open }) {
-      const [enabled, setEnabled] = (0, import_react38.useState)(() => readMemoryGuardSettings().enabled);
+      const [enabled, setEnabled] = (0, import_react41.useState)(() => readMemoryGuardSettings().enabled);
       const handleToggle = () => {
         const next = updateMemoryGuardSettings({ enabled: !enabled });
         setEnabled(next.enabled);
@@ -8526,16 +8847,16 @@ window.__ModuleLoader__.load({
       };
       return (
         // 卡片容器：主体按钮与开关是并列的交互区，设置提示随标题行落在主体按钮内，不能互相嵌套
-        /* @__PURE__ */ import_react38.default.createElement("div", { className: "flex w-full items-start gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 transition hover:bg-layer2" }, /* @__PURE__ */ import_react38.default.createElement(
+        /* @__PURE__ */ import_react41.default.createElement("div", { className: "flex w-full items-start gap-2 rounded-lg border border-line4 bg-layer1 px-2.5 py-1 transition hover:bg-layer2" }, /* @__PURE__ */ import_react41.default.createElement(
           "button",
           {
             type: "button",
             onClick: open,
             className: "flex min-w-0 flex-1 items-start gap-2 rounded-lg border-0 bg-transparent p-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           },
-          /* @__PURE__ */ import_react38.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react38.default.createElement(MemoryIcon2, null)),
-          /* @__PURE__ */ import_react38.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react38.default.createElement("span", { className: "block truncate text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react38.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")))
-        ), /* @__PURE__ */ import_react38.default.createElement("div", { className: "flex shrink-0 flex-col items-end gap-2 self-start" }, /* @__PURE__ */ import_react38.default.createElement(
+          /* @__PURE__ */ import_react41.default.createElement("span", { className: "flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-base text-brand" }, /* @__PURE__ */ import_react41.default.createElement(MemoryIcon2, null)),
+          /* @__PURE__ */ import_react41.default.createElement("span", { className: "min-w-0 flex-1" }, /* @__PURE__ */ import_react41.default.createElement("span", { className: "block truncate text-[13px] font-medium leading-[16px] text-primary" }, t("title")), /* @__PURE__ */ import_react41.default.createElement("span", { className: "block text-[11px] leading-[14px] text-secondary" }, t("description")))
+        ), /* @__PURE__ */ import_react41.default.createElement("div", { className: "flex shrink-0 flex-col items-end gap-2 self-start" }, /* @__PURE__ */ import_react41.default.createElement(
           "button",
           {
             type: "button",
@@ -8549,7 +8870,7 @@ window.__ModuleLoader__.load({
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
             )
           },
-          /* @__PURE__ */ import_react38.default.createElement(
+          /* @__PURE__ */ import_react41.default.createElement(
             "span",
             {
               "aria-hidden": "true",
@@ -8559,7 +8880,7 @@ window.__ModuleLoader__.load({
               )
             }
           )
-        ), /* @__PURE__ */ import_react38.default.createElement(
+        ), /* @__PURE__ */ import_react41.default.createElement(
           "button",
           {
             type: "button",
@@ -8569,7 +8890,7 @@ window.__ModuleLoader__.load({
             className: "flex items-center justify-center gap-0.5 rounded-md border-0 bg-transparent p-0 text-[11px] leading-[16px] text-secondary transition hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           },
           t("settingsAction"),
-          /* @__PURE__ */ import_react38.default.createElement(CardChevron, null)
+          /* @__PURE__ */ import_react41.default.createElement(CardChevron, null)
         )))
       );
     }
@@ -8761,7 +9082,7 @@ window.__ModuleLoader__.load({
       order: 30,
       entry: MemoryGuardEntry,
       page: MemoryGuardPage,
-      client: { apply: apply11 },
+      client: { apply: apply12 },
       locales: memoryGuardLocales
     };
     var memory_guard_default = memoryGuardFeature;
@@ -8772,6 +9093,7 @@ window.__ModuleLoader__.load({
       image_preview_default,
       context_inspect_default,
       queue_edit_default,
+      prompt_optimize_default,
       clear_session_default,
       session_history_default,
       workspace_session_count_default,
@@ -8826,9 +9148,9 @@ window.__ModuleLoader__.load({
     var registry = createFeatureRegistry(featureList);
 
     // src/shell/AllInOnePage.tsx
-    var import_react39 = __toESM(require("react"), 1);
+    var import_react42 = __toESM(require("react"), 1);
     function BackGlyph() {
-      return /* @__PURE__ */ import_react39.default.createElement(
+      return /* @__PURE__ */ import_react42.default.createElement(
         "svg",
         {
           viewBox: "0 0 16 16",
@@ -8841,7 +9163,7 @@ window.__ModuleLoader__.load({
           strokeLinecap: "round",
           strokeLinejoin: "round"
         },
-        /* @__PURE__ */ import_react39.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
+        /* @__PURE__ */ import_react42.default.createElement("path", { d: "M9.5 3.5 5 8l4.5 4.5" })
       );
     }
     var FALLBACK_GROUP = "other";
@@ -8864,35 +9186,35 @@ window.__ModuleLoader__.load({
       return features.length > 0 && features.every((feature) => "switch" in feature && feature.reloadsPage === true);
     }
     function FeatureCard({ feature, t, open }) {
-      const featureT = (0, import_react39.useMemo)(() => (key) => t(`${feature.id}.${key}`), [feature.id, t]);
+      const featureT = (0, import_react42.useMemo)(() => (key) => t(`${feature.id}.${key}`), [feature.id, t]);
       if ("switch" in feature) {
         const SwitchEntry = feature.switch;
-        return /* @__PURE__ */ import_react39.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react39.default.createElement(SwitchEntry, { t: featureT }));
+        return /* @__PURE__ */ import_react42.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react42.default.createElement(SwitchEntry, { t: featureT }));
       }
       const Entry = feature.entry;
-      return /* @__PURE__ */ import_react39.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react39.default.createElement(Entry, { t: featureT, open: () => open(feature.id) }));
+      return /* @__PURE__ */ import_react42.default.createElement("div", { className: "min-w-0" }, /* @__PURE__ */ import_react42.default.createElement(Entry, { t: featureT, open: () => open(feature.id) }));
     }
     function AllInOnePage({ t }) {
-      const [activeId, setActiveId] = (0, import_react39.useState)(null);
-      const [pageActions, setPageActions] = (0, import_react39.useState)(null);
+      const [activeId, setActiveId] = (0, import_react42.useState)(null);
+      const [pageActions, setPageActions] = (0, import_react42.useState)(null);
       const active2 = activeId ? registry.find(activeId) : void 0;
       const activePage = active2 && "page" in active2 ? active2 : void 0;
-      const featureTranslate = (0, import_react39.useCallback)(
+      const featureTranslate = (0, import_react42.useCallback)(
         // 网格视图不会调用此函数，activePage 为空时直接返回 key 兜底
         (key) => activePage ? t(`${activePage.id}.${key}`) : key,
         [activePage, t]
       );
       if (activePage) {
         const ActivePage = activePage.page;
-        return /* @__PURE__ */ import_react39.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react39.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react39.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react39.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react39.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react39.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react39.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react39.default.createElement(ActivePage, { t: featureTranslate }))));
+        return /* @__PURE__ */ import_react42.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react42.default.createElement(PageActionsContext.Provider, { value: setPageActions }, /* @__PURE__ */ import_react42.default.createElement("div", { className: "sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-line4 bg-base pb-3" }, /* @__PURE__ */ import_react42.default.createElement(Button, { variant: "outline", onClick: () => setActiveId(null) }, /* @__PURE__ */ import_react42.default.createElement(BackGlyph, null), t("shell.back")), pageActions ? /* @__PURE__ */ import_react42.default.createElement("div", { className: "flex items-center gap-2" }, pageActions) : null), /* @__PURE__ */ import_react42.default.createElement("div", { className: "mt-4" }, /* @__PURE__ */ import_react42.default.createElement(ActivePage, { t: featureTranslate }))));
       }
-      return /* @__PURE__ */ import_react39.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react39.default.createElement("header", { className: "flex items-baseline gap-2" }, /* @__PURE__ */ import_react39.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react39.default.createElement("span", { className: "whitespace-nowrap text-[12px] leading-6 text-secondary" }, t("shell.pageSlogan"))), registry.list.length === 0 ? (
+      return /* @__PURE__ */ import_react42.default.createElement("div", { className: "dsh-aio-root" }, /* @__PURE__ */ import_react42.default.createElement("header", { className: "flex items-baseline gap-2" }, /* @__PURE__ */ import_react42.default.createElement("h1", { className: "text-[17px] font-semibold leading-6 text-primary" }, t("shell.pageTitle")), /* @__PURE__ */ import_react42.default.createElement("span", { className: "whitespace-nowrap text-[12px] leading-6 text-secondary" }, t("shell.pageSlogan"))), registry.list.length === 0 ? (
         // 尚未注册功能时的空态提示
-        /* @__PURE__ */ import_react39.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
+        /* @__PURE__ */ import_react42.default.createElement("p", { className: "mt-5 rounded-xl border border-dashed border-line4 px-4 py-6 text-center text-[12px] text-secondary" }, t("shell.empty"))
       ) : (
         // 按分组逐块渲染：组标题说明这一块功能解决什么问题，组内仍是一张网格；
         // 标题行与第一组之间只留半档间距，避免页头下方空出一大块
-        /* @__PURE__ */ import_react39.default.createElement("div", { className: "mt-2 space-y-4" }, groupFeatures(registry.list).map((section) => /* @__PURE__ */ import_react39.default.createElement("section", { key: section.group }, /* @__PURE__ */ import_react39.default.createElement("div", { className: "mb-2 flex items-baseline gap-1" }, /* @__PURE__ */ import_react39.default.createElement("h2", { className: "text-[12px] font-medium text-secondary" }, t(`shell.group.${section.group}`)), needsReloadHint(section.features) ? /* @__PURE__ */ import_react39.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, "\xB7 ", t("shell.groupReloadHint")) : null), /* @__PURE__ */ import_react39.default.createElement("div", { className: "aio-card-grid grid gap-2.5" }, section.features.map((feature) => /* @__PURE__ */ import_react39.default.createElement(
+        /* @__PURE__ */ import_react42.default.createElement("div", { className: "mt-2 space-y-4" }, groupFeatures(registry.list).map((section) => /* @__PURE__ */ import_react42.default.createElement("section", { key: section.group }, /* @__PURE__ */ import_react42.default.createElement("div", { className: "mb-2 flex items-baseline gap-1" }, /* @__PURE__ */ import_react42.default.createElement("h2", { className: "text-[12px] font-medium text-secondary" }, t(`shell.group.${section.group}`)), needsReloadHint(section.features) ? /* @__PURE__ */ import_react42.default.createElement("span", { className: "text-[11px] leading-[16px] text-secondary" }, "\xB7 ", t("shell.groupReloadHint")) : null), /* @__PURE__ */ import_react42.default.createElement("div", { className: "aio-card-grid grid gap-2.5" }, section.features.map((feature) => /* @__PURE__ */ import_react42.default.createElement(
           FeatureCard,
           {
             key: feature.id,
@@ -9080,7 +9402,7 @@ window.__ModuleLoader__.load({
         });
         const t = ctx.locale.bind(LOCALE_NAMESPACE);
         installSettingsNavIcon(ctx, t, icon_default);
-        const SettingsSection = () => /* @__PURE__ */ import_react40.default.createElement(AllInOnePage, { t });
+        const SettingsSection = () => /* @__PURE__ */ import_react43.default.createElement(AllInOnePage, { t });
         ctx.slots.inject(
           "settings.section",
           () => ctx.slots.register(

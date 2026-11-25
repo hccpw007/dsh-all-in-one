@@ -130,6 +130,108 @@ export interface HostPluginContext {
   sessionPersistence?: SessionPersistenceApi
 }
 
+/** 会话存储：本功能只按 id 读在线会话。 */
+export interface SessionStoreApi {
+  /**
+   * 取一条在线会话。
+   * @param id 会话标识
+   * @returns 会话不在线时返回 undefined
+   */
+  get(id: string): SessionLike | undefined
+}
+
+/** 默认模型服务：新会话尚未记录模型选择时的回退来源。 */
+export interface AgentDefaultModelApi {
+  /** @returns 当前默认的 provider、model 与可选推理档位。 */
+  currentSelection(): {
+    readonly provider: string
+    readonly model: string
+    readonly reasoningEffort?: string
+  }
+}
+
+/** 一次模型调用的路由与控制项；与宿主的 `LlmCallConfig` 同形。 */
+export interface LlmCallConfigLike {
+  provider: string
+  model: string
+  reasoningEffort?: string
+  temperature?: number
+  maxTokens?: number
+  stop?: string[]
+}
+
+/** 模型元数据中本功能用到的字段。 */
+export interface LlmModelInfoLike {
+  /** 可选推理档位；本功能取最低一档，避免为改写提示词付出额外思考成本。 */
+  readonly reasoning?: {
+    readonly efforts: ReadonlyArray<{ readonly id: string }>
+    readonly defaultEffort?: string
+  }
+}
+
+/**
+ * 调用前的控制项选择函数。
+ *
+ * 宿主在解析出模型元数据后同步调用一次，返回的控制项会再经过默认值与校验，
+ * 因此这里可以按模型能力收窄输出上限与推理档位。返回值只能携带控制项：
+ * provider 与 model 由宿主在解析出的路由上补回。
+ */
+export type ConfigureCallLike = (
+  controls: Readonly<{ reasoningEffort?: string; maxTokens?: number }>,
+  model: Readonly<LlmModelInfoLike>,
+) => { reasoningEffort?: string; maxTokens?: number }
+
+/** 一次已解析的模型调用：配置固定，流只能派发一次。 */
+export interface PreparedLlmCallLike {
+  /** 补齐默认值并校验过的最终配置；派发时的请求必须与它一致。 */
+  readonly config: LlmCallConfigLike
+  /** 发起流式请求。 */
+  stream(options: LlmGenerateOptionsLike): AsyncIterable<LlmStreamChunkLike>
+}
+
+/** 一次性模型请求的消息：本功能只发一条纯文本用户消息。 */
+export interface LlmGenerateOptionsLike extends LlmCallConfigLike {
+  messages: Array<{ role: 'user'; content: Array<{ type: 'text'; text: string }> }>
+  /** 系统提示词；一次性调用由调用方自行提供。 */
+  system?: string
+  signal?: AbortSignal
+  /** 计费与路由用的会话身份；没有在线会话时省略。 */
+  sessionId?: string
+  /** 辅助请求的用途标记，宿主据此把这类请求与对话请求区分开。 */
+  purpose?: string
+}
+
+/** 流式分块中本功能读取的字段。 */
+export interface LlmStreamChunkLike {
+  type: string
+  /** 块在响应里的序号；文本增量与块结束都用它对位。 */
+  index?: number
+  /** `text-delta` 的增量正文。 */
+  text?: string
+  /** `block-start` 声明的块类型。 */
+  blockType?: string
+  /** `block-end` 的完整块。 */
+  block?: { type?: string; text?: string }
+  /** `finish` 的终止原因。 */
+  reason?: { kind?: string; failure?: { message?: string } }
+}
+
+/** LLM 服务：本功能只用到一次性调用的准备与派发。 */
+export interface LlmApi {
+  /**
+   * 解析一次调用的最终配置。
+   * @param config 路由与初始控制项
+   * @param signal 取消信号
+   * @param configure 按模型元数据选择控制项；可选
+   * @returns 配置固定的调用句柄
+   */
+  prepareCall(
+    config: LlmCallConfigLike,
+    signal?: AbortSignal,
+    configure?: ConfigureCallLike,
+  ): Promise<PreparedLlmCallLike>
+}
+
 /**
  * 会话持久化服务：只声明本功能用到的只读能力。
  *

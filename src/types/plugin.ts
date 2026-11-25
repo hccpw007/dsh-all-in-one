@@ -203,6 +203,8 @@ export type DraftAttachmentId = string
 
 /** 会话输入框的公开状态。 */
 export interface InputStateApi {
+  /** 当前草稿的纯文本投影；引用芯片已展开成它们的文本形式。 */
+  readonly draft: string
   /** 已放进草稿的附件标识，按发送顺序排列。 */
   readonly attachmentIds: readonly DraftAttachmentId[]
   /** 提交阶段；非 `plain` 时输入框只读，不能改写草稿。 */

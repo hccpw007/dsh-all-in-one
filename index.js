@@ -95,8 +95,8 @@ function buildPackRows(pack, isolate) {
 }
 
 // src/features/power-pack/host/isolation.ts
-function isDenied(rule, id12) {
-  const selected = rule.items.includes(id12);
+function isDenied(rule, id13) {
+  const selected = rule.items.includes(id13);
   switch (rule.mode) {
     case "include":
       return !selected;
@@ -119,7 +119,7 @@ function sectionPrefixes(packageName) {
 }
 function deniedMcpServers(rule) {
   if (rule.mode !== "exclude") return [];
-  const servers = rule.items.filter((id12) => id12.startsWith("mcp:") && id12.length > 4).map((id12) => id12.slice(4));
+  const servers = rule.items.filter((id13) => id13.startsWith("mcp:") && id13.length > 4).map((id13) => id13.slice(4));
   return [...new Set(servers)];
 }
 function planIsolation(pack, groups) {
@@ -426,8 +426,8 @@ var legacyProbed = false;
 function powerPacksFile() {
   return join3(resolveDshHome(), "all-in-one", "power-packs.json");
 }
-function isValidPackId(id12) {
-  return PACK_ID_PATTERN.test(id12);
+function isValidPackId(id13) {
+  return PACK_ID_PATTERN.test(id13);
 }
 function stringList(value) {
   return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
@@ -441,11 +441,11 @@ function normalizeRule(value) {
 function normalizePack(value) {
   if (typeof value !== "object" || value === null) return void 0;
   const candidate = value;
-  const id12 = typeof candidate.id === "string" ? candidate.id.trim() : "";
+  const id13 = typeof candidate.id === "string" ? candidate.id.trim() : "";
   const name = typeof candidate.name === "string" ? candidate.name.trim() : "";
-  if (!PACK_ID_PATTERN.test(id12) || name === "") return void 0;
+  if (!PACK_ID_PATTERN.test(id13) || name === "") return void 0;
   return {
-    id: id12,
+    id: id13,
     name,
     description: typeof candidate.description === "string" ? candidate.description : "",
     systemPrompt: typeof candidate.systemPrompt === "string" ? candidate.systemPrompt : "",
@@ -705,9 +705,9 @@ async function pendingComposedMeta() {
   for (const selection of selections) {
     const pack = byId.get(selection.pack);
     if (pack === void 0) continue;
-    const id12 = composedPresetId(selection.pack, selection.mode);
-    if (hasComposedPreset(id12)) continue;
-    result.set(id12, { name: pack.name, description: pack.description });
+    const id13 = composedPresetId(selection.pack, selection.mode);
+    if (hasComposedPreset(id13)) continue;
+    result.set(id13, { name: pack.name, description: pack.description });
   }
   return result;
 }
@@ -717,31 +717,31 @@ async function ensureComposedPreset(api, modeId, pack, groups) {
   if (modeRows === void 0) {
     throw new Error(`\u65E0\u6CD5\u8BFB\u53D6\u6A21\u5F0F ${modeId} \u7684\u7EC4\u5408\u884C`);
   }
-  const id12 = composedPresetId(pack.id, modeId);
+  const id13 = composedPresetId(pack.id, modeId);
   const rows = composePackRows(modeRows, pack, groups);
-  const registered = readPresetRows(api, id12);
+  const registered = readPresetRows(api, id13);
   if (registered !== void 0) {
-    if (packRowSignature(registered) === packRowSignature(rows)) return id12;
-    await dropHostPreset(api, id12);
+    if (packRowSignature(registered) === packRowSignature(rows)) return id13;
+    await dropHostPreset(api, id13);
     composed.delete(key);
   }
   try {
     const dispose = await api.register({
-      id: id12,
+      id: id13,
       name: pack.name,
       description: pack.description,
       order: PRESET_ORDER,
       plugins: rows
     });
-    composed.set(key, { key, id: id12, dispose });
+    composed.set(key, { key, id: id13, dispose });
     while (composed.size > MAX_COMPOSED_PRESETS) {
       const oldest = composed.values().next();
       if (oldest.done || oldest.value.key === key) break;
       await disposeOne(oldest.value);
     }
-    return id12;
+    return id13;
   } catch (error) {
-    if (readPresetRows(api, id12) !== void 0) return id12;
+    if (readPresetRows(api, id13) !== void 0) return id13;
     throw error;
   }
 }
@@ -875,8 +875,8 @@ async function listPluginCatalog(currentProfileDir2) {
 async function listPluginItems(currentProfileDir2) {
   const { standard, installed } = await listPluginCatalog(currentProfileDir2);
   return [
-    ...standard.map(({ id: id12, label, description, kind }) => ({ id: id12, label, description, kind })),
-    ...installed.map(({ id: id12, label, description, kind }) => ({ id: id12, label, description, kind }))
+    ...standard.map(({ id: id13, label, description, kind }) => ({ id: id13, label, description, kind })),
+    ...installed.map(({ id: id13, label, description, kind }) => ({ id: id13, label, description, kind }))
   ];
 }
 
@@ -1156,11 +1156,11 @@ function mergeRoster(result, meta) {
   const holder = result;
   if (!Array.isArray(holder.presets)) return result;
   const rows = holder.presets;
-  const present = new Set(rows.map((row) => row?.id).filter((id12) => typeof id12 === "string"));
+  const present = new Set(rows.map((row) => row?.id).filter((id13) => typeof id13 === "string"));
   const missing = [];
-  for (const [id12, entry] of meta) {
-    if (present.has(id12)) continue;
-    missing.push({ id: id12, name: entry.name, description: entry.description, isDefault: false });
+  for (const [id13, entry] of meta) {
+    if (present.has(id13)) continue;
+    missing.push({ id: id13, name: entry.name, description: entry.description, isDefault: false });
   }
   if (missing.length === 0) return result;
   return { ...holder, presets: [...rows, ...missing] };
@@ -3933,24 +3933,24 @@ function installAutoCompactWatcher(ctx) {
     if (!oldest.done) map.delete(oldest.value);
   };
   const contextWindowFor = (agent) => {
-    const id12 = agent.session.id;
-    const cached = windows.get(id12);
+    const id13 = agent.session.id;
+    const cached = windows.get(id13);
     const now = Date.now();
     if (cached !== void 0 && now - cached.at < CONTEXT_WINDOW_TTL_MS) return cached.value;
     const value = readContextWindow(agent);
-    windows.set(id12, { at: now, value });
+    windows.set(id13, { at: now, value });
     evictOldest(windows);
     return value;
   };
   const measureFor = (meter, agent, force) => {
-    const id12 = agent.session.id;
-    const cached = measurements.get(id12);
+    const id13 = agent.session.id;
+    const cached = measurements.get(id13);
     const now = Date.now();
     if (!force && cached !== void 0 && now - cached.at < MEASURE_INTERVAL_MS) {
       return { measurement: cached.value, fresh: false };
     }
     const value = meter.measure(agent.session);
-    measurements.set(id12, { at: now, value });
+    measurements.set(id13, { at: now, value });
     evictOldest(measurements);
     return { measurement: value, fresh: true };
   };
@@ -4380,9 +4380,9 @@ function pruneAutoRunSettings(existingSessionIds, existingWorkspaceIds) {
   if (existingSessionIds === void 0 && existingWorkspaceIds === void 0) {
     return { sessions: 0, workspaces: 0 };
   }
-  const sessions = existingSessionIds === void 0 ? current.sessions : Object.fromEntries(Object.entries(current.sessions).filter(([id12]) => existingSessionIds.has(id12)));
+  const sessions = existingSessionIds === void 0 ? current.sessions : Object.fromEntries(Object.entries(current.sessions).filter(([id13]) => existingSessionIds.has(id13)));
   const workspaces = existingWorkspaceIds === void 0 ? current.workspaces : Object.fromEntries(
-    Object.entries(current.workspaces).filter(([id12]) => existingWorkspaceIds.has(id12))
+    Object.entries(current.workspaces).filter(([id13]) => existingWorkspaceIds.has(id13))
   );
   const removedSessions = Object.keys(current.sessions).length - Object.keys(sessions).length;
   const removedWorkspaces = Object.keys(current.workspaces).length - Object.keys(workspaces).length;
@@ -4395,8 +4395,8 @@ function readAgentSessionId(agent) {
   if (typeof agent !== "object" || agent === null) return void 0;
   const session = agent.session;
   if (typeof session !== "object" || session === null) return void 0;
-  const id12 = session.id;
-  return typeof id12 === "string" && id12 !== "" ? id12 : void 0;
+  const id13 = session.id;
+  return typeof id13 === "string" && id13 !== "" ? id13 : void 0;
 }
 function readParentSessionId(agent) {
   if (typeof agent !== "object" || agent === null) return void 0;
@@ -4585,7 +4585,7 @@ async function listExistingWorkspaceIds() {
     const global = parsed.global;
     const ids = global?.workspaceIds;
     if (!Array.isArray(ids)) return void 0;
-    return new Set(ids.filter((id12) => typeof id12 === "string" && id12 !== ""));
+    return new Set(ids.filter((id13) => typeof id13 === "string" && id13 !== ""));
   } catch (error) {
     if (error.code === "ENOENT") return void 0;
     console.error("[auto-run] \u8BFB\u53D6\u5DE5\u4F5C\u7A7A\u95F4\u6CE8\u518C\u8868\u5931\u8D25\uFF0C\u8DF3\u8FC7\u672C\u6B21\u5DE5\u4F5C\u7A7A\u95F4\u6E05\u7406:", error);
@@ -4634,8 +4634,8 @@ var MAX_BODY_BYTES7 = 4 * 1024;
 var MAX_ID_LENGTH = 200;
 function readId(value) {
   if (typeof value !== "string") return void 0;
-  const id12 = value.trim();
-  return id12 === "" || id12.length > MAX_ID_LENGTH ? void 0 : id12;
+  const id13 = value.trim();
+  return id13 === "" || id13.length > MAX_ID_LENGTH ? void 0 : id13;
 }
 function parseSessionPatch(value) {
   if (typeof value !== "object" || value === null) return void 0;
@@ -4748,12 +4748,258 @@ function apply10(ctx) {
   ctx.effect(() => installAutoRunRoutes(webServer), "auto-run: routes");
 }
 
-// src/features/memory-guard/host.ts
+// src/features/prompt-optimize/host.ts
 var host_exports11 = {};
 __export(host_exports11, {
   apply: () => apply11,
   id: () => id11,
   inject: () => inject11
+});
+
+// src/features/prompt-optimize/types.ts
+var MAX_INPUT_BYTES = 8 * 1024;
+var MAX_OUTPUT_CHARS = 16 * 1024;
+
+// src/features/prompt-optimize/host/prompt.ts
+function optimizeSystemPrompt() {
+  return [
+    "\u4F60\u662F\u4E00\u4E2A\u63D0\u793A\u8BCD\u6539\u5199\u5668\u3002\u7528\u6237\u4F1A\u628A\u51C6\u5907\u53D1\u7ED9\u81EA\u5DF1 AI \u52A9\u624B\u7684\u8F93\u5165\u53D1\u7ED9\u4F60\uFF0C\u8FD9\u6BB5\u8F93\u5165\u5F80\u5F80\u8FC7\u77ED\uFF0C",
+    "\u52A9\u624B\u53EA\u80FD\u9760\u731C\u6D4B\u548C\u53CD\u95EE\u624D\u80FD\u786E\u5B9A\u8981\u505A\u4EC0\u4E48\u3002\u4F60\u7684\u4EFB\u52A1\u662F\u628A\u5B83\u8865\u5168\u6210\u4E00\u6761\u53EF\u4EE5\u76F4\u63A5\u53D1\u9001\u7684\u5B8C\u6574\u9700\u6C42\u3002",
+    "",
+    "\u786C\u6027\u89C4\u5219\uFF1A",
+    "1. \u4FDD\u7559\u539F\u610F\u3002\u4E0D\u65B0\u589E\u7528\u6237\u6CA1\u6709\u63D0\u5230\u7684\u529F\u80FD\uFF0C\u4E0D\u66FF\u7528\u6237\u51B3\u5B9A\u6280\u672F\u65B9\u6848\uFF0C\u4E0D\u6539\u5199\u4E13\u6709\u540D\u8BCD\u3001\u8DEF\u5F84\u3001",
+    "   \u547D\u4EE4\u3001\u62A5\u9519\u539F\u6587\u4E0E\u4EE3\u7801\u7247\u6BB5\u3002",
+    "2. \u53EA\u8865\u300C\u53EF\u4EE5\u5408\u7406\u63A8\u65AD\u4E14\u786E\u5B9E\u5FC5\u8981\u300D\u7684\u4FE1\u606F\uFF1A\u8981\u505A\u4EC0\u4E48\u3001\u73B0\u72B6\u3001\u4EA4\u4ED8\u7269\u3001\u9A8C\u6536\u6807\u51C6\u3001\u7EA6\u675F\u4E0E\u504F\u597D\u3002",
+    "   \u63A8\u65AD\u4E0D\u51FA\u6765\u7684\u4E0D\u8981\u7F16\u9020\u2014\u2014\u5C24\u5176\u662F\u7248\u672C\u53F7\u3001\u6587\u4EF6\u540D\u3001\u670D\u52A1\u5730\u5740\u3001\u6570\u636E\u89C4\u6A21\uFF0C\u4E00\u5F8B\u5199\u8FDB\u5F85\u786E\u8BA4\u9879\u3002",
+    "3. \u7528\u7528\u6237\u8F93\u5165\u7684\u8BED\u8A00\u8F93\u51FA\uFF1B\u7528\u6237\u7528\u4E2D\u6587\u5199\u5C31\u7528\u4E2D\u6587\uFF0C\u7528\u82F1\u6587\u5199\u5C31\u7528\u82F1\u6587\u3002",
+    "4. \u53EA\u8F93\u51FA\u6539\u5199\u540E\u7684\u9700\u6C42\u672C\u4F53\uFF0C\u4E0D\u8981\u524D\u8A00\u3001\u4E0D\u8981\u89E3\u91CA\u6539\u4E86\u4EC0\u4E48\u3001\u4E0D\u8981\u7528\u4EE3\u7801\u56F4\u680F\u628A\u6574\u6BB5\u5305\u8D77\u6765\u3002",
+    "5. \u7ED3\u5C3E\u4E0D\u8981\u5199\u300C\u8BF7\u786E\u8BA4\u300D\u300C\u5982\u9700\u5E2E\u52A9\u8BF7\u544A\u8BC9\u6211\u300D\u8FD9\u7C7B\u5BA2\u5957\u8BDD\u3002",
+    "",
+    "\u8F93\u51FA\u7ED3\u6784\uFF08\u6CA1\u6709\u5185\u5BB9\u7684\u5C0F\u8282\u6574\u8282\u7701\u7565\uFF0C\u4E0D\u8981\u7559\u7A7A\u6807\u9898\uFF09\uFF1A",
+    "- \u5F00\u5934\u4E00\u6BB5\uFF1A\u4E00\u53E5\u8BDD\u8BF4\u6E05\u8981\u505A\u4EC0\u4E48\u3001\u505A\u5230\u4EC0\u4E48\u7ED3\u679C\u3002",
+    "- \u9700\u6C42\u6B63\u6587\uFF1A\u5206\u70B9\u5199\u5177\u4F53\u8981\u505A\u7684\u4E8B\uFF0C\u6309\u4F9D\u8D56\u987A\u5E8F\u6392\u5217\u3002",
+    "- \u4EA4\u4ED8\u7269\u4E0E\u9A8C\u6536\uFF1A\u5B8C\u6210\u65F6\u4F1A\u6709\u54EA\u4E9B\u4EA7\u7269\uFF0C\u600E\u4E48\u5224\u65AD\u505A\u5B8C\u4E86\u3002",
+    "- \u7EA6\u675F\u4E0E\u504F\u597D\uFF1A\u6280\u672F\u6808\u3001\u98CE\u683C\u3001\u8303\u56F4\u8FB9\u754C\u3001\u660E\u786E\u4E0D\u8981\u505A\u4EC0\u4E48\u3002",
+    "- \u5F85\u786E\u8BA4\u9879\uFF1A\u53EA\u6709\u786E\u5B9E\u65E0\u6CD5\u4ECE\u8F93\u5165\u63A8\u65AD\u3001\u4E14\u4F1A\u663E\u8457\u5F71\u54CD\u7ED3\u679C\u7684\u9009\u62E9\u624D\u5217\uFF0C\u6BCF\u9879\u7ED9\u4E00\u4E2A\u9ED8\u8BA4\u5EFA\u8BAE\u3002",
+    "",
+    "\u591A\u65B9\u6848\uFF1A\u5F53\u8F93\u5165\u5B58\u5728\u4E24\u79CD\u4EE5\u4E0A\u660E\u663E\u4E0D\u540C\u7684\u5B9E\u73B0\u65B9\u5411\uFF08\u4F8B\u5982\u300C\u6539\u9020\u73B0\u6709\u9875\u9762\u300D\u8FD8\u662F\u300C\u65B0\u5EFA\u9875\u9762\u300D\uFF09\uFF0C",
+    "\u5148\u7528\u4E00\u5C0F\u8282\u5BF9\u6BD4\u5404\u81EA\u9002\u7528\u573A\u666F\uFF0C\u518D\u5E76\u5217\u7ED9\u51FA\u6BCF\u4E2A\u65B9\u6848\u5404\u81EA\u5B8C\u6574\u7684\u9700\u6C42\u6587\u672C\uFF0C\u7528",
+    "\u300C## \u65B9\u6848\u4E00\uFF1A\u540D\u79F0\u300D\u300C## \u65B9\u6848\u4E8C\uFF1A\u540D\u79F0\u300D\u5206\u8282\uFF0C\u8BA9\u7528\u6237\u76F4\u63A5\u5220\u6389\u4E0D\u8981\u7684\u90A3\u4E2A\u3002",
+    "\u53EA\u6709\u4E00\u6761\u5408\u7406\u8DEF\u5F84\u65F6\u4E0D\u8981\u5206\u8282\uFF0C\u76F4\u63A5\u8F93\u51FA\u5355\u4E00\u9700\u6C42\u3002",
+    "",
+    "\u7BC7\u5E45\uFF1A\u80FD\u4E00\u6BB5\u8BF4\u6E05\u5C31\u4E0D\u8981\u5C55\u5F00\u6210\u6E05\u5355\uFF1B\u8F93\u5165\u4FE1\u606F\u5C11\u5C31\u8981\u514B\u5236\uFF0C\u4E0D\u8981\u4E3A\u663E\u5F97\u5B8C\u6574\u800C\u5806\u780C\u5957\u8BDD\u3002"
+  ].join("\n");
+}
+
+// src/features/prompt-optimize/host/optimize.ts
+var TIMEOUT_MS = 6e4;
+var MAX_OUTPUT_TOKENS = 4096;
+var PURPOSE = "prompt-optimize";
+function serviceOf(ctx, name) {
+  try {
+    const service = ctx.get(name);
+    return typeof service === "object" && service !== null ? service : void 0;
+  } catch (error) {
+    console.error(`[prompt-optimize] \u8BFB\u53D6\u670D\u52A1 ${name} \u5931\u8D25:`, error);
+    return void 0;
+  }
+}
+function routeOfSession(ctx, sessionId) {
+  const sessions = serviceOf(ctx, "sessions");
+  const projections = serviceOf(ctx, "sessionProjections");
+  if (sessions === void 0 || projections === void 0) return void 0;
+  const session = sessions.get(sessionId);
+  if (session === void 0) return void 0;
+  try {
+    const snapshot = projections.snapshot(session, ["modelSelection"]);
+    return readSelection(snapshot.values.modelSelection);
+  } catch (error) {
+    console.error("[prompt-optimize] \u8BFB\u53D6\u4F1A\u8BDD\u6A21\u578B\u9009\u62E9\u5931\u8D25:", error);
+    return void 0;
+  }
+}
+function readSelection(value) {
+  if (typeof value !== "object" || value === null) return void 0;
+  const viewed = value;
+  const selection = readRoute(viewed.next) ?? readRoute(viewed.lastUsed);
+  return selection;
+}
+function readRoute(value) {
+  if (typeof value !== "object" || value === null) return void 0;
+  const candidate = value;
+  if (typeof candidate.provider !== "string" || candidate.provider === "") return void 0;
+  if (typeof candidate.model !== "string" || candidate.model === "") return void 0;
+  const effort = typeof candidate.reasoningEffort === "string" && candidate.reasoningEffort !== "" ? candidate.reasoningEffort : void 0;
+  return { provider: candidate.provider, model: candidate.model, reasoningEffort: effort };
+}
+function resolveRoute(ctx, sessionId) {
+  if (sessionId !== void 0) {
+    const selected = routeOfSession(ctx, sessionId);
+    if (selected !== void 0) return selected;
+  }
+  const fallback = serviceOf(ctx, "agentDefaultModel");
+  if (fallback === void 0) return void 0;
+  try {
+    const selection = fallback.currentSelection();
+    return { provider: selection.provider, model: selection.model, reasoningEffort: selection.reasoningEffort };
+  } catch (error) {
+    console.error("[prompt-optimize] \u8BFB\u53D6\u9ED8\u8BA4\u6A21\u578B\u5931\u8D25:", error);
+    return void 0;
+  }
+}
+var configure = (controls, model) => {
+  const effort = model.reasoning?.efforts[0]?.id;
+  return {
+    ...controls,
+    maxTokens: MAX_OUTPUT_TOKENS,
+    ...effort === void 0 ? {} : { reasoningEffort: effort }
+  };
+};
+async function collectText(chunks) {
+  const closed = /* @__PURE__ */ new Map();
+  const open4 = /* @__PURE__ */ new Map();
+  const order = [];
+  let failure;
+  for await (const chunk of chunks) {
+    switch (chunk.type) {
+      case "block-start": {
+        if (chunk.blockType === "text" && chunk.index !== void 0 && !order.includes(chunk.index)) {
+          order.push(chunk.index);
+        }
+        break;
+      }
+      case "text-delta": {
+        if (chunk.index === void 0 || typeof chunk.text !== "string") break;
+        const previous = open4.get(chunk.index) ?? "";
+        open4.set(chunk.index, previous + chunk.text);
+        if (!order.includes(chunk.index)) order.push(chunk.index);
+        break;
+      }
+      case "block-end": {
+        if (chunk.index === void 0 || chunk.block?.type !== "text") break;
+        closed.set(chunk.index, chunk.block.text ?? "");
+        open4.delete(chunk.index);
+        if (!order.includes(chunk.index)) order.push(chunk.index);
+        break;
+      }
+      case "finish": {
+        const kind = chunk.reason?.kind;
+        if (kind === "aborted" || kind === "error") {
+          failure = chunk.reason?.failure?.message ?? kind;
+        }
+        break;
+      }
+      default:
+        break;
+    }
+  }
+  if (failure !== void 0) throw new Error(failure);
+  return order.map((index) => closed.get(index) ?? open4.get(index) ?? "").join("").trim();
+}
+async function optimizePrompt(ctx, request) {
+  const llm = serviceOf(ctx, "llm");
+  if (llm === void 0) return { ok: false, message: "\u5BBF\u4E3B\u672A\u63D0\u4F9B\u6A21\u578B\u670D\u52A1" };
+  const route = resolveRoute(ctx, request.sessionId);
+  if (route === void 0) return { ok: false, message: "\u6CA1\u6709\u53EF\u7528\u7684\u6A21\u578B\uFF0C\u8BF7\u5148\u5728\u8F93\u5165\u6846\u4E2D\u9009\u62E9\u6A21\u578B" };
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  try {
+    const call = await llm.prepareCall({ ...route, maxTokens: MAX_OUTPUT_TOKENS }, controller.signal, configure);
+    const text = await collectText(call.stream({
+      ...call.config,
+      messages: [{ role: "user", content: [{ type: "text", text: request.text }] }],
+      system: optimizeSystemPrompt(),
+      signal: controller.signal,
+      ...request.sessionId === void 0 ? {} : { sessionId: request.sessionId },
+      // 用途标记让宿主的日志与计费能把这笔消耗与对话请求分开
+      purpose: PURPOSE
+    }));
+    if (text === "") return { ok: false, message: "\u6A21\u578B\u6CA1\u6709\u8FD4\u56DE\u5185\u5BB9\uFF0C\u8BF7\u91CD\u8BD5" };
+    if (text.length > MAX_OUTPUT_CHARS) return { ok: false, message: "\u4F18\u5316\u7ED3\u679C\u5F02\u5E38\u504F\u957F\uFF0C\u8BF7\u91CD\u8BD5" };
+    return { ok: true, text };
+  } catch (error) {
+    if (controller.signal.aborted) {
+      console.error("[prompt-optimize] \u4F18\u5316\u8BF7\u6C42\u8D85\u65F6:", error);
+      return { ok: false, message: `\u4F18\u5316\u8D85\u65F6\uFF08${Math.round(TIMEOUT_MS / 1e3)} \u79D2\uFF09\uFF0C\u8BF7\u91CD\u8BD5` };
+    }
+    console.error("[prompt-optimize] \u4F18\u5316\u8BF7\u6C42\u5931\u8D25:", error);
+    return { ok: false, message: error instanceof Error ? error.message : String(error) };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// src/features/prompt-optimize/host/routes.ts
+var ROUTE_PATH10 = "/dsh-all-in-one/prompt-optimize";
+var MAX_BODY_BYTES8 = MAX_INPUT_BYTES * 2 + 1024;
+var MAX_SESSION_ID_LENGTH2 = 200;
+function parseRequest(value) {
+  if (typeof value !== "object" || value === null) return void 0;
+  const candidate = value;
+  if (typeof candidate.text !== "string") return void 0;
+  const text = candidate.text.trim();
+  if (text === "") return void 0;
+  if (Buffer.byteLength(text, "utf8") > MAX_INPUT_BYTES) return void 0;
+  const raw = candidate.sessionId;
+  const sessionId = typeof raw === "string" && raw !== "" && raw.length <= MAX_SESSION_ID_LENGTH2 ? raw : void 0;
+  return { text, sessionId };
+}
+function installPromptOptimizeRoutes(ctx, webServer) {
+  return webServer.register({
+    kind: "exact",
+    path: ROUTE_PATH10,
+    handler: async (request, response) => {
+      if (!isLocalRequest(request)) {
+        sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
+        return;
+      }
+      if (request.method !== "POST") {
+        sendJson(response, 405, { error: "\u53EA\u63A5\u53D7 POST \u8BF7\u6C42" });
+        return;
+      }
+      const body = await readJsonBody(request, MAX_BODY_BYTES8);
+      if (!body.ok) {
+        sendJsonBodyError(response, body, "\u8BF7\u6C42\u5185\u5BB9\u4E0D\u5408\u6CD5");
+        return;
+      }
+      const parsed = parseRequest(body.value);
+      if (parsed === void 0) {
+        sendJson(response, 400, { error: `\u5F85\u4F18\u5316\u7684\u5185\u5BB9\u4E3A\u7A7A\u6216\u8D85\u8FC7 ${MAX_INPUT_BYTES} \u5B57\u8282` });
+        return;
+      }
+      try {
+        const outcome = await optimizePrompt(ctx, parsed);
+        if (!outcome.ok) {
+          sendJson(response, 502, { error: outcome.message });
+          return;
+        }
+        sendJson(response, 200, { optimized: outcome.text });
+      } catch (error) {
+        console.error("[prompt-optimize] \u5904\u7406\u4F18\u5316\u8BF7\u6C42\u5931\u8D25:", error);
+        sendJson(response, 500, { error: "\u4F18\u5316\u5931\u8D25\uFF0C\u8BF7\u91CD\u8BD5" });
+      }
+    }
+  });
+}
+
+// src/features/prompt-optimize/host.ts
+var id11 = "prompt-optimize";
+var inject11 = ["webServer"];
+function apply11(ctx) {
+  const webServer = ctx.webServer;
+  if (webServer === void 0) {
+    console.error("[prompt-optimize] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u4F18\u5316\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
+    return;
+  }
+  ctx.effect(() => installPromptOptimizeRoutes(ctx, webServer), "prompt-optimize: routes");
+}
+
+// src/features/memory-guard/host.ts
+var host_exports12 = {};
+__export(host_exports12, {
+  apply: () => apply12,
+  id: () => id12,
+  inject: () => inject12
 });
 
 // src/features/memory-guard/host/process-memory.ts
@@ -4856,11 +5102,11 @@ async function readProcessTreeMemory() {
 }
 
 // src/features/memory-guard/host/routes.ts
-var ROUTE_PATH10 = "/dsh-all-in-one/memory-guard";
+var ROUTE_PATH11 = "/dsh-all-in-one/memory-guard";
 function installMemoryGuardRoutes(webServer) {
   return webServer.register({
     kind: "exact",
-    path: ROUTE_PATH10,
+    path: ROUTE_PATH11,
     handler: async (request, response) => {
       if (!isLocalRequest(request)) {
         sendJson(response, 403, { error: "\u53EA\u5141\u8BB8\u672C\u673A\u8BBF\u95EE" });
@@ -4889,9 +5135,9 @@ function installMemoryGuardRoutes(webServer) {
 }
 
 // src/features/memory-guard/host.ts
-var id11 = "memory-guard";
-var inject11 = ["webServer"];
-function apply11(ctx) {
+var id12 = "memory-guard";
+var inject12 = ["webServer"];
+function apply12(ctx) {
   const webServer = ctx.webServer;
   if (webServer === void 0) {
     console.error("[memory-guard] \u672A\u53D6\u5F97 webServer \u670D\u52A1\uFF0C\u5185\u5B58\u8BFB\u6570\u63A5\u53E3\u4E0D\u4F1A\u6CE8\u518C");
@@ -4912,12 +5158,13 @@ var featureHosts = [
   host_exports8,
   host_exports9,
   host_exports10,
-  host_exports11
+  host_exports11,
+  host_exports12
 ];
 
 // src/index.ts
-var inject12 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
-function apply12(ctx) {
+var inject13 = Array.from(new Set(featureHosts.flatMap((feature) => feature.inject ?? [])));
+function apply13(ctx) {
   for (const feature of featureHosts) {
     try {
       feature.apply(ctx);
@@ -4927,6 +5174,6 @@ function apply12(ctx) {
   }
 }
 export {
-  apply12 as apply,
-  inject12 as inject
+  apply13 as apply,
+  inject13 as inject
 };

@@ -6,6 +6,7 @@ import contextInspect from './context-inspect'
 import clearSession from './clear-session'
 import queueEdit from './queue-edit'
 import autoRun from './auto-run'
+import promptOptimize from './prompt-optimize'
 import sessionHistory from './session-history'
 import sidebarMore from './sidebar-more'
 import workspaceSessionCount from './workspace-session-count'
@@ -41,6 +42,7 @@ export const featureList: FeatureDefinition[] = [
   imagePreview,
   contextInspect,
   queueEdit,
+  promptOptimize,
   clearSession,
   sessionHistory,
   workspaceSessionCount,

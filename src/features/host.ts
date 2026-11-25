@@ -10,6 +10,7 @@ import * as projectMemory from './project-memory/host'
 import * as autoCompact from './auto-compact/host'
 import * as desktopCookie from './desktop-cookie/host'
 import * as autoRun from './auto-run/host'
+import * as promptOptimize from './prompt-optimize/host'
 import * as memoryGuard from './memory-guard/host'
 
 /**
@@ -29,5 +30,6 @@ export const featureHosts: FeatureHostExtension[] = [
   autoCompact,
   desktopCookie,
   autoRun,
+  promptOptimize,
   memoryGuard,
 ]
