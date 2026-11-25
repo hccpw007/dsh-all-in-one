@@ -9,7 +9,7 @@
 import React from 'react'
 
 import type { PluginContext, Translate } from '../../types/plugin'
-import { PromptOptimizeButton, type PromptOptimizeButtonProps } from './PromptOptimizeButton'
+import { PromptOptimizeDock, type PromptOptimizeDockProps } from './PromptOptimizeDock'
 import { readPromptOptimizeEnabled } from './storage'
 
 /** 输入框右侧控件行的插槽名。 */
@@ -62,18 +62,19 @@ export function apply(ctx: PluginContext, t: Translate): void {
     ctx.slots.register(
       {
         name: INPUT_RIGHT_SLOT,
-        id: 'prompt-optimize-button',
-        // 排在模型选择器之前、与「全自动」同侧；具体位置由同排控件的 order 相对决定
-        order: -50,
+        id: 'prompt-optimize',
+        // 这一层只借插槽拿会话与输入框能力，可见按钮由它自己插到发送按钮之后，
+        // 因此 order 只影响这个零宽挂载占位，排在整排最后即可
+        order: 100,
       },
       // sessionId、useInput 与 inputActions 都由宿主的 standardProps 逐次渲染传入：
       // 切换对话时插槽会重新渲染，组件随之读到新会话的草稿与输入框操作面
       (props: Record<string, unknown>) => {
-        const scoped = props as unknown as Omit<PromptOptimizeButtonProps, 't' | 'notify'>
+        const scoped = props as unknown as Omit<PromptOptimizeDockProps, 't' | 'notify'>
         const sessionId = scoped.sessionId
 
         return (
-          <PromptOptimizeButton
+          <PromptOptimizeDock
             {...scoped}
             t={t}
             notify={sessionId === undefined ? undefined : notifyOf(sessionId)}
