@@ -183,7 +183,7 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 │           ├── toggle.tsx   # 网格中的开关入口
 │           ├── storage.ts   # 开关状态读写（localStorage），本功能专属
 │           ├── client.tsx   # 客户端扩展：开关打开时安装导航条搬运
-│           ├── turn-nav.ts  # 导航条左侧定位与预览卡反转
+│           ├── turn-nav.ts  # 导航条左侧定位、预览卡反转、单轮「回到顶部」横杠
 │           └── locales.ts   # 本功能的中英文文案
 │       ├── sidebar-more/    # 开关型功能：侧边栏顶部入口收进左下角「更多」菜单
 │           ├── index.tsx    # 注册定义：switch 入口 + client 扩展

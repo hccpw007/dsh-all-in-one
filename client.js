@@ -4519,9 +4519,27 @@ window.__ModuleLoader__.load({
       return null;
     }
     var NAV_ATTRIBUTE = "data-aio-turn-nav";
+    var SINGLE_NAV_ATTRIBUTE = "data-aio-turn-nav-single";
+    function countTurns() {
+      const turns = /* @__PURE__ */ new Set();
+      for (const row of document.querySelectorAll("[data-chat-turn]")) {
+        const turn = row.getAttribute("data-chat-turn");
+        if (turn !== null) turns.add(turn);
+      }
+      return turns.size;
+    }
+    function findChatFrame() {
+      const column = document.querySelector("[data-chat-flow]");
+      if (!(column instanceof HTMLElement)) return null;
+      const frame = column.parentElement?.parentElement?.parentElement;
+      return frame instanceof HTMLElement ? frame : null;
+    }
     var STYLE_ID4 = "dsh-all-in-one-session-history";
     var WIDTH_HANDLE_SELECTOR = '[data-width-handle="left"]';
     var NAV_EDGE_GAP = 10;
+    function singleNavLabels() {
+      return document.documentElement.lang.toLowerCase().startsWith("zh") ? { nav: "\u8F6E\u6B21\u5BFC\u822A", button: "\u56DE\u5230\u9876\u90E8" } : { nav: "Turn navigation", button: "Back to top" };
+    }
     var STYLE_TEXT3 = `
     [${NAV_ATTRIBUTE}] {
       right: auto !important;
@@ -4531,6 +4549,78 @@ window.__ModuleLoader__.load({
     [${NAV_ATTRIBUTE}] [class*="_preview"] {
       right: auto !important;
       left: calc(100% + 10px) !important;
+    }
+    [${SINGLE_NAV_ATTRIBUTE}] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 7;
+      height: 0;
+      pointer-events: none;
+    }
+    [data-conversation-scroll] [${SINGLE_NAV_ATTRIBUTE}] {
+      position: sticky;
+    }
+    [${SINGLE_NAV_ATTRIBUTE}] > nav {
+      --aio-turn-band: calc(var(--dsh-conversation-viewport-height, 100dvh) - var(--dsh-composer-height, 152px));
+      position: absolute;
+      top: calc(var(--aio-turn-band) / 2);
+      right: 12px;
+      width: 28px;
+      height: 10px;
+      pointer-events: auto;
+      transform: translateY(-50%);
+    }
+    [${SINGLE_NAV_ATTRIBUTE}] button {
+      position: absolute;
+      inset: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+    }
+    [${SINGLE_NAV_ATTRIBUTE}] button::before {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      width: 20px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--dsw-alias-label-primary);
+      content: '';
+      transform: translateY(-50%);
+    }
+    [${SINGLE_NAV_ATTRIBUTE}] button:focus-visible {
+      outline: 1px solid var(--dsw-focus-ring-color, var(--dsw-alias-state-business-primary));
+      outline-offset: -1px;
+    }
+    [${SINGLE_NAV_ATTRIBUTE}] button::after {
+      position: absolute;
+      top: 50%;
+      left: calc(100% + 10px);
+      padding: 4px 8px;
+      border-radius: var(--dsw-radius-md, 8px);
+      color: var(--dsw-alias-label-primary);
+      background: var(--dsw-alias-bg-layer-1);
+      box-shadow: var(--dsw-elevation-panel);
+      font: var(--dsw-font-xxs-12, 12px/1.4 sans-serif);
+      white-space: nowrap;
+      content: attr(data-aio-tip);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-50%);
+      transition: opacity 120ms ease;
+    }
+    [${SINGLE_NAV_ATTRIBUTE}] button:hover::after,
+    [${SINGLE_NAV_ATTRIBUTE}] button:focus-visible::after {
+      opacity: 1;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      [${SINGLE_NAV_ATTRIBUTE}] button::after {
+        transition: none;
+      }
     }
     `;
     function installTurnNav() {
@@ -4544,34 +4634,80 @@ window.__ModuleLoader__.load({
       let nav = null;
       let slot = null;
       let handle = null;
+      let singleSlot = null;
+      let singleNav = null;
       let frame = 0;
       let resizeObserver;
-      let navSeen = false;
       let warnedMissingNav = false;
-      const positionNav = () => {
-        if (nav === null || slot === null || handle === null) return;
+      const placeLeft = (target, container, anchor) => {
         const left = Math.round(
-          handle.getBoundingClientRect().left - slot.getBoundingClientRect().left - nav.offsetWidth - NAV_EDGE_GAP
+          anchor.getBoundingClientRect().left - container.getBoundingClientRect().left - target.offsetWidth - NAV_EDGE_GAP
         );
-        const target = `${Math.max(0, left)}px`;
-        if (nav.style.getPropertyValue("left") === target) return;
-        nav.style.setProperty("left", target, "important");
+        const next = `${Math.max(0, left)}px`;
+        if (target.style.getPropertyValue("left") === next) return;
+        target.style.setProperty("left", next, "important");
       };
-      const schedule = () => {
-        if (disposed || frame !== 0) return;
-        frame = window.requestAnimationFrame(() => {
-          frame = 0;
-          positionNav();
-        });
+      const positionNav = () => {
+        if (handle === null) return;
+        if (nav !== null && slot !== null) placeLeft(nav, slot, handle);
+        if (singleNav !== null && singleSlot !== null) placeLeft(singleNav, singleSlot, handle);
+      };
+      const scrollToTop = () => {
+        const column = document.querySelector("[data-chat-flow]");
+        const list = column?.parentElement ?? null;
+        const scroller = list?.closest("[data-conversation-scroll]") ?? list;
+        if (!(scroller instanceof HTMLElement)) {
+          console.warn("[session-history] \u627E\u4E0D\u5230\u4F1A\u8BDD\u6EDA\u52A8\u5BB9\u5668\uFF0C\u65E0\u6CD5\u56DE\u5230\u9876\u90E8");
+          return;
+        }
+        const reduceMotion = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
+        scroller.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+      };
+      const mountSingleNav = (target) => {
+        const labels = singleNavLabels();
+        const container = document.createElement("div");
+        container.setAttribute(SINGLE_NAV_ATTRIBUTE, "");
+        const element = document.createElement("nav");
+        element.setAttribute(NAV_ATTRIBUTE, "");
+        element.setAttribute("aria-label", labels.nav);
+        const button = document.createElement("button");
+        button.type = "button";
+        button.setAttribute("aria-label", labels.button);
+        button.setAttribute("data-aio-tip", labels.button);
+        button.addEventListener("click", scrollToTop);
+        element.append(button);
+        container.append(element);
+        target.prepend(container);
+        singleSlot = container;
+        singleNav = element;
+      };
+      const unmountSingleNav = () => {
+        singleSlot?.remove();
+        singleSlot = null;
+        singleNav = null;
+      };
+      const syncSingleNav = () => {
+        if (nav !== null) {
+          unmountSingleNav();
+          return;
+        }
+        const turns = countTurns();
+        if (turns >= 2 && !warnedMissingNav) {
+          warnedMissingNav = true;
+          console.warn("[session-history] \u8F6E\u6B21\u5BFC\u822A\u6761\u5DF2\u4E0D\u53EF\u89C1\uFF0C\u5BBF\u4E3B\u7ED3\u6784\u53EF\u80FD\u53D1\u751F\u53D8\u5316");
+        }
+        const target = turns > 0 ? findChatFrame() : null;
+        if (target === null) {
+          unmountSingleNav();
+          return;
+        }
+        if (singleSlot !== null && singleSlot.parentElement === target) return;
+        unmountSingleNav();
+        mountSingleNav(target);
       };
       const track = () => {
         if (disposed) return;
         const nextNav = findNav();
-        if (nextNav === null && navSeen && !warnedMissingNav) {
-          warnedMissingNav = true;
-          console.warn("[session-history] \u8F6E\u6B21\u5BFC\u822A\u6761\u5DF2\u4E0D\u53EF\u89C1\uFF0C\u5BBF\u4E3B\u7ED3\u6784\u53EF\u80FD\u53D1\u751F\u53D8\u5316");
-        }
-        if (nextNav !== null) navSeen = true;
         const nextSlot = nextNav === null ? null : nextNav.parentElement;
         const nextHandle = document.querySelector(WIDTH_HANDLE_SELECTOR);
         if (nextNav !== nav || nextSlot !== slot || nextHandle !== handle) {
@@ -4584,9 +4720,16 @@ window.__ModuleLoader__.load({
             if (handle !== null && handle !== slot) resizeObserver.observe(handle);
           }
         }
-        if (nav === null) return;
-        if (!nav.hasAttribute(NAV_ATTRIBUTE)) nav.setAttribute(NAV_ATTRIBUTE, "");
+        if (nav !== null && !nav.hasAttribute(NAV_ATTRIBUTE)) nav.setAttribute(NAV_ATTRIBUTE, "");
+        syncSingleNav();
         positionNav();
+      };
+      const schedule = () => {
+        if (disposed || frame !== 0) return;
+        frame = window.requestAnimationFrame(() => {
+          frame = 0;
+          track();
+        });
       };
       if (typeof ResizeObserver === "function") {
         resizeObserver = new ResizeObserver(schedule);
@@ -4600,6 +4743,7 @@ window.__ModuleLoader__.load({
         window.removeEventListener("resize", schedule);
         resizeObserver?.disconnect();
         if (frame !== 0) window.cancelAnimationFrame(frame);
+        unmountSingleNav();
         for (const element of document.querySelectorAll(`[${NAV_ATTRIBUTE}]`)) {
           element.removeAttribute(NAV_ATTRIBUTE);
           if (element instanceof HTMLElement) element.style.removeProperty("left");
