@@ -11,6 +11,7 @@ import sessionHistory from './session-history'
 import sidebarMore from './sidebar-more'
 import workspaceSessionCount from './workspace-session-count'
 import deleteSession from './delete-session'
+import copyWorkspacePath from './copy-workspace-path'
 import powerPack from './power-pack'
 import projectMemory from './project-memory'
 import autoCompact from './auto-compact'
@@ -48,6 +49,7 @@ export const featureList: FeatureDefinition[] = [
   workspaceSessionCount,
   sidebarMore,
   deleteSession,
+  copyWorkspacePath,
   // 参数设置：开关之外还要选范围、设默认值或填阈值
   expandProcess,
   autoCompact,

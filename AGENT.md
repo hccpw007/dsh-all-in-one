@@ -212,6 +212,14 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 │           │   ├── session-records.ts # 清投影缓存与工作区里的会话 id
 │           │   └── routes.ts         # POST /dsh-all-in-one/sessions 与 /sessions/batch
 │           └── locales.ts   # 本功能的中英文文案
+│       ├── copy-workspace-path/ # 开关型功能：工作区右键与「更多」菜单里增加「复制路径」
+│           ├── index.tsx    # 注册定义：switch 入口 + client 扩展
+│           ├── toggle.tsx   # 网格中的开关入口
+│           ├── storage.ts   # 开关状态读写（localStorage），本功能专属
+│           ├── client.tsx   # 客户端扩展：开关打开时登记菜单项与它的图标
+│           ├── copy-path.ts # 菜单贡献：点击把工作区绝对路径写入剪贴板并提示
+│           ├── copy-icon.tsx # 「复制路径」图标，菜单项与设置页开关共用
+│           └── locales.ts   # 本功能的中英文文案
 │       ├── project-memory/  # 页面型功能：按项目共享的长期记忆（格式同 Claude Code）
 │           ├── index.tsx    # 注册定义：入口与记忆设置页面
 │           ├── entry.tsx    # 网格入口：卡片主体进入页面，右侧是启用开关
@@ -307,7 +315,7 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
 
 | 分组 | group id | 包含功能 | 切换开关是否刷新页面 |
 |---|---|---|---|
-| 快捷开关 | `toggle` | 图片直接预览、上下文详情、编辑排队消息、新会话入口、轮次导航左置、项目显示会话数、顶部菜单收纳、删除会话 | 是 |
+| 快捷开关 | `toggle` | 图片直接预览、上下文详情、编辑排队消息、新会话入口、轮次导航左置、项目显示会话数、顶部菜单收纳、删除会话、复制工作区路径 | 是 |
 | 参数设置 | `parameter` | 执行过程展开、自动压缩会话、全自动执行、过期登录清理 | 部分（展开与全自动刷新，压缩与清理即时生效） |
 | 配置页面 | `page` | 技能包、项目记忆、内存守护 | 否（页面型入口，开关即时生效） |
 
@@ -346,6 +354,14 @@ feature 需要宿主侧能力时（如注入 `index.html`）：在 feature 目�
   宽屏两列），**不要改回 `grid-cols-1 sm:grid-cols-2` 工具类**：宿主与其它插件
   （如 dsh-ide）也会输出同名类 `.grid-cols-1`，同特异性下后注入的样式会盖掉响应式两列，
   网格会退化成一行一张卡片。插件样式要用两个类以上的特异性，才能不受注入顺序影响。
+
+### 工作区菜单的扩展点
+
+宿主客户端提供 `contextMenus` 服务（`ctx.inject(['contextMenus'], ...)`），工作区行的右键与
+「更多」按钮打开的是同一个菜单。贡献项的点击对象自带 `workspaceId` / `path` / `displayTitle`，
+菜单项图标由 `contextMenu.icon` 这个 keyed 插槽按 `icon.key` 渲染，因此这类菜单项应注册贡献项
+（参考 `copy-workspace-path/copy-path.ts`），不要再按菜单的 DOM 结构注入。DOM 注入只用于宿主
+没有贡献点位的界面（如会话行上的悬停按钮、侧边栏标题）。
 
 ## 五之二、会话级隔离的两层结构
 

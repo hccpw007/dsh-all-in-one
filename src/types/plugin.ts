@@ -27,6 +27,8 @@ export interface SlotDescriptor {
   label?: () => string
   /** 语言命名空间，插槽组件会收到绑定该命名空间的 `t`。 */
   locale?: string
+  /** keyed 插槽（如菜单图标）的键；非 keyed 插槽忽略该字段。 */
+  key?: string
   /** 按会话 id 计算注入给组件的 props 与 hooks。 */
   inject?: (sessionId?: string) => Record<string, unknown>
 }
@@ -113,6 +115,48 @@ export interface UiWorkspaceApi {
       subscribe?(listener: () => void): () => void
     }
   }
+}
+
+/** 菜单项图标：宿主按 key 在 `contextMenu.icon` 插槽里取渲染组件。 */
+export interface ContextMenuItemIcon {
+  readonly key: string
+}
+
+/** 一条菜单项；`run` 抛出时宿主用 `failureLabel` 向用户提示。 */
+export interface ContextMenuItem {
+  readonly id: string
+  readonly label: string
+  readonly icon?: ContextMenuItemIcon
+  readonly danger?: boolean
+  readonly disabled?: boolean
+  /** 在本项之前插入一条分隔线。 */
+  readonly separatorBefore?: boolean
+  readonly failureLabel?: string
+  readonly run?: () => void | Promise<void>
+}
+
+/** 工作区菜单的点击对象：宿主在捕获右键或「更多」按钮时给出。 */
+export interface WorkspaceMenuTarget {
+  readonly workspaceId: string
+  /** 工作区在宿主机上的绝对目录路径。 */
+  readonly path: string
+  readonly displayTitle: string
+}
+
+/** 菜单贡献：宿主每次打开菜单时调用 `resolve` 取当前可用项。 */
+export interface ContextMenuContribution {
+  readonly id: string
+  readonly target: 'workspace'
+  readonly order: number
+  resolve(target: WorkspaceMenuTarget, signal: AbortSignal): readonly ContextMenuItem[]
+}
+
+/** 宿主右键菜单服务：工作区行的右键与「更多」按钮打开的是同一个菜单。 */
+export interface ContextMenusApi {
+  /** 注册贡献，返回注销函数；注销后菜单不再出现该项。 */
+  register(contribution: ContextMenuContribution): () => void
+  /** 在菜单所在界面给出提示，`success` 为真时用成功样式。 */
+  notify(text: string, success?: boolean): void
 }
 
 /**
@@ -282,6 +326,8 @@ export interface PluginContext {
   conversation?: ConversationApi
   /** 工作区服务；声明依赖后可用。 */
   uiWorkspace?: UiWorkspaceApi
+  /** 右键菜单服务；声明 `contextMenus` 依赖后可用。 */
+  contextMenus?: ContextMenusApi
   /** 远程服务；声明 `remote.agentPresets` 依赖后可用。 */
   remote?: { agentPresets?: AgentPresetsRemote }
 }
